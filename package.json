@@ -12,10 +12,11 @@
     "styled-components": "^3.1.6"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "npm run setup && react-scripts start",
+    "build": "npm run setup && react-scripts build",
+    "test": "npm run setup && react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "setup": "sh ./scripts/setup.sh"
   },
   "devDependencies": {
     "eslint": "^4.12.1",
