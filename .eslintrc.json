@@ -1,5 +1,6 @@
 {
   "extends": ["standard", "standard-react"],
+  "plugins": ["chai-expect"],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
     "react/prop-types": [1, { "ignore": ["children"] }]

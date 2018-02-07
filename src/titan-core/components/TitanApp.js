@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { mountApplicationRoutes, resolveTheme } from '../lib/titan'
+import { collectApplicationRoutes, resolveTheme } from '../lib/titan'
 
 class TitanApp extends React.Component {
   constructor (props) {
     super(props)
-    this.routes = mountApplicationRoutes(this.props.app)
+    this.routes = collectApplicationRoutes(this.props.app)
     this.theme = resolveTheme(this.props.theme)
   }
 

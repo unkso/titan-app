@@ -4,10 +4,10 @@ import DashboardLayout from 'titan-core/layouts/DashboardLayout'
 export default {
   'auth:login': {
     route: '/auth/login',
-    middleware: [],
-    layout: DashboardLayout,
+    layout: 'empty',
     scene: LoginScene,
     components: {
+      mainMenu: [],
       content: [
         {
           component: '<Component>',
