@@ -1,20 +1,39 @@
 import defaultThemeProvider from '../defaultThemeProvider'
 import defaultApplicationProvider from '../defaultApplicationProvider'
 
-/**
- * Collects all the routes from titan's core modules, and any
- * other modules listed as dependencies by the application
- * provider.
- *
- * @param {{name, dependencies, routes}} applicationProvider
- * @returns {[{route, layout, scene}]}
- */
-export function collectApplicationRoutes (applicationProvider) {
+export function mountApplication (applicationProvider) {
   const modules = collectModules([
     applicationProvider,
     defaultApplicationProvider
   ])
 
+  return {
+    layouts: collectLayouts(modules),
+    routes: collectRoutes(modules)
+  }
+}
+
+export function collectLayouts (modules) {
+  return modules.reduce((layouts, module) => {
+    if (module.hasOwnProperty('layouts')) {
+      Object.keys(module.layouts).forEach((layoutKey) => {
+        layouts[layoutKey] = module.layouts[layoutKey]
+      })
+    }
+
+    return layouts
+  }, {})
+}
+
+/**
+ * Collects all the routes from titan's core modules, and any
+ * other modules listed as dependencies by the application
+ * provider.
+ *
+ * @param {[{name, dependencies, routes}]} modules
+ * @returns {[{route, layout, scene}]}
+ */
+export function collectRoutes (modules) {
   let routes = []
   let visitedRoutes = {}
   modules.forEach((module) => {

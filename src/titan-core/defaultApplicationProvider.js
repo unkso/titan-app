@@ -1,6 +1,7 @@
 import DashboardLayout from './layouts/DashboardLayout'
 import WebsiteLayout from './layouts/WebsiteLayout'
 import EmptyDarkLayout from './layouts/EmptyDarkLayout'
+import TitanAuth from 'titan-auth'
 
 export default {
   name: 'titan-core',
@@ -8,5 +9,8 @@ export default {
     dashboard: DashboardLayout,
     website: WebsiteLayout,
     empty: EmptyDarkLayout
-  }
+  },
+  dependencies: [
+    TitanAuth
+  ]
 }

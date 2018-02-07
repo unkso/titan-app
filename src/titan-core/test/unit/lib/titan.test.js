@@ -14,7 +14,7 @@ describe('Titan', () => {
         name: 'module 1',
         routes: {
           'route:1': {
-            route: '/route/1',
+            path: '/route/1',
             layout: <Component />,
             scene: <Component />
           }
@@ -29,7 +29,7 @@ describe('Titan', () => {
         name: 'module 2',
         routes: {
           'route:2': {
-            route: '/route/2',
+            path: '/route/2',
             layout: <Component />,
             scene: <Component />
           }
@@ -48,7 +48,7 @@ describe('Titan', () => {
     }
   })
 
-  describe('#collectApplicationRoutes', () => {
+  describe('#collectRoutes', () => {
     let sandbox = sinon.sandbox.create()
 
     beforeEach(() => {
@@ -61,7 +61,7 @@ describe('Titan', () => {
     })
 
     it('should return merged list of routes', () => {
-      const routes = titan.collectApplicationRoutes(fakeApplicationProvider)
+      const routes = titan.collectRoutes(fakeApplicationProvider)
       assert.equal(routes.length, 2)
       assert.deepEqual(
         routes,
@@ -71,12 +71,12 @@ describe('Titan', () => {
 
     it('should not return duplicate route keys', () => {
       fakeApplicationProvider.dependencies[0].routes['route:2'] = {
-        route: '/route/2',
+        path: '/route/2',
         layout: <Component />,
         scene: <Component />
       }
 
-      const routes = titan.collectApplicationRoutes(fakeApplicationProvider)
+      const routes = titan.collectRoutes(fakeApplicationProvider)
       assert.equal(routes.length, 2)
       assert.deepEqual(
         routes,

@@ -4,7 +4,10 @@ import TitanLayout from './TitanLayout'
 class EmptyDarkLayout extends TitanLayout {
   render () {
     return (
-      <h1>Empty dark layout</h1>
+      <div>
+        <h1>Empty dark layout</h1>
+        {this.props.children}
+      </div>
     )
   }
 }
