@@ -15,16 +15,20 @@ export function collectApplicationRoutes (applicationProvider) {
     defaultApplicationProvider
   ])
 
-  let routesMap = []
+  let routes = []
+  let visitedRoutes = {}
   modules.forEach((module) => {
     if (module.routes) {
       Object.keys(module.routes).forEach((routeKey) => {
-        routesMap.push(module.routes[routeKey])
+        if (!visitedRoutes.hasOwnProperty(routeKey)) {
+          routes.push(module.routes[routeKey])
+          visitedRoutes[routeKey] = true
+        }
       })
     }
   })
 
-  return routesMap
+  return routes
 }
 
 /**
