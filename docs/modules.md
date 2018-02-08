@@ -1,6 +1,8 @@
 # Modules
 Titan is divided into isolated feature contains, known as modules.
 
+Further information coming soon.
+
 ## Structure
 ```
 {vendor}-{module}
@@ -33,13 +35,13 @@ A container should render a very minimal template, passing callbacks and redux i
 
 General purpose containers should be placed in the `titan-core` module.
 
-### Reducers/
+### reducers/
 <a id="structure-reducers"></a>
 Contains a module's redux state reducers.
 
 Reducers simply update a piece of the application state. They should not perform API calls, sort data, or execute any other forms of business logic.
 
-### Scenes/
+### scenes/
 <a id="structure-scenes"></a>
 Contains a module's top level components.
 
@@ -47,7 +49,7 @@ Scenes are essentially top-level components that build the structure of a page. 
 
 They should not contain business logic, API calls, or interact with the redux store.
 
-### Services
+### services/
 <a id="structure-services"></a>
 
 Coming soon.
