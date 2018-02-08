@@ -59,11 +59,11 @@ export function collectRoutes (modules) {
  */
 export function collectModules (modules, visitedModules = []) {
   modules.forEach((module) => {
-    const exists = visitedModules.every((m) => {
-      return m.name === module.name
-    }, false)
+    const isUnique = visitedModules.every((m) => {
+      return m.name !== module.name
+    })
 
-    if (visitedModules.length === 0 || !exists) {
+    if (visitedModules.length === 0 || isUnique) {
       visitedModules.push(module)
 
       if (module.dependencies && module.dependencies.length > 0) {
