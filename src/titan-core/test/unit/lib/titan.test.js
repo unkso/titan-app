@@ -1,6 +1,5 @@
-import sinon from 'sinon'
 import assert from 'assert'
-import {describe, it, beforeEach, afterEach} from 'mocha'
+import {describe, it, beforeEach} from 'mocha'
 import * as titan from '../../../lib/titan'
 import React, { Component } from 'react'
 
@@ -41,18 +40,6 @@ describe('Titan', () => {
   })
 
   describe('#collectRoutes', () => {
-    let sandbox = sinon.sandbox.create()
-
-    // @todo fix
-    beforeEach(() => {
-      let collectModulesStub = sandbox.stub(titan, 'collectModules')
-      collectModulesStub.returns(null)
-    })
-
-    afterEach(() => {
-      sandbox.verifyAndRestore()
-    })
-
     it('should return merged list of routes', () => {
       const routes = titan.collectRoutes([fakeModule1, fakeModule2])
       assert.equal(routes.length, 2)
