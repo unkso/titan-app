@@ -170,4 +170,4 @@ The following diagram visualizes how a layout, scene, and components are rendere
 
 **Red**: Scene - Defines the structure of components in the main content area.
 
-**Green**: Component - Simple, reusable pieces of the user interface.
+**Green**: Component - Simple, reusable piece of the user interface.
