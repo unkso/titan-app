@@ -139,8 +139,8 @@ Each key in the route object should be a unqiue identifier for a route. The nami
 
 ### Example
 
-**index.js**
 ```javascript
+// titan-core/index.js
 export default {
     // ...
     routes: {
