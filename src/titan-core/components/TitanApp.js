@@ -5,6 +5,7 @@ import {
   resolveTheme
 } from '../lib/titan'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import LayoutRenderer from './LayoutRenderer'
 
 class TitanApp extends React.Component {
   constructor (props) {
@@ -14,10 +15,11 @@ class TitanApp extends React.Component {
   }
 
   renderRoute (route) {
-    const Layout = route.layout
-
     return () => (
-      <Layout />
+      <LayoutRenderer
+        layout={this.app.layouts[route.layout]}
+        scene={route.scene}
+      />
     )
   }
 
