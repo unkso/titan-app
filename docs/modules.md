@@ -1,7 +1,17 @@
 # Modules
-Titan is divided into isolated feature contains, known as modules.
+Titan is divided into isolated groups of code, known as *modules*, which provide specific domains of features. For example, a `membership` module would contain features related to managing users and user groups. Features outside the domain of managing users, such as managing an event calendar, should reside in a different module.
 
-Further information coming soon.
+- [structure](#structure)
+    - [actions](#structure-actions)
+    - [components](#structure-components)
+    - [containers](#structure-containers)
+    - [reducers](#structure-reducers)
+    - [scenes](#structure-scenes)
+    - [services](#structure-services)
+    - [test](#structure-test)
+- [configuration](#configuration)
+    - [routes](#configuration-routes)
+- [rendering](#rendering)
 
 ## Structure
 ```
@@ -12,6 +22,7 @@ Further information coming soon.
 ├─── reducers/
 ├─── scenes/
 ├─── services/
+├─── test/
 ├─── index.js
 ```
 
@@ -55,14 +66,28 @@ Contains wrappers for API services.
 
 These service classes send requests to external systems. These requests may fetch, create, update, or delete data from another API. They may **not** perform sorting, filtering, or update the redux store. Such logic should exist in a redux action.
 
+### test/
+<a id="structure-test"></a>
+Instead of having a monolithic test directory in the root of the project, module specific tests are located within the module itself. The directory structure of the `test` directory should mirror the structure of the module. The test files within the directory should mirror the name of the file being tested with `.test.js` appended to the filename.
+
+### Example
+
+```
+titan-core
+├─── lib/
+|    ├─── utils
+|         ├─── helperFunctions.js
+├─── test/
+|    ├─── test/
+|         ├─── lib/
+|              ├─── utils
+|                   ├─── helperFunctions.test.js
+├─── index.js
+```
+
 ### index.js
 <a id="structure-index"></a>
 Every module will contain an `index.js` file, which defines important information titan must know about the module. See the [configuration section](#configuration) for additional information.
-
-## Rendering
-<a id="rendering"></a>
-
-Layout, scene, component chart coming soon.
 
 ## Configuration
 <a id="configuration"></a>
@@ -103,6 +128,7 @@ By default, the following layouts are available:
 - `empty`: Used for scenes that have a very custom structure. For example, a login scene, where the form is vertically centered on the page.
 
 ## Routes
+<a id="configuration-routes"></a>
 A list of the module's routes.
 
 Each key in the route object should be a unqiue identifier for a route. The naming convention for a route id is:
@@ -133,3 +159,8 @@ export default {
 | `exact`  | no       | true    | If true, the the router will match urls with the exact path. If false, the router will match any path that begins with the path. |
 | `layout` | yes      |         | The layout to wrap around the scene.                                                                                             |
 | `scene`  | yes      |         | The scene to render.                                                                                                             |
+
+## Rendering
+<a id="rendering"></a>
+
+Layout, scene, component chart coming soon.
