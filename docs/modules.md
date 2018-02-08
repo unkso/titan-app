@@ -162,5 +162,10 @@ export default {
 
 ## Rendering
 <a id="rendering"></a>
+The following diagram visualizes the parts of the user interface the a layout, scene, and component represent.
 
-Layout, scene, component chart coming soon.
+<img src="./assets/titan_rendering_diagram.png" />
+
+**Blue**: Layout
+**Red**: Scene
+**Green**: Component
