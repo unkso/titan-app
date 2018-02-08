@@ -167,5 +167,7 @@ The following diagram visualizes the parts of the user interface the a layout, s
 <img src="./assets/titan_rendering_diagram.png" />
 
 **Blue**: Layout
+
 **Red**: Scene
+
 **Green**: Component
