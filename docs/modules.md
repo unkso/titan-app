@@ -51,11 +51,99 @@ They should not contain business logic, API calls, or interact with the redux st
 
 ### services/
 <a id="structure-services"></a>
+Contains wrappers for API services.
 
-Coming soon.
+These service classes send requests to external systems. These requests may fetch, create, update, or delete data from another API. They may **not** perform sorting, filtering, or update the redux store. Such logic should exist in a redux action.
 
+### index.js
+<a id="structure-index"></a>
+Every module will contain an `index.js` file, which defines important information titan must know about the module. See the [configuration section](#configuration) for additional information.
 
 ## Rendering
 <a id="rendering"></a>
 
 Layout, scene, component chart coming soon.
+
+## Configuration
+<a id="configuration"></a>
+A typical module configuration will look something like this...
+
+```javascript
+export default {
+    name: 'titan-core',
+    layouts: {
+        dashboard: <CustomLayout />
+    },
+    routes: {
+        'titan-core:index': {
+            path: '/',
+            exact: true,
+            layout: 'dashboard',
+            scene: <HomeScene />
+        }
+    },
+    reducers: []
+}
+```
+
+### name
+Defines the name of the module. Must be unique to all other installed modules. By convention, module names are determined by the vendor and the module's purpose:
+
+    titan-auth
+
+In the example above, the vendor is `titan` and the purpose of the module is to provide `authentication` capabilities. Hence the name `titan-auth`.
+
+### layouts
+Titan allows modules to register layouts which can be referenced by any other module. These layouts can be overwritten by child modules to change the default look and feel of the application without changing titan's core modules.
+
+By default, the following layouts are available:
+
+- `dashboard`: Used for administrative or private pages (aka static 12 pages).
+- `website`: Used for the front facing website (home page, forums, about, contact, etc.)
+- `empty`: Used for scenes that have a very custom structure. For example, a login scene, where the form is vertically centered on the page.
+
+## Routes
+A list of the module's routes.
+
+Each key in the route object should be a unqiue identifier for a route. The naming convention for a route id is:
+
+```text
+{vendor}-{module}:{route name}
+```
+
+### Example
+
+**index.js**
+```javascript
+export default {
+    // ...
+    routes: {
+        'titan-core:index': {
+            path: '/',
+            exact: true,
+            layout: 'dashboard',
+            scene: <HomeScene />
+        }
+    }
+}
+```
+
+### path
+The url path to the to the page.
+
+> **Required**
+
+### exact
+If true, the the router will match urls with the exact path. If false, the router will match any path that begins with the path.
+
+> **Default:** true
+
+### layout
+The layout to wrap around the scene.
+
+> **Required**
+
+### scene
+The scene to render.
+
+> **Required**
