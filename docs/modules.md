@@ -127,23 +127,9 @@ export default {
     }
 }
 ```
-
-### path
-The url path to the to the page.
-
-> **Required**
-
-### exact
-If true, the the router will match urls with the exact path. If false, the router will match any path that begins with the path.
-
-> **Default:** true
-
-### layout
-The layout to wrap around the scene.
-
-> **Required**
-
-### scene
-The scene to render.
-
-> **Required**
+| Property | Required | Default | Description                                                                                                                      |
+|----------|----------|---------|----------------------------------------------------------------------------------------------------------------------------------|
+| `path`   | yes      |         | The url path to the to the page.                                                                                                 |
+| `exact`  | no       | true    | If true, the the router will match urls with the exact path. If false, the router will match any path that begins with the path. |
+| `layout` | yes      |         | The layout to wrap around the scene.                                                                                             |
+| `scene`  | yes      |         | The scene to render.                                                                                                             |
