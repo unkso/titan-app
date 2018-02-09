@@ -57,7 +57,7 @@ Use this extension to view the contents of the app's redux data store.
 
 ## Testing
 
-    npm run test
+    yarn test
 
 ## Tools
 
