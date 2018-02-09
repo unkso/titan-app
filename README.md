@@ -55,6 +55,9 @@ Use this extension to view the contents of the app's redux data store.
 
     http://localhost:3000
 
+## Testing
+
+    yarn test
 
 ## Tools
 

@@ -1,7 +1,3 @@
-import TitanAuth from 'titan-auth'
-
 export default {
-  modules: [
-    TitanAuth
-  ]
+  name: 'unkso-static-12'
 }
