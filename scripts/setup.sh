@@ -3,7 +3,7 @@
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 APP_PATH="${SCRIPT_PATH}/.."
 
-for d in src/*/ ; do
+for d in src/*/; do
     if [[ ${d} = *"titan-"* ]]; then
          MODULE_PATH=$(cut -d "/" -f 2 <<< "${d}")
          echo "Linking module: ${MODULE_PATH}"
