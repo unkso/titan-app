@@ -1,5 +1,10 @@
 {
    "api": {
      "baseUrl": "http://localhost:8000"
-   }
+   },
+  "storage": {
+    "localStorage": {
+      "storageKey": "TITAN_APP"
+    }
+  }
 }

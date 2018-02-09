@@ -4,7 +4,10 @@ import { mountApplication, resolveTheme, resolveConfig } from '../lib/titan'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import LayoutRenderer from './LayoutRenderer'
 import TitanConfig from './../config'
-import defaultConfig from '../config.default.json'
+import defaultConfig from './../config.default.json'
+import { Provider } from 'react-redux'
+import { createStateReducer } from './../lib/redux/stateReducer'
+import createStore from './../lib/redux/configureStore'
 
 class TitanApp extends React.Component {
   constructor (props) {
@@ -12,6 +15,8 @@ class TitanApp extends React.Component {
     this.app = mountApplication(this.props.app)
     this.theme = resolveTheme(this.props.theme)
     TitanConfig.load(resolveConfig(defaultConfig, this.props.config))
+    const rootReducer = createStateReducer(this.app.reducers)
+    this.store = createStore(rootReducer)
   }
 
   renderRoute (route) {
@@ -40,11 +45,13 @@ class TitanApp extends React.Component {
 
   render () {
     return (
-      <BrowserRouter>
-        <Switch>
-          {this.renderRoutes(this.app.routes)}
-        </Switch>
-      </BrowserRouter>
+      <Provider store={this.store}>
+        <BrowserRouter>
+          <Switch>
+            {this.renderRoutes(this.app.routes)}
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     )
   }
 }

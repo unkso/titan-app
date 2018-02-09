@@ -9,7 +9,8 @@ export function mountApplication (applicationProvider) {
 
   return {
     layouts: collectLayouts(modules),
-    routes: collectRoutes(modules)
+    routes: collectRoutes(modules),
+    reducers: collectReducers(modules)
   }
 }
 
@@ -101,6 +102,33 @@ export function collectModules (modules, visitedModules = []) {
   })
 
   return visitedModules
+}
+
+/**
+ * Collects all the reducers from each module.
+ *
+ * Each reducer must have a globally unique key.
+ *
+ * @param {[{name, dependencies, routes, reducers}]} modules
+ * @returns {{}}
+ */
+export function collectReducers (modules) {
+  const reducersMap = {}
+  modules.forEach((module) => {
+    if (module.hasOwnProperty('reducers')) {
+      Object.keys(module.reducers).forEach((reducerKey) => {
+        if (reducersMap.hasOwnProperty(reducerKey)) {
+          throw new Error(`Duplicate reducer key "${reducerKey}" found in the 
+            "${module.name}" module. Try renaming "${reducerKey}" to
+            something else.`)
+        }
+
+        reducersMap[reducerKey] = module.reducers[reducerKey]
+      })
+    }
+  })
+
+  return reducersMap
 }
 
 /**

@@ -170,4 +170,27 @@ describe('Titan', () => {
       assert.deepEqual(layouts, { layout1: 'layout1', layout2: 'layout2' })
     })
   })
+
+  describe('#collectReducers', () => {
+    it('should throw an error if a duplicate reducer key is found', () => {
+      fakeModule1.reducers = { reducer1: null }
+      fakeModule2.reducers = { reducer1: null }
+
+      assert.throws(
+        () => { titan.collectReducers([fakeModule1, fakeModule2]) },
+        /Duplicate reducer key/g
+      )
+    })
+
+    it('should return a map of all the reducers', () => {
+      fakeModule1.reducers = { reducer1: null, reducer2: null }
+      fakeModule2.reducers = { reducer3: null }
+
+      const reducers = titan.collectReducers([fakeModule1, fakeModule2])
+      assert.deepEqual(
+        reducers,
+        { reducer1: null, reducer2: null, reducer3: null }
+      )
+    })
+  })
 })
