@@ -1,0 +1,14 @@
+[package]
+name = "titan"
+version = "0.1.0"
+authors = ["Eric Dattore <edattore@gmail.com>"]
+
+[lib]
+path = "src/lib.rs"
+name = "libtitan"
+
+[[bin]]
+path = "src/main.rs"
+name = "titan"
+
+[dependencies]
