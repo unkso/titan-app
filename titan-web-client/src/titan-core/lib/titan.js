@@ -81,3 +81,14 @@ export function collectModules (modules, visitedModules = []) {
 export function resolveTheme (themeProvider) {
   return Object.assign({}, defaultThemeProvider, themeProvider)
 }
+
+/**
+ * Merges two configs.
+ *
+ * @param {{}} defaultConfig
+ * @param {{}} otherConfig
+ * @returns {{otherConfig: *}}
+ */
+export function resolveConfig (defaultConfig, otherConfig) {
+  return Object.assign({}, defaultConfig, otherConfig)
+}
