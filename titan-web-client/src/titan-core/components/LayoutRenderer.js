@@ -15,8 +15,8 @@ class LayoutRenderer extends React.Component {
 }
 
 LayoutRenderer.propTypes = {
-  layout: PropTypes.node.required,
-  scene: PropTypes.node.required
+  layout: PropTypes.func.isRequired,
+  scene: PropTypes.func.isRequired
 }
 
 export default LayoutRenderer
