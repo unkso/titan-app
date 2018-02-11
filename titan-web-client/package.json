@@ -18,7 +18,7 @@
   "scripts": {
     "start": "npm run setup && react-scripts start",
     "build": "npm run setup && react-scripts build",
-    "test": "mocha --compilers babel-core/register ./src/**/*.test.js",
+    "test": "npm run setup && mocha --compilers babel-core/register ./src/**/*.test.js",
     "eject": "react-scripts eject",
     "setup": "sh ./scripts/setup.sh"
   },
