@@ -16,9 +16,9 @@
     "styled-components": "^3.1.6"
   },
   "scripts": {
-    "start": "npm run setup && react-scripts start",
-    "build": "npm run setup && react-scripts build",
-    "test": "npm run setup && mocha --compilers babel-core/register ./src/**/*.test.js",
+    "start": "yarn run setup && react-scripts start",
+    "build": "yarn run setup && react-scripts build",
+    "test": "yarn run setup && mocha --compilers babel-core/register ./src/**/*.test.js",
     "eject": "react-scripts eject",
     "setup": "sh ./scripts/setup.sh"
   },
