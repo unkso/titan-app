@@ -18,21 +18,19 @@ class TitanApp extends React.Component {
     return () => (
       <LayoutRenderer
         layout={this.app.layouts[route.layout]}
-        scene={route.scene}
+        scenes={route.scenes}
       />
     )
   }
 
   renderRoutes (routes) {
     let routeComponents = []
-    routes.forEach((route, key) => {
-      const isExact = route.exact ? route.exact : true
+    Object.keys(routes).forEach((path, key) => {
       routeComponents.push(
         <Route
           key={key}
-          path={route.path}
-          exact={isExact}
-          component={this.renderRoute(route)}
+          path={path}
+          component={this.renderRoute(routes[path])}
         />
       )
     })

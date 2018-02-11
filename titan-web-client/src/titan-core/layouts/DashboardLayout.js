@@ -4,7 +4,10 @@ import TitanLayout from './TitanLayout'
 class DashboardLayout extends TitanLayout {
   render () {
     return (
-      <h1>Dashboard Layout</h1>
+      <div>
+        <h1>Dashboard Layout</h1>
+        {this.props.children}
+      </div>
     )
   }
 }

@@ -6,5 +6,8 @@
   },
   "globals": {
     "localStorage": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017
   }
 }

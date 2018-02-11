@@ -1,10 +1,9 @@
 import LoginScene from './scenes/LoginScene'
 
-export default {
-  'auth:login': {
+export default [
+  {
     path: '/auth/login',
     layout: 'empty',
-    scene: LoginScene,
-    exact: true
+    scene: LoginScene
   }
-}
+]

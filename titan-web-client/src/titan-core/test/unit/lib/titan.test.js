@@ -1,25 +1,27 @@
 import assert from 'assert'
 import {describe, it, beforeEach} from 'mocha'
 import * as titan from '../../../lib/titan'
-import React, { Component } from 'react'
+import { buildFake } from '../../util/componentUtils'
 
 describe('Titan', () => {
   let fakeModule1
   let fakeModule2
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fakeModule1 = {
       name: 'module 1',
       layouts: {
         layout1: 'layout1'
       },
-      routes: {
-        'route:1': {
+      routes: [
+        {
           path: '/route/1',
-          layout: <Component />,
-          scene: <Component />
+          layout: 'layout1',
+          scene: await buildFake(),
+          renderPriority: 0,
+          layoutPriority: 0
         }
-      },
+      ],
       dependencies: []
     }
 
@@ -28,13 +30,15 @@ describe('Titan', () => {
       layouts: {
         layout2: 'layout2'
       },
-      routes: {
-        'route:2': {
+      routes: [
+        {
           path: '/route/2',
-          layout: <Component />,
-          scene: <Component />
+          layout: 'layout2',
+          scene: await buildFake(),
+          renderPriority: 0,
+          layoutPriority: 0
         }
-      },
+      ],
       dependencies: []
     }
   })
@@ -42,27 +46,98 @@ describe('Titan', () => {
   describe('#collectRoutes', () => {
     it('should return merged list of routes', () => {
       const routes = titan.collectRoutes([fakeModule1, fakeModule2])
-      assert.equal(routes.length, 2)
-      assert.deepEqual(
-        routes,
-        [fakeModule1.routes['route:1'], fakeModule2.routes['route:2']]
-      )
-    })
-
-    it('should not return duplicate route keys', () => {
-      // fake module 2 already has a route named "route:2"
-      fakeModule1.routes['route:2'] = {
-        path: '/route/2',
-        layout: <Component />,
-        scene: <Component />
+      const expected = {
+        '/route/1': {
+          layout: 'layout1',
+          layoutPriority: 0,
+          scenes: [
+            { scene: fakeModule1.routes[0].scene, renderPriority: 0 }
+          ]
+        },
+        '/route/2': {
+          layout: 'layout2',
+          layoutPriority: 0,
+          scenes: [
+            { scene: fakeModule2.routes[0].scene, renderPriority: 0 }
+          ]
+        }
       }
 
+      assert.equal(Object.keys(routes).length, 2)
+      assert.deepEqual(routes, expected)
+    })
+
+    it('should override layout if route has higher priority', async () => {
+      const testRoute = {
+        path: '/route/1',
+        layout: 'layout2',
+        scene: await buildFake(),
+        layoutPriority: 1
+      }
+      fakeModule2.routes.push(testRoute)
+
       const routes = titan.collectRoutes([fakeModule1, fakeModule2])
-      assert.equal(routes.length, 2)
-      assert.deepEqual(
-        routes,
-        [fakeModule1.routes['route:1'], fakeModule2.routes['route:2']]
-      )
+      const expected = {
+        '/route/1': {
+          layout: 'layout2',
+          layoutPriority: 1,
+          scenes: [
+            { scene: fakeModule1.routes[0].scene, renderPriority: 0 },
+            { scene: testRoute.scene, renderPriority: 0 }
+          ]
+        },
+        '/route/2': {
+          layout: 'layout2',
+          layoutPriority: 0,
+          scenes: [
+            { scene: fakeModule2.routes[0].scene, renderPriority: 0 }
+          ]
+        }
+      }
+
+      assert.equal(Object.keys(routes).length, 2)
+      assert.deepEqual(routes, expected)
+    })
+
+    it('should order scenes by renderPriority', async () => {
+      const testRoute = {
+        path: '/route/1',
+        layout: 'layout1',
+        scene: await buildFake(),
+        renderPriority: 1
+      }
+
+      const testRoute2 = {
+        path: '/route/1',
+        layout: 'layout1',
+        scene: await buildFake(),
+        renderPriority: 2
+      }
+
+      fakeModule2.routes.push(testRoute)
+      fakeModule2.routes.push(testRoute2)
+
+      const routes = titan.collectRoutes([fakeModule1, fakeModule2])
+      const expected = {
+        '/route/1': {
+          layout: 'layout1',
+          layoutPriority: 0,
+          scenes: [
+            { scene: testRoute2.scene, renderPriority: 2 },
+            { scene: testRoute.scene, renderPriority: 1 },
+            { scene: fakeModule1.routes[0].scene, renderPriority: 0 }
+          ]
+        },
+        '/route/2': {
+          layout: 'layout2',
+          layoutPriority: 0,
+          scenes: [
+            { scene: fakeModule2.routes[0].scene, renderPriority: 0 }
+          ]
+        }
+      }
+
+      assert.deepEqual(routes, expected)
     })
   })
 

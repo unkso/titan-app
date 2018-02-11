@@ -4,19 +4,18 @@ import PropTypes from 'prop-types'
 class LayoutRenderer extends React.Component {
   render () {
     const Layout = this.props.layout
-    const Scene = this.props.scene
+    const scenes = this.props.scenes.map((scene) => {
+      const Scene = scene.scene
+      return <Scene />
+    })
 
-    return (
-      <Layout>
-        <Scene />
-      </Layout>
-    )
+    return (<Layout>{scenes}</Layout>)
   }
 }
 
 LayoutRenderer.propTypes = {
   layout: PropTypes.func.isRequired,
-  scene: PropTypes.func.isRequired
+  scenes: PropTypes.arrayOf(PropTypes.func).isRequired
 }
 
 export default LayoutRenderer

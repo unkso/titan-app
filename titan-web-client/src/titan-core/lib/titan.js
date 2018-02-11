@@ -31,20 +31,48 @@ export function collectLayouts (modules) {
  * provider.
  *
  * @param {[{name, dependencies, routes}]} modules
- * @returns {[{route, layout, scene}]}
+ * @returns {{}}
  */
 export function collectRoutes (modules) {
-  let routes = []
-  let visitedRoutes = {}
+  let routes = {}
   modules.forEach((module) => {
     if (module.routes) {
-      Object.keys(module.routes).forEach((routeKey) => {
-        if (!visitedRoutes.hasOwnProperty(routeKey)) {
-          routes.push(module.routes[routeKey])
-          visitedRoutes[routeKey] = true
+      module.routes.forEach((route) => {
+        if (!routes.hasOwnProperty(route.path)) {
+          routes[route.path] = {
+            layout: route.layout,
+            layoutPriority: 0,
+            scenes: []
+          }
         }
+
+        // If the route has a higher layout priority, override the
+        // currently selected layout.
+        if (route.hasOwnProperty('layoutPriority') &&
+            route.layoutPriority > routes[route.path].layoutPriority) {
+          routes[route.path].layoutPriority = route.layoutPriority
+          routes[route.path].layout = route.layout
+        }
+
+        routes[route.path].scenes.push({
+          scene: route.scene,
+          renderPriority: route.renderPriority || 0
+        })
       })
     }
+  })
+
+  // Sort the route for each scene by renderPriority
+  Object.keys(routes).forEach((path) => {
+    routes[path].scenes.sort((a, b) => {
+      if (a.renderPriority < b.renderPriority) {
+        return 1
+      } else if (b.renderPriority < a.renderPriority) {
+        return -1
+      }
+
+      return 0
+    })
   })
 
   return routes
