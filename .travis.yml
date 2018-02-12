@@ -1,0 +1,16 @@
+dist: trusty
+language: rust
+rust:
+  - nightly
+cache:
+  yarn: true
+  cargo: true
+jobs:
+  include:
+  - stage: unit-tests
+    script: cd titan-web-client && yarn && yarn test
+  - stage: unit-tests
+    script: cd titan-server && cargo test
+  - stage: deploy-staging
+    script: skip
+

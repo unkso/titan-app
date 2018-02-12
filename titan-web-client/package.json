@@ -21,7 +21,7 @@
     "build": "yarn run setup && react-scripts build",
     "test": "yarn run setup && mocha --compilers babel-core/register ./src/**/*.test.js",
     "eject": "react-scripts eject",
-    "setup": "sh ./scripts/setup.sh"
+    "setup": "./scripts/setup.sh"
   },
   "devDependencies": {
     "eslint": "^4.12.1",
