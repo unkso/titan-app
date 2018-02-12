@@ -129,40 +129,79 @@ By default, the following layouts are available:
 
 ## Routes
 <a id="configuration-routes"></a>
-A list of the module's routes.
+Routes define which url paths are accessible from the application. They also determine which layout should be rendered, as well as what content should appear in the content area of the selected layout.
 
-Each key in the route object should be a unqiue identifier for a route. The naming convention for a route id is:
-
-```text
-{vendor}-{module}:{route name}
-```
-
-### Example
+You can define a route as so:
 
 ```javascript
 // titan-core/index.js
 export default {
     // ...
-    routes: {
-        'titan-core:index': {
-            path: '/',
-            exact: true,
+    routes: [
+         {
+            path: '/auth/login',
             layout: 'dashboard',
-            scene: <HomeScene />
+            scene: <HomeScene />,
+            layoutPriority: 0,
+            renderPriority: 0
         }
-    }
+    ]
 }
 ```
-| Property | Required | Default | Description                                                                                                                      |
-|----------|----------|---------|----------------------------------------------------------------------------------------------------------------------------------|
-| `path`   | yes      |         | The url path to the to the page.                                                                                                 |
-| `exact`  | no       | true    | If true, the the router will match urls with the exact path. If false, the router will match any path that begins with the path. |
-| `layout` | yes      |         | The layout to wrap around the scene.                                                                                             |
-| `scene`  | yes      |         | The scene to render.                                                                                                             |
 
-## Rendering
+| Property         | Type      | Required | Default | Description                                                                                          |
+|------------------|-----------|----------|---------|------------------------------------------------------------------------------------------------------|
+| `path`           | string    | yes      |         | The url path to the to the page.                                                                     |
+| `layout`         | string    | yes      |         | The layout to wrap around the scene.                                                                 |
+| `scene`          | Component | yes      |         | The content to render in the layout's content area.                                                  |
+| `layoutPriority` | int       | no       | 0       | If this route has the highest layout priority, then its layout will be used when rendering the page. |
+| `renderPriority` | int       | no       | 0       | Determines this scene's position in the render order of all other scenes on the page.                |
+
+
+### Building pages using multiple modules
 <a id="rendering"></a>
-The following diagram visualizes how a layout, scene, and components are rendered on a page.
+Url paths are not module specific. In other words, any module can append content to a page. For example, a notifications module might want to add a few alerts to the dashboard page. Additionally, the events module might want to show a list of upcoming activities on the same page.
+
+**events-module/index.js**
+```javascript
+export default {
+    // ...
+    routes: [
+         {
+            path: '/dashboard',
+            layout: 'dashboard',
+            scene: <UpcomingEventsScene />,
+            layoutPriority: 0,
+            renderPriority: 0
+        }
+    ]
+}
+```
+
+**notifications-module/index.js**
+```javascript
+export default {
+    // ...
+    routes: [
+         {
+            path: '/dashboard',
+            layout: 'dashboard',
+            scene: <DashboardAlertsScene />,
+            layoutPriority: 0,
+            renderPriority: 1   // Give the notifications scene a higher renderPriority so it appears before the events list.
+        }
+    ]
+}
+```
+
+
+#### Result
+Notice the notification module's scene was rendered before the events module. This is because the notification module set a higher `renderPriority` than the other module.
+
+<img src="./assets/dashboard_landing.png" />
+
+The following diagram visualizes how the layout, scenes, and components are rendered on the page.
+
 
 <img src="./assets/titan_rendering_diagram.png" />
 
