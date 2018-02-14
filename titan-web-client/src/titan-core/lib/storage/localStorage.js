@@ -9,7 +9,7 @@ export function load (storageKey) {
   try {
     const data = localStorage.getItem(storageKey)
 
-    return (data !== null) ? data : undefined
+    return (data !== null) ? JSON.parse(data) : undefined
   } catch (error) {
     return undefined
   }
@@ -27,4 +27,9 @@ export function save (storageKey, data) {
   } catch (error) {
     // Local storage is not available.
   }
+}
+
+export default {
+  save: save,
+  load: load
 }
