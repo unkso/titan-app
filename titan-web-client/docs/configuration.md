@@ -2,7 +2,7 @@
 Titan sets its default configuration inside of `titan-core/config.default.json`. You can override configuration options using your own config file.
 
 - [Single config file](#single-config)
-- [Single config file](#multiple-config)
+- [Multiple config files](#multiple-config)
 - [Accessing config from a component](#access-from-component)
 
 ## Single config file
@@ -28,12 +28,13 @@ Titan sets its default configuration inside of `titan-core/config.default.json`.
 
 ```javascript
 //...
+import { getTitanInstance } from 'titan-core'
 import config from './config/config.prod.json'
 
-ReactDOM.render(
-  <Titan app={applicationProvider} config={config} />,
-  document.getElementById('root')
-)
+const app = getTitanInstance()
+app.setConfig(config)
+
+ReactDOM.render(app.mount(), document.getElementById('root'))
 
 // ....
 ```
@@ -44,6 +45,7 @@ Titan makes no assumptions about your application's environment. If you have `co
 
 ```javascript
 //...
+import { getTitanInstance } from 'titan-core'
 import devConfig from './config/config.dev.json'
 import prodConfig from './config/config.prod.json'
 
@@ -54,10 +56,10 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   config = prodConfig
 }
 
-ReactDOM.render(
-  <Titan config={config} />,
-  document.getElementById('root')
-)
+const app = getTitanInstance()
+app.setConfig(config)
+
+ReactDOM.render(app.mount(), document.getElementById('root'))
 
 // ....
 ```

@@ -1,28 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { mountApplication, resolveTheme, resolveConfig } from '../lib/titan'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import LayoutRenderer from './LayoutRenderer'
-import TitanConfig from './../config'
-import defaultConfig from './../config.default.json'
 import { Provider } from 'react-redux'
-import { createStateReducer } from './../lib/redux/stateReducer'
-import createStore from './../lib/redux/configureStore'
 
 class TitanApp extends React.Component {
-  constructor (props) {
-    super(props)
-    this.app = mountApplication(this.props.app)
-    this.theme = resolveTheme(this.props.theme)
-    TitanConfig.load(resolveConfig(defaultConfig, this.props.config))
-    const rootReducer = createStateReducer(this.app.reducers)
-    this.store = createStore(rootReducer)
-  }
-
   renderRoute (route) {
     return () => (
       <LayoutRenderer
-        layout={this.app.layouts[route.layout]}
+        layout={this.props.layouts[route.layout]}
         scenes={route.scenes}
       />
     )
@@ -45,10 +31,10 @@ class TitanApp extends React.Component {
 
   render () {
     return (
-      <Provider store={this.store}>
+      <Provider store={this.props.store}>
         <BrowserRouter>
           <Switch>
-            {this.renderRoutes(this.app.routes)}
+            {this.renderRoutes(this.props.routes)}
           </Switch>
         </BrowserRouter>
       </Provider>
@@ -57,15 +43,9 @@ class TitanApp extends React.Component {
 }
 
 TitanApp.propTypes = {
-  app: PropTypes.object,
-  theme: PropTypes.object,
-  config: PropTypes.object
-}
-
-TitanApp.defaultProps = {
-  app: {},
-  theme: {},
-  config: {}
+  store: PropTypes.object.isRequired,
+  routes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  layouts: PropTypes.object.isRequired
 }
 
 export default TitanApp

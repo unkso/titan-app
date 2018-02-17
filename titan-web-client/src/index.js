@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import registerServiceWorker from './registerServiceWorker'
-import Titan from 'titan-core'
-import applicationProvider from './applicationProvider'
+import { getTitanInstance } from 'titan-core'
 import devConfig from './config/config.dev'
 import prodConfig from './config/config.prod'
 
@@ -13,8 +12,8 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   config = prodConfig
 }
 
-ReactDOM.render(
-  <Titan app={applicationProvider} config={config} />,
-  document.getElementById('root')
-)
+const app = getTitanInstance()
+app.setConfig(config)
+
+ReactDOM.render(app.mount(), document.getElementById('root'))
 registerServiceWorker()
