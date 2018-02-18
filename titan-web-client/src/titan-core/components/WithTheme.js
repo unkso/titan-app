@@ -1,7 +1,7 @@
 import React from 'react'
 import { getTitanInstance } from '../index'
 
-export default function WithConfig (ComposedComponent) {
+export default function WithTheme (ComposedComponent) {
   return class extends React.Component {
     constructor (props) {
       super(props)
@@ -9,7 +9,7 @@ export default function WithConfig (ComposedComponent) {
     }
 
     render () {
-      return <ComposedComponent titanConfig={this.app.getConfig()} />
+      return <ComposedComponent titanTheme={this.app.getTheme()} />
     }
   }
 }
