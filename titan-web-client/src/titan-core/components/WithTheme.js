@@ -9,7 +9,12 @@ export default function WithTheme (ComposedComponent) {
     }
 
     render () {
-      return <ComposedComponent titanTheme={this.app.getTheme()} />
+      return (
+        <ComposedComponent
+          {...this.props}
+          titanTheme={this.app.getTheme()}
+        />
+      )
     }
   }
 }

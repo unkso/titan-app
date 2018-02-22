@@ -5,6 +5,7 @@ import { createStateReducer } from './lib/redux/stateReducer'
 import { createStore } from 'redux'
 import TitanConfig from './config'
 import defaultConfig from './config.default.json'
+import defaultThemeProvider from './defaultThemeProvider'
 
 class Titan {
   constructor () {
@@ -14,6 +15,9 @@ class Titan {
     this._theme = {}
     this._layouts = {}
     this._routes = {}
+
+    this._config.load(defaultConfig)
+    this._theme = defaultThemeProvider
   }
 
   setConfig (config = {}) {

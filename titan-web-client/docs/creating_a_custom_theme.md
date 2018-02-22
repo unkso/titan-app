@@ -55,7 +55,7 @@ You can easily access the theme through the `WithTheme` component, which injects
 
 ```jsx harmony
 import React from 'react'
-import WithConfig from 'titan-core/components/WithTheme'
+import WithTheme from 'titan-core/components/WithTheme'
 
 class MyComponent extends React.Component {
     render () {
@@ -69,7 +69,7 @@ class MyComponent extends React.Component {
     }
 }
 
-export default WithConfig(MyComponent)
+export default WithTheme(MyComponent)
 ```
 
 ## Using the theme from a helper

@@ -9,7 +9,12 @@ export default function WithConfig (ComposedComponent) {
     }
 
     render () {
-      return <ComposedComponent titanConfig={this.app.getConfig()} />
+      return (
+        <ComposedComponent
+          {...this.props}
+          titanConfig={this.app.getConfig()}
+        />
+      )
     }
   }
 }
