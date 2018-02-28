@@ -1,6 +1,11 @@
 export default {
   palette: {
+    neutral: '#ddd',
+    neutralText: '#212121',
     primary: '#ce5300',
+    primaryText: '#fff',
+    secondary: '#383f48',
+    secondaryText: '#fff',
     success: '#43a047',
     danger: '#d32f2f',
     textPrimary: '#212121',

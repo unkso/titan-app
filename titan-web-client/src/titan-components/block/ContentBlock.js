@@ -6,13 +6,13 @@ export const ContentBlock = styled.div`
 `
 
 class Block extends React.Component {
-    render () {
-      return (
-        <ContentBlock>
-          {this.props.children}
-        </ContentBlock>
-      )
-    }
+  render () {
+    return (
+      <ContentBlock>
+        {this.props.children}
+      </ContentBlock>
+    )
+  }
 }
 
 export default Block
