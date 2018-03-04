@@ -23,6 +23,7 @@ export const SidebarWrapper = styled.div`
 
 export const ContentWrapper = styled.div`
   background-color: ${props => props.backgroundColor};
+  overflow: auto;
   display: flex;
   flex-direction: column;
   flex: 1;
