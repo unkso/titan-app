@@ -1,16 +1,19 @@
+sudo: required
+services:
+  - docker
 dist: trusty
 language: rust
 rust:
   - nightly
 cache:
-  yarn: true
-  cargo: true
+  - docker
+before_install:
+  - docker pull edattore/titan-image
 jobs:
   include:
   - stage: unit-tests
-    script: cd titan-web-client && yarn && yarn test
+    script: docker run -d edattore/titan-image /bin/bash -c "cd titan-web-client && yarn && yarn test"
   - stage: unit-tests
-    script: cd titan-server && cargo test
+    script: docker run -d edattore/titan-image /bin/bash -c "cd titan-server && cargo test"
   - stage: deploy-staging
     script: skip
-
