@@ -12,8 +12,8 @@ before_install:
 jobs:
   include:
   - stage: unit-tests
-    script: docker run -d edattore/titan-image /bin/bash -c "cd titan-web-client && yarn && yarn test"
+    script: docker run -v $(pwd):/app edattore/titan-image /bin/bash -c "cd titan-web-client && yarn && yarn test"
   - stage: unit-tests
-    script: docker run -d edattore/titan-image /bin/bash -c "cd titan-server && cargo test"
+    script: docker run -v $(pwd):/app edattore/titan-image /bin/bash -c "cd titan-server && cargo test"
   - stage: deploy-staging
     script: skip
