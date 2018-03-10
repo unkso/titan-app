@@ -2,7 +2,13 @@ FROM ubuntu:xenial
 
 # Install build deps
 RUN apt-get -y update \
-    && apt-get -y install curl \
+    && apt-get -y install curl build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install SSH
+
+RUN apt-get update \
+    && apt-get -y install ssh \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node & Yarn
@@ -13,7 +19,7 @@ RUN curl -sL https://deb.nodesource.com/setup_9.x | bash - \
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
         && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
         && apt-get update \
-        && apt-get install -y --no-install-recommends yarn \
+        && apt-get install -y yarn \
         && rm -rf /var/lib/apt/lists/*
 
 ENV PATH="${PATH}:`yarn global bin`"

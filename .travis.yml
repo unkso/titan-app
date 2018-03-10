@@ -4,16 +4,18 @@ services:
 dist: trusty
 language: rust
 rust:
-  - nightly
-cache:
-  - docker
+- nightly
 before_install:
+  - openssl aes-256-cbc -K $encrypted_2434cc820333_key -iv $encrypted_2434cc820333_iv -in .travis/titan_deploy_key.enc -out .travis/titan_deploy_key -d
   - docker pull edattore/titan-image
 jobs:
   include:
   - stage: unit-tests
-    script: docker run -d edattore/titan-image /bin/bash -c "cd titan-web-client && yarn && yarn test"
+    script: docker run -v $(pwd):/app edattore/titan-image /bin/bash -c "cd titan-web-client && yarn && yarn test"
   - stage: unit-tests
-    script: docker run -d edattore/titan-image /bin/bash -c "cd titan-server && cargo test"
+    script: docker run -v $(pwd):/app edattore/titan-image /bin/bash -c "cd titan-server && cargo test"
   - stage: deploy-staging
-    script: skip
+    script: docker run -v $(pwd):/app -e "SCP_PATH=${SCP_PATH}" edattore/titan-image /bin/bash -c "scripts/deploy-to-staging.sh"
+env:
+  global:
+    secure: qrsXyepjrw04jvdEHyHm5ckhsIdudLd1h7eFSNLhToGBpPZ9NPCMTvoakm/sgexp+H5xmpZjsI337RAt3kWsUR6MD2iJJxCHZoafvpf6G+3G2qzfodSS85xCCHJOJGnQ8JVQo/o9se2lmR0vj7fPSpYEHwadLAV0cJ9yvUoBNYm7eFtz0Z6LF4Z2PyGyIRgW7akxenie9IVqEujB3pqM+Wa+hBESpsZqWuU5KFtoaUUrYiZppQPca9qBV1U0b6m9owDcHT7ZfPQKuodsTvx/HZqInEh3qjaJfv2CMHIg0DxHVCw+XWuEmv14GA1IwOOWVDRo68ocNuUjHztogOUj/G5t7zEK6mIYv9mXouXMFv7tAbhJXHAggdOcPdNX8HPA3KdL1DbMVqPvX9pr2fTk+uSDff3Kdz/BnKkXuRwtdlEd1PKbtQIY7dK7AvzxcAxbrxmcHeHIiZfQAe1cSXLyI+okluwPbVZ7llrT2F4f6yCOU2YV7OSJ652TLQY0PNByZs6PH9T8NbxQVu5N0stIWdRGIse098jetutLa1nWdszzhQ2EUE7Pj0/FVmU22Jm6r3ThyYdhJQpMpVKKzt3QHaFrMFD9hLICK/v+EHuCS095lXUvMytjPanb+2OEnij+9LoZXTlTBbCEWmBYdVYMSucDNGnfN+ioObbF76KRX34=
