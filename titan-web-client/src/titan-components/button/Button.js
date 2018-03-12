@@ -9,6 +9,7 @@ export const ButtonWrapper = styled.div`
   width: ${props => props.fullWidth ? '100%' : 'auto'};
   display: ${props => props.fullWidth ? 'block' : 'inline-block'};
   margin: 3px;
+  position: relative;
   
   ${BaseButtonWrapper} {
     display: block;
