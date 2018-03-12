@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 export const SidebarHeadingWrapper = styled.div`
   color: #fff;
-  background-color: #191919;
-  padding: 15px;
+  border-top: 2px solid #191919;
+  padding: 10px 15px;
 `
 
 class SidebarHeading extends React.Component {

@@ -31,6 +31,7 @@ export const ProfileBadgeTitle = styled.div`
 `
 
 export const ProfileBadge = styled.div`
+  padding: 0 10px;
   display: flex;
   flex-direction: row;
 `

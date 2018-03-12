@@ -5,8 +5,12 @@ import { Link } from 'react-router-dom'
 import WithTheme from '../../../titan-core/components/WithTheme'
 
 export const SidebarMenuItemIcon = styled.div`
+  width: 24px;
+  text-align: center;
   color: ${props => props.color};
   display: flex;
+  position: relative;
+  top: 2px;
 `
 
 export const SidebarMenuItemLabel = styled.div`
@@ -17,13 +21,11 @@ export const SidebarMenuItemLabel = styled.div`
 `
 
 export const SidebarMenuItemLink = styled(Link)`
-  padding: 15px;
+  padding: 12px 15px 12px 25px;
   text-decoration: none;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
   display: flex;
   flex-direction: row;
+  border-left: 2px solid ${props => props.borderColor};
   
   &:hover {
     background-color: ${props => props.hoverBackground };
@@ -32,18 +34,21 @@ export const SidebarMenuItemLink = styled(Link)`
 
 class SidebarMenuItem extends React.Component {
   render () {
-    let iconColor, textColor
+    let iconColor, textColor, borderColor
     if (this.props.isActive) {
       iconColor = this.props.titanTheme.palette.primary
       textColor = this.props.titanTheme.palette.inverseTextSecondary
+      borderColor = this.props.titanTheme.palette.primary
     } else {
       iconColor = this.props.titanTheme.palette.inverseTextPrimary
       textColor = this.props.titanTheme.palette.inverseTextPrimary
+      borderColor = 'transparent'
     }
 
     return (
       <SidebarMenuItemLink
         to={this.props.url}
+        borderColor={borderColor}
         hoverBackground={this.props.titanTheme.palette.backgroundInverseSecondary}
       >
         <SidebarMenuItemIcon color={iconColor}>
