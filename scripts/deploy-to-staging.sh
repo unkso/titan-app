@@ -12,7 +12,7 @@ pushd titan-web-client
     yarn install && yarn build
     # Push code to staging env
     pushd build
-        scp -o StrictHostKeyChecking=no -r * ${SCP_PATH}
+        scp -o StrictHostKeyChecking=no -r . ${SCP_PATH}
     popd
 popd
 
