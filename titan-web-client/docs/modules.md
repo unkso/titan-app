@@ -94,17 +94,19 @@ Every module will contain an `index.js` file, which defines important informatio
 A typical module configuration will look something like this...
 
 ```javascript
+import CustomLayout from './layouts/CustomLayout'
+import HomeScene from './scenes/HomeScene'
 export default {
     name: 'titan-core',
     layouts: {
-        dashboard: <CustomLayout />
+        dashboard: CustomLayout
     },
     routes: {
         'titan-core:index': {
             path: '/',
             exact: true,
             layout: 'dashboard',
-            scene: <HomeScene />
+            scene: HomeScene
         }
     },
     reducers: []
@@ -135,13 +137,14 @@ You can define a route as so:
 
 ```javascript
 // titan-core/index.js
+import HomeScene from './scenes/HomeScene'
 export default {
     // ...
     routes: [
          {
             path: '/auth/login',
             layout: 'dashboard',
-            scene: <HomeScene />,
+            scene: HomeScene,
             layoutPriority: 0,
             renderPriority: 0
         }
@@ -164,13 +167,14 @@ Url paths are not module specific. In other words, any module can append content
 
 **events-module/index.js**
 ```javascript
+import UpcomingEventsScene from './scenes/UpcomingEventsScene'
 export default {
     // ...
     routes: [
          {
             path: '/dashboard',
             layout: 'dashboard',
-            scene: <UpcomingEventsScene />,
+            scene: UpcomingEventsScene,
             layoutPriority: 0,
             renderPriority: 0
         }
@@ -180,13 +184,14 @@ export default {
 
 **notifications-module/index.js**
 ```javascript
+import DashboardAlertsScene from './scenes/DashboardAlertsScene'
 export default {
     // ...
     routes: [
          {
             path: '/dashboard',
             layout: 'dashboard',
-            scene: <DashboardAlertsScene />,
+            scene: DashboardAlertsScene,
             layoutPriority: 0,
             renderPriority: 1   // Give the notifications scene a higher renderPriority so it appears before the events list.
         }
