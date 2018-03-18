@@ -1,16 +1,16 @@
 import defaultThemeProvider from '../defaultThemeProvider'
-import defaultApplicationProvider from '../defaultApplicationProvider'
+import TitanCoreModule from '../module'
 
-export function mountApplication (applicationProvider) {
-  const modules = collectModules([
-    applicationProvider,
-    defaultApplicationProvider
+export function mountApplication (modules) {
+  const uniqueModules = collectModules([
+      ...modules,
+    TitanCoreModule
   ])
 
   return {
-    layouts: collectLayouts(modules),
-    routes: collectRoutes(modules),
-    reducers: collectReducers(modules)
+    layouts: collectLayouts(uniqueModules),
+    routes: collectRoutes(uniqueModules),
+    reducers: collectReducers(uniqueModules)
   }
 }
 
