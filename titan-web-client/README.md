@@ -41,7 +41,7 @@ Use this extension to view the contents of the app's redux data store.
 
 #### 1.Clone the repository
 
-    git clone git@github.com:unkso/titan-web-client.git
+    git clone git@github.com:unkso/titan-app.git
 
 #### 2.Install dependencies
 
