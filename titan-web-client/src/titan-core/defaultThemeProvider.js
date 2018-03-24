@@ -2,6 +2,7 @@ export default {
   palette: {
     neutral: '#ddd',
     neutralText: '#212121',
+    neutralBackground: '#fff',
     primary: '#ce5300',
     primaryText: '#fff',
     secondary: '#383f48',

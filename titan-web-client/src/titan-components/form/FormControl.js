@@ -16,6 +16,7 @@ export const FormControlInput = styled(FormControlFactory)`
   padding: 8px;
   border: none;
   outline: none;
+  cursor: ${props => props.disabled ? 'default' : 'pointer'};
   background-color: transparent;
   display: flex;
   flex: 1;
@@ -45,7 +46,7 @@ export const FormControlWrapper = styled.div`
   flex-direction: row;
   
   ${FormControlSideLabel} {
-    color: ${props => color(props.textColor).fade(.8).toString()}
+    color: ${props => color(props.textColor).fade(0.8).toString()}
   }
   
   ${FormControlSideLabel}:first-child {
@@ -65,16 +66,21 @@ class FormControl extends React.Component {
     }
   }
 
-  onInputFocus () {
-    this.setState({ isFocused: true }, () => {
-      this.props.onFocusChange(this.state.isFocused)
-    })
+  onChange (e) {
+    this.onBlur()
+    this.props.onChange(e)
   }
 
-  onInputFocusOut () {
-    this.setState({ isFocused: false }, () => {
-      this.props.onFocusChange(this.state.isFocused)
-    })
+  onFocus () {
+    this.props.onFocus()
+    this.props.onFocusChange(this.state.isFocused)
+    this.setState({ isFocused: true })
+  }
+
+  onBlur () {
+    this.props.onBlur()
+    this.props.onFocusChange(this.state.isFocused)
+    this.setState({ isFocused: false })
   }
 
   render () {
@@ -91,7 +97,7 @@ class FormControl extends React.Component {
     if (labelLeft) {
       children.push(
         <FormControlSideLabel
-          hasAction={_.isFunction(onLabelLeftClick)}
+          hasAction={_.isFunction(onLabelLeftClick) && !this.props.disabled}
           onClick={onLabelLeftClick}
         >
           {labelLeft}
@@ -102,8 +108,9 @@ class FormControl extends React.Component {
     children.push(
       <FormControlInput
         {...rest}
-        onFocus={this.onInputFocus.bind(this)}
-        onBlur={this.onInputFocusOut.bind(this)}
+        onFocus={this.onFocus.bind(this)}
+        onBlur={this.onBlur.bind(this)}
+        onChange={this.onChange.bind(this)}
       >
         {this.props.children}
       </FormControlInput>
@@ -129,10 +136,13 @@ class FormControl extends React.Component {
 
     return (
       <FormControlWrapper
+        disabled={this.props.disabled}
+        onClick={this.props.onClick}
         fullWidth={fullWidth}
         textColor={this.props.titanTheme.palette.textPrimary}
         borderColor={borderColor}
-        focusBorderColor={this.props.titanTheme.palette.primary}>
+        focusBorderColor={this.props.titanTheme.palette.primary}
+      >
         {children}
       </FormControlWrapper>
     )
@@ -145,17 +155,28 @@ FormControl.propTypes = {
   placeholder: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func,
+  onClick: PropTypes.func,
   onFocusChange: PropTypes.func,
   labelLeft: PropTypes.any,
   labelRight: PropTypes.func,
   onLabelLeftClick: PropTypes.func,
   onLabelRightClick: PropTypes.func,
-  fullWidth: PropTypes.bool
+  fullWidth: PropTypes.bool,
+  disabled: PropTypes.bool
 }
 
 FormControl.defaultProps = {
+  onChange: () => {},
+  onBlur: () => {},
+  onFocus: () => {},
+  onClick: () => {},
   onFocusChange: () => {},
-  fullWidth: false
+  onLabelLeftClick: () => {},
+  onLabelRightClick: () => {},
+  fullWidth: false,
+  disabled: false
 }
 
 export default WithTheme(FormControl)
