@@ -1,5 +1,6 @@
 # IDE
 .idea/
+titan-app.iml
 
 # dependencies
 /**/node_modules

@@ -5,10 +5,19 @@ authors = ["Eric Dattore <edattore@gmail.com>"]
 
 [lib]
 path = "src/lib.rs"
-name = "libtitan"
+name = "titan"
 
 [[bin]]
 path = "src/main.rs"
 name = "titan"
 
 [dependencies]
+rocket = "^0.3.6"
+rocket_codegen = "^0.3.6"
+serde = "^1.0.35"
+serde_derive = "^1.0.35"
+
+[dependencies.rocket_contrib]
+version = "*"
+default-features = false
+features = ["json"]
