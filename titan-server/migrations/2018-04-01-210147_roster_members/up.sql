@@ -1,0 +1,6 @@
+CREATE TABLE roster_members (
+  id INT(11) PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(20) NOT NULL,
+  email VARCHAR(20) NOT NULL,
+  password VARCHAR(64) NOT NULL
+)

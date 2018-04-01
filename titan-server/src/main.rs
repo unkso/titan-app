@@ -1,13 +1,19 @@
 #![feature(plugin)]
 #![plugin(rocket_codegen)]
-
 extern crate titan;
 extern crate rocket;
+extern crate r2d2;
+extern crate r2d2_diesel;
 
 use titan::modules::roster;
+use titan::database;
 
 fn main() {
-    rocket::ignite().mount("/", routes![
-        roster::controller::get_clan_roster
-    ]).launch();
+    rocket::ignite()
+        .manage(database::init_pool())
+        .mount("/", routes![
+            roster::controller::get_roster,
+            roster::controller::create_member
+        ])
+        .launch();
 }

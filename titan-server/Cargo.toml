@@ -16,8 +16,16 @@ rocket = "^0.3.6"
 rocket_codegen = "^0.3.6"
 serde = "^1.0.35"
 serde_derive = "^1.0.35"
+r2d2 = "^0.8.2"
+diesel = { version = "^1.1.1", features = ["postgres"] }
+r2d2-diesel = "^1.0"
+dotenv = "^0.11.0"
+dotenv_codegen = "^0.11.0"
 
 [dependencies.rocket_contrib]
 version = "*"
 default-features = false
 features = ["json"]
+
+[target.x86_64-pc-windows-msvc.gnu]
+rustc-link-search = ["C:\\Program Files\\PostgreSQL\\10\\lib"]
