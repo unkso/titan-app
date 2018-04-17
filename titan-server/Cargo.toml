@@ -17,7 +17,7 @@ rocket_codegen = "^0.3.6"
 serde = "^1.0.35"
 serde_derive = "^1.0.35"
 r2d2 = "^0.8.2"
-diesel = { version = "^1.1.1", features = ["postgres"] }
+diesel = { version = "^1.1.1", features = ["mysql"] }
 r2d2-diesel = "^1.0"
 dotenv = "^0.11.0"
 dotenv_codegen = "^0.11.0"

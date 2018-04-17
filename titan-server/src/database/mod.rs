@@ -1,4 +1,4 @@
-use diesel::pg::PgConnection;
+use diesel::mysql::MysqlConnection;
 use r2d2;
 use r2d2_diesel::ConnectionManager;
 use std::ops::Deref;
@@ -6,18 +6,21 @@ use rocket::http::Status;
 use rocket::request::{self, FromRequest};
 use rocket::{Request, State, Outcome};
 
+pub mod schema;
+pub mod models;
+
 // An alias to the type for a pool of Diesel SQLite connections.
-type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
+type Pool = r2d2::Pool<ConnectionManager<MysqlConnection>>;
 
 /// Initializes a database pool.
 pub fn init_pool() -> Pool {
-    let manager = ConnectionManager::<PgConnection>::new( dotenv!("DATABASE_URL"));
+    let manager = ConnectionManager::<MysqlConnection>::new( dotenv!("DATABASE_URL"));
     r2d2::Pool::new(manager).expect("db pool")
 }
 
 // Connection request guard type: a wrapper around an r2d2 pooled connection.
 pub struct DbConn(
-    pub r2d2::PooledConnection<ConnectionManager<PgConnection>>
+    pub r2d2::PooledConnection<ConnectionManager<MysqlConnection>>
 );
 
 /// Attempts to retrieve a single connection from the managed database pool. If
@@ -36,7 +39,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for DbConn {
 }
 
 impl Deref for DbConn {
-    type Target = PgConnection;
+    type Target = MysqlConnection;
 
     fn deref(&self) -> &Self::Target {
         &self.0

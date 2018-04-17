@@ -99,7 +99,7 @@ Installs diesel CLI with only postgres support enabled. You can execute this com
 > Assumes postgres is already installed.
 
 ```
-cargo install diesel_cli --no-default-features --features postgres
+cargo install diesel_cli --no-default-features --features mysql
 ```
 
 ## Installation

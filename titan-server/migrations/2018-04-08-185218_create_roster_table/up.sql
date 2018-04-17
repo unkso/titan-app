@@ -1,4 +1,4 @@
-CREATE TABLE roster_members (
+CREATE TABLE roster_member (
   id INT(11) PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(20) NOT NULL,
   email VARCHAR(20) NOT NULL,
