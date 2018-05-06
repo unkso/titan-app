@@ -4,6 +4,8 @@ extern crate titan;
 extern crate rocket;
 extern crate r2d2;
 extern crate r2d2_diesel;
+extern crate serde;
+extern crate serde_json;
 
 use titan::modules::roster;
 use titan::database;

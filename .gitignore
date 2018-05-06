@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Rust target dir
 /**/target
+
+# Application
+.env

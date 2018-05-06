@@ -53,7 +53,7 @@ Install `homebrew` if it isn't already installed.
 
 Then, install postgres...
 ```
-brew install postgresql
+brew install mysql
 ```
 
 Configure postgres to run every time your machine boots up...
@@ -93,13 +93,35 @@ psql -U unkso_titan
 postgres# CREATE DATABASE unkso-titan
 ```
 
-#### Install and configure Diesel CLI
-Installs diesel CLI with only postgres support enabled. You can execute this command from any directory.
+#### Install MySQL
 
-> Assumes postgres is already installed.
+## Linux
+
+1. Install mysql server and client
+```
+sudo apt-get update
+sudo apt-get install mysql-server libmysqlclient-dev
+```
+
+2. Configure user
+
+```
+mysql -u root -p
+```
+
+#### Install and configure Diesel CLI
+Install diesel CLI with only mysql support enabled. You can execute this command from any directory.
+
+> Assumes mysql is already installed.
 
 ```
 cargo install diesel_cli --no-default-features --features mysql
+```
+
+From the `/titan-server` directory, execute
+
+```
+diesel setup
 ```
 
 ## Installation

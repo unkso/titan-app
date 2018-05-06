@@ -1,9 +1,10 @@
-use rocket_contrib::Json;
+use rocket_contrib::{Json, Value};
 use database::DbConn;
-// use diesel;
-// use diesel::prelude::*;
+use diesel;
+use diesel::prelude::*;
 use database::models::{RosterMember, NewRosterMember};
-// use database::schema::roster_member;
+use database::schema::roster_member;
+use serde_json;
 
 #[get("/roster")]
 pub fn get_roster() -> Json {
@@ -29,9 +30,21 @@ pub fn get_roster() -> Json {
     ]))
 }
 
-#[post("/roster/member", data="<roster_member2>")]
-pub fn create_member(conn: DbConn, roster_member2: Json<NewRosterMember>) -> Json<NewRosterMember> {
-    // use database::schema::roster_member;
-    // diesel::insert_into(RosterMember::table).values(roster_member);
-    roster_member2
+#[post("/roster/member", data="<member>")]
+pub fn create_member(conn: DbConn, member: Json<NewRosterMember>) -> Json<NewRosterMember> {
+    let m = NewRosterMember {
+        ..member.into_inner()
+    };
+
+    // let r: NewRosterMember
+    diesel::insert_into(roster_member::table)
+        .values(m)
+        .execute(&*conn)
+        .expect("Error creating roster member.");
+
+    Json(NewRosterMember {
+        username: "test".to_string(),
+        password: "test".to_string(),
+        email: "test".to_string()
+    })
 }
