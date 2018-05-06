@@ -22,13 +22,9 @@ pub fn create_member(conn: DbConn, member: Json<NewRosterMember>) -> Json<NewRos
     };
 
     diesel::insert_into(roster_member::table)
-        .values(m)
+        .values(&m)
         .execute(&*conn)
         .expect("Error creating roster member.");
 
-    Json(NewRosterMember {
-        username: "test".to_string(),
-        password: "test".to_string(),
-        email: "test".to_string()
-    })
+    Json(m)
 }
