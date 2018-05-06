@@ -1,0 +1,2 @@
+[development]
+database_url = "postgres://unkso_titan:development@localhost/unkso-titan"

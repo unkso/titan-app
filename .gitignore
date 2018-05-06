@@ -1,5 +1,6 @@
 # IDE
 .idea/
+titan-app.iml
 
 # dependencies
 /**/node_modules
@@ -23,3 +24,6 @@ yarn-error.log*
 
 # Rust target dir
 /**/target
+
+# Application
+.env
