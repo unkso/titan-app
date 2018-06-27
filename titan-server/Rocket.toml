@@ -1,0 +1,9 @@
+[[global.databases]]
+name = "unkso_main_forums"
+url = "mysql://root@localhost/unkso_main_forums"
+pool_size = 10
+
+[[global.databases]]
+name = "titan_primary"
+url = "mysql://root@localhost/titan_primary"
+pool_size = 10
