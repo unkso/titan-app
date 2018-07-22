@@ -14,23 +14,18 @@ stages:
 - name: Build Docker Image
   if: branch = master AND type = cron
 before_install:
-- openssl aes-256-cbc -K $encrypted_2434cc820333_key -iv $encrypted_2434cc820333_iv
-  -in .travis/titan_deploy_key.enc -out .travis/titan_deploy_key -d
 - docker pull unkso/titan-image
 jobs:
   include:
   - stage: Tests
-    script: docker run -v $(pwd):/app unkso/titan-image /bin/bash -c "cd titan-web-client && yarn && yarn test"
+    script: docker run -v $(pwd):/app unkso/titan-image /bin/bash -c "cd titan-web-client
+      && yarn && yarn test"
   - stage: Tests
-    script: docker run -v $(pwd):/app unkso/titan-image /bin/bash -c "cd titan-server && cargo test"
-  - stage: Deploy Staging
-    script: docker run -v $(pwd):/app -e "SCP_PATH=${SCP_PATH}" unkso/titan-image /bin/bash -c "scripts/deploy-to-staging.sh"
-  - stage: Deploy Production
-    script: echo "noop"
+    script: docker run -v $(pwd):/app unkso/titan-image /bin/bash -c "cd titan-server
+      && cargo test"
   - stage: Build Docker Image
     script: scripts/build-and-push-docker-image.sh
 env:
   global:
-  - secure: ZPt9Gk5eVwA85anjoE9Tx7wQ8W453I87GRNaMLLdK+n4qWLLIzsWtKKAcJXeyC5oyUoV/stbvM/VprIvem4iopcDB6E/CHWNaw3mw+hAeRtiGIgSgC88Kxe1F30ju6Ae3jtR8LcQnXpLyqbZpKTj/8C9h9O1MSx+po6eLotP+Q2PrW0fx0BFsW4PuRJQ0bY2uiR6QtAfxswKKq8X42s5s23ug4xk1ZcLaKs5t7RY0sNu2qqKuH8IFvDZ44wbpFLiz0fTYf5Qx3O5x5W5WUBg45eilMtx0CL8xgDlSAZ5DpVaLCrAyO32EaoqDFykZnHfNuL+9owOiIRZX/61pCpgIWkuuC076jNQQGCnUPqw+LERwp7S+QYNLIp/STSUf3POaZ6uMK1gt6xeR6Xu2XxPiGucW1G3/LpqKB3tqBAMPKwf2AG5rG3DdSiSQ7pEbDHv75OARTF+x9B8gbxxcplkZktLZGwZKQfegrNwmKOh1wmCaZcF//BIxlEmwtJAvJ1bstdMXISb9tvtE/WcsFpOz3kX96dHyYeYYqYKaNPBuwm3pDncPV/xTKhnlKdVouG7wSgwaOmcSPtAAEi7NIiyVX/YnCdBqdsfW5DoErRjXLG4n9klyVI1O1mWGWw3AkC/zmceXvjzg8mRHrqsRaKrdeccnqPaA5d2yTnhK+znQHs=
-  - secure: JHRFs0gJDF/39Mrxxqv5TjcgoqtE2Lqpn2Q9eVMojdAm/vOS6qYvOletDUQnpyrgsJP0NTnQKTp0Gn+Yx3A0La6DZx8NVqBKNAHIfARO4deCCKrZiBiBxLbCDNqFyAfIz9AQPrVQ6+FUP62YwBcI2sN533fgSO1cDqIIrdk8oD+TWuOlHKq24hjQ9BP/kdkgp9nYABjLsrS9R//at5jeCbfL19NjiFG5IgSKC+EIgDPakP9zYItZoy2Dcl9p5m5NO3XZdp6YTC1mJRfeTa7PusgtMOm1lwSLtxY/lrUZ5nnO4QKt4epbOCSEovQcGWl6xf2OY5aqyDxDptJukmxa2HwHjPprkCLj0nSQgAtPcEZv2+WkBBpmvAAiprmi/EV1viqfurQ5mRrqH1shRci3UjuHpG826HjEGuBy35rvHAj/ONJO0lBesB8FUUVs7vOPtcKG1yiahzI+ZKJ2b4vojhs+rREPIhD0D7Um9z94N6EpVOqgdKVuiJx1CJErqGYnNoEwTVjtMgvJNCekSmnhtiAuj1WWDHdOWtU6ZKrfPASxg3AXK2QB3OC9MUVyWCB4PJ8ihPhkYWhK8kaQmfWdqkvwk1KVb9eqWJdHbwRdpFXoLveEsNhb09SXsbkK2jBMhfIAjD25fAhn3Pt0UzPNtIUXbXsz+O/Sut4TzB9u6fI=
-  - secure: H6TPI+7OFeknKtOSvfroxvu6AwXgJ9MndgURU1Ck2nRJUDGHo7of49Locs/wCRNVazKOUscaya2L3RhIMLr2E/5ngxnNEEMFWOUmWkev1/JMf0KYwixYxMvaAZ3G+RlT8oIcsqY3X53zH9cwAILmh9UcPDDPKmWR96hqBryUTt9DaNcUIKQVpJQksGqUkMN1sGrGPAf3QKSUo4wPQ1OdC7azyizjNUgSnNTv6v80SvWmcbK+dE0AaUVjxzK3inI5KjbdgYYLho8hoVHANgeJ2Dta/N+bCEZQBbuqkSWbsOCxoKdjBYAoBKqTjsi/bCVlLB4UVr5ZDsAFaQRUNNTYVVboC68NKLjrVRzif7NVi4jx1+ShOUxoYeXUjLzft+dWNTUsryKpQyPnyRD4KpRwce46LynKFbGMIr8tlsTiUXyKXe8WAarPJ6aX0FQd04PP2ho7qV/HpU65gU95uwhQVIWXD7lRqaUqnveb+gQHclMdhU2Lnb6hbIkStyxwx4mOq+V4WiX1FExQmzEDKgT1gIXxfwdo8u3mhcVkA+6u2GW+rXE4tceWJLbf34AXjXX2EcvX4E4KxRVwWI1ApkEYRHwjr1lVF6ywNnGfO/Zgy+xzH1lcachHNrXbVIsrEZ42YolM9Al6DvJHpZ8U8eQwQqMSakE4aTJi0YSuHSnXu1c=
+  - secure: JNy2ccgjDBwl+2oo/QTVCziDufx7WATI9lpHwWxvI6JYlqRy9TW23fOr6/9SwgYJYOd59h+XI9LQ7c5t4B1JQ5UFWWJQB1fxbK5OMtK+78WVFaYjXfQwXYFCMWATnP8PR8xsWUdGcvaMdjXfgxAcS2ctK6saSsNRMX/YhF+2QkKodqD1g7H/1MiYO8lLHVQ4BVPwhnnwRQM8yoBBd5nUFIssbJ6Ouqij/W2cdTXKdEH2Z2CP/NCISrVREHaxWNZwZI1oov59N6VbW0lb/6qVbWFbzrubgdj1SWAMIW4W207oh4+mXRFsrQkRgznxMyDcq9oYgRkLPj26omZS0G4ffaZXkowv6p9A/nrWkMeUNeJntX8P0j5z+GSz1bzfuhq3LqGbWHFezymoKUW5Lvq63YgOSmHqN7hp78gRr5lJQlDTfjBjRNgeTZB4OarYWAHI5rpT68mHuyj3e9AB9oLpaIU6YedXD97LUokPQHJzs+MuvMXDqyzHGksSsOlNF1a9RTJPVmlxYv/oyGpWpwE2VSjQNKYnd8jmnmN2Ah61GZ+sh0/ZUaznf2PW5GCn/3eoQr5scEZLW67c/hKhQ7bDaeMqkFJyGOG94+c99ZW41w9IJ6cMJdKIhd3ae6TfthB1rwerSxODqEsivO8SBemffTHl9iQ4jZqFVqRSCMDjQHs=
+  - secure: cpkpOjgHG55oo/G+aTJJSSd/jCGmhen1NC5dKo87VTuP15RYIfwHV4TTd+2uZAqj+Qb/5qGSDU4ZO+k9eP3/pSpHS0klyoCvr850BQXwLDbKSPjlTvnl6wuAyQRbGr7mmSDbJfkKFvaRUObMockhYmdYDCHjp/ZCUY95XWAn7dALFi2WDEP/MLTkSBkZcAphk9anoJl03vUlEtlxZPeL2RIwyhoEO0KKNK6inocWmv4DCc97g2yjPt3GR5QS9XFnVEIXecDgfQNqYe/JVn0tM5lDNNiFkkdOwwEVsUhg8FcTG5zNhzNjJskQX0FAkCs1AcPchGxxQUpE6FD9ti+sU4vRoZlFcXouFj8QNeoxz8/u9U0Dzq4CQrPKJNHzv8aWUpQMk+WCSxDkeX+L3x4/Ty/zywYxlnCTM6pvyZft3Enrma2AscBCaTDZ0uiyqpVbO5OCwso3l5GN2G+J6+lsk/feUQJPlcV0toDazymtX2Unv8FEYo8ag8sJoqY+/kGKwEXwPWo8hMdXOSPD/0GbEFzQ0LxprLNOBuS5s+C1fgMK6QzmHHEQ36KldGCLyo9WJuoER/y8tncYJy1JHTpf059d4Cc06bWMsKx9EsNYjmTKpGJ19bBzfi4h21nTsPEvO9EAOhenWDbhKRALhK3uWB5yYwL5b1U3KiVEtj6HTak=
