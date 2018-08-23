@@ -1,4 +1,4 @@
-#![feature(plugin, decl_macro, proc_macro)]
+#![feature(plugin, decl_macro)]
 #![plugin(rocket_codegen)]
 
 extern crate libtitan;
@@ -10,8 +10,8 @@ use libtitan::db;
 
 fn main() {
     rocket::ignite()
-        .manage(db::TitanPrimaryPool::init_pool())
-        .manage(db::UnksoMainForumsPool::init_pool())
+        .attach(db::TitanPrimary::fairing())
+        .attach(db::UnksoMainForums::fairing())
         .mount("/users", routes![routes::hello, routes::test_database_conn])
         .launch();
 }
