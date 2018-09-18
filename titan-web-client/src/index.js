@@ -1,9 +1,10 @@
+import React from 'react'
 import ReactDOM from 'react-dom'
-import registerServiceWorker from './registerServiceWorker'
-import { getTitanInstance } from 'titan-core'
-import devConfig from './config/config.dev'
-import prodConfig from './config/config.prod'
-import './app.css'
+import registerServiceWorker from 'titan/registerServiceWorker'
+import { getAppContext } from 'titan/titan'
+import devConfig from 'titan/config/config.dev'
+import prodConfig from 'titan/config/config.prod'
+import TitanApp from 'titan/components/core/TitanApp'
 
 let config
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -12,8 +13,8 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   config = prodConfig
 }
 
-const app = getTitanInstance()
-app.setConfig(config)
+const app = getAppContext()
+app.mergeConfigSettings(config)
 
-ReactDOM.render(app.mount(), document.getElementById('root'))
+ReactDOM.render(<TitanApp context={app} />, document.getElementById('root'))
 registerServiceWorker()
