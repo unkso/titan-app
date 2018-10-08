@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { describe, it, beforeEach } from 'mocha'
-import TitanConfig from '../../../config/config'
+import TitanConfig from '../../lib/config'
 
 describe('config', () => {
   let config = null

@@ -1,4 +1,11 @@
 {
   "presets": ["env", "react", "es2015", "stage-2", "./.babelrc.js"],
-  "plugins": ["transform-async-to-generator"]
+  "plugins": ["transform-async-to-generator"],
+  "env": {
+    "test": {
+      "plugins": [
+        [ "babel-plugin-webpack-alias", { "config": "./config/webpack.config.dev.js" } ]
+      ]
+    }
+  }
 }

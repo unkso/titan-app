@@ -20,7 +20,7 @@
  * @returns {*}
  */
 const makeRouteKey = (path) => {
-  return path.replace(/:[A-Z-a-z]+/, '{}')
+  return path.replace(/:[A-Z-a-z0-9]+/g, '{}')
 }
 
 /**
