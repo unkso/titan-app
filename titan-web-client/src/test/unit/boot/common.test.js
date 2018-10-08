@@ -36,4 +36,32 @@ describe('Common', () => {
       )
     })
   })
+
+  describe('mountReducer', () => {
+    it('throws error when duplicate reducer is found', () => {
+      const reducerName = 'test_reducer'
+      const map = {}
+      common.mountReducer(map, reducerName, () => {})
+
+      assert.throws(
+        () => { common.mountReducer(map, reducerName, () => {}) },
+        Error,
+        'Duplicate module name for reducer: test_reducer.'
+      )
+    })
+  })
+
+  describe('mountConfig', () => {
+    it('throws error when duplicate config is found', () => {
+      const configKey = 'config_key'
+      const map = {}
+      common.mountConfig(map, configKey, () => {})
+
+      assert.throws(
+        () => { common.mountConfig(map, configKey, () => {}) },
+        Error,
+        'Duplicate module name for config: config_key.'
+      )
+    })
+  })
 })
