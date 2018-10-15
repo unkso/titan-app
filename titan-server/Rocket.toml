@@ -1,3 +1,0 @@
-[global.databases]
-unkso_main_forums = { url = "mysql://root@localhost/unkso_main_forums", pool_size = 10 }
-titan_primary = { url = "mysql://root@localhost/titan_primary", pool_size = 10 }

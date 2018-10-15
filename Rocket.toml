@@ -1,0 +1,5 @@
+[development.databases.unkso_main_forums]
+url = "mysql://root@localhost/unkso_main_forums"
+
+[development.databases.titan_primary]
+url = "mysql://root@localhost/titan_primary"

@@ -1,6 +1,6 @@
 use super::db::{UnksoMainForums};
 use super::models;
-use rocket_contrib::Json;
+use rocket_contrib::json::Json;
 use super::schema::wcf1_user;
 use diesel::RunQueryDsl;
 use diesel::query_dsl::filter_dsl::FindDsl;

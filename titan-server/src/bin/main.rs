@@ -1,8 +1,7 @@
-#![feature(plugin, decl_macro)]
-#![plugin(rocket_codegen)]
+#![feature(proc_macro_hygiene, decl_macro)]
 
 extern crate libtitan;
-extern crate rocket;
+#[macro_use] extern crate rocket;
 extern crate rocket_contrib;
 
 use libtitan::routes;
