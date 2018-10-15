@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import styled, { withTheme } from 'styled-components'
 import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton'
-import WithTheme from '../core/WithTheme'
 import color from 'color'
 
 export const ButtonWrapper = styled.div`
@@ -34,17 +33,17 @@ export const ButtonWrapper = styled.div`
 
 class Button extends React.Component {
   render () {
-    const {primary, secondary, fullWidth, ...rest} = this.props
+    const { primary, secondary, fullWidth, ...rest } = this.props
     let textColor, bgColor
     if (primary) {
-      bgColor = this.props.titanTheme.palette.primary
-      textColor = this.props.titanTheme.palette.primaryText
+      bgColor = this.props.theme.palette.primary.main
+      textColor = this.props.theme.palette.primaryText
     } else if (secondary) {
-      bgColor = this.props.titanTheme.palette.secondary
-      textColor = this.props.titanTheme.palette.secondaryText
+      bgColor = this.props.theme.palette.secondary.main
+      textColor = this.props.theme.palette.secondaryText
     } else {
-      bgColor = this.props.titanTheme.palette.neutral
-      textColor = this.props.titanTheme.palette.neutralText
+      bgColor = this.props.theme.palette.neutral
+      textColor = this.props.theme.palette.neutralText
     }
 
     const shadowColor = color(bgColor).rgb().fade(0.7).string()
@@ -71,7 +70,7 @@ Button.propTypes = {
   fullWidth: PropTypes.bool,
   iconLeft: PropTypes.func,
   iconRight: PropTypes.func,
-  titanTheme: PropTypes.object
+  theme: PropTypes.object
 }
 
 Button.defaultProps = {
@@ -85,4 +84,4 @@ Button.defaultProps = {
   iconRight: null
 }
 
-export default WithTheme(Button)
+export default withTheme(Button)

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled, { injectGlobal, withTheme } from 'styled-components'
+import styled, { createGlobalStyle, withTheme } from 'styled-components'
 import Sidebar from './components/sidebar/Sidebar'
 
 export const DashboardWrapper = styled.div`
@@ -28,8 +28,7 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   flex: 1;
 `
-
-injectGlobal`
+const GlobalStyles = createGlobalStyle`
   html, body {
     height: 100%;
     margin: 0;
@@ -49,6 +48,7 @@ class DashboardLayout extends React.Component {
     const contentBg = this.props.theme.palette.backgroundPrimary
     return (
       <DashboardWrapper>
+        <GlobalStyles />
         <SidebarWrapper backgroundColor={sidebarBg}>
           <Sidebar />
         </SidebarWrapper>

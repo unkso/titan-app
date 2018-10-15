@@ -1,5 +1,8 @@
 {
   "api": {
     "baseUrl": "https://api.clanunknownsoldiers.com"
+  },
+  "woltlab": {
+    "authUrl": "https://clanunknownsoldiers.com/login"
   }
 }

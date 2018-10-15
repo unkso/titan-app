@@ -46,16 +46,16 @@ export const ButtonLabelWrapper = styled.span`
 class BaseButton extends React.Component {
   render () {
     let children = []
-    const {iconLeft, iconRight, ...rest} = this.props
+    const { iconLeft, iconRight, ...rest } = this.props
 
     if (iconLeft) {
-      children.push(<ButtonIcon>{iconLeft}</ButtonIcon>)
+      children.push(<ButtonIcon key="icon-left">{iconLeft}</ButtonIcon>)
     }
 
-    children.push(<ButtonLabel>{this.props.children}</ButtonLabel>)
+    children.push(<ButtonLabel key="btn-label">{this.props.children}</ButtonLabel>)
 
     if (iconRight) {
-      children.push(<ButtonIcon>{iconRight}</ButtonIcon>)
+      children.push(<ButtonIcon key="icon-right">{iconRight}</ButtonIcon>)
     }
 
     return (

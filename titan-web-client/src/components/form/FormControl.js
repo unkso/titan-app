@@ -129,9 +129,9 @@ class FormControl extends React.Component {
 
     let borderColor
     if (this.state.isFocused) {
-      borderColor = this.props.titanTheme.palette.primary
+      borderColor = this.props.theme.palette.primary
     } else {
-      borderColor = this.props.titanTheme.palette.neutral
+      borderColor = this.props.theme.palette.neutral
     }
 
     return (
@@ -139,9 +139,9 @@ class FormControl extends React.Component {
         disabled={this.props.disabled}
         onClick={this.props.onClick}
         fullWidth={fullWidth}
-        textColor={this.props.titanTheme.palette.textPrimary}
+        textColor={this.props.theme.palette.textPrimary}
         borderColor={borderColor}
-        focusBorderColor={this.props.titanTheme.palette.primary}
+        focusBorderColor={this.props.theme.palette.primary}
       >
         {children}
       </FormControlWrapper>

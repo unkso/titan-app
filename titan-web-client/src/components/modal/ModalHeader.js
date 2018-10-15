@@ -20,7 +20,7 @@ class ModalHeader extends React.Component {
     }
 
     return (
-      <ModalHeaderWrapper borderColor={this.props.titanTheme.palette.neutral}>
+      <ModalHeaderWrapper borderColor={this.props.theme.palette.neutral}>
         {children}
       </ModalHeaderWrapper>
     )

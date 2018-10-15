@@ -1,18 +1,18 @@
 import React from 'react'
-import { getTitanInstance } from '../../boot/index'
+import { getAppContext } from 'titan/titan'
 
 export default function WithConfig (ComposedComponent) {
   return class extends React.Component {
     constructor (props) {
       super(props)
-      this.app = getTitanInstance()
+      this.app = getAppContext()
     }
 
     render () {
       return (
         <ComposedComponent
           {...this.props}
-          titanConfig={this.app.getConfig()}
+          config={this.app.getConfig()}
         />
       )
     }

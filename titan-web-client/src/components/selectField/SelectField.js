@@ -102,8 +102,8 @@ class ThemedSelectField extends React.Component {
     }
 
     return {
-      bgColor: this.props.titanTheme.palette.neutralBackground,
-      borderColor: this.props.titanTheme.palette.neutralBackground,
+      bgColor: this.props.theme.palette.neutralBackground,
+      borderColor: this.props.theme.palette.neutralBackground,
       borderBottomRadius: '0px'
     }
   }
@@ -156,8 +156,8 @@ class ThemedSelectField extends React.Component {
             width={this.state.menuWidth}
             top={this.state.menuTop}
             left={this.state.menuLeft}
-            background={this.props.titanTheme.palette.neutralBackground}
-            borderColor={this.props.titanTheme.palette.neutral}
+            background={this.props.theme.palette.neutralBackground}
+            borderColor={this.props.theme.palette.neutral}
           >
             {items}
           </SelectFieldMenuWrapper>

@@ -23,7 +23,7 @@ class MenuItem extends React.Component {
     return (
       <MenuItemWrapper
         onClick={this.onSelect.bind(this)}
-        hoverBgColor={this.props.titanTheme.palette.neutral}
+        hoverBgColor={this.props.theme.palette.neutral}
       >
         {this.props.text}
       </MenuItemWrapper>

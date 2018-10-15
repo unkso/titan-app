@@ -1,3 +1,6 @@
+[development]
+auth_key = "dummy_key"
+
 [development.databases.unkso_main_forums]
 url = "mysql://root@localhost/unkso_main_forums"
 
