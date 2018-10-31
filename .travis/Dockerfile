@@ -2,7 +2,7 @@ FROM ubuntu:bionic
 
 # Install build deps
 RUN apt-get -y update \
-    && apt-get -y install curl gcc gnupg2 ca-certificates --no-install-recommends \
+    && apt-get -y install curl gcc gnupg2 ca-certificates pkg-config --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install SSH
@@ -30,6 +30,10 @@ ENV PATH="/root/.cargo/bin:$PATH"
 # Install MySQL
 RUN apt-get -y update \
     && apt-get install -y libmysqlclient-dev --no-install-recommends
+
+# Install libssql-dev
+RUN apt-get -y update \
+        && apt-get install -y libssl-dev --no-install-recommends
 
 # Cache app dependencies
 WORKDIR /tmp
