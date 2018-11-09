@@ -2,6 +2,7 @@ import boot from 'titan/boot'
 
 /**
  * @param {{get, load}} config
+ * @param cookies
  * @param routes
  * @param store
  * @returns {{
@@ -11,14 +12,19 @@ import boot from 'titan/boot'
  * }}
  * @constructor
  */
-export const TitanContext = function ({ config, routes, store }) {
+export const TitanContext = function ({ config, cookies, routes, store }) {
   this.routes = routes
   this.store = store
   this.config = config
+  this.cookies = cookies
 }
 
 TitanContext.prototype.getConfig = function () {
   return this.config
+}
+
+TitanContext.prototype.getCookies = function () {
+  return this.cookies
 }
 
 TitanContext.prototype.getStore = function () {

@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import styled, { withTheme } from 'styled-components'
 import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton'
 import color from 'color'
-import WithTheme from '../core/WithTheme'
 
 export const ButtonWrapper = styled.div`
   width: ${props => props.fullWidth ? '100%' : 'auto'};
@@ -32,15 +31,15 @@ export const ButtonWrapper = styled.div`
 
 class FlatButton extends React.Component {
   render () {
-    const {primary, fullWidth, ...rest} = this.props
+    const { primary, fullWidth, ...rest } = this.props
     let textColor
     if (primary) {
-      textColor = this.props.titanTheme.palette.primary
+      textColor = this.props.theme.palette.primary
     } else {
-      textColor = this.props.titanTheme.palette.textPrimary
+      textColor = this.props.theme.palette.textPrimary
     }
 
-    const hoverBgColor = this.props.titanTheme.palette.neutral
+    const hoverBgColor = this.props.theme.palette.neutral
     return (
       <ButtonWrapper
         fullWidth={fullWidth}
@@ -61,7 +60,7 @@ FlatButton.propTypes = {
   fullWidth: PropTypes.bool,
   iconLeft: PropTypes.func,
   iconRight: PropTypes.func,
-  titanTheme: PropTypes.object
+  theme: PropTypes.object
 }
 
 FlatButton.defaultProps = {
@@ -78,4 +77,4 @@ FlatButton.defaultProps = {
   primary: false
 }
 
-export default WithTheme(FlatButton)
+export default withTheme(FlatButton)

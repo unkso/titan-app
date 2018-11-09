@@ -2,12 +2,10 @@ import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant'
 import localStorage from '../storage/localStorage'
-import config from '../config'
 
-const storageKey = config.get('storage.localStorage.storageKey')
 let titanStore = null
 
-function initStore (stateReducer) {
+export function setupStore (stateReducer = {}, storageKey) {
   const store = createStore(
     stateReducer,
     localStorage.load(storageKey),
@@ -22,17 +20,13 @@ function initStore (stateReducer) {
   // local storage.
   // @todo Allow modules to specify which state should be persisted.
   store.subscribe(() => {
-    const currentState = localStorage.load(storageKey)
-    localStorage.save(storageKey, JSON.stringify(currentState))
+    localStorage.save(storageKey, store.getState())
   })
 
-  return store
+  titanStore = store
+  return titanStore
 }
 
-export default (stateReducer = {}) => {
-  if (titanStore === null) {
-    titanStore = initStore(stateReducer)
-  }
-
+export function getStore () {
   return titanStore
 }

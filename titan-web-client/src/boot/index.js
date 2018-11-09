@@ -1,7 +1,8 @@
 import modules from 'titan/modules'
 import extensions from 'titan/extensions'
 import Config from 'titan/lib/config'
-import { createStore } from 'redux'
+import { setupCookies } from 'titan/lib/storage/cookies'
+import { setupStore } from 'titan/lib/redux/store'
 import defaultConfig from 'titan/config/config.default'
 import { mountConfig, mountReducer, mountRoutes } from 'titan/boot/common'
 import { createStateReducer } from 'titan/lib/redux/stateReducer'
@@ -26,18 +27,23 @@ extensions.forEach((init) => {
   mountConfig(moduleConfig, module.config)
 })
 
-// Prepare store
-const store = createStore(
-  createStateReducer(reducers)
-)
-
 // Prepare config
 const config = new Config()
 config.load({ ...defaultConfig, ...moduleConfig })
 
+// Prepare cookies
+const cookies = setupCookies()
+
+// Prepare store
+const store = setupStore(
+  createStateReducer(reducers),
+  config.get('storage.localStorage.storageKey')
+)
+
 export default () => {
   return {
     config,
+    cookies,
     routes,
     store
   }

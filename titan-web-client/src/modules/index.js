@@ -1,3 +1,5 @@
+import Auth from './auth/index'
+
 /**
  * Add the default export for new modules to this array. The module should
  * export the following structure:
@@ -10,5 +12,5 @@
  * }
  */
 export default [
-
+  Auth
 ]

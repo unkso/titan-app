@@ -1,9 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 class AuthenticatedRoute extends React.Component {
   componentDidMount () {
-    console.log(this.props.context)
+    if (!this.props.auth.session) {
+      window.location = '/auth/login'
+    }
   }
 
   render () {
@@ -12,7 +15,13 @@ class AuthenticatedRoute extends React.Component {
 }
 
 AuthenticatedRoute.propTypes = {
-  context: PropTypes.object
+  auth: PropTypes.object
 }
 
-export default AuthenticatedRoute
+function mapStateToProps (state) {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps)(AuthenticatedRoute)

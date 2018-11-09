@@ -1,11 +1,33 @@
 export default {
+  spacing: {
+    base: 8
+  },
+  typography: {
+    fontFamily: 'Roboto',
+    fontSize: 16
+  },
   palette: {
+    primary: {
+      light: '#ce5300',
+      main: '#ce5300',
+      dark: '#ce5300',
+      text: '#fff'
+    },
+    secondary: {
+      light: '#383f48',
+      main: '#383f48',
+      dark: '#383f48',
+      text: '#fff'
+    },
+    text: {
+      light: '#212121',
+      main: '#212121',
+      dark: '#212121'
+    },
     neutral: '#ddd',
     neutralText: '#212121',
     neutralBackground: '#fff',
-    primary: '#ce5300',
     primaryText: '#fff',
-    secondary: '#383f48',
     secondaryText: '#fff',
     success: '#43a047',
     danger: '#d32f2f',

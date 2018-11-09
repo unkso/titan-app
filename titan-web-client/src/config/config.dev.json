@@ -1,3 +1,5 @@
 {
-
+  "woltlab": {
+    "authUrl": "https://clanunknownsoldiers.com/login"
+  }
 }

@@ -10,6 +10,7 @@ import {
   ROUTE_TYPE_AUTHENTICATED,
   ROUTE_TYPE_UNAUTHENTICATED
 } from 'titan/lib/routing'
+import { createGlobalStyles } from 'titan/components/core/GlobalStyles'
 
 class TitanApp extends React.Component {
   static getRouteComponent (route) {
@@ -35,16 +36,16 @@ class TitanApp extends React.Component {
     if (Layout) {
       content = (
         <Layout>
-          <Scene context={null} />
+          <Scene context={this.props.context} />
         </Layout>
       )
     } else {
-      content = (<Scene context={null} />)
+      content = (<Scene context={this.props.context} />)
     }
 
     if (RouteComponent) {
       return () => (
-        <RouteComponent context={null}>
+        <RouteComponent context={this.props.context}>
           {content}
         </RouteComponent>
       )
@@ -59,7 +60,9 @@ class TitanApp extends React.Component {
     Object.keys(routes).forEach((path, key) => {
       const RouteComponent = TitanApp.getRouteComponent(routes[path])
       const Scene = this.renderSceneInLayout(routes[path], RouteComponent)
-      const route = (<Route key={key} exact path={path} component={Scene} />)
+      const route = (
+        <Route key={key} exact path={path} component={Scene} />
+      )
 
       routeComponents.push(route)
     })
@@ -68,15 +71,19 @@ class TitanApp extends React.Component {
   }
 
   render () {
+    const GlobalStylesComponent = createGlobalStyles(defaultTheme)
     return (
       <ThemeProvider theme={defaultTheme}>
-        <Provider store={this.props.context.getStore()}>
-          <BrowserRouter>
-            <Switch>
-              {this.renderRoutes(this.props.context.getRoutes())}
-            </Switch>
-          </BrowserRouter>
-        </Provider>
+        <div id="app-root">
+          <GlobalStylesComponent />
+          <Provider store={this.props.context.getStore()}>
+            <BrowserRouter>
+              <Switch>
+                {this.renderRoutes(this.props.context.getRoutes())}
+              </Switch>
+            </BrowserRouter>
+          </Provider>
+        </div>
       </ThemeProvider>
     )
   }

@@ -60,7 +60,7 @@ import WithTheme from 'titan-core/components/WithTheme'
 class MyComponent extends React.Component {
     render () {
       const styles = {
-        color: this.props.titanTheme.palette.primary
+        color: this.props.theme.palette.primary
       }
 
       return (
