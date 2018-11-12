@@ -2,13 +2,12 @@ use super::db::{UnksoMainForums};
 use super::models;
 use rocket::State;
 use rocket_contrib::json::Json;
-use super::schema::wcf1_user;
-use diesel::RunQueryDsl;
-use diesel::query_dsl::filter_dsl::FindDsl;
+use diesel::prelude::*;
 use super::woltlab_auth_helper;
 use super::auth_guard;
 use frank_jwt::{Algorithm, encode};
 use super::config;
+use super::schema::wcf1_user;
 
 #[get("/hello")]
 pub fn hello() -> &'static str {
@@ -42,7 +41,7 @@ pub struct WoltlabLoginResponse {
 pub fn woltlab_login(
     unkso_main: UnksoMainForums,
     login_creds: Json<WoltlabLoginRequest>,
-    secret_key: State<config::AuthConfig>) -> Json<WoltlabLoginResponse> {
+    app_config: State<config::AppConfig>) -> Json<WoltlabLoginResponse> {
     let user: models::WcfUser = wcf1_user::table.find(login_creds.user_id)
         .first(&*unkso_main)
         .unwrap();
@@ -69,7 +68,7 @@ pub fn woltlab_login(
 
     let token = encode(
         header.into(),
-        &secret_key.secret_key,
+        &app_config.secret_key,
         &payload,
         Algorithm::HS256
     );

@@ -35,9 +35,9 @@ class SidebarMenuItem extends React.Component {
   render () {
     let iconColor, textColor, borderColor;
     if (this.props.isActive) {
-      iconColor = this.props.theme.palette.primary;
-      textColor = this.props.theme.palette.inverseTextSecondary;
-      borderColor = this.props.theme.palette.primary;
+      iconColor = this.props.theme.palette.primary.main;
+      textColor = this.props.theme.palette.secondary.text;
+      borderColor = this.props.theme.palette.primary.main;
     } else {
       iconColor = this.props.theme.palette.inverseTextPrimary;
       textColor = this.props.theme.palette.inverseTextPrimary;

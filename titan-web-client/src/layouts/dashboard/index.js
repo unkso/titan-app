@@ -5,6 +5,7 @@ import Sidebar from './components/sidebar/Sidebar';
 
 export const DashboardWrapper = styled.div`
   width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: row;
 `;
@@ -30,15 +31,18 @@ export const ContentWrapper = styled.div`
 `;
 const GlobalStyles = createGlobalStyle`
   html, body {
-    height: 100%;
+    height: 100vh;
     margin: 0;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
   }
   
   body > #root {
-    height: 100%;
-    display: flex;
+    min-height: 100vh;
+  
+    #app-root {
+      min-height: 100vh;
+    }
   }
 `;
 

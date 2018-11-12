@@ -1,4 +1,18 @@
-#[derive(Serialize, Deserialize, Queryable)]
+// https://github.com/diesel-rs/diesel/issues/1785
+#[allow(proc_macro_derive_resolution_fallback)]
+use super::schema::{
+    wcf1_user,
+    wcf1_user_group,
+    wcf1_user_to_group,
+    wcf1_user_activity_event,
+    wcf1_user_option_value,
+    wcf1_user_avatar,
+    titan_organizations
+};
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user"]
+#[primary_key(user_id)]
 pub struct WcfUser {
     pub user_id: i32,
     pub username: String,
@@ -33,15 +47,96 @@ pub struct WcfUser {
     // pub disableSignature: bool,
     // pub disableSignatureReason: Option<String>,
     // pub disableSignatureExpires: i32,
-    // pub lastActivityTime: i32,
+    pub last_activity_time: i32,
     // pub profileHits: i32,
     // pub rankID: Option<i32>,
-    // pub userTitle: String,
-    // pub userOnlineGroupID: Option<i32>,
+    pub user_title: String,
+    pub user_online_group_id: Option<i32>,
     // pub activityPoints: i32,
     // pub notificationMailToken: String,
     // pub authData: String,
     // pub likesReceived: i32,
     // pub socialNetworkPrivacySettings: Option<String>,
     // pub wbbPosts: i32
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user_group"]
+#[primary_key(group_id)]
+pub struct WcfUserGroup {
+    pub group_id: i32,
+    pub group_name: String
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user_to_group"]
+#[primary_key(group_id, user_id)]
+#[belongs_to(WcfUserGroup, foreign_key="WcfUserGroup")]
+#[belongs_to(WcfUser, foreign_key="user_id")]
+pub struct WcfUserToGroup {
+    pub group_id: i32,
+    pub user_id: i32
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user_activity_event"]
+#[primary_key(event_id)]
+#[belongs_to(WcfUser, foreign_key="user_id")]
+pub struct WcfUserActivityEvent {
+    pub event_id: i32,
+    pub user_id: i32,
+    pub time: i32
+}
+
+#[derive(Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user_option_value"]
+#[belongs_to(WcfUser, foreign_key = "user_id")]
+#[belongs_to(WcfUserAvatar, foreign_key = "user_avatar_id")]
+pub struct WcfUserOptionValue {
+    pub user_id: i32,
+    pub user_avatar_id: i32
+}
+
+#[derive(Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user_avatar"]
+#[primary_key(avatar_id)]
+pub struct WcfUserAvatar {
+    pub avatar_id: i32,
+    pub user_id: i32,
+    pub avatar_name: String,
+    pub file_hash: String
+}
+
+impl WcfUserAvatar {
+    /// Builds the avatar's URL.
+    ///
+    /// Format: "/{fileHash[0..2]}/{userID}-{fileHash}/{size: 32|96|128|256}.png"
+    pub fn get_avatar_url(&self) -> String {
+        return format!(
+            "{}/{}-{}-128.png",
+            &self.file_hash[0..2],
+            &self.user_id.to_string(),
+            &self.file_hash
+        );
+    }
+}
+
+#[derive(Serialize, Deserialize, Queryable)]
+pub struct WcfBranch {
+    pub branch_id: i32,
+    pub name: String,
+    pub image: String,
+    pub rank_unavailable_image: String,
+    pub is_disabled: bool
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "titan_organizations"]
+pub struct TitanOrganization {
+    pub id: i32,
+    pub name: String,
+    pub slug: String,
+    pub group_type: String,
+    pub wcf_user_group_id: i32,
+    pub is_enabled: bool
 }
