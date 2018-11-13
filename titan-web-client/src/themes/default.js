@@ -8,8 +8,8 @@ export default {
   },
   palette: {
     primary: {
-      light: '#ce5300',
-      main: '#ce5300',
+      light: 'rgba(206,83,0,0.3)',
+      main: 'rgba(206,83,0,1.0)',
       dark: '#ce5300',
       text: '#fff'
     },
@@ -37,5 +37,21 @@ export default {
     backgroundPrimary: '#f5f5f5',
     backgroundInversePrimary: '#212121',
     backgroundInverseSecondary: '#2f2f2f'
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        minHeight: '30px'
+      },
+      label: {
+        textTransform: 'none'
+      },
+      contained: {
+        boxShadow: 'none',
+        '&:hover': {
+          boxShadow: '0 0 0 3px rgba(206,83,0,0.3)'
+        }
+      }
+    }
   }
 }

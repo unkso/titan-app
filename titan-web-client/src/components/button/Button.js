@@ -31,6 +31,9 @@ export const ButtonWrapper = styled.div`
   }
 `
 
+/**
+ * @deprecated
+ */
 class Button extends React.Component {
   render () {
     const { primary, secondary, fullWidth, ...rest } = this.props

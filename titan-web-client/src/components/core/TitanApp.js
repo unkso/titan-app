@@ -11,6 +11,9 @@ import {
   ROUTE_TYPE_UNAUTHENTICATED
 } from 'titan/lib/routing'
 import { createGlobalStyles } from 'titan/components/core/GlobalStyles'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+
+const defaultMuiTheme = createMuiTheme(defaultTheme)
 
 class TitanApp extends React.Component {
   static getRouteComponent (route) {
@@ -74,16 +77,18 @@ class TitanApp extends React.Component {
     const GlobalStylesComponent = createGlobalStyles(defaultTheme)
     return (
       <ThemeProvider theme={defaultTheme}>
-        <div id="app-root">
-          <GlobalStylesComponent />
-          <Provider store={this.props.context.getStore()}>
-            <BrowserRouter>
-              <Switch>
-                {this.renderRoutes(this.props.context.getRoutes())}
-              </Switch>
-            </BrowserRouter>
-          </Provider>
-        </div>
+        <MuiThemeProvider theme={defaultMuiTheme}>
+          <div id="app-root">
+            <GlobalStylesComponent />
+            <Provider store={this.props.context.getStore()}>
+              <BrowserRouter>
+                <Switch>
+                  {this.renderRoutes(this.props.context.getRoutes())}
+                </Switch>
+              </BrowserRouter>
+            </Provider>
+          </div>
+        </MuiThemeProvider>
       </ThemeProvider>
     )
   }
