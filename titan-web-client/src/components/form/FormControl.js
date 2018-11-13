@@ -1,10 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import color from 'color'
-import WithTheme from '../core/WithTheme'
-import FormControlFactory from './FormControlFactory'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import color from 'color';
+import WithTheme from '../core/WithTheme';
+import FormControlFactory from './FormControlFactory';
+import _ from 'lodash';
 
 export const FormControlInput = styled(FormControlFactory)`
   width: 100%;
@@ -20,7 +20,7 @@ export const FormControlInput = styled(FormControlFactory)`
   background-color: transparent;
   display: flex;
   flex: 1;
-`
+`;
 
 export const FormControlSideLabel = styled.div`
     height: 100%;  
@@ -34,7 +34,7 @@ export const FormControlSideLabel = styled.div`
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-`
+`;
 
 export const FormControlWrapper = styled.div`
   width: ${props => props.fullWidth ? '100%' : '260px'};
@@ -56,31 +56,35 @@ export const FormControlWrapper = styled.div`
   ${FormControlSideLabel}:last-child {
       margin-right: 8px;
   }
-`
+`;
 
 class FormControl extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       isFocused: false
-    }
+    };
+
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   onChange (e) {
-    this.onBlur()
-    this.props.onChange(e)
+    this.onBlur();
+    this.props.onChange(e);
   }
 
   onFocus () {
-    this.props.onFocus()
-    this.props.onFocusChange(this.state.isFocused)
-    this.setState({ isFocused: true })
+    this.props.onFocus();
+    this.props.onFocusChange(this.state.isFocused);
+    this.setState({ isFocused: true });
   }
 
   onBlur () {
-    this.props.onBlur()
-    this.props.onFocusChange(this.state.isFocused)
-    this.setState({ isFocused: false })
+    this.props.onBlur();
+    this.props.onFocusChange(this.state.isFocused);
+    this.setState({ isFocused: false });
   }
 
   render () {
@@ -91,8 +95,8 @@ class FormControl extends React.Component {
       onLabelLeftClick,
       onLabelRightClick,
       ...rest
-    } = this.props
-    const children = []
+    } = this.props;
+    const children = [];
 
     if (labelLeft) {
       children.push(
@@ -102,19 +106,19 @@ class FormControl extends React.Component {
         >
           {labelLeft}
         </FormControlSideLabel>
-      )
+      );
     }
 
     children.push(
       <FormControlInput
         {...rest}
-        onFocus={this.onFocus.bind(this)}
-        onBlur={this.onBlur.bind(this)}
-        onChange={this.onChange.bind(this)}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
+        onChange={this.onChange}
       >
         {this.props.children}
       </FormControlInput>
-    )
+    );
 
     if (labelRight) {
       children.push(
@@ -124,14 +128,14 @@ class FormControl extends React.Component {
         >
           {labelRight}
         </FormControlSideLabel>
-      )
+      );
     }
 
-    let borderColor
+    let borderColor;
     if (this.state.isFocused) {
-      borderColor = this.props.theme.palette.primary
+      borderColor = this.props.theme.palette.primary;
     } else {
-      borderColor = this.props.theme.palette.neutral
+      borderColor = this.props.theme.palette.neutral;
     }
 
     return (
@@ -145,7 +149,7 @@ class FormControl extends React.Component {
       >
         {children}
       </FormControlWrapper>
-    )
+    );
   }
 }
 
@@ -165,7 +169,7 @@ FormControl.propTypes = {
   onLabelRightClick: PropTypes.func,
   fullWidth: PropTypes.bool,
   disabled: PropTypes.bool
-}
+};
 
 FormControl.defaultProps = {
   onChange: () => {},
@@ -177,6 +181,6 @@ FormControl.defaultProps = {
   onLabelRightClick: () => {},
   fullWidth: false,
   disabled: false
-}
+};
 
-export default WithTheme(FormControl)
+export default WithTheme(FormControl);

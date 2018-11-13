@@ -9,4 +9,4 @@
  *    routes: [...]
  * }
  */
-export default []
+export default [];

@@ -20,8 +20,8 @@
  * @returns {*}
  */
 const makeRouteKey = (path) => {
-  return path.replace(/:[A-Z-a-z0-9]+/g, '{}')
-}
+  return path.replace(/:[A-Z-a-z0-9]+/g, '{}');
+};
 
 /**
  * Adds a module's routes to a route map.
@@ -35,15 +35,15 @@ const makeRouteKey = (path) => {
  */
 export const mountRoutes = (routesMap, routes) => {
   routes.forEach((route) => {
-    const routeKey = makeRouteKey(route.path)
+    const routeKey = makeRouteKey(route.path);
 
     if (routesMap.hasOwnProperty(routeKey)) {
-      throw new Error(`Duplicate route pattern: ${routeKey}.`)
+      throw new Error(`Duplicate route pattern: ${routeKey}.`);
     }
 
-    routesMap[routeKey] = route
-  })
-}
+    routesMap[routeKey] = route;
+  });
+};
 
 /**
  * Adds a reducer to reducer map if the reducer name is unique.
@@ -54,11 +54,11 @@ export const mountRoutes = (routesMap, routes) => {
  */
 export const mountReducer = (reducersMap, name, reducer) => {
   if (reducersMap.hasOwnProperty(name)) {
-    throw new Error(`Duplicate module name for reducer: ${name}.`)
+    throw new Error(`Duplicate module name for reducer: ${name}.`);
   }
 
-  reducersMap[name] = reducer
-}
+  reducersMap[name] = reducer;
+};
 
 /**
  * @param rootConfig
@@ -67,8 +67,8 @@ export const mountReducer = (reducersMap, name, reducer) => {
  */
 export const mountConfig = (rootConfig, name, moduleConfig) => {
   if (rootConfig.hasOwnProperty(name)) {
-    throw new Error(`Duplicate module name for config: ${name}.`)
+    throw new Error(`Duplicate module name for config: ${name}.`);
   }
 
-  rootConfig[name] = moduleConfig
-}
+  rootConfig[name] = moduleConfig;
+};

@@ -25,4 +25,4 @@ export default {
       dark: '#e9e9e9'
     }
   }
-}
+};

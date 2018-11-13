@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 class WebsiteLayout extends React.Component {
 
 }
 
-export default WebsiteLayout
+export default WebsiteLayout;

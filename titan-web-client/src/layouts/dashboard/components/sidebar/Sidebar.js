@@ -1,24 +1,24 @@
-import React from 'react'
-import styled from 'styled-components'
-import SidebarMenuItem from './SidebarMenuItem'
-import SidebarHeading from './SidebarHeading'
-import SidebarContentGroup from './SidebarContentGroup'
-import SidebarProfileBadge from './SidebarProfileBadge'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faHome from '@fortawesome/fontawesome-free-solid/faHome'
-import faFlag from '@fortawesome/fontawesome-free-solid/faFlag'
-import faCalendarAlt from '@fortawesome/fontawesome-free-solid/faCalendarAlt'
-import faFileAlt from '@fortawesome/fontawesome-free-solid/faFileAlt'
-import faGraduationCap from '@fortawesome/fontawesome-free-solid/faGraduationCap'
-import faUsers from '@fortawesome/fontawesome-free-solid/faUsers'
-import faTrophy from '@fortawesome/fontawesome-free-solid/faTrophy'
-import faNewspaper from '@fortawesome/fontawesome-free-solid/faNewspaper'
-import faCog from '@fortawesome/fontawesome-free-solid/faCog'
-import faPowerOff from '@fortawesome/fontawesome-free-solid/faPowerOff'
+import React from 'react';
+import styled from 'styled-components';
+import SidebarMenuItem from './SidebarMenuItem';
+import SidebarHeading from './SidebarHeading';
+import SidebarContentGroup from './SidebarContentGroup';
+import SidebarProfileBadge from './SidebarProfileBadge';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faHome from '@fortawesome/fontawesome-free-solid/faHome';
+import faFlag from '@fortawesome/fontawesome-free-solid/faFlag';
+import faCalendarAlt from '@fortawesome/fontawesome-free-solid/faCalendarAlt';
+import faFileAlt from '@fortawesome/fontawesome-free-solid/faFileAlt';
+import faGraduationCap from '@fortawesome/fontawesome-free-solid/faGraduationCap';
+import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
+import faTrophy from '@fortawesome/fontawesome-free-solid/faTrophy';
+import faNewspaper from '@fortawesome/fontawesome-free-solid/faNewspaper';
+import faCog from '@fortawesome/fontawesome-free-solid/faCog';
+import faPowerOff from '@fortawesome/fontawesome-free-solid/faPowerOff';
 
 const SidebarWrapper = styled.nav`
   margin-top: 25px;
-`
+`;
 
 class Sidebar extends React.Component {
   render () {
@@ -92,8 +92,8 @@ class Sidebar extends React.Component {
           />
         </SidebarContentGroup>
       </SidebarWrapper>
-    )
+    );
   }
 }
 
-export default Sidebar
+export default Sidebar;

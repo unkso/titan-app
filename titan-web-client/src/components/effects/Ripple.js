@@ -1,6 +1,6 @@
-import React from 'react'
-import Ink from 'react-ink'
-import styled from 'styled-components'
+import React from 'react';
+import Ink from 'react-ink';
+import styled from 'styled-components';
 
 export const RippleWrapper = styled.div`
   width: 100%;
@@ -9,7 +9,7 @@ export const RippleWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-`
+`;
 
 class Ripple extends React.Component {
   render () {
@@ -18,8 +18,8 @@ class Ripple extends React.Component {
         {this.props.children}
         <Ink {...this.props} />
       </RippleWrapper>
-    )
+    );
   }
 }
 
-export default Ripple
+export default Ripple;

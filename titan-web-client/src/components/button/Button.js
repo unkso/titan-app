@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled, { withTheme } from 'styled-components'
-import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton'
-import color from 'color'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled, { withTheme } from 'styled-components';
+import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton';
+import color from 'color';
 
 export const ButtonWrapper = styled.div`
   width: ${props => props.fullWidth ? '100%' : 'auto'};
@@ -29,27 +29,27 @@ export const ButtonWrapper = styled.div`
       }
     }
   }
-`
+`;
 
 /**
  * @deprecated
  */
 class Button extends React.Component {
   render () {
-    const { primary, secondary, fullWidth, ...rest } = this.props
-    let textColor, bgColor
+    const { primary, secondary, fullWidth, ...rest } = this.props;
+    let textColor, bgColor;
     if (primary) {
-      bgColor = this.props.theme.palette.primary.main
-      textColor = this.props.theme.palette.primaryText
+      bgColor = this.props.theme.palette.primary.main;
+      textColor = this.props.theme.palette.primaryText;
     } else if (secondary) {
-      bgColor = this.props.theme.palette.secondary.main
-      textColor = this.props.theme.palette.secondaryText
+      bgColor = this.props.theme.palette.secondary.main;
+      textColor = this.props.theme.palette.secondaryText;
     } else {
-      bgColor = this.props.theme.palette.neutral
-      textColor = this.props.theme.palette.neutralText
+      bgColor = this.props.theme.palette.neutral;
+      textColor = this.props.theme.palette.neutralText;
     }
 
-    const shadowColor = color(bgColor).rgb().fade(0.7).string()
+    const shadowColor = color(bgColor).rgb().fade(0.7).string();
 
     return (
       <ButtonWrapper
@@ -60,7 +60,7 @@ class Button extends React.Component {
       >
         <BaseButton {...rest}>{this.props.children}</BaseButton>
       </ButtonWrapper>
-    )
+    );
   }
 }
 
@@ -74,7 +74,7 @@ Button.propTypes = {
   iconLeft: PropTypes.func,
   iconRight: PropTypes.func,
   theme: PropTypes.object
-}
+};
 
 Button.defaultProps = {
   primary: false,
@@ -85,6 +85,6 @@ Button.defaultProps = {
   fullWidth: false,
   iconLeft: null,
   iconRight: null
-}
+};
 
-export default withTheme(Button)
+export default withTheme(Button);

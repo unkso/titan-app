@@ -1,9 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 export const ContentBlock = styled.div`
   padding: 20px 50px;
-`
+`;
 
 class Block extends React.Component {
   render () {
@@ -11,8 +12,12 @@ class Block extends React.Component {
       <ContentBlock>
         {this.props.children}
       </ContentBlock>
-    )
+    );
   }
 }
 
-export default Block
+Block.propTypes = {
+  children: PropTypes.object
+};
+
+export default Block;

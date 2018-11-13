@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import WithTheme from '../core/WithTheme'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import WithTheme from '../core/WithTheme';
 
 export const TableRowCellWrapper = styled.td`
   width: ${props => props.width};
@@ -13,7 +13,7 @@ export const TableRowCellWrapper = styled.td`
     white-space: nowrap;
     overflow: hidden;
   `}
-`
+`;
 
 class TableRowCell extends React.Component {
   render () {
@@ -23,19 +23,20 @@ class TableRowCell extends React.Component {
         allowWrapping={this.props.allowWrapping}
       >
         {this.props.children}
-        </TableRowCellWrapper>
-    )
+      </TableRowCellWrapper>
+    );
   }
 }
 
 TableRowCell.propTypes = {
   width: PropTypes.any,
-  allowWrapping: PropTypes.bool
-}
+  allowWrapping: PropTypes.bool,
+  children: PropTypes.object
+};
 
 TableRowCell.defaultProps = {
   width: '100%',
   allowWrapping: false
-}
+};
 
-export default WithTheme(TableRowCell)
+export default WithTheme(TableRowCell);

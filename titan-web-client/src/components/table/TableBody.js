@@ -1,14 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-import WithTheme from '../core/WithTheme'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import WithTheme from '../core/WithTheme';
 
-export const TableBodyOuterWrapper = styled.div``
+export const TableBodyOuterWrapper = styled.div``;
 
 export const TableBodyInnerWrapper = styled.table`
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-`
+`;
 
 class TableBody extends React.Component {
   render () {
@@ -20,8 +21,12 @@ class TableBody extends React.Component {
           </tbody>
         </TableBodyInnerWrapper>
       </TableBodyOuterWrapper>
-    )
+    );
   }
 }
 
-export default WithTheme(TableBody)
+TableBody.propTypes = {
+  children: PropTypes.object
+};
+
+export default WithTheme(TableBody);

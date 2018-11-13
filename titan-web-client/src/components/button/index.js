@@ -1,6 +1,6 @@
-import Button from './Button'
+import Button from './Button';
 
 /**
  * @deprecated
  */
-export default Button
+export default Button;
