@@ -14,6 +14,9 @@ const ELEMENTS = {
   'div': 'text'
 }
 
+/**
+ * @deprecated
+ */
 class Typography extends React.Component {
   getStyles (elementName) {
     let styles = {}
