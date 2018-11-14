@@ -1,11 +1,11 @@
-import React from 'react'
-import { getAppContext } from 'titan/titan'
+import React from 'react';
+import { getAppContext } from 'titan/titan';
 
 export default function WithConfig (ComposedComponent) {
   return class extends React.Component {
     constructor (props) {
-      super(props)
-      this.app = getAppContext()
+      super(props);
+      this.app = getAppContext();
     }
 
     render () {
@@ -14,7 +14,7 @@ export default function WithConfig (ComposedComponent) {
           {...this.props}
           config={this.app.getConfig()}
         />
-      )
+      );
     }
-  }
+  };
 }

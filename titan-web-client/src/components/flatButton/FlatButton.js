@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled, { withTheme } from 'styled-components'
-import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton'
-import color from 'color'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled, { withTheme } from 'styled-components';
+import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton';
+import color from 'color';
 
 export const ButtonWrapper = styled.div`
   width: ${props => props.fullWidth ? '100%' : 'auto'};
@@ -27,19 +27,19 @@ export const ButtonWrapper = styled.div`
       }
     }
   }
-`
+`;
 
 class FlatButton extends React.Component {
   render () {
-    const { primary, fullWidth, ...rest } = this.props
-    let textColor
+    const { primary, fullWidth, ...rest } = this.props;
+    let textColor;
     if (primary) {
-      textColor = this.props.theme.palette.primary
+      textColor = this.props.theme.palette.primary;
     } else {
-      textColor = this.props.theme.palette.textPrimary
+      textColor = this.props.theme.palette.textPrimary;
     }
 
-    const hoverBgColor = this.props.theme.palette.neutral
+    const hoverBgColor = this.props.theme.palette.neutral;
     return (
       <ButtonWrapper
         fullWidth={fullWidth}
@@ -48,7 +48,7 @@ class FlatButton extends React.Component {
       >
         <BaseButton {...rest}>{this.props.children}</BaseButton>
       </ButtonWrapper>
-    )
+    );
   }
 }
 
@@ -61,7 +61,7 @@ FlatButton.propTypes = {
   iconLeft: PropTypes.func,
   iconRight: PropTypes.func,
   theme: PropTypes.object
-}
+};
 
 FlatButton.defaultProps = {
   primary: false,
@@ -71,10 +71,10 @@ FlatButton.defaultProps = {
   fullWidth: false,
   iconLeft: null,
   iconRight: null
-}
+};
 
 FlatButton.defaultProps = {
   primary: false
-}
+};
 
-export default withTheme(FlatButton)
+export default withTheme(FlatButton);

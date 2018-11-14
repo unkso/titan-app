@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import WithTheme from '../core/WithTheme'
-import { TableBodyOuterWrapper } from './TableBody'
-import { TableHeaderWrapper } from './TableHeader'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import WithTheme from '../core/WithTheme';
+import { TableBodyOuterWrapper } from './TableBody';
+import { TableHeaderWrapper } from './TableHeader';
 
 export const TableWrapper = styled.div`
   max-height: ${props => !props.fixedHeader ? `${props.height}px` : 'auto'};
@@ -18,11 +18,11 @@ export const TableWrapper = styled.div`
     max-height: ${props => props.fixedHeader ? `${props.height}px` : 'none'};
     overflow: ${props => props.fixedHeader ? 'auto' : 'inherit'};
   }
-`
+`;
 
 class Table extends React.Component {
   render () {
-    const height = this.props.height ? this.props.height : 'auto'
+    const height = this.props.height ? this.props.height : 'auto';
     return (
       <TableWrapper
         fixedHeader={this.props.fixedHeader}
@@ -30,18 +30,19 @@ class Table extends React.Component {
       >
         {this.props.children}
       </TableWrapper>
-    )
+    );
   }
 }
 
 Table.propTypes = {
   fixedHeader: PropTypes.bool,
-  height: PropTypes.number
-}
+  height: PropTypes.number,
+  children: PropTypes.object
+};
 
 Table.defaultProps = {
   fixedHeader: true,
   height: null
-}
+};
 
-export default WithTheme(Table)
+export default WithTheme(Table);

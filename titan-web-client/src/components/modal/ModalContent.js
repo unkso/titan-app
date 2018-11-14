@@ -1,9 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 export const ModalContentWrapper = styled.div`
   padding: 10px 20px;
-`
+`;
 
 class ModalContent extends React.Component {
   render () {
@@ -11,8 +12,12 @@ class ModalContent extends React.Component {
       <ModalContentWrapper>
         {this.props.children}
       </ModalContentWrapper>
-    )
+    );
   }
 }
 
-export default ModalContent
+ModalContent.propTypes = {
+  children: PropTypes.object
+};
+
+export default ModalContent;

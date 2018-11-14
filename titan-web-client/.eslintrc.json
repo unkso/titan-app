@@ -1,5 +1,5 @@
 {
-  "extends": ["standard", "standard-react"],
+  "extends": ["semistandard", "semistandard-react"],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
     "react/prop-types": [1, { "ignore": ["children"] }]

@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import ActionButton from './ActionButton'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import ActionButton from './ActionButton';
 
 export const BaseButtonWrapper = styled(ActionButton)`
   font-size: .875rem;
@@ -17,16 +17,16 @@ export const BaseButtonWrapper = styled(ActionButton)`
   cursor: pointer;
   transition: all 100ms ease-in-out;
   display: inline-block;
-`
+`;
 
 export const ButtonLabel = styled.span`
   display: flex;
   flex: 1;
-`
+`;
 
 export const ButtonIcon = styled.span`
   position: relative;
-`
+`;
 
 export const ButtonLabelWrapper = styled.span`
   display: flex;
@@ -41,28 +41,28 @@ export const ButtonLabelWrapper = styled.span`
   ${ButtonIcon}:last-child {
     margin-left: .5rem;
   }
-`
+`;
 
 class BaseButton extends React.Component {
   render () {
-    let children = []
-    const { iconLeft, iconRight, ...rest } = this.props
+    let children = [];
+    const { iconLeft, iconRight, ...rest } = this.props;
 
     if (iconLeft) {
-      children.push(<ButtonIcon key="icon-left">{iconLeft}</ButtonIcon>)
+      children.push(<ButtonIcon key="icon-left">{iconLeft}</ButtonIcon>);
     }
 
-    children.push(<ButtonLabel key="btn-label">{this.props.children}</ButtonLabel>)
+    children.push(<ButtonLabel key="btn-label">{this.props.children}</ButtonLabel>);
 
     if (iconRight) {
-      children.push(<ButtonIcon key="icon-right">{iconRight}</ButtonIcon>)
+      children.push(<ButtonIcon key="icon-right">{iconRight}</ButtonIcon>);
     }
 
     return (
       <BaseButtonWrapper {...rest}>
         <ButtonLabelWrapper>{children}</ButtonLabelWrapper>
       </BaseButtonWrapper>
-    )
+    );
   }
 }
 
@@ -73,7 +73,7 @@ BaseButton.propTypes = {
   iconLeft: PropTypes.func,
   iconRight: PropTypes.func,
   titanTheme: PropTypes.object
-}
+};
 
 BaseButton.defaultProps = {
   onClick: null,
@@ -81,6 +81,6 @@ BaseButton.defaultProps = {
   disabled: false,
   iconLeft: null,
   iconRight: null
-}
+};
 
-export default BaseButton
+export default BaseButton;

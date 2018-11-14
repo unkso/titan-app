@@ -1,6 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import WithTheme from '../core/WithTheme'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import WithTheme from '../core/WithTheme';
 
 export const FooterWrapper = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ export const FooterWrapper = styled.div`
   padding: 10px 20px;
   border-top: ${props => props.borderColor};
   justify-content: flex-end;
-`
+`;
 
 class ModalFooter extends React.Component {
   render () {
@@ -16,8 +17,13 @@ class ModalFooter extends React.Component {
       <FooterWrapper borderColor={this.props.theme.palette.neutral}>
         {this.props.children}
       </FooterWrapper>
-    )
+    );
   }
 }
 
-export default WithTheme(ModalFooter)
+ModalFooter.propTypes = {
+  theme: PropTypes.object,
+  children: PropTypes.object
+};
+
+export default WithTheme(ModalFooter);

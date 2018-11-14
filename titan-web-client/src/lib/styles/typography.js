@@ -1,12 +1,12 @@
-import deepmerge from 'deepmerge'
-const DEFAULT_FONT_FAMILY = '"Roboto", "Helvetica", "Arial", sans-serif'
-const DEFAULT_FONT_SIZE = '14px'
-const FONT_WEIGHT_LIGHT = 300
-const FONT_WEIGHT_REGULAR = 400
-const FONT_WEIGHT_BOLD = 600
-const TEXT_CASE_UPPER = 'uppercase'
-const TEXT_CASE_REGULAR = 'none'
-const TEXT_CASE_CAPITALIZE = 'capitalize'
+import deepmerge from 'deepmerge';
+const DEFAULT_FONT_FAMILY = '"Roboto", "Helvetica", "Arial", sans-serif';
+const DEFAULT_FONT_SIZE = '14px';
+const FONT_WEIGHT_LIGHT = 300;
+const FONT_WEIGHT_REGULAR = 400;
+const FONT_WEIGHT_BOLD = 600;
+const TEXT_CASE_UPPER = 'uppercase';
+const TEXT_CASE_REGULAR = 'none';
+const TEXT_CASE_CAPITALIZE = 'capitalize';
 
 /**
  * @param weight - Font weight.
@@ -22,7 +22,7 @@ function createElementStyles (weight, size, lineHeight, casing) {
     fontSize: `${size}rem`,
     textTransform: casing,
     lineHeight
-  }
+  };
 }
 
 export function createTypography (typography = {}) {
@@ -42,5 +42,5 @@ export function createTypography (typography = {}) {
       button: createElementStyles(FONT_WEIGHT_BOLD, 1, 1.1, TEXT_CASE_UPPER)
     },
     typography
-  )
+  );
 }

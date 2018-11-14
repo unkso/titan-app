@@ -1,5 +1,5 @@
-import React from 'react'
-import { withTheme } from 'styled-components'
+import React from 'react';
+import { withTheme } from 'styled-components';
 
 /**
  * @deprecated Use withTheme from style-components package.
@@ -16,7 +16,7 @@ export default function WithTheme (ComposedComponent) {
           {...this.props}
           titanTheme={this.props.theme}
         />
-      ))
+      ));
     }
-  }
+  };
 }

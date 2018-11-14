@@ -1,30 +1,30 @@
 class Config {
   constructor () {
-    this.config = {}
+    this.config = {};
   }
 
   load (config) {
-    this.config = config
+    this.config = config;
   }
 
   get (path = '') {
     if (path === '') {
-      return this.config
+      return this.config;
     }
 
-    const parts = path.split('.')
-    let value = this.config
+    const parts = path.split('.');
+    let value = this.config;
 
     for (let part of parts) {
       if (!value.hasOwnProperty(part)) {
-        return null
+        return null;
       }
 
-      value = value[part]
+      value = value[part];
     }
 
-    return value
+    return value;
   }
 }
 
-export default Config
+export default Config;

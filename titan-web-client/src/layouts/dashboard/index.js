@@ -1,13 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled, { createGlobalStyle, withTheme } from 'styled-components'
-import Sidebar from './components/sidebar/Sidebar'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled, { createGlobalStyle, withTheme } from 'styled-components';
+import Sidebar from './components/sidebar/Sidebar';
 
 export const DashboardWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-`
+`;
 
 export const SidebarWrapper = styled.div`
   width: 280px;
@@ -19,7 +19,7 @@ export const SidebarWrapper = styled.div`
   -webkit-box-shadow: 8px 0 43px 3px rgba(0,0,0,0.25);
   -moz-box-shadow: 8px 0 43px 3px rgba(0,0,0,0.25);
   box-shadow: 8px 0 43px 3px rgba(0,0,0,0.25);
-`
+`;
 
 export const ContentWrapper = styled.div`
   background-color: ${props => props.backgroundColor};
@@ -27,7 +27,7 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-`
+`;
 const GlobalStyles = createGlobalStyle`
   html, body {
     height: 100%;
@@ -40,12 +40,12 @@ const GlobalStyles = createGlobalStyle`
     height: 100%;
     display: flex;
   }
-`
+`;
 
 class DashboardLayout extends React.Component {
   render () {
-    const sidebarBg = this.props.theme.palette.backgroundInversePrimary
-    const contentBg = this.props.theme.palette.backgroundPrimary
+    const sidebarBg = this.props.theme.palette.backgroundInversePrimary;
+    const contentBg = this.props.theme.palette.backgroundPrimary;
     return (
       <DashboardWrapper>
         <GlobalStyles />
@@ -56,12 +56,13 @@ class DashboardLayout extends React.Component {
           {this.props.children}
         </ContentWrapper>
       </DashboardWrapper>
-    )
+    );
   }
 }
 
 DashboardLayout.propTypes = {
-  theme: PropTypes.object
-}
+  theme: PropTypes.object,
+  children: PropTypes.object
+};
 
-export default withTheme(DashboardLayout)
+export default withTheme(DashboardLayout);

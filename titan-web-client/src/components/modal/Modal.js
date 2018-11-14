@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import PortalElement from '../portal/PortalElement'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import PortalElement from '../portal/PortalElement';
 
 export const ModalContentWrapper = styled.div`
   width: ${props => props.fullScreen ? '100%' : props.width};
@@ -22,7 +22,7 @@ export const ModalContentWrapper = styled.div`
   -webkit-box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
                       0 24px 38px 3px rgba(0, 0, 0, 0.14),
                       0 9px 46px 8px rgba(0, 0, 0, 0.12);
-`
+`;
 
 export const ModalOverlay = styled.div`
   width: 100%;
@@ -49,25 +49,25 @@ export const ModalOverlay = styled.div`
       opacity: 1.0;
     }
   }
-`
+`;
 
 const modalWidths = {
   'sm': '400px',
   'md': '600px',
   'lg': '800px',
   'xl': '1000px'
-}
+};
 
 class Modal extends React.Component {
   render () {
-    let size = this.props.size
+    let size = this.props.size;
 
     if (!modalWidths[this.props.size]) {
-      size = 'md'
-      console.warn(`The value ${this.props.size} is not a valid modal size. Must be one of sm, md, lg, xl`)
+      size = 'md';
+      console.warn(`The value ${this.props.size} is not a valid modal size. Must be one of sm, md, lg, xl`);
     }
 
-    let overlayClass = this.props.open ? 'open' : ''
+    let overlayClass = this.props.open ? 'open' : '';
 
     return (
       <PortalElement>
@@ -77,20 +77,21 @@ class Modal extends React.Component {
           </ModalContentWrapper>
         </ModalOverlay>
       </PortalElement>
-    )
+    );
   }
 }
 
 Modal.propTypes = {
   size: PropTypes.string,
   fullScreen: PropTypes.bool,
-  open: PropTypes.bool
-}
+  open: PropTypes.bool,
+  children: PropTypes.object
+};
 
 Modal.defaultProps = {
   size: 'md',
   fullScreen: false,
   open: false
-}
+};
 
-export default Modal
+export default Modal;

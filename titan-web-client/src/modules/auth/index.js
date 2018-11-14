@@ -1,12 +1,12 @@
-import { createStateReducer } from 'titan/lib/redux/stateReducer'
-import authReducer from 'titan/reducers/authReducer'
-import { EmptyDarkLayout } from 'titan/layouts'
-import LoginScene from './login'
-import LogoutScene from './logout'
+import { createStateReducer } from 'titan/lib/redux/stateReducer';
+import authReducer from 'titan/reducers/authReducer';
+import { EmptyDarkLayout } from 'titan/layouts';
+import LoginScene from './login';
+import LogoutScene from './logout';
 import {
   ROUTE_TYPE_AUTHENTICATED,
   ROUTE_TYPE_UNAUTHENTICATED
-} from '../../lib/routing'
+} from '../../lib/routing';
 
 export default function () {
   return {
@@ -35,5 +35,5 @@ export default function () {
         type: ROUTE_TYPE_AUTHENTICATED
       }
     ]
-  }
+  };
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 export const ProfileBadgeAvatar = styled.div`
   width: 50px;
@@ -10,31 +10,31 @@ export const ProfileBadgeAvatar = styled.div`
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-`
+`;
 
 export const ProfileBadgeDetails = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 10px;
   flex: 1;
-`
+`;
 
 export const ProfileBadgeUsername = styled.div`
   color: #fff;
-`
+`;
 
 export const ProfileBadgeTitle = styled.div`
   color: #616161;
   font-size: .9rem;
   font-weight: 100;
   margin-top: 5px;
-`
+`;
 
 export const ProfileBadge = styled.div`
   padding: 0 10px;
   display: flex;
   flex-direction: row;
-`
+`;
 
 class SidebarProfileBadge extends React.Component {
   render () {
@@ -46,8 +46,8 @@ class SidebarProfileBadge extends React.Component {
           <ProfileBadgeTitle>NCOIC of Engineering</ProfileBadgeTitle>
         </ProfileBadgeDetails>
       </ProfileBadge>
-    )
+    );
   }
 }
 
-export default SidebarProfileBadge
+export default SidebarProfileBadge;

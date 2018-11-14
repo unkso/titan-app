@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import Ripple from '../effects/Ripple'
-import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Ripple from '../effects/Ripple';
+import BaseButton, { BaseButtonWrapper } from '../baseButton/BaseButton';
 
 export const IconButtonWrapper = styled.div`
   display: inline-block;
@@ -14,7 +14,7 @@ export const IconButtonWrapper = styled.div`
     padding: 0;
     background: transparent;
   }
-`
+`;
 
 class IconButton extends React.Component {
   render () {
@@ -22,15 +22,16 @@ class IconButton extends React.Component {
       <IconButtonWrapper size={this.props.size}>
         <BaseButton>
           {this.props.icon}
-          <Ripple style={{borderRadius: "100%"}} />
+          <Ripple style={{ borderRadius: '100%' }} />
         </BaseButton>
       </IconButtonWrapper>
-    )
+    );
   }
 }
 
 IconButton.propTypes = {
-  icon: PropTypes.func
-}
+  icon: PropTypes.func,
+  size: PropTypes.number
+};
 
-export default IconButton
+export default IconButton;

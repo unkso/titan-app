@@ -1,16 +1,16 @@
-import React from 'react'
+import React from 'react';
 
 export async function buildFake () {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const id = (new Date()).getMilliseconds()
+      const id = (new Date()).getMilliseconds();
       const FakeComponent = (props) => {
-        return null
-      }
+        return null;
+      };
 
-      const props = {}
-      props['fake' + id] = true
-      resolve(React.createElement(FakeComponent, props))
-    }, 100)
-  })
+      const props = {};
+      props['fake' + id] = true;
+      resolve(React.createElement(FakeComponent, props));
+    }, 100);
+  });
 }

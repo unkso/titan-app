@@ -1,13 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 export const CenteredBlockStyle = styled.div`
   height: 100%;
   background: #e1e1e1;
   justify-content: center;
   display: flex;
-`
+`;
 
 export const CenteredBlockContentStyle = styled.div`
   width: ${props => props.width};
@@ -15,7 +15,7 @@ export const CenteredBlockContentStyle = styled.div`
   align-self: center;
   position: relative;
   top: -10%;
-`
+`;
 
 class CenteredBlock extends React.Component {
   render () {
@@ -25,16 +25,17 @@ class CenteredBlock extends React.Component {
           {this.props.children}
         </CenteredBlockContentStyle>
       </CenteredBlockStyle>
-    )
+    );
   }
 }
 
 CenteredBlock.propTypes = {
-  width: PropTypes.string
-}
+  width: PropTypes.string,
+  children: PropTypes.object
+};
 
 CenteredBlock.defaultProps = {
   width: '60%'
-}
+};
 
-export default CenteredBlock
+export default CenteredBlock;

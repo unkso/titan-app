@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
 
 export function createStateReducer (reducers) {
-  return combineReducers(reducers)
+  return combineReducers(reducers);
 }

@@ -1,4 +1,4 @@
-import boot from 'titan/boot'
+import boot from 'titan/boot';
 
 /**
  * @param {{get, load}} config
@@ -13,33 +13,33 @@ import boot from 'titan/boot'
  * @constructor
  */
 export const TitanContext = function ({ config, cookies, routes, store }) {
-  this.routes = routes
-  this.store = store
-  this.config = config
-  this.cookies = cookies
-}
+  this.routes = routes;
+  this.store = store;
+  this.config = config;
+  this.cookies = cookies;
+};
 
 TitanContext.prototype.getConfig = function () {
-  return this.config
-}
+  return this.config;
+};
 
 TitanContext.prototype.getCookies = function () {
-  return this.cookies
-}
+  return this.cookies;
+};
 
 TitanContext.prototype.getStore = function () {
-  return this.store
-}
+  return this.store;
+};
 
 TitanContext.prototype.getRoutes = function () {
-  return this.routes
-}
+  return this.routes;
+};
 
 TitanContext.prototype.mergeConfigSettings = function (configSettings) {
-  this.config.load(Object.assign({}, this.config.get(), configSettings))
-}
+  this.config.load(Object.assign({}, this.config.get(), configSettings));
+};
 
-let app = null
+let app = null;
 
 /**
  * @returns {{
@@ -50,8 +50,8 @@ let app = null
  */
 export function getAppContext () {
   if (!app) {
-    app = new TitanContext(boot())
+    app = new TitanContext(boot());
   }
 
-  return app
+  return app;
 }

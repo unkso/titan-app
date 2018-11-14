@@ -1,11 +1,11 @@
 import {
   FormControlInput,
   FormControlSideLabel,
-  FormControlWrapper,
-} from './FormControl'
+  FormControlWrapper
+} from './FormControl';
 
 export const styles = {
   FormControlWrapper,
   FormControlInput,
   FormControlSideLabel
-}
+};
