@@ -2,7 +2,7 @@ use rocket::request::{FromRequest, Outcome, Request};
 use rocket::http::Status;
 use frank_jwt::{decode, Algorithm};
 use rocket::State;
-use super::config::AuthConfig;
+use super::config::AppConfig;
 use rocket_contrib::json::JsonValue;
 use super::db::{UnksoMainForums};
 use super::models;
@@ -36,7 +36,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
     type Error = AuthTokenError;
     fn from_request(request: &'a Request<'r>) -> rocket::request::Outcome<Self, Self::Error> {
         let db = request.guard::<UnksoMainForums>().unwrap();
-        let key = request.guard::<State<AuthConfig>>().unwrap();
+        let key = request.guard::<State<AppConfig>>().unwrap();
         let auth_headers: Vec<_> = request.headers().get("x-api-key").collect();
 
         if auth_headers.len() != 1 {

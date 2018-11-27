@@ -1,4 +1,5 @@
-import Auth from './auth/index';
+import Auth from './auth';
+import Roster from './roster';
 
 /**
  * Add the default export for new modules to this array. The module should
@@ -12,5 +13,6 @@ import Auth from './auth/index';
  * }
  */
 export default [
-  Auth
+  Auth,
+  Roster
 ];

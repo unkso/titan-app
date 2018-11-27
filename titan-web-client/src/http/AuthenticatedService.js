@@ -13,7 +13,10 @@ class AuthenticatedService {
       }
     });
 
-    this.httpClient.interceptors.request.use(this.authHeadersInterceptor);
+    this.httpClient.interceptors.request.use((config) => {
+      return this.authHeadersInterceptor(config);
+    });
+
     this.httpClient.interceptors.response.use(
       null,
       this.responseErrorInterceptor
@@ -25,14 +28,15 @@ class AuthenticatedService {
   }
 
   authHeadersInterceptor (config) {
-    let state = this.appContext.getState();
-    if (_.isEmpty(state.session.accessToken)) {
+    let state = this.appContext.getStore().getState();
+
+    if (_.isEmpty(state.auth.session.token)) {
       this.appContext.getStore().dispatch(authActions.logout());
       return false;
     }
 
     config.headers = {
-      'access-token': state.session.accessToken
+      'x-api-key': state.auth.session.token
     };
 
     return config;

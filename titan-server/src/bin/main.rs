@@ -4,6 +4,7 @@ extern crate libtitan;
 #[macro_use] extern crate rocket;
 use rocket::fairing::AdHoc;
 #[macro_use] extern crate rocket_contrib;
+#[macro_use] extern crate diesel;
 extern crate regex;
 extern crate bcrypt;
 extern crate frank_jwt;
@@ -13,20 +14,21 @@ use libtitan::routes;
 use libtitan::db;
 use libtitan::config;
 use libtitan::cors_fairing;
+use libtitan::organizations;
 
 fn main() {
     rocket::ignite()
         .attach(db::TitanPrimary::fairing())
         .attach(db::UnksoMainForums::fairing())
         .attach(cors_fairing::cors())
-        .attach(AdHoc::on_attach("Auth", |rocket| {
-            let settings = config::AuthConfig::from_env(&rocket.config());
+        .attach(AdHoc::on_attach("Config", |rocket| {
+            let settings = config::AppConfig::from_env(&rocket.config());
             match settings {
                 Ok(settings) => Ok(rocket.manage(settings)),
                 Err(_) => Err(rocket),
             }
         }))
         .mount("/auth", routes![routes::woltlab_login, routes::health_check])
-        .mount("/users", routes![routes::hello, routes::test_database_conn])
+        .mount("/organizations", organizations::get_routes())
         .launch();
 }

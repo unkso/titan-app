@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
 
 const ELEMENTS = {
   'h1': 'h1',
@@ -18,28 +17,11 @@ const ELEMENTS = {
  * @deprecated
  */
 class Typography extends React.Component {
-  getStyles (elementName) {
-    let styles = {};
-    if (!this.props.theme.hasOwnProperty('typography')) {
-      return styles;
-    }
-
-    if (this.props.theme.typography.hasOwnProperty('text')) {
-      styles = { ...this.props.theme.typography.text };
-    }
-
-    if (this.props.theme.typography.hasOwnProperty(elementName)) {
-      styles = { ...this.props.theme.typography[elementName] };
-    }
-
-    return styles;
-  }
-
   render () {
     const Component = ELEMENTS[this.props.element];
-    const styles = this.getStyles(this.props.element);
+
     return (
-      <Component style={styles}>
+      <Component style={{ ...this.props.style }}>
         {this.props.children}
       </Component>
     );
@@ -56,4 +38,4 @@ Typography.defaultProps = {
   element: 'span'
 };
 
-export default withTheme(Typography);
+export default Typography;

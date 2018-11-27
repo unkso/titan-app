@@ -1,8 +1,8 @@
 {
-  "extends": ["semistandard", "semistandard-react"],
+  "extends": ["semistandard", "semistandard-react", "react-app"],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
-    "react/prop-types": [1, { "ignore": ["children"] }]
+    "semistandard-react/prop-types": [1, { "ignore": ["children", "theme"] }]
   },
   "globals": {
     "localStorage": true

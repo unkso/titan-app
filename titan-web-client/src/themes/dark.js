@@ -23,6 +23,10 @@ export default {
       light: '#fff',
       main: '#fff',
       dark: '#e9e9e9'
-    }
+    },
+    success: '#4caf50',
+    warning: '#ffc107',
+    danger: '#f44336',
+    info: '#2196f3'
   }
 };

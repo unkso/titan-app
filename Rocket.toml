@@ -1,5 +1,6 @@
 [development]
 auth_key = "dummy_key"
+avatar_base_url = "https://clanunknownsoldiers.com/wcf/images/avatars"
 
 [development.databases.unkso_main_forums]
 url = "mysql://root@localhost/unkso_main_forums"
