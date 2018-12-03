@@ -152,6 +152,27 @@ table! {
     }
 }
 
+table! {
+    user_file_entry_types (id) {
+        id -> Integer,
+        name -> Varchar,
+    }
+}
+
+table! {
+    user_file_entries (id) {
+        id -> Integer,
+        user_file_entry_type_id -> Integer,
+        user_id -> Integer,
+        start_date -> Datetime,
+        end_date -> Datetime,
+        comments -> Varchar,
+        date_modified -> Nullable<Datetime>,
+        modified_by -> Nullable<Integer>,
+    }
+}
+
+joinable!(user_file_entries -> user_file_entry_types (user_file_entry_type_id));
 joinable!(wcf1_user_option_value -> wcf1_user (user_id));
 joinable!(wcf1_user_avatar -> wcf1_user (user_id));
 joinable!(wcf1_user_option_value -> wcf1_user_avatar (user_avatar_id));
@@ -164,4 +185,9 @@ allow_tables_to_appear_in_same_query!(
     wcf1_user_group,
     wcf1_user_activity_event,
     wcf1_user_avatar,
+);
+
+allow_tables_to_appear_in_same_query!(
+    user_file_entries,
+    user_file_entry_types,
 );

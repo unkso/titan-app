@@ -52,7 +52,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
         match parsed_token {
             Ok(result) => {
                 let user: models::WcfUser = wcf1_user::table.find(
-                    result.1["user"]["user_id"].to_string().parse::<i32>().unwrap()
+                    result.1["user"]["wcf_id"].to_string().parse::<i32>().unwrap()
                 )
                 .first(&*db)
                 .unwrap();

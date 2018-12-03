@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
+import styled from 'styled-components';
+
+const PageHeaderTitleStyle = styled.div`
+  padding: 16px 24px;
+`;
 
 class PageHeaderTitle extends React.Component {
   render () {
     return (
-      <div>
+      <PageHeaderTitleStyle>
         <Typography variant="h1">{this.props.title}</Typography>
-      </div>
+      </PageHeaderTitleStyle>
     );
   }
 }

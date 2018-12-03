@@ -8,7 +8,9 @@ use super::schema::{
     wcf1_user_to_group,
     wcf1_user_activity_event,
     titan_organizations,
-    titan_users
+    titan_users,
+    user_file_entries,
+    user_file_entry_types
 };
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
@@ -185,4 +187,85 @@ pub struct TitanUser {
     pub modified_by: Option<i32>,
     pub last_activity: chrono::NaiveDateTime,
     pub is_active: bool
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct TitanUserProfile {
+    pub id: i32,
+    pub wcf_id: i32,
+    pub legacy_player_id: Option<i32>,
+    pub rank_id: Option<i32>,
+    pub username: String,
+    pub orientation: Option<i32>,
+    pub bct_e0: Option<i32>,
+    pub bct_e1: Option<i32>,
+    pub bct_e2: Option<i32>,
+    pub bct_e3: Option<i32>,
+    pub loa: Option<i32>,
+    pub a15: Option<i32>,
+    pub date_joined: Option<chrono::NaiveDateTime>,
+    pub last_activity: chrono::NaiveDateTime,
+    pub wcf: WcfUserProfile
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct WcfUserProfile {
+    pub avatar_url: Option<String>,
+    pub last_activity_time: i32,
+    pub user_title: String,
+    pub username: String,
+}
+
+#[derive(Serialize, Deserialize)]
+#[table_name = "user_file_entry_types"]
+#[primary_key(id)]
+pub struct NewUserFileEntryType {
+    pub name: String
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "user_file_entry_types"]
+#[primary_key(id)]
+pub struct UserFileEntryType {
+    pub id: i32,
+    pub name: String
+}
+
+#[derive(Insertable)]
+#[table_name = "user_file_entries"]
+pub struct NewUserFileEntry {
+    pub user_file_entry_type_id: i32,
+    pub user_id: i32,
+    pub start_date: chrono::NaiveDateTime,
+    pub end_date: chrono::NaiveDateTime,
+    pub comments: String,
+    pub date_modified: Option<chrono::NaiveDateTime>,
+    pub modified_by: Option<i32>
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "user_file_entries"]
+#[primary_key(id)]
+#[belongs_to(UserFileEntryType, foreign_key="user_file_entry_type_id")]
+pub struct UserFileEntry {
+    pub id: i32,
+    pub user_file_entry_type_id: i32,
+    pub user_id: i32,
+    pub start_date: chrono::NaiveDateTime,
+    pub end_date: chrono::NaiveDateTime,
+    pub comments: String,
+    pub date_modified: Option<chrono::NaiveDateTime>,
+    pub modified_by: Option<i32>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UserFileEntryWithType {
+    pub id: i32,
+    pub file_entry_type: UserFileEntryType,
+    pub user_id: i32,
+    pub start_date: chrono::NaiveDateTime,
+    pub end_date: chrono::NaiveDateTime,
+    pub comments: String,
+    pub date_modified: Option<chrono::NaiveDateTime>,
+    pub modified_by: Option<i32>
 }
