@@ -35,3 +35,39 @@ pub fn find_by_user(
 
     Ok(file_entries)
 }
+
+/// Queries the last inserted file entry.
+pub fn find_most_recent(
+    titan_db: &MysqlConnection
+) -> Result<models::UserFileEntry, diesel::result::Error> {
+    schema::user_file_entries::table
+        .order_by(schema::user_file_entries::id.desc())
+        .first(titan_db)
+}
+
+/// Creates a new file entry.
+pub fn create_file_entry(
+    new_file_entry: &models::NewUserFileEntry,
+    titan_db: &MysqlConnection
+) -> Result<models::UserFileEntryWithType, diesel::result::Error> {
+    diesel::insert_into(schema::user_file_entries::table)
+        .values(new_file_entry)
+        .execute(titan_db);
+
+    let last_inserted = find_most_recent(titan_db)?;
+    let entry_type = file_entry_types::find_by_id(
+        last_inserted.user_file_entry_type_id,
+        titan_db
+    )?;
+
+    Ok(models::UserFileEntryWithType {
+        id: last_inserted.id,
+        file_entry_type: entry_type,
+        user_id: last_inserted.user_id,
+        start_date: last_inserted.start_date,
+        end_date: last_inserted.end_date,
+        comments: last_inserted.comments,
+        date_modified: last_inserted.date_modified,
+        modified_by: last_inserted.modified_by
+    })
+}

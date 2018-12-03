@@ -13,3 +13,12 @@ pub fn find_by_id(
         .find(file_entry_type_id)
         .first::<models::UserFileEntryType>(titan_primary);
 }
+
+/// Queries all file entry types.
+pub fn find_file_entry_types(
+    titan_db: &MysqlConnection
+) -> Result<Vec<models::UserFileEntryType>, diesel::result::Error> {
+    schema::user_file_entry_types::table
+        .order_by(schema::user_file_entry_types::name.asc())
+        .get_results(titan_db)
+}

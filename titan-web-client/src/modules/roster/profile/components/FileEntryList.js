@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/es/Typography/Typography';
-import dateFns from 'date-fns';
+import { format as formatDate } from 'date-fns';
 import FileEntry from 'titan/modules/roster/profile/components/FileEntry';
 import Column from 'titan/components/Grid/Column';
 import Row from 'titan/components/Grid/Row';
@@ -22,10 +22,10 @@ class FileEntryList extends React.Component {
 
       if (isNewMonth) {
         list.push(
-          <Row gutter={8}>
+          <Row key={`month-title-${x}`} gutter={8}>
             <Column grow={1}>
               <Typography variant="h3">
-                <span>{dateFns.format(this.props.items[x].start_date, 'MMMM YYYY')}</span>
+                <span>{formatDate(this.props.items[x].start_date, 'MMMM yyyy')}</span>
               </Typography>
             </Column>
           </Row>
@@ -33,7 +33,7 @@ class FileEntryList extends React.Component {
       }
 
       list.push(
-        <Row gutter={4}>
+        <Row key={x} gutter={4}>
           <Column grow={1}>
             <FileEntry
               type={this.props.items[x].file_entry_type.name}
@@ -50,7 +50,7 @@ class FileEntryList extends React.Component {
 }
 
 FileEntryList.propTypes = {
-  items: PropTypes.object
+  items: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default FileEntryList;

@@ -13,28 +13,19 @@ import DialogActions from '@material-ui/core/es/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTheme } from '@material-ui/core/styles';
-
-export const FILE_ENTRY_A15 = 'A-15';
-export const FILE_ENTRY_APP_DENIED = 'Application Denied';
-export const FILE_ENTRY_APP_WITHDRAWN = 'Application Withdrawn';
-export const FILE_ENTRY_AWARD = 'Award/Commendation';
-export const FILE_ENTRY_AWOL = 'AWOL / NUA (Notice of Unauthorized Abscence)';
-export const FILE_ENTRY_DEMOTION = 'Demotion';
-export const FILE_ENTRY_DISCHARGE = 'Discharge';
-export const FILE_ENTRY_BCT_E0_COMPLETE = 'E-0 BCT Complete';
-export const FILE_ENTRY_BCT_E1_COMPLETE = 'E-1 BCT Complete';
-export const FILE_ENTRY_BCT_E2_COMPLETE = 'E-2 BCT Complete';
-export const FILE_ENTRY_BCT_E3_COMPLETE = 'E-3 BCT AIT Complete';
-export const FILE_ENTRY_LOA = 'LOA';
-export const FILE_ENTRY_MOS_QUALIFICATION = 'MOS Qualification';
-export const FILE_ENTRY_NCO_ACADEMY_COMPLETE = 'NCO Academy Complete';
-export const FILE_ENTRY_NCO_MEETING = 'NCO Meeting';
-export const FILE_ENTRY_NOI = 'NOI: Notice of Inactivity';
-export const FILE_ENTRY_PASS_JCS_INTERVIEW = 'Pass JCS Interview';
-export const FILE_ENTRY_RETIRED = 'Retired';
-export const FILE_ENTRY_TRANSFER = 'Transfer';
-
-export const FILE_ENTRY_PROMOTION = 'Promotion';
+import {
+  FILE_ENTRY_A15,
+  FILE_ENTRY_APP_DENIED,
+  FILE_ENTRY_APP_WITHDRAWN,
+  FILE_ENTRY_AWARD, FILE_ENTRY_AWOL,
+  FILE_ENTRY_BCT_E0_COMPLETE,
+  FILE_ENTRY_BCT_E1_COMPLETE,
+  FILE_ENTRY_BCT_E2_COMPLETE,
+  FILE_ENTRY_BCT_E3_COMPLETE,
+  FILE_ENTRY_PASS_JCS_INTERVIEW,
+  FILE_ENTRY_PROMOTION,
+  FILE_ENTRY_TRANSFER
+} from 'titan/modules/roster/constants';
 
 class FileEntry extends React.Component {
   constructor (props) {
@@ -59,6 +50,11 @@ class FileEntry extends React.Component {
         return {
           color: this.props.theme.palette.danger,
           icon: <FontAwesomeIcon icon="ban" />
+        };
+      case FILE_ENTRY_AWOL:
+        return {
+          color: this.props.theme.palette.danger,
+          icon: <FontAwesomeIcon icon="info" />
         };
       case FILE_ENTRY_AWARD:
         return {

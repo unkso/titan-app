@@ -4,9 +4,9 @@ use frank_jwt::{decode, Algorithm};
 use rocket::State;
 use super::config::AppConfig;
 use rocket_contrib::json::JsonValue;
-use super::db::{UnksoMainForums};
+use super::db::{TitanPrimary};
 use super::models;
-use super::schema::wcf1_user;
+use super::schema;
 use diesel::RunQueryDsl;
 use diesel::query_dsl::filter_dsl::FindDsl;
 use super::models::WcfUser;
@@ -23,7 +23,7 @@ pub struct AuthCredentials {
 #[derive(Serialize, Deserialize)]
 pub struct AuthenticatedUser {
     pub credentials: AuthCredentials,
-    pub user: WcfUser
+    pub user: models::TitanUser
 }
 
 #[derive(Debug)]
@@ -35,7 +35,7 @@ pub enum AuthTokenError {
 impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
     type Error = AuthTokenError;
     fn from_request(request: &'a Request<'r>) -> rocket::request::Outcome<Self, Self::Error> {
-        let db = request.guard::<UnksoMainForums>().unwrap();
+        let db = request.guard::<TitanPrimary>().unwrap();
         let key = request.guard::<State<AppConfig>>().unwrap();
         let auth_headers: Vec<_> = request.headers().get("x-api-key").collect();
 
@@ -51,8 +51,8 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
 
         match parsed_token {
             Ok(result) => {
-                let user: models::WcfUser = wcf1_user::table.find(
-                    result.1["user"]["wcf_id"].to_string().parse::<i32>().unwrap()
+                let user: models::TitanUser = schema::titan_users::table.find(
+                    result.1["user"]["id"].to_string().parse::<i32>().unwrap()
                 )
                 .first(&*db)
                 .unwrap();
