@@ -1,5 +1,4 @@
 use rocket::http::Method;
-use rocket::{get, routes};
 use rocket_cors::{AllowedOrigins, Cors};
 
 pub fn cors() -> Cors {

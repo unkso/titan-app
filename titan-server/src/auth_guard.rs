@@ -1,4 +1,4 @@
-use rocket::request::{FromRequest, Outcome, Request};
+use rocket::request::{FromRequest, Request};
 use rocket::http::Status;
 use frank_jwt::{decode, Algorithm};
 use rocket::State;
@@ -23,7 +23,7 @@ pub struct AuthCredentials {
 #[derive(Serialize, Deserialize)]
 pub struct AuthenticatedUser {
     pub credentials: AuthCredentials,
-        user: WcfUser
+    pub user: WcfUser
 }
 
 #[derive(Debug)]

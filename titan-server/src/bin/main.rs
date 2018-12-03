@@ -14,6 +14,7 @@ use libtitan::routes;
 use libtitan::db;
 use libtitan::config;
 use libtitan::cors_fairing;
+use libtitan::accounts;
 use libtitan::organizations;
 
 fn main() {
@@ -28,7 +29,8 @@ fn main() {
                 Err(_) => Err(rocket),
             }
         }))
-        .mount("/auth", routes![routes::woltlab_login, routes::health_check])
+        .mount("/auth/pulse", routes![routes::health_check])
+        .mount("/auth", accounts::get_routes())
         .mount("/organizations", organizations::get_routes())
         .launch();
 }

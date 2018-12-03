@@ -1,6 +1,7 @@
 table! {
-    wcf1_user (userID) {
-        userID -> Integer,
+    wcf1_user (user_id) {
+        #[sql_name = "userID"]
+        user_id -> Integer,
         username -> Varchar,
         email -> Varchar,
         password -> Varchar,
@@ -128,6 +129,29 @@ table! {
     }
 }
 
+table! {
+    titan_users (id) {
+        id -> Integer,
+        wcf_id -> Integer,
+        legacy_player_id -> Nullable<Integer>,
+        rank_id -> Nullable<Integer>,
+        username -> Varchar,
+        orientation -> Nullable<Integer>,
+        bct_e0 -> Nullable<Integer>,
+        bct_e1 -> Nullable<Integer>,
+        bct_e2 -> Nullable<Integer>,
+        bct_e3 -> Nullable<Integer>,
+        loa -> Nullable<Integer>,
+        a15 -> Nullable<Integer>,
+        date_joined -> Nullable<Datetime>,
+        date_created -> Datetime,
+        date_modified -> Nullable<Datetime>,
+        modified_by -> Nullable<Integer>,
+        last_activity -> Datetime,
+        is_active -> Bool,
+    }
+}
+
 joinable!(wcf1_user_option_value -> wcf1_user (user_id));
 joinable!(wcf1_user_avatar -> wcf1_user (user_id));
 joinable!(wcf1_user_option_value -> wcf1_user_avatar (user_avatar_id));
@@ -139,5 +163,5 @@ allow_tables_to_appear_in_same_query!(
     wcf1_user,
     wcf1_user_group,
     wcf1_user_activity_event,
-    wcf1_user_avatar
+    wcf1_user_avatar,
 );

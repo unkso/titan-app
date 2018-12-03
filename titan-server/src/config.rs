@@ -1,4 +1,3 @@
-use rocket::Config;
 use rocket::config::ConfigError;
 
 pub struct AppConfig {
