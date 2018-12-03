@@ -29,14 +29,13 @@ class WoltlabLoginContainer extends React.Component {
     if (token && userId) {
       this.authService.login(parseInt(userId, 10), token)
         .then((res) => {
-          if (res.data.user) {
-            this.props.actions.auth.login(res.data);
-            window.location = '/dashboard';
-          } else {
-            this.setState({ loading: false });
-          }
+          this.props.actions.auth.login(res.data);
+          window.location = '/dashboard';
         })
         .catch(() => {
+          // TODO Update UI to indicate error state. This will silently hide
+          // errors that occur after the request is received, making it
+          // difficult to debug.
           this.setState({ loading: false });
         });
     } else {

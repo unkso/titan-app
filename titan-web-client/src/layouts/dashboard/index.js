@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle, withTheme } from 'styled-components';
 import Sidebar from './components/sidebar/Sidebar';
+import WithAcl from 'titan/components/Acl/WithAcl';
 
 export const DashboardWrapper = styled.div`
   width: 100%;

@@ -6,6 +6,7 @@ mod routes;
 pub mod users;
 pub mod file_entries;
 pub mod file_entry_types;
+pub mod acl;
 
 pub fn get_auth_routes() -> Vec<rocket::Route> {
     routes![

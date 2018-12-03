@@ -10,6 +10,7 @@ use auth_guard;
 use super::users;
 use super::file_entries;
 use super::file_entry_types;
+use accounts::acl;
 
 /** **************************************************
  *  Auth
@@ -25,7 +26,8 @@ pub struct WoltlabLoginResponse {
     pub token: String,
     pub user: models::TitanUser,
     pub wcf_username: String,
-    pub wcf_user_title: String
+    pub wcf_user_title: String,
+    pub acl: Vec<models::WcfAclOption>
 }
 
 #[post("/woltlab", format = "application/json", data = "<login_creds>")]
@@ -35,10 +37,12 @@ pub fn woltlab_login(
     login_creds: Json<WoltlabLoginRequest>,
     app_config: State<config::AppConfig>
 ) -> Result<Json<WoltlabLoginResponse>, status::NotFound<String>> {
+    let wcf_db = &*unkso_main;
+
     // @Todo Handle error state
     let wcf_user: models::WcfUser = users::wcf_find_by_user_id(
         login_creds.user_id,
-        &*unkso_main
+        wcf_db
     ).unwrap();
 
     let is_valid = woltlab_auth_helper::check_password(
@@ -73,11 +77,16 @@ pub fn woltlab_login(
         Algorithm::HS256
     );
 
+    let user_id = user.id;
     return Ok(Json(WoltlabLoginResponse {
         token: token.unwrap(),
         user,
         wcf_username: wcf_user.username,
-        wcf_user_title: wcf_user.user_title
+        wcf_user_title: wcf_user.user_title,
+        acl: match acl::get_user_acl(wcf_user.user_id, wcf_db) {
+            Ok(options) => options,
+            _ => vec!()
+        }
     }));
 }
 
