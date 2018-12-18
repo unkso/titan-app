@@ -1,3 +1,5 @@
+use chrono;
+
 // https://github.com/diesel-rs/diesel/issues/1785
 #[allow(proc_macro_derive_resolution_fallback)]
 use super::schema::{
@@ -5,9 +7,8 @@ use super::schema::{
     wcf1_user_group,
     wcf1_user_to_group,
     wcf1_user_activity_event,
-    wcf1_user_option_value,
-    wcf1_user_avatar,
-    titan_organizations
+    titan_organizations,
+    titan_users
 };
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
@@ -139,4 +140,49 @@ pub struct TitanOrganization {
     pub group_type: String,
     pub wcf_user_group_id: i32,
     pub is_enabled: bool
+}
+
+#[derive(Insertable)]
+#[table_name = "titan_users"]
+pub struct NewTitanUser {
+    pub wcf_id: i32,
+    pub legacy_player_id: Option<i32>,
+    pub rank_id: Option<i32>,
+    pub username: String,
+    pub orientation: Option<i32>,
+    pub bct_e0: Option<i32>,
+    pub bct_e1: Option<i32>,
+    pub bct_e2: Option<i32>,
+    pub bct_e3: Option<i32>,
+    pub loa: Option<i32>,
+    pub a15: Option<i32>,
+    pub date_joined: Option<chrono::NaiveDateTime>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: Option<chrono::NaiveDateTime>,
+    pub modified_by: Option<i32>,
+    pub last_activity: chrono::NaiveDateTime,
+    pub is_active: bool
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "titan_users"]
+pub struct TitanUser {
+    pub id: i32,
+    pub wcf_id: i32,
+    pub legacy_player_id: Option<i32>,
+    pub rank_id: Option<i32>,
+    pub username: String,
+    pub orientation: Option<i32>,
+    pub bct_e0: Option<i32>,
+    pub bct_e1: Option<i32>,
+    pub bct_e2: Option<i32>,
+    pub bct_e3: Option<i32>,
+    pub loa: Option<i32>,
+    pub a15: Option<i32>,
+    pub date_joined: Option<chrono::NaiveDateTime>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: Option<chrono::NaiveDateTime>,
+    pub modified_by: Option<i32>,
+    pub last_activity: chrono::NaiveDateTime,
+    pub is_active: bool
 }
