@@ -4,7 +4,15 @@ use diesel::prelude::*;
 use diesel::MysqlConnection;
 use chrono;
 
-/// Queries a single organization with the given slug.
+/// Finds a single user by ID
+pub fn find_by_id(
+    user_id: i32,
+    titan_db: &MysqlConnection
+) -> Result<models::TitanUser, diesel::result::Error> {
+    schema::titan_users::table.find(user_id).first(titan_db)
+}
+
+/// Finds a user with the given WCF id.
 pub fn find_by_wcf_id(
     wcf_id: i32,
     titan_primary: &MysqlConnection
@@ -67,4 +75,23 @@ pub fn create_if_not_exists(
         .execute(titan_primary);
 
     find_by_wcf_id(wcf_user.user_id, titan_primary)
+}
+
+/// Queries a single WCF user with the given id.
+pub fn wcf_find_by_user_id(
+    wcf_user_id: i32,
+    wcf_db: &MysqlConnection
+) -> QueryResult<models::WcfUser> {
+    return schema::wcf1_user::table
+        .filter(schema::wcf1_user::user_id.eq(wcf_user_id))
+        .first::<models::WcfUser>(wcf_db);
+}
+
+pub fn find_user_avatar(
+    wcf_id: i32,
+    wcf_db: &MysqlConnection
+) -> Result<models::WcfUserAvatar, diesel::result::Error> {
+    schema::wcf1_user_avatar::table
+        .filter(schema::wcf1_user_avatar::user_id.eq(wcf_id))
+        .first(wcf_db)
 }

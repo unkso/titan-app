@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 export const PageHeaderStyle = styled.header`
   background: #fff;
-  padding: 16px 24px;
   border-bottom: 1px solid #ddd;
 `;
 

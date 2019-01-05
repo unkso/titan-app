@@ -30,7 +30,8 @@ fn main() {
             }
         }))
         .mount("/auth/pulse", routes![routes::health_check])
-        .mount("/auth", accounts::get_routes())
+        .mount("/auth", accounts::get_auth_routes())
+        .mount("/users", accounts::get_user_routes())
         .mount("/organizations", organizations::get_routes())
         .launch();
 }

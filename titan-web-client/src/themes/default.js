@@ -95,6 +95,11 @@ export default {
             0px 1px 18px 0px rgba(0, 0, 0, 0.06)
         `
       }
+    },
+    MuiTab: {
+      selected: {
+        borderColor: '#ff6600'
+      }
     }
   }
 };
