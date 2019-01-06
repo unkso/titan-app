@@ -27,8 +27,7 @@ pub fn find_users(
             wcf1_user::table.inner_join(wcf1_user_avatar::table)
         )
         .select((wcf1_user::all_columns, wcf1_user_avatar::all_columns))
-        .filter(schema::wcf1_user_to_group::group_id.eq(organization.wcf_user_group_id))
-        .group_by(wcf1_user::user_id);
+        .filter(schema::wcf1_user_to_group::group_id.eq(organization.wcf_user_group_id));
 
     users_query.load::<(models::WcfUser, models::WcfUserAvatar)>(&*unkso_main)
 }
