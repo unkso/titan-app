@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS titan_users (
+CREATE TABLE IF NOT EXISTS users (
   id               INT AUTO_INCREMENT PRIMARY KEY,
   wcf_id           INT UNIQUE,
   legacy_player_id INT,

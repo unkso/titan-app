@@ -51,7 +51,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
 
         match parsed_token {
             Ok(result) => {
-                let user: models::TitanUser = schema::titan_users::table.find(
+                let user: models::TitanUser = schema::users::table.find(
                     result.1["user"]["id"].to_string().parse::<i32>().unwrap()
                 )
                 .first(&*db)

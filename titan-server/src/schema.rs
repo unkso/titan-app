@@ -119,7 +119,7 @@ table! {
 }
 
 table! {
-    titan_organizations (id) {
+    organizations (id) {
         id -> Integer,
         name -> Varchar,
         slug -> Varchar,
@@ -130,7 +130,7 @@ table! {
 }
 
 table! {
-    titan_users (id) {
+    users (id) {
         id -> Integer,
         wcf_id -> Integer,
         legacy_player_id -> Nullable<Integer>,

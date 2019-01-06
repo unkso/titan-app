@@ -11,9 +11,9 @@ pub fn find_by_slug(
     slug: &str,
     unkso_titan: TitanPrimary
 ) -> QueryResult<models::TitanOrganization> {
-    return schema::titan_organizations::table
-        .filter(schema::titan_organizations::is_enabled.eq(true))
-        .filter(schema::titan_organizations::slug.eq(slug))
+    return schema::organizations::table
+        .filter(schema::organizations::is_enabled.eq(true))
+        .filter(schema::organizations::slug.eq(slug))
         .first::<models::TitanOrganization>(&*unkso_titan);
 }
 
