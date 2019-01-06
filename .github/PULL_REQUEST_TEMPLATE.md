@@ -7,6 +7,7 @@
 - [ ] Removed debug code.
 - [ ] Included screenshot if applicable.
 - [ ] Squashed changes into a single commit.
+- [ ] If adding new routes to the frontend application, specify them below for testing
 
     ```
     git rebase -i $(git merge-base HEAD master)
