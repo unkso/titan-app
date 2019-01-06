@@ -14,13 +14,15 @@ import UsersService from 'titan/http/UsersService';
 import * as profileActions from 'titan/actions/profileActions';
 import FileEntryListContainer
   from 'titan/modules/roster/profile/containers/FileEntryListContainer';
+import CreateFileEntryContainer
+  from 'titan/modules/roster/profile/containers/CreateFileEntryContainer';
+import Typography from '@material-ui/core/Typography/Typography';
 
 class Profile extends React.Component {
   constructor (props) {
     super(props);
 
     this.state = { tab: 0 };
-
     this.usersService = new UsersService();
     this.changeTabHandler = this.setTab.bind(this);
   }
@@ -59,7 +61,14 @@ class Profile extends React.Component {
         </PageHeader>
         <ContentBlock>
           {this.state.tab === 0 && <GeneralProfile />}
-          {this.state.tab === 1 && <FileEntryListContainer />}
+          {this.state.tab === 1 && (
+            <React.Fragment>
+              <Typography align="right">
+                <CreateFileEntryContainer />
+              </Typography>
+              <FileEntryListContainer />
+            </React.Fragment>
+          )}
         </ContentBlock>
       </div>
     );

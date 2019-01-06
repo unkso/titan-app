@@ -16,6 +16,8 @@ pub fn get_auth_routes() -> Vec<rocket::Route> {
 pub fn get_user_routes() -> Vec<rocket::Route> {
     routes![
         routes::get_user,
+        routes::save_user_file_entry,
+        routes::list_user_file_entry_types,
         routes::list_user_file_entries
     ]
 }

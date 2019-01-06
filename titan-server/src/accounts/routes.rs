@@ -9,6 +9,7 @@ use models;
 use auth_guard;
 use super::users;
 use super::file_entries;
+use super::file_entry_types;
 
 /** **************************************************
  *  Auth
@@ -138,6 +139,19 @@ pub fn get_user(
     ))
 }
 
+#[get("/file-entry-types")]
+pub fn list_user_file_entry_types(
+    titan_db: TitanPrimary
+) -> Result<Json<Vec<models::UserFileEntryType>>, status::BadRequest<String>> {
+    let file_entries_res= file_entry_types::find_file_entry_types(&*titan_db);
+
+    if file_entries_res.is_err() {
+        return Err(status::BadRequest(Some("Failed to load file entries.".to_string())));
+    }
+
+    Ok(Json(file_entries_res.unwrap()))
+}
+
 #[derive(Serialize)]
 pub struct ListUserFileEntriesResponse {
     pub items: Vec<models::UserFileEntryWithType>
@@ -161,4 +175,45 @@ pub fn list_user_file_entries(
     }
 
     Err(status::NotFound("".to_string()))
+}
+
+#[derive(Deserialize)]
+pub struct CreateUserFileEntry {
+    file_entry_type_id: i32,
+    start_date: chrono::NaiveDateTime,
+    end_date: chrono::NaiveDateTime,
+    comments: String
+}
+
+#[derive(Serialize)]
+pub struct CreateUserFileEntryResponse {
+    file_entry: models::UserFileEntryWithType
+}
+
+#[post("/<user_id>/file-entries", format = "application/json", data = "<file_entry_form>")]
+pub fn save_user_file_entry(
+    user_id: i32,
+    file_entry_form: Json<CreateUserFileEntry>,
+    titan_db: TitanPrimary,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Result<Json<CreateUserFileEntryResponse>, status::BadRequest<String>> {
+    let new_file_entry = models::NewUserFileEntry {
+        user_id,
+        user_file_entry_type_id: file_entry_form.file_entry_type_id,
+        start_date: file_entry_form.start_date,
+        end_date: file_entry_form.end_date,
+        comments: file_entry_form.comments.to_string(),
+        modified_by: Some(auth_user.user.id),
+        date_modified: Some(chrono::Utc::now().naive_utc())
+    };
+
+    let created_file_entry_res = file_entries::create_file_entry(&new_file_entry, &*titan_db);
+
+    if created_file_entry_res.is_err() {
+        return Err(status::BadRequest(Some("Failed to save file entry.".to_string())))
+    }
+
+    Ok(Json(CreateUserFileEntryResponse {
+        file_entry: created_file_entry_res.unwrap()
+    }))
 }

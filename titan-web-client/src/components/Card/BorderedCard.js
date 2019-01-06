@@ -12,7 +12,14 @@ import Paper from '@material-ui/core/Paper/Paper';
  * @link https://github.com/styled-components/styled-components/issues/1198#issuecomment-425650423
  */
 export const BorderedCardStyle = styled(
-  ({ actionable, ...props }) => <Paper {...props} />)`
+  ({
+    actionable,
+    highlightTop,
+    highlightRight,
+    highlightBottom,
+    highlightLeft,
+    ...props
+  }) => <Paper {...props} />)`
   cursor: ${props => props.actionable ? 'pointer' : 'normal'};
   transition: box-shadow 200ms ease-in-out;
   border-top: ${props => props.highlightTop

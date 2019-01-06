@@ -11,6 +11,8 @@ import {
   ROUTE_TYPE_UNAUTHENTICATED
 } from 'titan/lib/routing';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const defaultMuiTheme = createMuiTheme(defaultTheme);
 
@@ -76,15 +78,17 @@ class TitanApp extends React.Component {
     return (
       <ThemeProvider theme={defaultTheme}>
         <MuiThemeProvider theme={defaultMuiTheme}>
-          <div id="app-root">
-            <Provider store={this.props.context.getStore()}>
-              <BrowserRouter>
-                <Switch>
-                  {this.renderRoutes(this.props.context.getRoutes())}
-                </Switch>
-              </BrowserRouter>
-            </Provider>
-          </div>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <div id="app-root">
+              <Provider store={this.props.context.getStore()}>
+                <BrowserRouter>
+                  <Switch>
+                    {this.renderRoutes(this.props.context.getRoutes())}
+                  </Switch>
+                </BrowserRouter>
+              </Provider>
+            </div>
+          </MuiPickersUtilsProvider>
         </MuiThemeProvider>
       </ThemeProvider>
     );

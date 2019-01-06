@@ -16,6 +16,26 @@ class UsersService {
   }
 
   /**
+   * Lists file entry types.
+   *
+   * @returns {*}
+   */
+  listUserFileEntryTypes () {
+    return this.httpClient.get(`/users/file-entry-types`);
+  }
+
+  /**
+   * Save file entry.
+   *
+   * @param {string} userId - Titan user ID.
+   * @param {{start_date, end_date, comments, file_entry_type_id}} fileEntry
+   * @returns {Promise}
+   */
+  saveUserFileEntry (userId, fileEntry) {
+    return this.httpClient.post(`/users/${userId}/file-entries`, fileEntry);
+  }
+
+  /**
    * Lists all of a user's file entries.
    *
    * @param {string} userId - Titan user ID.
