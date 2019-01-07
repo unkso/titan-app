@@ -7,8 +7,8 @@ use super::schema::{
     wcf1_user_group,
     wcf1_user_to_group,
     wcf1_user_activity_event,
-    titan_organizations,
-    titan_users,
+    organizations,
+    users,
     user_file_entries,
     user_file_entry_types
 };
@@ -134,7 +134,7 @@ pub struct WcfBranch {
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
-#[table_name = "titan_organizations"]
+#[table_name = "organizations"]
 pub struct TitanOrganization {
     pub id: i32,
     pub name: String,
@@ -145,7 +145,7 @@ pub struct TitanOrganization {
 }
 
 #[derive(Insertable)]
-#[table_name = "titan_users"]
+#[table_name = "users"]
 pub struct NewTitanUser {
     pub wcf_id: i32,
     pub legacy_player_id: Option<i32>,
@@ -167,7 +167,7 @@ pub struct NewTitanUser {
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
-#[table_name = "titan_users"]
+#[table_name = "users"]
 pub struct TitanUser {
     pub id: i32,
     pub wcf_id: i32,

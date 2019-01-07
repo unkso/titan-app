@@ -9,7 +9,7 @@ pub fn find_by_id(
     user_id: i32,
     titan_db: &MysqlConnection
 ) -> Result<models::TitanUser, diesel::result::Error> {
-    schema::titan_users::table.find(user_id).first(titan_db)
+    schema::users::table.find(user_id).first(titan_db)
 }
 
 /// Finds a user with the given WCF id.
@@ -17,8 +17,8 @@ pub fn find_by_wcf_id(
     wcf_id: i32,
     titan_primary: &MysqlConnection
 ) -> QueryResult<models::TitanUser> {
-    return schema::titan_users::table
-        .filter(schema::titan_users::wcf_id.eq(wcf_id))
+    return schema::users::table
+        .filter(schema::users::wcf_id.eq(wcf_id))
         .first::<models::TitanUser>(titan_primary);
 }
 
@@ -27,8 +27,8 @@ pub fn create_if_not_exists(
     wcf_user: &models::WcfUser,
     titan_primary: &MysqlConnection
 ) -> QueryResult<models::TitanUser> {
-    let user = schema::titan_users::table
-        .filter(schema::titan_users::wcf_id.eq(wcf_user.user_id))
+    let user = schema::users::table
+        .filter(schema::users::wcf_id.eq(wcf_user.user_id))
         .first::<models::TitanUser>(titan_primary);
 
     if user.is_ok() {
@@ -70,7 +70,7 @@ pub fn create_if_not_exists(
         is_active: true
     };
 
-    diesel::insert_into(schema::titan_users::table)
+    diesel::insert_into(schema::users::table)
         .values(&new_user)
         .execute(titan_primary);
 
