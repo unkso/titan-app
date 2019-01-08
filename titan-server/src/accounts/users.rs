@@ -72,7 +72,7 @@ pub fn create_if_not_exists(
 
     diesel::insert_into(schema::users::table)
         .values(&new_user)
-        .execute(titan_primary);
+        .execute(titan_primary)?;
 
     find_by_wcf_id(wcf_user.user_id, titan_primary)
 }

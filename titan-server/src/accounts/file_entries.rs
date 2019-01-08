@@ -52,7 +52,7 @@ pub fn create_file_entry(
 ) -> Result<models::UserFileEntryWithType, diesel::result::Error> {
     diesel::insert_into(schema::user_file_entries::table)
         .values(new_file_entry)
-        .execute(titan_db);
+        .execute(titan_db)?;
 
     let last_inserted = find_most_recent(titan_db)?;
     let entry_type = file_entry_types::find_by_id(

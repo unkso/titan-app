@@ -77,7 +77,6 @@ pub fn woltlab_login(
         Algorithm::HS256
     );
 
-    let user_id = user.id;
     return Ok(Json(WoltlabLoginResponse {
         token: token.unwrap(),
         user,
@@ -170,7 +169,7 @@ pub struct ListUserFileEntriesResponse {
 pub fn list_user_file_entries(
     user_id: i32,
     titan_primary: TitanPrimary,
-    auth_user: auth_guard::AuthenticatedUser
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> Result<Json<ListUserFileEntriesResponse>, status::NotFound<String>> {
     let file_entries = file_entries::find_by_user(
         user_id,

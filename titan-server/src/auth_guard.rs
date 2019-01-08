@@ -9,7 +9,6 @@ use super::models;
 use super::schema;
 use diesel::RunQueryDsl;
 use diesel::query_dsl::filter_dsl::FindDsl;
-use super::models::WcfUser;
 use super::accounts::acl;
 
 pub struct SecretKey(String);
