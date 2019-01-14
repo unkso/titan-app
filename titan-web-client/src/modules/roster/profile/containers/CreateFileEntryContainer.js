@@ -12,6 +12,7 @@ import { format as formatDate } from 'date-fns';
 import CreateFileEntryForm
   from 'titan/modules/roster/profile/components/CreateFileEntryForm';
 import { MULTI_DATE_FILE_ENTRY_TYPES } from 'titan/modules/roster/constants';
+import WithAcl from 'titan/components/Acl/WithAcl';
 
 class CreateFileEntryContainer extends React.Component {
   constructor (props) {
@@ -87,10 +88,12 @@ class CreateFileEntryContainer extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.openDialogHandler}>Add Entry</Button>
+        <WithAcl options={['titan.user:canCreateFileEntry']}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.openDialogHandler}>Add Entry</Button>
+        </WithAcl>
 
         <Dialog open={this.state.open} fullWidth>
           <DialogTitle>Add File Entry</DialogTitle>

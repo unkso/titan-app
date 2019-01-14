@@ -119,6 +119,55 @@ table! {
 }
 
 table! {
+    wcf1_acl_option_category (id) {
+        #[sql_name = "categoryID"]
+        id -> Integer,
+
+        #[sql_name = "categoryName"]
+        category_name -> Varchar,
+    }
+}
+
+table! {
+    wcf1_acl_option (id) {
+        #[sql_name = "optionID"]
+        id -> Integer,
+
+        #[sql_name = "optionName"]
+        option_name -> Varchar,
+
+        #[sql_name = "categoryName"]
+        category_name -> Varchar,
+    }
+}
+
+table! {
+    wcf1_acl_option_to_user (option_id, user_id) {
+        #[sql_name = "optionID"]
+        option_id -> Integer,
+
+        #[sql_name = "userID"]
+        user_id -> Integer,
+
+        #[sql_name = "optionValue"]
+        option_value -> Bool,
+    }
+}
+
+table! {
+    wcf1_acl_option_to_group (option_id, group_id) {
+        #[sql_name = "optionID"]
+        option_id -> Integer,
+
+        #[sql_name = "groupID"]
+        group_id -> Integer,
+
+        #[sql_name = "optionValue"]
+        option_value -> Bool,
+    }
+}
+
+table! {
     organizations (id) {
         id -> Integer,
         name -> Varchar,
@@ -190,4 +239,9 @@ allow_tables_to_appear_in_same_query!(
 allow_tables_to_appear_in_same_query!(
     user_file_entries,
     user_file_entry_types,
+);
+
+allow_tables_to_appear_in_same_query!(
+    wcf1_user_to_group,
+    wcf1_acl_option_to_group
 );

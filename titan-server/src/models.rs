@@ -9,6 +9,9 @@ use super::schema::{
     wcf1_user_activity_event,
     organizations,
     users,
+    wcf1_acl_option_category,
+    wcf1_acl_option_to_group,
+    wcf1_acl_option_to_user,
     user_file_entries,
     user_file_entry_types
 };
@@ -74,7 +77,7 @@ pub struct WcfUserGroup {
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "wcf1_user_to_group"]
 #[primary_key(group_id, user_id)]
-#[belongs_to(WcfUserGroup, foreign_key="WcfUserGroup")]
+#[belongs_to(WcfUserGroup, foreign_key="group_id")]
 #[belongs_to(WcfUser, foreign_key="user_id")]
 pub struct WcfUserToGroup {
     pub group_id: i32,
@@ -122,6 +125,46 @@ impl WcfUserAvatar {
             &self.file_hash
         );
     }
+}
+
+#[derive(Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_acl_option_category"]
+#[primary_key(id)]
+pub struct WcfAclOptionCategory {
+    id: i32,
+    category_name: String
+}
+
+#[derive(Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_acl_option"]
+#[primary_key(id)]
+pub struct WcfAclOption {
+    id: i32,
+    option_name: String,
+    category_name: String
+}
+
+#[derive(Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_acl_option_to_group"]
+pub struct WcfAclOptionToGroup {
+    option_id: i32,
+    group_id: i32,
+    option_value: bool
+}
+
+#[derive(Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_acl_option_to_user"]
+#[primary_key(option_id, user_id)]
+pub struct WcfAclOptionToUser {
+    option_id: i32,
+    user_id: i32,
+    option_value: bool
+}
+
+#[derive(Serialize, Queryable)]
+pub struct UserAclEntry {
+    group_id: i32,
+    option_id: i32
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
