@@ -77,6 +77,7 @@ pub fn woltlab_login(
         Algorithm::HS256
     );
 
+    let user_id = user.id;
     return Ok(Json(WoltlabLoginResponse {
         token: token.unwrap(),
         user,

@@ -1,5 +1,6 @@
 import Auth from './auth';
 import Roster from './roster';
+import Organizations from './organizations';
 
 /**
  * Add the default export for new modules to this array. The module should
@@ -14,5 +15,6 @@ import Roster from './roster';
  */
 export default [
   Auth,
-  Roster
+  Roster,
+  Organizations
 ];

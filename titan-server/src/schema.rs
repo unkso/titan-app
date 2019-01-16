@@ -173,6 +173,7 @@ table! {
         name -> Varchar,
         slug -> Varchar,
         group_type -> Varchar,
+        parent_id -> Nullable<Integer>,
         wcf_user_group_id -> Integer,
         is_enabled -> Bool,
     }

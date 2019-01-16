@@ -1,0 +1,1 @@
+ALTER TABLE titan_organizations DROP COLUMN parent_id;

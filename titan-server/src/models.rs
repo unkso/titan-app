@@ -9,6 +9,9 @@ use super::schema::{
     wcf1_user_activity_event,
     organizations,
     users,
+    wcf1_acl_option_category,
+    wcf1_acl_option_to_group,
+    wcf1_acl_option_to_user,
     user_file_entries,
     user_file_entry_types
 };
@@ -165,6 +168,7 @@ pub struct TitanOrganization {
     pub name: String,
     pub slug: String,
     pub group_type: String,
+    pub parent_id: Option<i32>,
     pub wcf_user_group_id: i32,
     pub is_enabled: bool
 }

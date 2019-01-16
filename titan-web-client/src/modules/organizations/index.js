@@ -1,20 +1,17 @@
 import { createStateReducer } from 'titan/lib/redux/stateReducer';
 import { DashboardLayout } from 'titan/layouts';
 import { ROUTE_TYPE_AUTHENTICATED } from 'titan/lib/routing';
-import ProfileScene from 'titan/modules/roster/profile';
-import profileReducer from 'titan/reducers/profileReducer';
+import OverviewScene from './overview';
 
 export default function () {
   return {
-    name: 'roster',
-    reducer: createStateReducer({
-      profile: profileReducer
-    }),
+    name: 'organizations',
+    reducer: createStateReducer([]),
     routes: [
       {
         layout: DashboardLayout,
-        path: '/roster/:userId',
-        scene: ProfileScene,
+        path: '/organizations/:type/:name',
+        scene: OverviewScene,
         type: ROUTE_TYPE_AUTHENTICATED
       }
     ]

@@ -1,5 +1,6 @@
 use rocket::State;
 use rocket::http::RawStr;
+use rocket::request::Form;
 use rocket::response::status;
 use rocket_contrib::json::Json;
 use db::{UnksoMainForums, TitanPrimary};
@@ -19,34 +20,66 @@ pub struct FindOrganizationResponse {
     users: Vec<OrganizationUser>
 }
 
-#[get("/<slug>")]
-pub fn find_organization(
-    slug: &RawStr,
-    unkso_main: UnksoMainForums,
-    unkso_titan: TitanPrimary,
-    app_config: State<config::AppConfig>
-) -> Result<Json<FindOrganizationResponse>, status::NotFound<String>> {
-    let organization_result = organizations::organizations::find_by_slug(
-        slug.as_str(),
-        unkso_titan
+#[get("/<group_type>/<group>", rank = 1)]
+pub fn find_organization_group(
+    group_type: String,
+    group: String,
+    titan_db: TitanPrimary
+) -> Result<Json<models::TitanOrganization>, status::NotFound<String>> {
+    let org = organizations::organizations::find_by_path(
+        &group_type,
+        &vec![&*group],
+        &*titan_db
     );
 
-    if organization_result.is_err() {
+    if org.is_none() {
         return Err(status::NotFound("".to_string()))
     }
 
-    let organization = organization_result.unwrap();
-    let users_query = organizations::organizations::find_users(
-        &organization,
-        unkso_main
+    Ok(Json(org.unwrap()))
+}
+
+#[get("/<group_type>/<group>/<unit>")]
+pub fn find_organization_group_unit(
+    group_type: String,
+    group: String,
+    unit: String,
+    titan_db: TitanPrimary
+) -> Result<Json<models::TitanOrganization>, status::NotFound<String>> {
+    let org = organizations::organizations::find_by_path(
+        &group_type,
+        &vec![&*group, &*unit],
+        &*titan_db
     );
+
+    if org.is_none() {
+        return Err(status::NotFound("".to_string()))
+    }
+
+    Ok(Json(org.unwrap()))
+}
+
+#[get("/<id>/users", rank = 0)]
+pub fn find_organization_users(
+    id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Result<Json<Vec<OrganizationUser>>, status::NotFound<String>> {
+    let titan_db_ref = &*titan_db;
+    let users_query = organizations::organizations::find_users(
+        id,
+        titan_db_ref,
+        &*wcf_db
+    );
+
+    if users_query.is_err() {
+        return Err(status::NotFound("".to_string()))
+    }
 
     let mut users: Vec<OrganizationUser>= vec![];
     if users_query.is_ok() {
         let users_result = users_query.unwrap();
-
-        // @todo Many other parts of the application will use this logic. Move to a common module
-        // so other modules have access to it.
         for user in users_result {
             users.push(OrganizationUser {
                 user: user.0,
@@ -55,8 +88,5 @@ pub fn find_organization(
         }
     }
 
-    Ok(Json(FindOrganizationResponse {
-        organization,
-        users
-    }))
+    Ok(Json(users))
 }
