@@ -9,9 +9,6 @@ use super::schema::{
     wcf1_user_activity_event,
     organizations,
     users,
-    wcf1_acl_option_category,
-    wcf1_acl_option_to_group,
-    wcf1_acl_option_to_user,
     user_file_entries,
     user_file_entry_types
 };
@@ -77,8 +74,6 @@ pub struct WcfUserGroup {
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "wcf1_user_to_group"]
 #[primary_key(group_id, user_id)]
-#[belongs_to(WcfUserGroup, foreign_key="group_id")]
-#[belongs_to(WcfUser, foreign_key="user_id")]
 pub struct WcfUserToGroup {
     pub group_id: i32,
     pub user_id: i32
@@ -87,7 +82,6 @@ pub struct WcfUserToGroup {
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "wcf1_user_activity_event"]
 #[primary_key(event_id)]
-#[belongs_to(WcfUser, foreign_key="user_id")]
 pub struct WcfUserActivityEvent {
     pub event_id: i32,
     pub user_id: i32,
@@ -95,17 +89,12 @@ pub struct WcfUserActivityEvent {
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
-#[table_name = "wcf1_user_option_value"]
-#[belongs_to(WcfUser, foreign_key = "user_id")]
-#[belongs_to(WcfUserAvatar, foreign_key = "user_avatar_id")]
 pub struct WcfUserOptionValue {
     pub user_id: i32,
     pub user_avatar_id: i32
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
-#[table_name = "wcf1_user_avatar"]
-#[primary_key(avatar_id)]
 pub struct WcfUserAvatar {
     pub avatar_id: i32,
     pub user_id: i32,
@@ -128,16 +117,12 @@ impl WcfUserAvatar {
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
-#[table_name = "wcf1_acl_option_category"]
-#[primary_key(id)]
 pub struct WcfAclOptionCategory {
     id: i32,
     category_name: String
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
-#[table_name = "wcf1_acl_option"]
-#[primary_key(id)]
 pub struct WcfAclOption {
     id: i32,
     option_name: String,
@@ -145,7 +130,6 @@ pub struct WcfAclOption {
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
-#[table_name = "wcf1_acl_option_to_group"]
 pub struct WcfAclOptionToGroup {
     option_id: i32,
     group_id: i32,
@@ -153,8 +137,6 @@ pub struct WcfAclOptionToGroup {
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
-#[table_name = "wcf1_acl_option_to_user"]
-#[primary_key(option_id, user_id)]
 pub struct WcfAclOptionToUser {
     option_id: i32,
     user_id: i32,
@@ -260,8 +242,6 @@ pub struct WcfUserProfile {
 }
 
 #[derive(Serialize, Deserialize)]
-#[table_name = "user_file_entry_types"]
-#[primary_key(id)]
 pub struct NewUserFileEntryType {
     pub name: String
 }
@@ -288,8 +268,6 @@ pub struct NewUserFileEntry {
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "user_file_entries"]
-#[primary_key(id)]
-#[belongs_to(UserFileEntryType, foreign_key="user_file_entry_type_id")]
 pub struct UserFileEntry {
     pub id: i32,
     pub user_file_entry_type_id: i32,

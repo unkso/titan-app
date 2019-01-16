@@ -3,8 +3,8 @@
 extern crate libtitan;
 #[macro_use] extern crate rocket;
 use rocket::fairing::AdHoc;
-#[macro_use] extern crate rocket_contrib;
-#[macro_use] extern crate diesel;
+extern crate rocket_contrib;
+extern crate diesel;
 extern crate regex;
 extern crate bcrypt;
 extern crate frank_jwt;

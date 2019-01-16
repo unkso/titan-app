@@ -2,7 +2,6 @@ use models;
 use schema;
 use diesel::prelude::*;
 use diesel::MysqlConnection;
-use chrono;
 
 /// Queries a single file entry type with the given id.
 pub fn find_by_id(
