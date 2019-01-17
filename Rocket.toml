@@ -1,4 +1,5 @@
 [development]
+address = "127.0.0.1"
 auth_key = "dummy_key"
 avatar_base_url = "https://clanunknownsoldiers.com/wcf/images/avatars"
 

@@ -9,7 +9,6 @@ extern crate serde;
 extern crate regex;
 extern crate bcrypt;
 extern crate frank_jwt;
-extern crate rocket_cors;
 extern crate chrono;
 
 pub mod routes;
@@ -19,6 +18,5 @@ pub mod schema;
 pub mod woltlab_auth_helper;
 pub mod auth_guard;
 pub mod config;
-pub mod cors_fairing;
 pub mod accounts;
 pub mod organizations;
