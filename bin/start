@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Ensure Foreman is installed
+fors --help &> /dev/null || cargo install fors
+
+# Ensure frontend dependencies have been downloaded
+pushd titan-web-client
+yarn
+popd
+
+# Ensure cargo-watch is installed
+cargo watch --help &> /dev/null || cargo install cargo-watch
+
+# Fetch Rust dependencies
+pushd titan-server
+cargo fetch
+popd
+
+# Start the app
+fors start
