@@ -1,1 +1,1 @@
-ALTER TABLE titan_organizations DROP COLUMN parent_id;
+ALTER TABLE organizations DROP COLUMN parent_id;

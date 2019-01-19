@@ -7,7 +7,7 @@ use diesel::prelude::*;
 use diesel::MysqlConnection;
 
 pub fn find_by_id(id: i32, titan_db: &MysqlConnection) -> QueryResult<models::TitanOrganization> {
-    schema::titan_organizations::table.find(id)
+    schema::organizations::table.find(id)
         .first::<models::TitanOrganization>(titan_db)
 }
 
@@ -20,17 +20,17 @@ pub fn find_by_path(
     let mut parent_id = -1;
 
     for (i, slug) in path.iter().enumerate() {
-        let mut query = schema::titan_organizations::table
-            .filter(schema::titan_organizations::is_enabled.eq(true))
-            .filter(schema::titan_organizations::slug.eq(slug.to_string()))
+        let mut query = schema::organizations::table
+            .filter(schema::organizations::is_enabled.eq(true))
+            .filter(schema::organizations::slug.eq(slug.to_string()))
             .into_boxed();
 
         if i == 0 {
             // Query the to level parent organization.
-            query = query.filter(schema::titan_organizations::group_type.eq(group_type));
+            query = query.filter(schema::organizations::group_type.eq(group_type));
         } else {
             // Query a child organization.
-            query = query.filter(schema::titan_organizations::parent_id.eq(parent_id));
+            query = query.filter(schema::organizations::parent_id.eq(parent_id));
         }
 
         let res = query.first::<models::TitanOrganization>(titan_db);
