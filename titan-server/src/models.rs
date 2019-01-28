@@ -105,12 +105,12 @@ pub struct WcfUserAvatar {
 impl WcfUserAvatar {
     /// Builds the avatar's URL.
     ///
-    /// Format: "/{fileHash[0..2]}/{userID}-{fileHash}/{size: 32|96|128|256}.png"
+    /// Format: "/{fileHash[0..2]}/{avatarID}-{fileHash}/{size: 32|96|128|256}.png"
     pub fn get_avatar_url(&self) -> String {
         return format!(
             "{}/{}-{}-128.png",
             &self.file_hash[0..2],
-            &self.user_id.to_string(),
+            &self.avatar_id.to_string(),
             &self.file_hash
         );
     }
