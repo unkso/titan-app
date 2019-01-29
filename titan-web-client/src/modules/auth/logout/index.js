@@ -7,7 +7,7 @@ import WithCookies from 'titan/components/core/WithCookies';
 
 class LogoutScene extends React.Component {
   componentDidMount () {
-    this.props.cookies.remove('wcf21_password_token', { path: '/' });
+    this.props.cookies.remove('wcf21_password', { path: '/' });
     this.props.cookies.remove('wcf21_userID', { path: '/' });
     this.props.actions.auth.logout();
   }

@@ -6,7 +6,6 @@ use rocket::fairing::AdHoc;
 extern crate rocket_contrib;
 extern crate diesel;
 extern crate regex;
-extern crate bcrypt;
 extern crate frank_jwt;
 extern crate rocket_cors;
 

@@ -18,7 +18,7 @@ use accounts::acl;
 #[derive(Deserialize)]
 pub struct WoltlabLoginRequest {
     pub user_id: i32,
-    pub password_token: String
+    pub cookie_password: String,
 }
 
 #[derive(Serialize)]
@@ -47,7 +47,7 @@ pub fn woltlab_login(
 
     let is_valid = woltlab_auth_helper::check_password(
         &wcf_user.password,
-        &login_creds.password_token
+        &login_creds.cookie_password
     );
 
     if !is_valid {
