@@ -9,7 +9,7 @@ class AuthService {
   login (userId, token) {
     return this.httpClient.post('/auth/woltlab', {
       user_id: userId,
-      password_token: token
+      cookie_password: token
     });
   }
 }

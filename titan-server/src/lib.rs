@@ -7,9 +7,11 @@
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 extern crate regex;
-extern crate bcrypt;
 extern crate frank_jwt;
 extern crate chrono;
+extern crate pwhash;
+extern crate rand;
+#[macro_use] extern crate lazy_static;
 
 pub mod routes;
 pub mod db;
