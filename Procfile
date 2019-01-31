@@ -1,2 +1,2 @@
 client: cd titan-web-client && yarn && yarn start
-server: cargo watch -x run
+server: cd titan-server && cargo watch -x run
