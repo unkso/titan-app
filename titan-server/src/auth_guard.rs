@@ -22,7 +22,7 @@ pub struct AuthCredentials {
 #[derive(Serialize, Deserialize)]
 pub struct AuthenticatedUser {
     pub credentials: AuthCredentials,
-    pub user: models::TitanUser,
+    pub user: models::User,
     pub acl: Vec<models::WcfAclOption>
 }
 
@@ -52,7 +52,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
 
         match parsed_token {
             Ok(result) => {
-                let user: models::TitanUser = schema::users::table.find(
+                let user: models::User = schema::users::table.find(
                     result.1["user"]["id"].to_string().parse::<i32>().unwrap()
                 )
                 .first(titan_db)

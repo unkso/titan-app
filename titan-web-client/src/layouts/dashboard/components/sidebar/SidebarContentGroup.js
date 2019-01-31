@@ -16,8 +16,4 @@ class SidebarContentGroup extends React.Component {
   }
 }
 
-SidebarContentGroup.propTypes = {
-  children: PropTypes.object
-};
-
 export default SidebarContentGroup;

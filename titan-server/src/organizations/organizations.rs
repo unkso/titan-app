@@ -8,16 +8,16 @@ use crate::schema::{self, wcf1_user, wcf1_user_avatar, wcf1_user_to_group};
 pub fn find_by_slug(
     slug: &str,
     unkso_titan: &TitanPrimary
-) -> QueryResult<models::TitanOrganization> {
+) -> QueryResult<models::Organization> {
     return schema::organizations::table
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations::slug.eq(slug))
-        .first::<models::TitanOrganization>(&**unkso_titan);
+        .first::<models::Organization>(&**unkso_titan);
 }
 
 /// Queries all the users associated with an organization.
 pub fn find_users(
-    organization: &models::TitanOrganization,
+    organization: &models::Organization,
     unkso_main: &UnksoMainForums
 ) -> QueryResult<Vec<(models::WcfUser, models::WcfUserAvatar)>> {
     let users_query = wcf1_user_to_group::table
@@ -28,4 +28,8 @@ pub fn find_users(
         .filter(schema::wcf1_user_to_group::group_id.eq(organization.wcf_user_group_id));
 
     users_query.load::<(models::WcfUser, models::WcfUserAvatar)>(&**unkso_main)
+}
+
+pub fn find_all(titan_primary: TitanPrimary) -> QueryResult<Vec<models::Organization>> {
+    schema::organizations::table.load::<models::Organization>(&*titan_primary)
 }

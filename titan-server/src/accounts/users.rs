@@ -8,7 +8,7 @@ use crate::schema;
 pub fn find_by_id(
     user_id: i32,
     titan_db: &MysqlConnection
-) -> Result<models::TitanUser, diesel::result::Error> {
+) -> Result<models::User, diesel::result::Error> {
     schema::users::table.find(user_id).first(titan_db)
 }
 
@@ -16,27 +16,27 @@ pub fn find_by_id(
 pub fn find_by_wcf_id(
     wcf_id: i32,
     titan_primary: &MysqlConnection
-) -> QueryResult<models::TitanUser> {
+) -> QueryResult<models::User> {
     return schema::users::table
         .filter(schema::users::wcf_id.eq(wcf_id))
-        .first::<models::TitanUser>(titan_primary);
+        .first::<models::User>(titan_primary);
 }
 
 /// Finds all user IDs by a list of WCF IDs.
-pub fn find_all_by_wcf_id(wcf_ids: Vec<i32>, titan_primary: &MysqlConnection) -> QueryResult<Vec<models::TitanUser>> {
+pub fn find_all_by_wcf_id(wcf_ids: Vec<i32>, titan_primary: &MysqlConnection) -> QueryResult<Vec<models::User>> {
     schema::users::table
         .filter(schema::users::wcf_id.eq_any(wcf_ids))
-        .get_results::<models::TitanUser>(titan_primary)
+        .load::<models::User>(titan_primary)
 }
 
 /// Create a user account from a WCF user if one doesn't already exist.
 pub fn create_if_not_exists(
     wcf_user: &models::WcfUser,
     titan_primary: &MysqlConnection
-) -> QueryResult<models::TitanUser> {
+) -> QueryResult<models::User> {
     let user = schema::users::table
         .filter(schema::users::wcf_id.eq(wcf_user.user_id))
-        .first::<models::TitanUser>(titan_primary);
+        .first::<models::User>(titan_primary);
 
     if user.is_ok() {
         return Ok(user.unwrap());
@@ -56,7 +56,7 @@ pub fn create_if_not_exists(
         clan_tag_suffix_pos = clan_tag_suffix.unwrap()
     }
 
-    let new_user = models::NewTitanUser {
+    let new_user = models::NewUser {
         wcf_id: wcf_user.user_id,
         legacy_player_id: None,
         rank_id: None,

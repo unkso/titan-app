@@ -25,7 +25,7 @@ pub struct WoltlabLoginRequest {
 #[derive(Serialize)]
 pub struct WoltlabLoginResponse {
     pub token: String,
-    pub user: models::TitanUserProfile,
+    pub user: models::UserProfile,
     pub wcf_username: String,
     pub wcf_user_title: String,
     pub acl: Vec<models::WcfAclOption>,
@@ -86,7 +86,7 @@ pub fn woltlab_login(
 
     return Ok(Json(WoltlabLoginResponse {
         token: token.unwrap(),
-        user: models::TitanUserProfile {
+        user: models::UserProfile {
             id: user.id,
             wcf_id: user.wcf_id,
             legacy_player_id: user.legacy_player_id,
@@ -100,7 +100,7 @@ pub fn woltlab_login(
             loa: user.loa,
             a15: user.a15,
             date_joined: user.date_joined,
-            last_activity: user.last_activity,
+            last_activity: user.last_activity.unwrap_or(chrono::Utc::now().naive_utc()),
             wcf: models::WcfUserProfile {
                 user_title: wcf_user.user_title.clone(),
                 username: wcf_user.username.clone(),
@@ -127,7 +127,7 @@ pub fn get_user(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_guard: auth_guard::AuthenticatedUser,
-) -> Result<Json<models::TitanUserProfile>, status::NotFound<String>> {
+) -> Result<Json<models::UserProfile>, status::NotFound<String>> {
     let titan_db_conn = &*titan_db;
     let wcf_db_conn = &*wcf_db;
 
@@ -150,7 +150,7 @@ pub fn get_user(
     }
 
     Ok(Json(
-        models::TitanUserProfile {
+        models::UserProfile {
             id: user.id,
             wcf_id: user.wcf_id,
             legacy_player_id: user.legacy_player_id,
@@ -164,7 +164,7 @@ pub fn get_user(
             loa: user.loa,
             a15: user.a15,
             date_joined: user.date_joined,
-            last_activity: user.last_activity,
+            last_activity: user.last_activity.unwrap_or(chrono::Utc::now().naive_utc()),
             wcf: models::WcfUserProfile {
                 user_title: wcf_user.user_title,
                 username: wcf_user.username,
@@ -237,10 +237,10 @@ pub fn save_user_file_entry(
         user_id,
         user_file_entry_type_id: file_entry_form.file_entry_type_id,
         start_date: file_entry_form.start_date,
-        end_date: file_entry_form.end_date,
-        comments: file_entry_form.comments.to_string(),
-        modified_by: Some(auth_user.user.id),
-        date_modified: Some(chrono::Utc::now().naive_utc()),
+        end_date: Some(file_entry_form.end_date),
+        comments: Some(file_entry_form.comments.to_string()),
+        modified_by: auth_user.user.id,
+        date_modified: chrono::Utc::now().naive_utc(),
     };
 
     let created_file_entry_res = file_entries::create_file_entry(&new_file_entry, &*titan_db);

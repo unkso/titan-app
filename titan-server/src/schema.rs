@@ -172,6 +172,7 @@ table! {
         id -> Integer,
         name -> Varchar,
         slug -> Varchar,
+        avatar_url -> Text,
         group_type -> Varchar,
         wcf_user_group_id -> Integer,
         is_enabled -> Bool,
@@ -196,7 +197,7 @@ table! {
         date_created -> Datetime,
         date_modified -> Nullable<Datetime>,
         modified_by -> Nullable<Integer>,
-        last_activity -> Datetime,
+        last_activity -> Nullable<Datetime>,
         is_active -> Bool,
     }
 }
@@ -214,10 +215,10 @@ table! {
         user_file_entry_type_id -> Integer,
         user_id -> Integer,
         start_date -> Datetime,
-        end_date -> Datetime,
-        comments -> Varchar,
-        date_modified -> Nullable<Datetime>,
-        modified_by -> Nullable<Integer>,
+        end_date -> Nullable<Datetime>,
+        comments -> Nullable<Varchar>,
+        date_modified -> Datetime,
+        modified_by -> Integer,
     }
 }
 
