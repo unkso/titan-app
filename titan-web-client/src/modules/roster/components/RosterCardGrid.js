@@ -8,7 +8,7 @@ import RosterCard from 'titan/modules/roster/components/RosterCard';
  * Lists roster member cards in a grid.
  */
 class RosterCardGrid extends React.Component {
-  render () {
+  render() {
     return (
       <Row wrap="wrap">
         {this.props.roster.map((member, index) => (

@@ -11,7 +11,7 @@ import TimestampActivityBadge
  * Shows an overview of a roster member in a content card.
  */
 class RosterCard extends React.Component {
-  render () {
+  render() {
     return (
       <BorderedCard>
         <CardContent>

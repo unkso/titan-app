@@ -8,7 +8,7 @@ import RosterCardGrid from '../components/RosterCardGrid';
 import OrganizationsService from 'titan/http/OrganizationsService';
 
 class BranchScene extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.organizationsHttpService = new OrganizationsService();
@@ -18,7 +18,7 @@ class BranchScene extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.organizationsHttpService.findBySlug(this.props.match.params.slug)
       .then((res) => {
         this.setState({
@@ -32,7 +32,7 @@ class BranchScene extends React.Component {
       });
   }
 
-  render () {
+  render() {
     if (!this.state.branch) {
       return null;
     }

@@ -1,13 +1,13 @@
 class Config {
-  constructor () {
+  constructor() {
     this.config = {};
   }
 
-  load (config) {
+  load(config) {
     this.config = config;
   }
 
-  get (path = '') {
+  get(path = '') {
     if (path === '') {
       return this.config;
     }

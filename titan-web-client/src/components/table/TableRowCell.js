@@ -16,7 +16,7 @@ export const TableRowCellWrapper = styled.td`
 `;
 
 class TableRowCell extends React.Component {
-  render () {
+  render() {
     return (
       <TableRowCellWrapper
         width={this.props.width}

@@ -18,7 +18,7 @@ export const TableRowWrapper = styled.tr`
 `;
 
 class TableRow extends React.Component {
-  render () {
+  render() {
     return (
       <TableRowWrapper>{this.props.children}</TableRowWrapper>
     );

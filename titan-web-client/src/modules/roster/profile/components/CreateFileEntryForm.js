@@ -7,7 +7,7 @@ import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
 
 class CreateFileEntryForm extends React.Component {
-  render () {
+  render() {
     const startDateLabel = this.props.multiDate ? 'Start Date' : 'Date';
     const startDateKey = this.props.multiDate ? 'state-date' : 'date';
     return (

@@ -30,7 +30,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 class FlatButton extends React.Component {
-  render () {
+  render() {
     const { primary, fullWidth, ...rest } = this.props;
     let textColor;
     if (primary) {

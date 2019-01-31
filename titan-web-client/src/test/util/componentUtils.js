@@ -1,6 +1,6 @@
 import React from 'react';
 
-export async function buildFake () {
+export async function buildFake() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const id = (new Date()).getMilliseconds();

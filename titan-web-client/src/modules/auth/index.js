@@ -8,7 +8,7 @@ import {
   ROUTE_TYPE_UNAUTHENTICATED
 } from '../../lib/routing';
 
-export default function () {
+export default function() {
   return {
     config: {
       login_path: '/auth/login',

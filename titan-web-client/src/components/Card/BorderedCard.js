@@ -40,7 +40,7 @@ export const BorderedCardStyle = styled(
 `;
 
 class BorderedCard extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -48,13 +48,13 @@ class BorderedCard extends React.Component {
     };
   }
 
-  updateElevation (isHovering) {
+  updateElevation(isHovering) {
     this.setState({
       elevation: isHovering ? this.props.hoverElevation : this.props.elevation
     });
   }
 
-  render () {
+  render() {
     const actionable = this.props.href !== null || this.props.onClick !== null;
     const card = (
       <BorderedCardStyle

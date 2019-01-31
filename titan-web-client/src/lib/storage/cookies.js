@@ -1,5 +1,5 @@
 import Cookies from 'universal-cookie';
 
-export function setupCookies () {
+export function setupCookies() {
   return new Cookies();
 }

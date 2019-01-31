@@ -11,7 +11,7 @@ const SidebarWrapper = styled.nav`
 `;
 
 class Sidebar extends React.Component {
-  render () {
+  render() {
     return (
       <SidebarWrapper>
         <SidebarContentGroup>

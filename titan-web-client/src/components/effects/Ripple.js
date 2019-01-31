@@ -12,7 +12,7 @@ export const RippleWrapper = styled.div`
 `;
 
 class Ripple extends React.Component {
-  render () {
+  render() {
     return (
       <RippleWrapper>
         {this.props.children}

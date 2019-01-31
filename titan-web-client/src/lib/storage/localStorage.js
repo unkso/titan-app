@@ -5,7 +5,7 @@
  *                              the data.
  * @returns {*}
  */
-export function load (storageKey) {
+export function load(storageKey) {
   try {
     const data = localStorage.getItem(storageKey);
 
@@ -21,7 +21,7 @@ export function load (storageKey) {
  * @param {string} storageKey - A unique ID to associate the data to.
  * @param {*} data - The data to save.
  */
-export function save (storageKey, data) {
+export function save(storageKey, data) {
   try {
     localStorage.setItem(storageKey, JSON.stringify(data));
   } catch (err) {

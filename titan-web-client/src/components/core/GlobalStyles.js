@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { createTypography } from 'titan/lib/styles/typography';
 
-function convertThemeToString (theme) {
+function convertThemeToString(theme) {
   const { fontFamily, fontSize, lineHeight, ...elements } = theme.typography;
 
   let themeStr = `
@@ -27,7 +27,7 @@ function convertThemeToString (theme) {
   return themeStr;
 }
 
-export function createGlobalStyles (theme) {
+export function createGlobalStyles(theme) {
   theme.typography = createTypography(theme.typography);
   return createGlobalStyle`
     ${convertThemeToString(theme)}

@@ -9,14 +9,14 @@ import FileEntryList
   from 'titan/modules/roster/profile/components/FileEntryList';
 
 class FileEntryListContainer extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.usersService = new UsersService();
     this.state = { loading: true };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // If we have already loaded this user's file entries, don't attempt to
     // load them again.
     if (this.props.profile.file_entries.length === 0) {
@@ -33,7 +33,7 @@ class FileEntryListContainer extends React.Component {
     }
   }
 
-  render () {
+  render() {
     if (this.state.loading) {
       return <CircularProgress />;
     }
@@ -42,13 +42,13 @@ class FileEntryListContainer extends React.Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     profile: state.roster.profile
   };
 }
 
-function mapActionsToProps (dispatch) {
+function mapActionsToProps(dispatch) {
   return {
     actions: {
       profile: bindActionCreators(profileActions, dispatch)

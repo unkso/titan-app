@@ -18,7 +18,7 @@ export const CenteredBlockContentStyle = styled.div`
 `;
 
 class CenteredBlock extends React.Component {
-  render () {
+  render() {
     return (
       <CenteredBlockStyle>
         <CenteredBlockContentStyle width={this.props.width}>

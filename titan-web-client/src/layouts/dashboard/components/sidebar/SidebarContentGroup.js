@@ -7,7 +7,7 @@ export const SidebarContentGroupWrapper = styled.div`
 `;
 
 class SidebarContentGroup extends React.Component {
-  render () {
+  render() {
     return (
       <SidebarContentGroupWrapper>
         {this.props.children}

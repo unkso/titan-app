@@ -19,7 +19,7 @@ import CreateFileEntryContainer
 import Typography from '@material-ui/core/Typography/Typography';
 
 class Profile extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = { tab: 0 };
@@ -27,7 +27,7 @@ class Profile extends React.Component {
     this.changeTabHandler = this.setTab.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.usersService.getUser(this.props.match.params.userId)
       .then((res) => {
         this.props.actions.profile.setUser(res.data);
@@ -37,15 +37,15 @@ class Profile extends React.Component {
       });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.actions.profile.setUser(null);
   }
 
-  setTab (event, index) {
+  setTab(event, index) {
     this.setState({ tab: index });
   }
 
-  render () {
+  render() {
     if (!this.props.profile.user) {
       return null;
     }
@@ -75,13 +75,13 @@ class Profile extends React.Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     profile: state.roster.profile
   };
 }
 
-function mapActionsToProps (dispatch) {
+function mapActionsToProps(dispatch) {
   return {
     actions: {
       profile: bindActionCreators(profileActions, dispatch)

@@ -15,7 +15,7 @@ import { MULTI_DATE_FILE_ENTRY_TYPES } from 'titan/modules/roster/constants';
 import WithAcl from 'titan/components/Acl/WithAcl';
 
 class CreateFileEntryContainer extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.usersService = new UsersService();
@@ -34,14 +34,14 @@ class CreateFileEntryContainer extends React.Component {
     this.saveFileEntryHandler = this.saveFileEntry.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.usersService.listUserFileEntryTypes()
       .then((res) => {
         this.setState({ fileEntryTypes: res.data });
       });
   }
 
-  saveFileEntry () {
+  saveFileEntry() {
     let endDate = this.state.startDate;
     if (this.isSelectedFileTypeMultiDate()) {
       endDate = this.state.endDate;
@@ -66,11 +66,11 @@ class CreateFileEntryContainer extends React.Component {
       });
   }
 
-  updateField (field, value) {
+  updateField(field, value) {
     this.setState({ [field]: value });
   }
 
-  isSelectedFileTypeMultiDate () {
+  isSelectedFileTypeMultiDate() {
     if (this.state.fileEntryTypeIndex === -1) {
       return false;
     }
@@ -79,13 +79,13 @@ class CreateFileEntryContainer extends React.Component {
     return MULTI_DATE_FILE_ENTRY_TYPES.indexOf(entryType.name) !== -1;
   }
 
-  isFormValid () {
+  isFormValid() {
     return this.state.startDate &&
         (!this.isSelectedFileTypeMultiDate() || this.state.endDate) &&
         this.state.fileEntryTypeIndex !== -1;
   }
 
-  render () {
+  render() {
     return (
       <React.Fragment>
         <WithAcl options={['titan.user:canCreateFileEntry']}>
@@ -118,13 +118,13 @@ class CreateFileEntryContainer extends React.Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     profile: state.roster.profile
   };
 }
 
-function mapActionsToProps (dispatch) {
+function mapActionsToProps(dispatch) {
   return {
     actions: {
       profile: bindActionCreators(profileActions, dispatch)

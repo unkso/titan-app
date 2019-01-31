@@ -1,12 +1,12 @@
 import UnauthenticatedService from 'titan/http/UnauthenticatedService';
 
 class AuthService {
-  constructor () {
+  constructor() {
     this.httpService = new UnauthenticatedService();
     this.httpClient = this.httpService.getHttpClient();
   }
 
-  login (userId, token) {
+  login(userId, token) {
     return this.httpClient.post('/auth/woltlab', {
       user_id: userId,
       cookie_password: token

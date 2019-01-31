@@ -9,28 +9,28 @@ import DialogActions from '@material-ui/core/es/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
 
 class SimpleDialog extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = { open: false };
     this.closeDialogHandler = this.closeDialog.bind(this);
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.open !== this.props.open) {
       this.updateDialogState(this.props.open);
     }
   }
 
-  updateDialogState (open) {
+  updateDialogState(open) {
     this.setState({ open });
   }
 
-  closeDialog () {
+  closeDialog() {
     this.updateDialogState(false);
   }
 
-  render () {
+  render() {
     return (
       <Dialog open={this.state.open}>
         {this.props.children}

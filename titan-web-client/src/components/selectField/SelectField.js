@@ -49,7 +49,7 @@ export const SelectFieldMenuWrapper = styled.div`
 `;
 
 class ThemedSelectField extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       menuWidth: null,
@@ -67,7 +67,7 @@ class ThemedSelectField extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  onMenuClick () {
+  onMenuClick() {
     if (this.props.disabled) {
       return null;
     }
@@ -88,19 +88,19 @@ class ThemedSelectField extends React.Component {
     this.setState(updatedState);
   }
 
-  hideMenu () {
+  hideMenu() {
     this.setState({
       isFocused: false,
       showMenu: false
     });
   }
 
-  onChange (value) {
+  onChange(value) {
     this.hideMenu();
     this.props.onChange(value);
   }
 
-  getMenuStyles () {
+  getMenuStyles() {
     if (this.props.disabled || !this.state.isFocused) {
       return {};
     }
@@ -112,7 +112,7 @@ class ThemedSelectField extends React.Component {
     };
   }
 
-  renderMenu () {
+  renderMenu() {
     const { children, ...rest } = this.props;
     if (this.mobileDetect.mobile() || this.mobileDetect.tablet()) {
       return (
@@ -140,7 +140,7 @@ class ThemedSelectField extends React.Component {
     );
   }
 
-  renderThemedMenuItems () {
+  renderThemedMenuItems() {
     const selected = (value) => { return this.props.value === value; };
     const items = this.props.children.map((item) => {
       return React.cloneElement(item, {
@@ -170,7 +170,7 @@ class ThemedSelectField extends React.Component {
     );
   }
 
-  renderNativeMenuItems () {
+  renderNativeMenuItems() {
     return this.props.children.map((item) => {
       let value;
       if (!_.isEmpty(item.props.value)) {
@@ -185,7 +185,7 @@ class ThemedSelectField extends React.Component {
     });
   }
 
-  render () {
+  render() {
     return (
       <SelectFieldWrapper menuStyles={this.getMenuStyles()}>
         <div ref={(el) => { this.menuWrapperEl = el; }} style={{ display: 'inline-block' }}>

@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as authActions from 'titan/actions/authActions';
 
 class WoltlabLoginContainer extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.authService = new AuthService();
@@ -18,7 +18,7 @@ class WoltlabLoginContainer extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.session) {
       window.location = '/dashboard';
       return;
@@ -43,7 +43,7 @@ class WoltlabLoginContainer extends React.Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <WoltlabLoginForm
         loading={this.state.loading}
@@ -60,13 +60,13 @@ WoltlabLoginContainer.propTypes = {
   session: PropTypes.object
 };
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     session: state.auth.session
   };
 }
 
-function mapActionsToProps (dispatch) {
+function mapActionsToProps(dispatch) {
   return {
     actions: {
       auth: bindActionCreators(authActions, dispatch)

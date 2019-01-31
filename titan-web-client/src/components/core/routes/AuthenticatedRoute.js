@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class AuthenticatedRoute extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     if (!this.props.auth.session) {
       window.location = '/auth/login';
     }
   }
 
-  render () {
+  render() {
     // React may attempt to render the scene before the auth
     // redirect. This will trigger errors if the scene contains
     // components that require the user's session information.
@@ -28,7 +28,7 @@ AuthenticatedRoute.propTypes = {
   children: PropTypes.object
 };
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     auth: state.auth
   };

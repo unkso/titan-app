@@ -4,7 +4,7 @@ import { getAppContext } from 'titan/titan';
 import _ from 'lodash';
 
 class AuthenticatedService {
-  constructor () {
+  constructor() {
     this.appContext = getAppContext();
     this.httpClient = axios.create({
       baseURL: this.appContext.getConfig().get('api.baseUrl'),
@@ -23,11 +23,11 @@ class AuthenticatedService {
     );
   }
 
-  getHttpClient () {
+  getHttpClient() {
     return this.httpClient;
   }
 
-  authHeadersInterceptor (config) {
+  authHeadersInterceptor(config) {
     let state = this.appContext.getStore().getState();
 
     if (_.isEmpty(state.auth.session.token)) {
@@ -42,7 +42,7 @@ class AuthenticatedService {
     return config;
   }
 
-  responseErrorInterceptor (err) {
+  responseErrorInterceptor(err) {
     if (err.response && err.response.status === 401) {
       this.appContext.getStore().dispatch(authActions.logout());
     }

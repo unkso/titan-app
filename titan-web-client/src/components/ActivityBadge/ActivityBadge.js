@@ -37,7 +37,7 @@ export const ActivityBadgeIndicator = styled.div`
  * A color-coded badge that indicates the recency of a user's activity.
  */
 class ActivityBadge extends React.Component {
-  getStatusColor (status) {
+  getStatusColor(status) {
     switch (status) {
       case STATUS_ACTIVE:
         return this.props.theme.palette.success;
@@ -51,7 +51,7 @@ class ActivityBadge extends React.Component {
     }
   }
 
-  render () {
+  render() {
     const color = this.getStatusColor(this.props.status);
     console.log(!!this.props.children);
     return (

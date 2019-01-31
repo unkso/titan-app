@@ -17,7 +17,7 @@ import DateFnsUtils from '@date-io/date-fns';
 const defaultMuiTheme = createMuiTheme(defaultTheme);
 
 class TitanApp extends React.Component {
-  static getRouteComponent (route) {
+  static getRouteComponent(route) {
     switch (route.type) {
       case ROUTE_TYPE_AUTHENTICATED:
         return AuthenticatedRoute;
@@ -28,7 +28,7 @@ class TitanApp extends React.Component {
     }
   }
 
-  renderSceneInLayout (route, RouteComponent) {
+  renderSceneInLayout(route, RouteComponent) {
     const Layout = route.layout;
     const Scene = route.scene;
 
@@ -58,7 +58,7 @@ class TitanApp extends React.Component {
     return () => (content);
   }
 
-  renderRoutes (routes) {
+  renderRoutes(routes) {
     let routeComponents = [];
 
     Object.keys(routes).forEach((key) => {
@@ -74,7 +74,7 @@ class TitanApp extends React.Component {
     return routeComponents;
   }
 
-  render () {
+  render() {
     return (
       <ThemeProvider theme={defaultTheme}>
         <MuiThemeProvider theme={defaultMuiTheme}>

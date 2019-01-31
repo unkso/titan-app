@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getAppContext } from 'titan/titan';
 
 class UnauthenticatedService {
-  constructor () {
+  constructor() {
     this.appContext = getAppContext();
     this.httpClient = axios.create({
       baseURL: this.appContext.getConfig().get('api.baseUrl'),
@@ -12,7 +12,7 @@ class UnauthenticatedService {
     });
   }
 
-  getHttpClient () {
+  getHttpClient() {
     return this.httpClient;
   }
 }

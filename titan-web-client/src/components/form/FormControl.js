@@ -59,7 +59,7 @@ export const FormControlWrapper = styled.div`
 `;
 
 class FormControl extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isFocused: false
@@ -70,24 +70,24 @@ class FormControl extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange (e) {
+  onChange(e) {
     this.onBlur();
     this.props.onChange(e);
   }
 
-  onFocus () {
+  onFocus() {
     this.props.onFocus();
     this.props.onFocusChange(this.state.isFocused);
     this.setState({ isFocused: true });
   }
 
-  onBlur () {
+  onBlur() {
     this.props.onBlur();
     this.props.onFocusChange(this.state.isFocused);
     this.setState({ isFocused: false });
   }
 
-  render () {
+  render() {
     const {
       fullWidth,
       labelLeft,

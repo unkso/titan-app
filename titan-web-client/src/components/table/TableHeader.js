@@ -34,7 +34,7 @@ export const TableHeaderRow = TableRowWrapper.extend`
 `;
 
 class TableHeader extends React.Component {
-  render () {
+  render() {
     const bgColor = this.props.theme.palette.neutral;
     return (
       <TableHeaderWrapper bgColor={bgColor}>

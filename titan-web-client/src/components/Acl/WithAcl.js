@@ -7,13 +7,13 @@ import connect from 'react-redux/es/connect/connect';
  * are present in the current user's session.
  */
 class WithAcl extends React.Component {
-  hasAclPermissions (options) {
+  hasAclPermissions(options) {
     return options.every((optionKey) => {
       return this.props.auth.session.acl.hasOwnProperty(optionKey);
     });
   }
 
-  render () {
+  render() {
     if (this.hasAclPermissions(this.props.options)) {
       return (
         <React.Fragment>
@@ -30,7 +30,7 @@ WithAcl.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     auth: state.auth
   };

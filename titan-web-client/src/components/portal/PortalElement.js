@@ -3,21 +3,21 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 class PortalElement extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.menuWrapperEl = document.createElement('div');
     this.documentBody = document.body;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.documentBody.appendChild(this.menuWrapperEl);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.documentBody.removeChild(this.menuWrapperEl);
   }
 
-  render () {
+  render() {
     return ReactDOM.createPortal(
       this.props.children,
       this.menuWrapperEl

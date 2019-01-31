@@ -21,7 +21,7 @@ export const TableWrapper = styled.div`
 `;
 
 class Table extends React.Component {
-  render () {
+  render() {
     const height = this.props.height ? this.props.height : 'auto';
     return (
       <TableWrapper

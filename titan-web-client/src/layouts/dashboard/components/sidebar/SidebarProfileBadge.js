@@ -37,7 +37,7 @@ export const ProfileBadge = styled.div`
 `;
 
 class SidebarProfileBadge extends React.Component {
-  render () {
+  render() {
     return (
       <ProfileBadge>
         <ProfileBadgeAvatar image={''} />

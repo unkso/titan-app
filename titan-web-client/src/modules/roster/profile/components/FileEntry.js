@@ -28,7 +28,7 @@ import {
 } from 'titan/modules/roster/constants';
 
 class FileEntry extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = { dialogOpen: false };
@@ -36,15 +36,15 @@ class FileEntry extends React.Component {
     this.closeDialogHandler = this.closeDialog.bind(this);
   }
 
-  openDialog () {
+  openDialog() {
     this.setState({ dialogOpen: true });
   }
 
-  closeDialog () {
+  closeDialog() {
     this.setState({ dialogOpen: false });
   }
 
-  getFileEntryTheme (type) {
+  getFileEntryTheme(type) {
     switch (type) {
       case FILE_ENTRY_A15:
         return {
@@ -102,7 +102,7 @@ class FileEntry extends React.Component {
     }
   }
 
-  render () {
+  render() {
     const theme = this.getFileEntryTheme(this.props.type);
     const date = (new Date(this.props.date)).toLocaleDateString();
 
