@@ -1,10 +1,10 @@
-use models;
-use schema;
-use schema::wcf1_user_to_group;
-use schema::wcf1_user;
-use schema::wcf1_user_avatar;
+use crate::models;
+use crate::schema;
+use crate::schema::wcf1_user_to_group;
+use crate::schema::wcf1_user;
+use crate::schema::wcf1_user_avatar;
 use diesel::prelude::*;
-use db::{UnksoMainForums, TitanPrimary};
+use crate::db::{UnksoMainForums, TitanPrimary};
 
 /// Queries a single organization with the given slug.
 pub fn find_by_slug(

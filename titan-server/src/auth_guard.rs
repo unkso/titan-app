@@ -10,6 +10,7 @@ use super::schema;
 use diesel::RunQueryDsl;
 use diesel::query_dsl::filter_dsl::FindDsl;
 use super::accounts::acl;
+use serde::{Serialize, Deserialize};
 
 pub struct SecretKey(String);
 

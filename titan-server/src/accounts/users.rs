@@ -1,5 +1,5 @@
-use models;
-use schema;
+use crate::models;
+use crate::schema;
 use diesel::prelude::*;
 use diesel::MysqlConnection;
 use chrono;

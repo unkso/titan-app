@@ -1,3 +1,4 @@
+use rocket::get;
 use super::db::{UnksoMainForums};
 use super::models;
 use rocket_contrib::json::Json;

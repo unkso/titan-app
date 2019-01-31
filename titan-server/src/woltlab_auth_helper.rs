@@ -1,5 +1,5 @@
 use regex::Regex;
-use pwhash::bcrypt::{BcryptSetup, BcryptVariant, hash_with, verify};
+use pwhash::bcrypt::{BcryptVariant, verify};
 use lazy_static::lazy_static;
 use rand::{Rng, thread_rng};
 
@@ -29,8 +29,8 @@ fn is_different_blowfish_alg(hash: &str) -> bool {
 
 /// In the case that the user doesn't have an existing password, this generates
 /// a random salt for use with a plaintext password.
-fn getRandomSalt() -> String {
-    let mut rng = rand::thread_rng();
+fn get_random_salt() -> String {
+    let mut rng = thread_rng();
     let mut salt = String::new();
 
     (0..22).for_each(|_| {

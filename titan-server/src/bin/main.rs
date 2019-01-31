@@ -1,12 +1,6 @@
 #![feature(plugin, decl_macro, custom_attribute, proc_macro_hygiene)]
 
-extern crate libtitan;
-#[macro_use] extern crate rocket;
-use rocket::fairing::AdHoc;
-extern crate rocket_contrib;
-extern crate diesel;
-extern crate regex;
-extern crate frank_jwt;
+use rocket::{routes, fairing::AdHoc};
 
 use libtitan::routes;
 use libtitan::db;

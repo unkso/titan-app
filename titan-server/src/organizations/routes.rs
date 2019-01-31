@@ -1,11 +1,13 @@
+use rocket::get;
 use rocket::State;
 use rocket::http::RawStr;
 use rocket::response::status;
 use rocket_contrib::json::Json;
-use db::{UnksoMainForums, TitanPrimary};
-use models;
-use config;
-use organizations;
+use crate::db::{UnksoMainForums, TitanPrimary};
+use crate::models;
+use crate::config;
+use crate::organizations;
+use serde::{Serialize};
 
 #[derive(Serialize)]
 pub struct OrganizationUser {

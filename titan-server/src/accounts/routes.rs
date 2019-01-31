@@ -1,16 +1,18 @@
+use rocket::{get, post};
 use rocket::response::status;
 use rocket::State;
 use rocket_contrib::json::Json;
 use frank_jwt::{Algorithm, encode};
 use super::config;
-use db::{UnksoMainForums, TitanPrimary};
+use crate::db::{UnksoMainForums, TitanPrimary};
 use super::woltlab_auth_helper;
-use models;
-use auth_guard;
+use crate::models;
+use crate::auth_guard;
 use super::users;
 use super::file_entries;
 use super::file_entry_types;
-use accounts::acl;
+use crate::accounts::acl;
+use serde::{Deserialize, Serialize};
 
 /** **************************************************
  *  Auth
