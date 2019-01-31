@@ -1,8 +1,8 @@
+use chrono;
+use diesel::{prelude::*, MysqlConnection};
+
 use crate::models;
 use crate::schema;
-use diesel::prelude::*;
-use diesel::MysqlConnection;
-use chrono;
 
 /// Finds a single user by ID
 pub fn find_by_id(

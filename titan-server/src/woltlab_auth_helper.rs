@@ -1,7 +1,7 @@
-use regex::Regex;
-use pwhash::bcrypt::{BcryptVariant, verify};
 use lazy_static::lazy_static;
+use pwhash::bcrypt::{BcryptVariant, verify};
 use rand::{Rng, thread_rng};
+use regex::Regex;
 
 lazy_static! {
     static ref BLOWFISH_CHARACTERS: Vec<char> = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./".chars().collect();

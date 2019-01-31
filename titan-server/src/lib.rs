@@ -4,12 +4,12 @@
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate diesel;
 
-pub mod routes;
-pub mod db;
-pub mod models;
-pub mod schema;
-pub mod woltlab_auth_helper;
+pub mod accounts;
 pub mod auth_guard;
 pub mod config;
-pub mod accounts;
+pub mod db;
+pub mod models;
 pub mod organizations;
+pub mod routes;
+pub mod schema;
+pub mod woltlab_auth_helper;

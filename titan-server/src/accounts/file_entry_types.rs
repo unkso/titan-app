@@ -1,7 +1,7 @@
+use diesel::{prelude::*, MysqlConnection};
+
 use crate::models;
 use crate::schema;
-use diesel::prelude::*;
-use diesel::MysqlConnection;
 
 /// Queries a single file entry type with the given id.
 pub fn find_by_id(

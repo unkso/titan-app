@@ -1,7 +1,7 @@
+use diesel::{prelude::*, MysqlConnection};
+
 use crate::models;
 use crate::schema;
-use diesel::prelude::*;
-use diesel::MysqlConnection;
 
 pub fn get_user_acl(user_id: i32, wcf_db: &MysqlConnection) -> QueryResult<Vec<models::WcfAclOption>> {
     let mut acl_option_ids = schema::wcf1_user_to_group::table

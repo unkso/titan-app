@@ -1,10 +1,11 @@
 use rocket::get;
-use super::db::{UnksoMainForums};
-use super::models;
 use rocket_contrib::json::Json;
+
+use crate::db::{UnksoMainForums};
+use crate::models;
 use diesel::prelude::*;
-use super::auth_guard;
-use super::schema::wcf1_user;
+use crate::auth_guard;
+use crate::schema::wcf1_user;
 
 #[get("/hello")]
 pub fn hello() -> &'static str {

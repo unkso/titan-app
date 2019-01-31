@@ -1,8 +1,8 @@
+use diesel::{prelude::*, MysqlConnection};
+
+use crate::accounts::file_entry_types;
 use crate::models;
 use crate::schema;
-use diesel::prelude::*;
-use diesel::MysqlConnection;
-use super::file_entry_types;
 
 /// Queries a single organization with the given slug.
 pub fn find_by_user(

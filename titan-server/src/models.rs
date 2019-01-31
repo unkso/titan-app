@@ -1,15 +1,15 @@
 use chrono;
 use serde::{Serialize, Deserialize};
 
-use super::schema::{
-    wcf1_user,
-    wcf1_user_group,
-    wcf1_user_to_group,
-    wcf1_user_activity_event,
+use crate::schema::{
     organizations,
     users,
     user_file_entries,
-    user_file_entry_types
+    user_file_entry_types,
+    wcf1_user,
+    wcf1_user_activity_event,
+    wcf1_user_group,
+    wcf1_user_to_group,
 };
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]

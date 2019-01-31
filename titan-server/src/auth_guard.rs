@@ -1,16 +1,14 @@
-use rocket::request::{FromRequest, Request};
-use rocket::http::Status;
+use diesel::prelude::*;
 use frank_jwt::{decode, Algorithm};
-use rocket::State;
-use super::config::AppConfig;
+use rocket::{State, http::Status, request::{FromRequest, Request}};
 use rocket_contrib::json::JsonValue;
-use super::db::{TitanPrimary, UnksoMainForums};
-use super::models;
-use super::schema;
-use diesel::RunQueryDsl;
-use diesel::query_dsl::filter_dsl::FindDsl;
-use super::accounts::acl;
 use serde::{Serialize, Deserialize};
+
+use crate::accounts::acl;
+use crate::config::AppConfig;
+use crate::db::{TitanPrimary, UnksoMainForums};
+use crate::models;
+use crate::schema;
 
 pub struct SecretKey(String);
 

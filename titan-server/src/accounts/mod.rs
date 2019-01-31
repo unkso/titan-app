@@ -1,12 +1,11 @@
 use rocket::{Route, routes};
-use crate::config;
-use crate::woltlab_auth_helper;
 
-mod routes;
-pub mod users;
+pub mod acl;
 pub mod file_entries;
 pub mod file_entry_types;
-pub mod acl;
+pub mod users;
+
+mod routes;
 
 pub fn get_auth_routes() -> Vec<Route> {
     routes![
