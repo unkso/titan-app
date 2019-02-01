@@ -19,64 +19,64 @@ class Sidebar extends React.Component {
         </SidebarContentGroup>
 
         <SidebarContentGroup>
+          {/* <SidebarMenuItem */}
+          {/* url={'/'} */}
+          {/* label="Dashboard" */}
+          {/* leftIcon={<FontAwesomeIcon icon="home" />} */}
+          {/* isActive */}
+          {/* /> */}
           <SidebarMenuItem
-            url={'/'}
-            label="Dashboard"
-            leftIcon={<FontAwesomeIcon icon="home" />}
-            isActive
-          />
-          <SidebarMenuItem
-            url={'/'}
-            label="Branch"
+            url={'/branches'}
+            label="Branches"
             leftIcon={<FontAwesomeIcon icon="flag" />}
           />
-          <SidebarMenuItem
-            url={'/'}
-            label="Events"
-            leftIcon={<FontAwesomeIcon icon="calendar-alt" />}
-          />
-          <SidebarMenuItem
-            url={'/'}
-            label="Reports"
-            leftIcon={<FontAwesomeIcon icon="file-alt" />}
-          />
-          <SidebarMenuItem
-            url={'/'}
-            label="Training"
-            leftIcon={<FontAwesomeIcon icon="graduation-cap" />}
-          />
+          {/* <SidebarMenuItem */}
+          {/* url={'/'} */}
+          {/* label="Events" */}
+          {/* leftIcon={<FontAwesomeIcon icon="calendar-alt" />} */}
+          {/* /> */}
+          {/* <SidebarMenuItem */}
+          {/* url={'/'} */}
+          {/* label="Reports" */}
+          {/* leftIcon={<FontAwesomeIcon icon="file-alt" />} */}
+          {/* /> */}
+          {/* <SidebarMenuItem */}
+          {/* url={'/'} */}
+          {/* label="Training" */}
+          {/* leftIcon={<FontAwesomeIcon icon="graduation-cap" />} */}
+          {/* /> */}
         </SidebarContentGroup>
 
-        <SidebarHeading>Administrative</SidebarHeading>
+        {/* <SidebarHeading>Administrative</SidebarHeading> */}
 
-        <SidebarContentGroup>
-          <SidebarMenuItem
-            url={'/'}
-            label="Members"
-            leftIcon={<FontAwesomeIcon icon="users" />}
-          />
-          <SidebarMenuItem
-            url={'/'}
-            label="Awards"
-            leftIcon={<FontAwesomeIcon icon="trophy" />}
-          />
-          <SidebarMenuItem
-            url={'/'}
-            label="Forums"
-            leftIcon={<FontAwesomeIcon icon="newspaper" />}
-          />
-        </SidebarContentGroup>
+        {/* <SidebarContentGroup> */}
+        {/* <SidebarMenuItem */}
+        {/* url={'/'} */}
+        {/* label="Members" */}
+        {/* leftIcon={<FontAwesomeIcon icon="users" />} */}
+        {/* /> */}
+        {/* <SidebarMenuItem */}
+        {/* url={'/'} */}
+        {/* label="Awards" */}
+        {/* leftIcon={<FontAwesomeIcon icon="trophy" />} */}
+        {/* /> */}
+        {/* <SidebarMenuItem */}
+        {/* url={'https://clanunknownsoldiers.com'} */}
+        {/* label="Forums" */}
+        {/* leftIcon={<FontAwesomeIcon icon="newspaper" />} */}
+        {/* /> */}
+        {/* </SidebarContentGroup> */}
 
         <SidebarHeading>Account</SidebarHeading>
 
         <SidebarContentGroup>
+          {/* <SidebarMenuItem */}
+          {/* url={'/'} */}
+          {/* label="Settings" */}
+          {/* leftIcon={<FontAwesomeIcon icon="cog" />} */}
+          {/* /> */}
           <SidebarMenuItem
-            url={'/'}
-            label="Settings"
-            leftIcon={<FontAwesomeIcon icon="cog" />}
-          />
-          <SidebarMenuItem
-            url={'/'}
+            url={'/auth/logout'}
             label="Sign Out"
             leftIcon={<FontAwesomeIcon icon="power-off" />}
           />
