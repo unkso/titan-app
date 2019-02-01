@@ -10,7 +10,7 @@ const DEFAULT_STATE = {
   file_entries: []
 };
 
-function addFileEntry(fileEntry, fileEntries) {
+function addFileEntry (fileEntry, fileEntries) {
   fileEntries.push(fileEntry);
   fileEntries.sort((x, y) => {
     // Sort with newer entries at the beginning.
@@ -20,7 +20,7 @@ function addFileEntry(fileEntry, fileEntries) {
   return fileEntries;
 }
 
-export default function(state = DEFAULT_STATE, action) {
+export default function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case PROFILE_SET_USER:
       return { ...state, user: action.data };

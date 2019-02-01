@@ -12,30 +12,30 @@ import boot from 'titan/boot';
  * }}
  * @constructor
  */
-export const TitanContext = function({ config, cookies, routes, store }) {
+export const TitanContext = function ({ config, cookies, routes, store }) {
   this.routes = routes;
   this.store = store;
   this.config = config;
   this.cookies = cookies;
 };
 
-TitanContext.prototype.getConfig = function() {
+TitanContext.prototype.getConfig = function () {
   return this.config;
 };
 
-TitanContext.prototype.getCookies = function() {
+TitanContext.prototype.getCookies = function () {
   return this.cookies;
 };
 
-TitanContext.prototype.getStore = function() {
+TitanContext.prototype.getStore = function () {
   return this.store;
 };
 
-TitanContext.prototype.getRoutes = function() {
+TitanContext.prototype.getRoutes = function () {
   return this.routes;
 };
 
-TitanContext.prototype.mergeConfigSettings = function(configSettings) {
+TitanContext.prototype.mergeConfigSettings = function (configSettings) {
   this.config.load(Object.assign({}, this.config.get(), configSettings));
 };
 
@@ -48,7 +48,7 @@ let app = null;
  *    mergeConfigSettings
  * }}
  */
-export function getAppContext() {
+export function getAppContext () {
   if (!app) {
     app = new TitanContext(boot());
   }

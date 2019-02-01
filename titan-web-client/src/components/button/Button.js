@@ -35,7 +35,7 @@ export const ButtonWrapper = styled.div`
  * @deprecated
  */
 class Button extends React.Component {
-  render() {
+  render () {
     const { primary, secondary, fullWidth, ...rest } = this.props;
     let textColor, bgColor;
     if (primary) {

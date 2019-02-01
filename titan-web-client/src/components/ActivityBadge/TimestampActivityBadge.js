@@ -17,7 +17,7 @@ const ONE_WEEK = '604800';
  * timestamp.
  */
 class TimestampActivityBadge extends React.Component {
-  getStatusFromTimestamp(timestamp) {
+  getStatusFromTimestamp (timestamp) {
     const nowInSeconds = (new Date()).getTime();
     const diff = nowInSeconds - timestamp;
 
@@ -30,7 +30,7 @@ class TimestampActivityBadge extends React.Component {
     return STATUS_INACTIVE;
   }
 
-  render() {
+  render () {
     const status = this.getStatusFromTimestamp(this.props.timestamp);
     return (
       <ActivityBadge status={status}>

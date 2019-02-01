@@ -13,18 +13,18 @@ export const MenuItemWrapper = styled.div`
 `;
 
 class MenuItem extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.onSelect = this.onSelect.bind(this);
   }
 
-  onSelect() {
+  onSelect () {
     const value = this.props.value ? this.props.value : this.props.text;
     this.props.onSelect(value);
   }
 
-  render() {
+  render () {
     return (
       <MenuItemWrapper
         onClick={this.onSelect}

@@ -59,7 +59,7 @@ const modalWidths = {
 };
 
 class Modal extends React.Component {
-  render() {
+  render () {
     let size = this.props.size;
 
     if (!modalWidths[this.props.size]) {

@@ -32,7 +32,7 @@ export const SidebarMenuItemLink = styled(Link)`
 `;
 
 class SidebarMenuItem extends React.Component {
-  render() {
+  render () {
     let iconColor, textColor, borderColor;
     if (this.props.isActive) {
       iconColor = this.props.theme.palette.primary.main;

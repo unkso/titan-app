@@ -4,14 +4,14 @@ import WithTheme from '../core/WithTheme';
 import FormControl from '../form/FormControl';
 
 class TextField extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       isFocused: false
     };
   }
 
-  render() {
+  render () {
     const { multiLine, ...rest } = this.props;
     const control = multiLine ? 'textarea' : 'text';
 

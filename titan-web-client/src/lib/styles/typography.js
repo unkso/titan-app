@@ -14,7 +14,7 @@ const TEXT_CASE_CAPITALIZE = 'capitalize';
  * @param casing - Font casing (uppercase, lowercase, capitalize, none).
  * @returns {{fontFamily: string, fontWeight: *, fontSize: *, textTransform: *}}
  */
-function createElementStyles(weight, size, lineHeight, casing) {
+function createElementStyles (weight, size, lineHeight, casing) {
   return {
     fontFamily: DEFAULT_FONT_FAMILY,
     fontWeight: weight,
@@ -24,7 +24,7 @@ function createElementStyles(weight, size, lineHeight, casing) {
   };
 }
 
-export function createTypography(typography = {}) {
+export function createTypography (typography = {}) {
   return deepmerge(
     {
       fontFamily: DEFAULT_FONT_FAMILY,

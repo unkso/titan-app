@@ -17,7 +17,7 @@ export const IconButtonWrapper = styled.div`
 `;
 
 class IconButton extends React.Component {
-  render() {
+  render () {
     return (
       <IconButtonWrapper size={this.props.size}>
         <BaseButton>

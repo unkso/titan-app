@@ -7,7 +7,7 @@ export const PageHeaderStyle = styled.header`
 `;
 
 class PageHeader extends React.Component {
-  render() {
+  render () {
     return (
       <PageHeaderStyle>{this.props.children}</PageHeaderStyle>
     );

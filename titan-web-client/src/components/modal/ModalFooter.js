@@ -12,7 +12,7 @@ export const FooterWrapper = styled.div`
 `;
 
 class ModalFooter extends React.Component {
-  render() {
+  render () {
     return (
       <FooterWrapper borderColor={this.props.theme.palette.neutral}>
         {this.props.children}

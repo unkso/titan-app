@@ -15,7 +15,7 @@ const LoginFormStyle = styled.div`
 `;
 
 class WoltlabLoginForm extends React.Component {
-  render() {
+  render () {
     return (
       <LoginFormStyle>
         <h1>Titan Login</h1>

@@ -9,7 +9,7 @@ export const SidebarHeadingWrapper = styled.div`
 `;
 
 class SidebarHeading extends React.Component {
-  render() {
+  render () {
     return (
       <SidebarHeadingWrapper>{this.props.children}</SidebarHeadingWrapper>
     );

@@ -1,7 +1,7 @@
 import AuthenticatedService from 'titan/http/AuthenticatedService';
 
 class UsersService {
-  constructor() {
+  constructor () {
     this.httpService = new AuthenticatedService();
     this.httpClient = this.httpService.getHttpClient();
   }
@@ -11,7 +11,7 @@ class UsersService {
    *
    * @param userId - Titan user ID.
    */
-  getUser(userId) {
+  getUser (userId) {
     return this.httpClient.get(`/users/${userId}`);
   }
 
@@ -20,7 +20,7 @@ class UsersService {
    *
    * @returns {*}
    */
-  listUserFileEntryTypes() {
+  listUserFileEntryTypes () {
     return this.httpClient.get(`/users/file-entry-types`);
   }
 
@@ -31,7 +31,7 @@ class UsersService {
    * @param {{start_date, end_date, comments, file_entry_type_id}} fileEntry
    * @returns {Promise}
    */
-  saveUserFileEntry(userId, fileEntry) {
+  saveUserFileEntry (userId, fileEntry) {
     return this.httpClient.post(`/users/${userId}/file-entries`, fileEntry);
   }
 
@@ -41,7 +41,7 @@ class UsersService {
    * @param {string} userId - Titan user ID.
    * @returns {Promise}
    */
-  listUserFiles(userId) {
+  listUserFiles (userId) {
     return this.httpClient.get(`/users/${userId}/file-entries`);
   }
 }

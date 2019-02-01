@@ -44,7 +44,7 @@ export const ButtonLabelWrapper = styled.span`
 `;
 
 class BaseButton extends React.Component {
-  render() {
+  render () {
     let children = [];
     const { iconLeft, iconRight, ...rest } = this.props;
 

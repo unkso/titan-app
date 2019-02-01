@@ -12,7 +12,7 @@ export const TableBodyInnerWrapper = styled.table`
 `;
 
 class TableBody extends React.Component {
-  render() {
+  render () {
     return (
       <TableBodyOuterWrapper>
         <TableBodyInnerWrapper>

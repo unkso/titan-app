@@ -48,7 +48,7 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 class DashboardLayout extends React.Component {
-  render() {
+  render () {
     const sidebarBg = this.props.theme.palette.backgroundInversePrimary;
     const contentBg = this.props.theme.palette.backgroundPrimary;
     return (

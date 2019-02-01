@@ -7,7 +7,7 @@ import Column from 'titan/components/Grid/Column';
 import Row from 'titan/components/Grid/Row';
 
 class FileEntryList extends React.Component {
-  render() {
+  render () {
     let list = [];
     let prevDate = null;
 

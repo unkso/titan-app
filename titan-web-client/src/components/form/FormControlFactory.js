@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 class FormControlFactory extends React.Component {
-  renderSelect(props) {
+  renderSelect (props) {
     const children = props.children ? props.children : null;
 
     return <select {...props} onChange={(e) => props.onChange(e.target.value)}>{children}</select>;
   }
 
-  renderDiv(props) {
+  renderDiv (props) {
     return (<div {...props}>{props.value}</div>);
   }
 
-  renderNativeControl(control, props) {
+  renderNativeControl (control, props) {
     switch (control) {
       case 'textarea':
         return <textarea {...props} />;
@@ -26,7 +26,7 @@ class FormControlFactory extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const { control, ...rest } = this.props;
 
     if (_.isEmpty(control) || typeof control === 'string') {

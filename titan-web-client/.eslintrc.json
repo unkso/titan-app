@@ -1,7 +1,6 @@
 {
   "extends": ["semistandard", "semistandard-react", "react-app"],
   "rules": {
-    "space-before-function-paren": ["error", "never"],
     "jsx-quotes": ["error", "prefer-double"],
     "semistandard-react/prop-types": [1, { "ignore": ["children", "theme", "match", "history", "actions"] }]
   },

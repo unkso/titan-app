@@ -8,9 +8,9 @@ import { withTheme } from 'styled-components';
  * @returns {{new(): {render(): *}, prototype: {render(): *}}}
  * @constructor
  */
-export default function WithTheme(ComposedComponent) {
+export default function WithTheme (ComposedComponent) {
   return class extends React.Component {
-    render() {
+    render () {
       return (withTheme(
         <ComposedComponent
           {...this.props}

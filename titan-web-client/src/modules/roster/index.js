@@ -5,7 +5,7 @@ import BranchScene from 'titan/modules/roster/branch';
 import ProfileScene from 'titan/modules/roster/profile';
 import profileReducer from 'titan/reducers/profileReducer';
 
-export default function() {
+export default function () {
   return {
     name: 'roster',
     reducer: createStateReducer({

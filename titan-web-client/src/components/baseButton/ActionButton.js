@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class ActionButton extends React.Component {
-  render() {
+  render () {
     if (this.props.href) {
       return (
         <a {...this.props} href={this.props.href}>

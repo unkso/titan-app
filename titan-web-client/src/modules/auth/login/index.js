@@ -24,7 +24,7 @@ const LoginFormWrapper = styled.div`
 `;
 
 class LoginScene extends React.Component {
-  render() {
+  render () {
     return (
       <LoginSceneStyle>
         <ArtworkWrapper image="/images/battlefield_1_tank.jpg" />

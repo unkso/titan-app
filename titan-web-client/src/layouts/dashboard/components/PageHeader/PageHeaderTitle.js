@@ -8,7 +8,7 @@ const PageHeaderTitleStyle = styled.div`
 `;
 
 class PageHeaderTitle extends React.Component {
-  render() {
+  render () {
     return (
       <PageHeaderTitleStyle>
         <Typography variant="h1">{this.props.title}</Typography>

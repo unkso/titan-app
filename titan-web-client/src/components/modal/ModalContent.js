@@ -7,7 +7,7 @@ export const ModalContentWrapper = styled.div`
 `;
 
 class ModalContent extends React.Component {
-  render() {
+  render () {
     return (
       <ModalContentWrapper>
         {this.props.children}

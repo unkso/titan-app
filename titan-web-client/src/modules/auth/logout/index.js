@@ -6,13 +6,13 @@ import connect from 'react-redux/es/connect/connect';
 import WithCookies from 'titan/components/core/WithCookies';
 
 class LogoutScene extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     this.props.cookies.remove('wcf21_password', { path: '/' });
     this.props.cookies.remove('wcf21_userID', { path: '/' });
     this.props.actions.auth.logout();
   }
 
-  render() {
+  render () {
     if (!this.props.auth.session) {
       window.location = '/auth/login';
     }
@@ -27,13 +27,13 @@ LogoutScene.propTypes = {
   cookies: PropTypes.object
 };
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     auth: state.auth
   };
 }
 
-function mapActionsToProps(dispatch) {
+function mapActionsToProps (dispatch) {
   return {
     actions: {
       auth: bindActionCreators(authActions, dispatch)

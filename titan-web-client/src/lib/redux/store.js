@@ -5,7 +5,7 @@ import localStorage from '../storage/localStorage';
 
 let titanStore = null;
 
-export function setupStore(stateReducer = {}, storageKey) {
+export function setupStore (stateReducer = {}, storageKey) {
   const persistedState = localStorage.load(storageKey);
   const stateToLoad = (persistedState) ? { auth: persistedState } : undefined;
   const store = createStore(
@@ -30,6 +30,6 @@ export function setupStore(stateReducer = {}, storageKey) {
   return titanStore;
 }
 
-export function getStore() {
+export function getStore () {
   return titanStore;
 }

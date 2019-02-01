@@ -7,7 +7,7 @@ export const ContentBlock = styled.div`
 `;
 
 class Block extends React.Component {
-  render() {
+  render () {
     return (
       <ContentBlock>
         {this.props.children}

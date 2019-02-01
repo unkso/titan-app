@@ -14,7 +14,7 @@ export const ModalHeaderWrapper = styled.div`
 `;
 
 class ModalHeader extends React.Component {
-  render() {
+  render () {
     let children = this.props.children;
     if (typeof this.props.children === 'string') {
       children = (<h2>{this.props.children}</h2>);

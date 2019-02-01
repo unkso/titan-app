@@ -17,7 +17,7 @@ const ELEMENTS = {
  * @deprecated
  */
 class Typography extends React.Component {
-  render() {
+  render () {
     const Component = ELEMENTS[this.props.element];
 
     return (
