@@ -22,6 +22,13 @@ pub fn find_by_wcf_id(
         .first::<models::TitanUser>(titan_primary);
 }
 
+/// Finds all user IDs by a list of WCF IDs.
+pub fn find_all_by_wcf_id(wcf_ids: Vec<i32>, titan_primary: &MysqlConnection) -> QueryResult<Vec<models::TitanUser>> {
+    schema::users::table
+        .filter(schema::users::wcf_id.eq_any(wcf_ids))
+        .get_results::<models::TitanUser>(titan_primary)
+}
+
 /// Create a user account from a WCF user if one doesn't already exist.
 pub fn create_if_not_exists(
     wcf_user: &models::WcfUser,

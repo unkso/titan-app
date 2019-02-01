@@ -20,8 +20,8 @@ class RosterCardGrid extends React.Component {
             key={index}
           >
             <RosterCard
-              user={member.user}
-              avatar={member.avatar} />
+              user={member}
+              avatar={member.wcf.avatar_url} />
           </Column>
         ))}
       </Row>

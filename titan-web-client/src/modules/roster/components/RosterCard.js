@@ -17,7 +17,7 @@ class RosterCard extends React.Component {
         <CardContent>
           <div style={{ margin: '8px 0', textAlign: 'center' }}>
             <TimestampActivityBadge
-              timestamp={this.props.user.last_activity_time}
+              timestamp={this.props.user.wcf.last_activity_time}
             >
               <Avatar
                 style={{ width: 75, height: 75, margin: 'auto' }}
@@ -39,7 +39,7 @@ class RosterCard extends React.Component {
             component="p"
             color="textSecondary"
             dangerouslySetInnerHTML={{
-              __html: this.props.user.user_title
+              __html: this.props.user.wcf.user_title
             }}
             noWrap
           />
