@@ -55,13 +55,13 @@ class Profile extends React.Component {
         <PageHeader>
           <CardHeader title={this.props.profile.user.wcf.username} />
           <Tabs value={this.state.tab} onChange={this.changeTabHandler}>
-            <Tab label="General" />
+            {/* <Tab label="General" /> */}
             <Tab label="History" />
           </Tabs>
         </PageHeader>
         <ContentBlock>
-          {this.state.tab === 0 && <GeneralProfile />}
-          {this.state.tab === 1 && (
+          { /* {this.state.tab === 0 && <GeneralProfile />} */ }
+          {this.state.tab === 0 && (
             <React.Fragment>
               <Typography align="right">
                 <CreateFileEntryContainer />
