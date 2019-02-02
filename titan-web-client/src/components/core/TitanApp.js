@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import defaultTheme from 'titan/themes/default';
@@ -84,6 +84,7 @@ class TitanApp extends React.Component {
                 <BrowserRouter>
                   <Switch>
                     {this.renderRoutes(this.props.context.getRoutes())}
+                    <Redirect from="/" to="/branches" />
                   </Switch>
                 </BrowserRouter>
               </Provider>

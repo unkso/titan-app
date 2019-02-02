@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS user_file_entry_types (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(255) UNIQUE
+  name VARCHAR(255) UNIQUE NOT NULL
 );
 
-INSERT INTO user_file_entry_types(id, name) VALUES (23, ' Complete Course');
+INSERT INTO user_file_entry_types(id, name) VALUES (23, 'Complete Course');
 INSERT INTO user_file_entry_types(id, name) VALUES (4, 'A-15');
 INSERT INTO user_file_entry_types(id, name) VALUES (12, 'Application Denied');
 INSERT INTO user_file_entry_types(id, name) VALUES (22, 'Application Withdrawn');

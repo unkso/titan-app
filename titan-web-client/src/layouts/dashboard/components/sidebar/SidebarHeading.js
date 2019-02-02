@@ -16,8 +16,4 @@ class SidebarHeading extends React.Component {
   }
 }
 
-SidebarHeading.propTypes = {
-  children: PropTypes.object
-};
-
 export default SidebarHeading;

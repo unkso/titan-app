@@ -18,18 +18,28 @@ use crate::schema::{
 pub struct WcfUser {
     pub user_id: i32,
     pub username: String,
+    #[serde(skip)]
     pub email: String,
+    #[serde(skip)]
     pub password: String,
+    #[serde(skip)]
     pub access_token: String,
+    #[serde(skip)]
     pub language_id: i32,
+    #[serde(skip)]
     pub registration_date: i32,
+    #[serde(skip)]
     pub style_id: i32,
     pub banned: bool,
     pub ban_reason: Option<String>,
     pub ban_expires: i32,
+    #[serde(skip)]
     pub activation_code: i32,
+    #[serde(skip)]
     pub last_lost_password_request_time: i32,
+    #[serde(skip)]
     pub lost_password_key: String,
+    #[serde(skip)]
     pub last_username_change: i32,
     // pub newEmail: String,
     // pub oldUsername: String,
@@ -53,6 +63,7 @@ pub struct WcfUser {
     // pub profileHits: i32,
     // pub rankID: Option<i32>,
     pub user_title: String,
+    #[serde(skip)]
     pub user_online_group_id: Option<i32>,
     // pub activityPoints: i32,
     // pub notificationMailToken: String,
@@ -159,10 +170,11 @@ pub struct WcfBranch {
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "organizations"]
-pub struct TitanOrganization {
+pub struct Organization {
     pub id: i32,
     pub name: String,
     pub slug: String,
+    pub avatar_url: String,
     pub group_type: String,
     pub wcf_user_group_id: i32,
     pub is_enabled: bool
@@ -170,7 +182,7 @@ pub struct TitanOrganization {
 
 #[derive(Insertable)]
 #[table_name = "users"]
-pub struct NewTitanUser {
+pub struct NewUser {
     pub wcf_id: i32,
     pub legacy_player_id: Option<i32>,
     pub rank_id: Option<i32>,
@@ -192,7 +204,7 @@ pub struct NewTitanUser {
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "users"]
-pub struct TitanUser {
+pub struct User {
     pub id: i32,
     pub wcf_id: i32,
     pub legacy_player_id: Option<i32>,
@@ -209,12 +221,12 @@ pub struct TitanUser {
     pub date_created: chrono::NaiveDateTime,
     pub date_modified: Option<chrono::NaiveDateTime>,
     pub modified_by: Option<i32>,
-    pub last_activity: chrono::NaiveDateTime,
+    pub last_activity: Option<chrono::NaiveDateTime>,
     pub is_active: bool
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct TitanUserProfile {
+pub struct UserProfile {
     pub id: i32,
     pub wcf_id: i32,
     pub legacy_player_id: Option<i32>,
@@ -259,10 +271,10 @@ pub struct NewUserFileEntry {
     pub user_file_entry_type_id: i32,
     pub user_id: i32,
     pub start_date: chrono::NaiveDateTime,
-    pub end_date: chrono::NaiveDateTime,
-    pub comments: String,
-    pub date_modified: Option<chrono::NaiveDateTime>,
-    pub modified_by: Option<i32>
+    pub end_date: Option<chrono::NaiveDateTime>,
+    pub comments: Option<String>,
+    pub date_modified: chrono::NaiveDateTime,
+    pub modified_by: i32
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
@@ -272,10 +284,10 @@ pub struct UserFileEntry {
     pub user_file_entry_type_id: i32,
     pub user_id: i32,
     pub start_date: chrono::NaiveDateTime,
-    pub end_date: chrono::NaiveDateTime,
-    pub comments: String,
-    pub date_modified: Option<chrono::NaiveDateTime>,
-    pub modified_by: Option<i32>
+    pub end_date: Option<chrono::NaiveDateTime>,
+    pub comments: Option<String>,
+    pub date_modified: chrono::NaiveDateTime,
+    pub modified_by: i32
 }
 
 #[derive(Serialize, Deserialize)]
@@ -284,8 +296,8 @@ pub struct UserFileEntryWithType {
     pub file_entry_type: UserFileEntryType,
     pub user_id: i32,
     pub start_date: chrono::NaiveDateTime,
-    pub end_date: chrono::NaiveDateTime,
-    pub comments: String,
-    pub date_modified: Option<chrono::NaiveDateTime>,
-    pub modified_by: Option<i32>
+    pub end_date: Option<chrono::NaiveDateTime>,
+    pub comments: Option<String>,
+    pub date_modified: chrono::NaiveDateTime,
+    pub modified_by: i32
 }

@@ -20,7 +20,7 @@ class WoltlabLoginContainer extends React.Component {
 
   componentDidMount () {
     if (this.props.session) {
-      window.location = '/dashboard';
+      window.location = '/branches';
       return;
     }
 

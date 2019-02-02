@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/es/Typography/Typography';
+import Typography from '@material-ui/core/Typography/Typography';
 import { format as formatDate } from 'date-fns';
 import FileEntry from 'titan/modules/roster/profile/components/FileEntry';
 import Column from 'titan/components/Grid/Column';

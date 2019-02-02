@@ -4,7 +4,7 @@ import * as profileActions from 'titan/actions/profileActions';
 import connect from 'react-redux/es/connect/connect';
 import UsersService from 'titan/http/UsersService';
 import CircularProgress
-  from '@material-ui/core/es/CircularProgress/CircularProgress';
+  from '@material-ui/core/CircularProgress/CircularProgress';
 import FileEntryList
   from 'titan/modules/roster/profile/components/FileEntryList';
 

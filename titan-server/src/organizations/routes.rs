@@ -9,8 +9,19 @@ use crate::organizations;
 
 #[derive(Serialize)]
 pub struct FindOrganizationResponse {
-    organization: models::TitanOrganization,
-    users: Vec<models::TitanUserProfile>
+    organization: models::Organization,
+    users: Vec<models::UserProfile>
+}
+
+#[get("/")]
+pub fn get_all(titan_primary: TitanPrimary) -> Result<Json<Vec<models::Organization>>, status::NotFound<String>> {
+    let organizations = organizations::organizations::find_all(titan_primary);
+
+    if organizations.is_err() {
+        return Err(status::NotFound("".to_string()))
+    }
+
+    Ok(Json(organizations.unwrap()))
 }
 
 #[get("/<slug>")]
@@ -35,7 +46,7 @@ pub fn find_organization(
         &unkso_main
     );
 
-    let mut users: Vec<models::TitanUserProfile> = vec![];
+    let mut users: Vec<models::UserProfile> = vec![];
     if users_query.is_ok() {
         let users_result = users_query.unwrap();
         let wcf_ids: Vec<i32> = users_result.iter().map(|(u, _)| u.user_id).collect();
@@ -48,7 +59,7 @@ pub fn find_organization(
         // @todo Many other parts of the application will use this logic. Move to a common module
         // so other modules have access to it.
         for ((wcf_user, wcf_avatar), ref titan_profile) in users_result.iter().zip(titan_profiles.unwrap()) {
-            users.push(models::TitanUserProfile {
+            users.push(models::UserProfile {
                 id: titan_profile.id,
                 wcf_id: titan_profile.wcf_id,
                 legacy_player_id: titan_profile.legacy_player_id,
@@ -62,7 +73,7 @@ pub fn find_organization(
                 loa: titan_profile.loa,
                 a15: titan_profile.a15,
                 date_joined: titan_profile.date_joined,
-                last_activity: titan_profile.last_activity,
+                last_activity: titan_profile.last_activity.unwrap_or(chrono::Utc::now().naive_utc()),
                 wcf: models::WcfUserProfile {
                     avatar_url: Some(format!("{}/{}", app_config.avatar_base_url, wcf_avatar.get_avatar_url())),
                     last_activity_time: wcf_user.last_activity_time,

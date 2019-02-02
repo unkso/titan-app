@@ -7,6 +7,15 @@ class OrganizationsService {
   }
 
   /**
+   * Find all organizations that the server knows about.
+   *
+   * @returns {Promise}
+   */
+  findAll () {
+    return this.httpClient.get(`/organizations`);
+  }
+
+  /**
    * Finds an organizations with the given slug.
    *
    * @param {string} slug - The url friendly name of an organization.
