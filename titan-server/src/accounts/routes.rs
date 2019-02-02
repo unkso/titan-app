@@ -197,16 +197,27 @@ pub struct ListUserFileEntriesResponse {
 pub fn list_user_file_entries(
     user_id: i32,
     titan_primary: TitanPrimary,
-    _auth_user: auth_guard::AuthenticatedUser,
+    wcf_db: UnksoMainForums,
+    auth_user: auth_guard::AuthenticatedUser,
 ) -> Result<Json<ListUserFileEntriesResponse>, status::NotFound<String>> {
-    let file_entries = file_entries::find_by_user(
+    let file_entries_res = file_entries::find_by_user(
         user_id,
         &*titan_primary,
     );
 
-    if file_entries.is_ok() {
+    if file_entries_res.is_ok() {
+        let mut file_entries = file_entries_res.unwrap();
+        for entry in file_entries.iter_mut() {
+            if entry.file_entry_type.name == "LOA" && (auth_user.user.id != user_id &&
+                !acl::has_acl_option(auth_user.user.wcf_id, "canViewLoa", &*wcf_db)) {
+                entry.comments = Some("The details of this entry have been omitted as they may \
+                    contain private information. You do not have permission to access this \
+                    information.".to_string());
+            }
+        }
+
         return Ok(Json(ListUserFileEntriesResponse {
-            items: file_entries.unwrap()
+            items: file_entries
         }));
     }
 
