@@ -1,5 +1,8 @@
 {
   "woltlab": {
-    "authUrl": "https://clanunknownsoldiers.com/login"
+    "authUrl": "https://clanunknownsoldiers.com/login",
+    "cookie": {
+      "domain": "localhost"
+    }
   }
 }
