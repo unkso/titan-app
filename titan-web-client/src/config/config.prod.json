@@ -3,6 +3,9 @@
     "baseUrl": "https://titan.clanunknownsoldiers.com/api"
   },
   "woltlab": {
-    "authUrl": "https://clanunknownsoldiers.com/login"
+    "authUrl": "https://clanunknownsoldiers.com/login",
+    "cookie": {
+      "domain": ".clanunknownsoldiers.com"
+    }
   }
 }

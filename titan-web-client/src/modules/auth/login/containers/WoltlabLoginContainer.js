@@ -24,8 +24,13 @@ class WoltlabLoginContainer extends React.Component {
       return;
     }
 
-    const token = this.props.cookies.get('wcf21_password');
-    const userId = this.props.cookies.get('wcf21_userID');
+    const token = this.props.cookies.get('wcf21_password', {
+      domain: this.props.config.get('woltlab.cookie.domain')
+    });
+    const userId = this.props.cookies.get('wcf21_userID', {
+      domain: this.props.config.get('woltlab.cookie.domain')
+    });
+
     if (token && userId) {
       this.authService.login(parseInt(userId, 10), token)
         .then((res) => {
