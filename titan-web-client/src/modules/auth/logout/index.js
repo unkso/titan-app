@@ -16,6 +16,10 @@ class LogoutScene extends React.Component {
       path: '/',
       domain: this.props.config.get('woltlab.cookie.domain')
     });
+    this.props.cookies.remove('wcf21_cookieHash', {
+      path: '/',
+      domain: this.props.config.get('woltlab.cookie.domain')
+    });
     this.props.actions.auth.logout();
     window.location = '/auth/login';
   }
