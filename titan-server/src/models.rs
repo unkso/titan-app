@@ -134,9 +134,9 @@ pub struct WcfAclOptionCategory {
 
 #[derive(Serialize, Deserialize, Queryable)]
 pub struct WcfAclOption {
-    id: i32,
-    option_name: String,
-    category_name: String
+    pub id: i32,
+    pub option_name: String,
+    pub category_name: String
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
