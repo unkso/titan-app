@@ -23,7 +23,9 @@ import {
   faPowerOff,
   faRandom,
   faShieldAlt,
-  faBan
+  faDumbbell,
+  faBan,
+  faGamepad
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faAward);
@@ -41,7 +43,9 @@ library.add(faCog);
 library.add(faPowerOff);
 library.add(faRandom);
 library.add(faShieldAlt);
+library.add(faDumbbell);
 library.add(faBan);
+library.add(faGamepad);
 
 let config;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {

@@ -1,7 +1,9 @@
 import {
   PROFILE_SET_FILE_ENTRIES,
   PROFILE_ADD_FILE_ENTRY,
-  PROFILE_SET_USER
+  PROFILE_SET_USER,
+  PROFILE_SET_EXCUSES,
+  PROFILE_ADD_EXCUSE
 } from './actionTypes';
 
 export function setUser (user) {
@@ -14,4 +16,12 @@ export function setFileEntries (fileEntries) {
 
 export function addFileEntry (fileEntry) {
   return { type: PROFILE_ADD_FILE_ENTRY, data: fileEntry };
+}
+
+export function setExcuses (excuses) {
+  return { type: PROFILE_SET_EXCUSES, data: excuses };
+}
+
+export function addExcuse (excuse) {
+  return { type: PROFILE_ADD_EXCUSE, data: excuse };
 }

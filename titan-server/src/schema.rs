@@ -222,7 +222,30 @@ table! {
     }
 }
 
+table! {
+    event_types (id) {
+        id -> Integer,
+        name -> Varchar,
+    }
+}
+
+table! {
+    user_event_excuses (id) {
+          id -> Integer,
+          user_id -> Integer,
+          event_type_id -> Integer,
+          event_date -> Datetime,
+          comments -> Mediumtext,
+          ack_user_id -> Nullable<Integer>,
+          ack_date -> Nullable<Datetime>,
+          ack_comments -> Nullable<Mediumtext>,
+          date_created -> Datetime,
+          date_modified -> Datetime,
+    }
+}
+
 joinable!(user_file_entries -> user_file_entry_types (user_file_entry_type_id));
+joinable!(user_event_excuses -> event_types (event_type_id));
 joinable!(wcf1_user_option_value -> wcf1_user (user_id));
 joinable!(wcf1_user_avatar -> wcf1_user (user_id));
 joinable!(wcf1_user_option_value -> wcf1_user_avatar (user_avatar_id));
@@ -245,4 +268,9 @@ allow_tables_to_appear_in_same_query!(
 allow_tables_to_appear_in_same_query!(
     wcf1_user_to_group,
     wcf1_acl_option_to_group
+);
+
+allow_tables_to_appear_in_same_query!(
+    user_event_excuses,
+    event_types,
 );

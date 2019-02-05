@@ -18,8 +18,14 @@ export const FILE_ENTRY_PASS_JCS_INTERVIEW = 'Pass JCS Interview';
 export const FILE_ENTRY_RETIRED = 'Retired';
 export const FILE_ENTRY_TRANSFER = 'Transfer';
 export const FILE_ENTRY_PROMOTION = 'Promotion';
-
 export const MULTI_DATE_FILE_ENTRY_TYPES = [
   FILE_ENTRY_A15,
   FILE_ENTRY_LOA
 ];
+
+export const EVENT_TYPE_PRACTICE = 'practice';
+export const EVENT_TYPE_MEETING = 'meeting';
+export const EVENT_TYPE_NCO_MEETING = 'nco meeting';
+export const EVENT_TYPE_SCRIM = 'scrim';
+export const EVENT_TYPE_TRAINING = 'training';
+export const EVENT_TYPE_OTHER = 'other';

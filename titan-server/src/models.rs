@@ -2,10 +2,12 @@ use chrono;
 use serde::{Serialize, Deserialize};
 
 use crate::schema::{
+    event_types,
     organizations,
     users,
     user_file_entries,
     user_file_entry_types,
+    user_event_excuses,
     wcf1_user,
     wcf1_user_activity_event,
     wcf1_user_group,
@@ -300,4 +302,52 @@ pub struct UserFileEntryWithType {
     pub comments: Option<String>,
     pub date_modified: chrono::NaiveDateTime,
     pub modified_by: i32
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+pub struct EventType {
+    pub id: i32,
+    pub name: String
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+pub struct UserEventExcuse {
+    pub id: i32,
+    pub user_id: i32,
+    pub event_type_id: i32,
+    pub event_date: chrono::NaiveDateTime,
+    pub comments: String,
+    pub ack_user_id: Option<i32>,
+    pub ack_date: Option<chrono::NaiveDateTime>,
+    pub ack_comments: Option<String>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: chrono::NaiveDateTime,
+}
+
+#[derive(Insertable)]
+#[table_name = "user_event_excuses"]
+pub struct NewUserEventExcuse {
+    pub user_id: i32,
+    pub event_type_id: i32,
+    pub event_date: chrono::NaiveDateTime,
+    pub comments: String,
+    pub ack_user_id: Option<i32>,
+    pub ack_date: Option<chrono::NaiveDateTime>,
+    pub ack_comments: Option<String>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: chrono::NaiveDateTime,
+}
+
+#[derive(Serialize)]
+pub struct UserEventExcuseWithType {
+    pub id: i32,
+    pub user_id: i32,
+    pub event_type: EventType,
+    pub event_date: chrono::NaiveDateTime,
+    pub comments: String,
+    pub ack_user_id: Option<i32>,
+    pub ack_date: Option<chrono::NaiveDateTime>,
+    pub ack_comments: Option<String>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: chrono::NaiveDateTime,
 }

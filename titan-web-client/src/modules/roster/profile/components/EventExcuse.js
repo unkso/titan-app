@@ -14,20 +14,14 @@ import Button from '@material-ui/core/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTheme } from '@material-ui/core/styles';
 import {
-  FILE_ENTRY_A15,
-  FILE_ENTRY_APP_DENIED,
-  FILE_ENTRY_APP_WITHDRAWN,
-  FILE_ENTRY_AWARD, FILE_ENTRY_AWOL,
-  FILE_ENTRY_BCT_E0_COMPLETE,
-  FILE_ENTRY_BCT_E1_COMPLETE,
-  FILE_ENTRY_BCT_E2_COMPLETE,
-  FILE_ENTRY_BCT_E3_COMPLETE,
-  FILE_ENTRY_PASS_JCS_INTERVIEW,
-  FILE_ENTRY_PROMOTION,
-  FILE_ENTRY_TRANSFER
+  EVENT_TYPE_MEETING,
+  EVENT_TYPE_NCO_MEETING,
+  EVENT_TYPE_PRACTICE,
+  EVENT_TYPE_SCRIM,
+  EVENT_TYPE_TRAINING
 } from 'titan/modules/roster/constants';
 
-class FileEntry extends React.Component {
+class EventExcuseListItem extends React.Component {
   constructor (props) {
     super(props);
 
@@ -44,66 +38,43 @@ class FileEntry extends React.Component {
     this.setState({ dialogOpen: false });
   }
 
-  getFileEntryTheme (type) {
+  getEventExcuseListItemTheme (type) {
     switch (type) {
-      case FILE_ENTRY_A15:
+      case EVENT_TYPE_MEETING:
         return {
-          color: this.props.theme.palette.danger,
-          icon: <FontAwesomeIcon icon="ban" />
-        };
-      case FILE_ENTRY_AWOL:
-        return {
-          color: this.props.theme.palette.danger,
-          icon: <FontAwesomeIcon icon="info" />
-        };
-      case FILE_ENTRY_AWARD:
-        return {
-          color: this.props.theme.palette.warning,
-          icon: <FontAwesomeIcon icon="award" />
-        };
-      case FILE_ENTRY_APP_WITHDRAWN:
-        return {
-          color: this.props.theme.palette.info,
-          icon: <FontAwesomeIcon icon="file-alt" />
-        };
-      case FILE_ENTRY_APP_DENIED:
-        return {
-          color: this.props.theme.palette.danger,
-          icon: <FontAwesomeIcon icon="file-alt" />
-        };
-      case FILE_ENTRY_BCT_E0_COMPLETE:
-      case FILE_ENTRY_BCT_E1_COMPLETE:
-      case FILE_ENTRY_BCT_E2_COMPLETE:
-      case FILE_ENTRY_BCT_E3_COMPLETE:
-        return {
-          color: this.props.theme.palette.success,
-          icon: <FontAwesomeIcon icon="shield-alt" />
-        };
-      case FILE_ENTRY_PASS_JCS_INTERVIEW:
-        return {
-          color: this.props.theme.palette.success,
+          color: this.props.theme.palette.secondary.light,
           icon: <FontAwesomeIcon icon="users" />
         };
-      case FILE_ENTRY_PROMOTION:
+      case EVENT_TYPE_NCO_MEETING:
         return {
-          color: this.props.theme.palette.warning,
-          icon: <FontAwesomeIcon icon="star" />
+          color: this.props.theme.palette.secondary.light,
+          icon: <FontAwesomeIcon icon="users" />
         };
-      case FILE_ENTRY_TRANSFER:
+      case EVENT_TYPE_PRACTICE:
         return {
-          color: this.props.theme.palette.info,
-          icon: <FontAwesomeIcon icon="random" />
+          color: this.props.theme.palette.secondary.light,
+          icon: <FontAwesomeIcon icon="gamepad" />
+        };
+      case EVENT_TYPE_SCRIM:
+        return {
+          color: this.props.theme.palette.primary.light,
+          icon: <FontAwesomeIcon icon="shield-alt" />
+        };
+      case EVENT_TYPE_TRAINING:
+        return {
+          color: this.props.theme.palette.secondary.light,
+          icon: <FontAwesomeIcon icon="dumbbell" />
         };
       default:
         return {
-          color: this.props.theme.palette.info,
+          color: this.props.theme.palette.secondary.light,
           icon: <FontAwesomeIcon icon="info" />
         };
     }
   }
 
   render () {
-    const theme = this.getFileEntryTheme(this.props.type);
+    const theme = this.getEventExcuseListItemTheme(this.props.type);
     const date = (new Date(this.props.date)).toLocaleDateString();
 
     return (
@@ -133,9 +104,9 @@ class FileEntry extends React.Component {
   }
 }
 
-FileEntry.propTypes = {
+EventExcuseListItem.propTypes = {
   type: PropTypes.string,
   date: PropTypes.string
 };
 
-export default withTheme()(FileEntry);
+export default withTheme()(EventExcuseListItem);
