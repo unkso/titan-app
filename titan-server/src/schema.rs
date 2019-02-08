@@ -62,6 +62,32 @@ table! {
 }
 
 table! {
+    wcf1_user_group_option (option_id) {
+        #[sql_name = "optionID"]
+        option_id -> Integer,
+
+        #[sql_name = "optionName"]
+        option_name -> Varchar,
+
+        #[sql_name = "categoryName"]
+        category_name -> Varchar,
+    }
+}
+
+table! {
+    wcf1_user_group_option_value (group_id, option_id) {
+        #[sql_name = "groupID"]
+        group_id -> Integer,
+
+        #[sql_name = "optionID"]
+        option_id -> Integer,
+
+        #[sql_name = "optionValue"]
+        option_value -> Text,
+    }
+}
+
+table! {
     wcf1_user_to_group (user_id, group_id) {
         #[sql_name = "userID"]
         user_id -> Integer,
@@ -273,19 +299,23 @@ joinable!(wcf1_user_option_value -> wcf1_user_avatar (user_avatar_id));
 joinable!(wcf1_user_to_group -> wcf1_user (user_id));
 joinable!(wcf1_user_to_group -> wcf1_user_group (group_id));
 joinable!(wcf1_user_activity_event -> wcf1_user (user_id));
+joinable!(wcf1_user_group_option_value -> wcf1_user_group (group_id));
+joinable!(wcf1_user_group_option_value -> wcf1_user_group_option (option_id));
 allow_tables_to_appear_in_same_query!(
     event_types,
-    organizations,
     organization_roles,
+    organizations,
     organizations_users,
-    users,
     user_event_excuses,
     user_file_entries,
     user_file_entry_types,
+    users,
     wcf1_acl_option_to_group,
     wcf1_user,
     wcf1_user_activity_event,
     wcf1_user_avatar,
     wcf1_user_group,
+    wcf1_user_group_option,
+    wcf1_user_group_option_value,
     wcf1_user_to_group,
 );

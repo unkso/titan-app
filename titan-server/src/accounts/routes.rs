@@ -30,7 +30,7 @@ pub struct WoltlabLoginResponse {
     pub user: models::UserProfile,
     pub wcf_username: String,
     pub wcf_user_title: String,
-    pub acl: Vec<models::WcfAclOption>,
+    pub acl: Vec<models::WcfUserGroupOption>,
 }
 
 #[post("/woltlab", format = "application/json", data = "<login_creds>")]

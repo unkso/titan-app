@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/vortex/aclOption.xsd">
+    <import>
+        <options>
+            <option name="canAddFileEntries">
+                <objecttype>com.unkso.titan.canAddFileEntries</objecttype>
+            </option>
+            <option name="canSeeLoaDetails">
+                <objecttype>com.unkso.titan.canSeeLoaDetails</objecttype>
+            </option>
+            <option name="canCreateEventExcuse">
+                <objecttype>com.unkso.titan.canCreateEventExcuse</objecttype>
+            </option>
+        </options>
+    </import>
+</data>

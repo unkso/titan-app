@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/maelstrom/language.xsd" languagecode="en" languagename="English" countrycode="gb">
+    <category name="wcf.acp.group">
+        <item name="wcf.acp.group.option.category.mod.titan"><![CDATA[Titan]]></item>
+        <item name="wcf.acp.group.option.canCreateFileEntries"><![CDATA[Can add file entries]]></item>
+        <item name="wcf.acp.group.option.canViewLoaDetails"><![CDATA[Can view LOA details]]></item>
+        <item name="wcf.acp.group.option.canCreateEventExcuse"><![CDATA[Can create event excuses on behalf of others]]></item>
+    </category>
+</language>
