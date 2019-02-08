@@ -23,7 +23,7 @@ pub struct AuthCredentials {
 pub struct AuthenticatedUser {
     pub credentials: AuthCredentials,
     pub user: models::User,
-    pub acl: Vec<models::WcfAclOption>
+    pub acl: Vec<models::WcfUserGroupOption>
 }
 
 #[derive(Debug)]

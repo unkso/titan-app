@@ -1,0 +1,5 @@
+package:
+  destination: com.clanunknownsoldiers.plugin.titan-wcf.tar
+  files:
+    exclude:
+      - adding-new-acl-options.md

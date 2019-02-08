@@ -88,7 +88,7 @@ class CreateFileEntryContainer extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <WithAcl options={['titan.user:canCreateFileEntry']}>
+        <WithAcl options={['mod.titan:canCreateFileEntries']}>
           <Button
             variant="contained"
             color="primary"

@@ -13,6 +13,8 @@ use crate::schema::{
     wcf1_user_activity_event,
     wcf1_user_group,
     wcf1_user_to_group,
+    wcf1_user_group_option,
+    wcf1_user_group_option_value,
 };
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
@@ -90,6 +92,24 @@ pub struct WcfUserGroup {
 pub struct WcfUserToGroup {
     pub group_id: i32,
     pub user_id: i32
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user_group_option"]
+#[primary_key(option_id)]
+pub struct WcfUserGroupOption {
+    pub option_id: i32,
+    pub option_name: String,
+    pub category_name: String,
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "wcf1_user_group_option_value"]
+#[primary_key(group_id, option_id)]
+pub struct WcfUserGroupOptionValue {
+    pub group_id: i32,
+    pub option_id: i32,
+    pub option_value: String,
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
