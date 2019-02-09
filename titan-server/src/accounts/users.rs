@@ -1,10 +1,12 @@
 use chrono;
 use diesel::{prelude::*, MysqlConnection};
+use rocket::State;
 
 use crate::models;
 use crate::schema;
+use crate::config;
 
-/// Finds a single user by ID
+/// Finds a single user by ID.
 pub fn find_by_id(
     user_id: i32,
     titan_db: &MysqlConnection
@@ -22,10 +24,14 @@ pub fn find_by_wcf_id(
         .first::<models::User>(titan_primary);
 }
 
-/// Finds all user IDs by a list of WCF IDs.
-pub fn find_all_by_wcf_id(wcf_ids: Vec<i32>, titan_primary: &MysqlConnection) -> QueryResult<Vec<models::User>> {
+/// Finds titan users with any of the WCF IDs.
+pub fn find_all_by_wcf_id(
+    wcf_ids: Vec<i32>,
+    titan_primary: &MysqlConnection
+) -> QueryResult<Vec<models::User>> {
     schema::users::table
         .filter(schema::users::wcf_id.eq_any(wcf_ids))
+        .order_by(schema::users::username.asc())
         .load::<models::User>(titan_primary)
 }
 
@@ -84,6 +90,13 @@ pub fn create_if_not_exists(
     find_by_wcf_id(wcf_user.user_id, titan_primary)
 }
 
+pub fn wcf_find_all_by_user_id(wcf_user_ids: Vec<i32>, wcf_db: &MysqlConnection) -> QueryResult<Vec<models::WcfUser>> {
+    schema::wcf1_user::table
+        .filter(schema::wcf1_user::user_id.eq_any(wcf_user_ids))
+        .order_by(schema::wcf1_user::username.desc())
+        .load::<models::WcfUser>(wcf_db)
+}
+
 /// Queries a single WCF user with the given id.
 pub fn wcf_find_by_user_id(
     wcf_user_id: i32,
@@ -94,11 +107,129 @@ pub fn wcf_find_by_user_id(
         .first::<models::WcfUser>(wcf_db);
 }
 
-pub fn find_user_avatar(
+pub fn wcf_find_user_avatar(
     wcf_id: i32,
     wcf_db: &MysqlConnection
 ) -> Result<models::WcfUserAvatar, diesel::result::Error> {
     schema::wcf1_user_avatar::table
         .filter(schema::wcf1_user_avatar::user_id.eq(wcf_id))
         .first(wcf_db)
+}
+
+/// Lists the profiles for the WCF users with one of the given user
+/// IDs.
+pub fn wcf_find_all_user_profiles_by_id(
+    wcf_user_ids: Vec<i32>,
+    wcf_db: &MysqlConnection,
+    app_config: State<config::AppConfig>
+) -> Result<Vec<models::WcfUserProfile>, diesel::result::Error> {
+    let res = schema::wcf1_user::table.inner_join(schema::wcf1_user_avatar::table)
+        .select((schema::wcf1_user::all_columns, schema::wcf1_user_avatar::all_columns))
+        .filter(schema::wcf1_user::user_id.eq_any(wcf_user_ids))
+        .load::<(models::WcfUser, models::WcfUserAvatar)>(wcf_db)?;
+
+    let mut wcf_user_profiles: Vec<models::WcfUserProfile> = vec!();
+    for (wcf_user, wcf_avatar) in res {
+        wcf_user_profiles.push(models::WcfUserProfile {
+            avatar_url: Some(format!(
+                "{}/{}",
+                app_config.avatar_base_url,
+                wcf_avatar.get_avatar_url()
+            )),
+            last_activity_time: wcf_user.last_activity_time,
+            user_title: wcf_user.user_title,
+            username: wcf_user.username
+        });
+    }
+
+    Ok(wcf_user_profiles)
+}
+
+/// Finds a WCF user by their corresponding WCF ID.
+pub fn wcf_find_user_profile_by_id(
+    wcf_user_id: i32,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> Result<models::WcfUserProfile, diesel::result::Error> {
+    let profile = schema::wcf1_user::table.inner_join(schema::wcf1_user_avatar::table)
+        .select((schema::wcf1_user::all_columns, schema::wcf1_user_avatar::all_columns))
+        .filter(schema::wcf1_user::user_id.eq(wcf_user_id))
+        .first::<(models::WcfUser, models::WcfUserAvatar)>(wcf_db)?;
+
+    Ok(models::WcfUserProfile {
+        avatar_url: Some(format!(
+            "{}/{}",
+            app_config.avatar_base_url,
+            profile.1.get_avatar_url()
+        )),
+        last_activity_time: profile.0.last_activity_time,
+        user_title: profile.0.user_title,
+        username: profile.0.username
+    })
+}
+
+/// Given a list of users, returns a list of objects containing the
+/// titan and WCF profile for each user.
+pub fn map_users_to_profile(
+    users: Vec<models::User>,
+    wcf_db: &MysqlConnection,
+    app_config: State<config::AppConfig>
+) ->  Result<Vec<models::UserProfile>, diesel::result::Error> {
+    let wcf_user_ids: Vec<i32> = users.iter().map(|u| u.wcf_id).collect();
+    let mut wcf_profiles = wcf_find_all_user_profiles_by_id(
+        wcf_user_ids, wcf_db, app_config)?;
+
+    let mut profiles: Vec<models::UserProfile> = vec!();
+    for (user, wcf_profile) in users.iter().zip(wcf_profiles.drain(..)) {
+        profiles.push(models::UserProfile {
+            id: user.id,
+            wcf_id: user.wcf_id,
+            legacy_player_id: user.legacy_player_id,
+            rank_id: user.rank_id,
+            username: user.username.clone(),
+            orientation: user.orientation,
+            bct_e0: user.bct_e0,
+            bct_e1: user.bct_e1,
+            bct_e2: user.bct_e2,
+            bct_e3: user.bct_e3,
+            loa: user.loa,
+            a15: user.a15,
+            date_joined: user.date_joined,
+            last_activity: user.last_activity.unwrap_or(
+                chrono::Utc::now().naive_utc()),
+            wcf: wcf_profile
+        });
+    }
+
+    Ok(profiles)
+}
+
+/// Given a user, returns an object containing the user's titan and
+/// WCF profiles.
+pub fn map_user_to_profile(
+    user: models::User,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) ->  Result<models::UserProfile, diesel::result::Error> {
+    let wcf_profile = wcf_find_user_profile_by_id(
+        user.wcf_id, wcf_db, app_config)?;
+
+    Ok(models::UserProfile {
+        id: user.id,
+        wcf_id: user.wcf_id,
+        legacy_player_id: user.legacy_player_id,
+        rank_id: user.rank_id,
+        username: user.username.clone(),
+        orientation: user.orientation,
+        bct_e0: user.bct_e0,
+        bct_e1: user.bct_e1,
+        bct_e2: user.bct_e2,
+        bct_e3: user.bct_e3,
+        loa: user.loa,
+        a15: user.a15,
+        date_joined: user.date_joined,
+        last_activity:user.last_activity.unwrap_or(
+            chrono::Utc::now().naive_utc()),
+        wcf: wcf_profile
+    })
 }

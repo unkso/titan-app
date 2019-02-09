@@ -8,6 +8,7 @@ use crate::accounts::users;
 use crate::accounts::file_entries;
 use crate::accounts::file_entry_types;
 use crate::accounts::excuses;
+use crate::organizations;
 use crate::config;
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::woltlab_auth_helper;
@@ -79,7 +80,7 @@ pub fn woltlab_login(
         Algorithm::HS256,
     );
 
-    let avatar_res = users::find_user_avatar(wcf_user.user_id, wcf_db);
+    let avatar_res = users::wcf_find_user_avatar(wcf_user.user_id, wcf_db);
     let mut avatar_url = "".to_string();
     if !avatar_res.is_err() {
         avatar_url = format!("{}/{}", app_config.avatar_base_url, avatar_res.unwrap().get_avatar_url());
@@ -144,7 +145,7 @@ pub fn get_user(
     }
 
     let wcf_user = wcf_user_res.unwrap();
-    let avatar_res = users::find_user_avatar(wcf_user.user_id, wcf_db_conn);
+    let avatar_res = users::wcf_find_user_avatar(wcf_user.user_id, wcf_db_conn);
     let mut avatar_url = "".to_string();
     if !avatar_res.is_err() {
         avatar_url = format!("{}/{}", app_config.avatar_base_url, avatar_res.unwrap().get_avatar_url());
@@ -317,4 +318,34 @@ pub fn save_user_event_excuse(
     }
 
     Ok(Json(created_excuse.unwrap()))
+}
+
+/** **************************************************
+ *  Organizations
+ ** **************************************************/
+#[get("/<id>/organizations?<member>&<role>")]
+pub fn get_user_organizations(
+    id: i32,
+    member: Option<bool>,
+    role: Option<bool>,
+    titan_db: TitanPrimary,
+    _auth_user: auth_guard::AuthenticatedUser
+) -> Json<Vec<models::UserOrganizationMembership>> {
+    let titan_db_ref = &*titan_db;
+    let include_members = member.is_some() && member.unwrap();
+    let include_roles = role.is_some() && role.unwrap();
+    let mut org_memberships: Vec<models::UserOrganizationMembership> = vec!();
+
+    if include_members {
+        let mut member_orgs =
+            organizations::organizations::find_all_by_user(id, titan_db_ref).unwrap();
+        org_memberships.append(&mut member_orgs);
+    }
+
+    if include_roles {
+        let mut role_orgs = organizations::roles::find_all_by_user(id, titan_db_ref).unwrap();
+        org_memberships.append(&mut role_orgs);
+    }
+
+    Json(org_memberships)
 }

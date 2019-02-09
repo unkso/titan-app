@@ -4,6 +4,7 @@ use serde::{Serialize, Deserialize};
 use crate::schema::{
     event_types,
     organizations,
+    organization_roles,
     users,
     user_file_entries,
     user_file_entry_types,
@@ -179,7 +180,39 @@ pub struct Organization {
     pub avatar_url: String,
     pub group_type: String,
     pub wcf_user_group_id: i32,
-    pub is_enabled: bool
+    pub is_enabled: bool,
+    pub parent_id: Option<i32>,
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+#[table_name = "organization_roles"]
+pub struct OrganizationRole {
+    pub id: i32,
+    pub organization_id: i32,
+    pub user_id: Option<i32>,
+    pub role: String,
+    pub rank: Option<i32>
+}
+
+#[derive(Serialize)]
+pub struct OrganizationRoleWithUser {
+    pub id: i32,
+    pub organization_id: i32,
+    pub user_profile: Option<UserProfile>,
+    pub role: String,
+    pub rank: Option<i32>
+}
+
+#[derive(Serialize, Queryable)]
+pub struct OrganizationUser {
+    pub organization_id: i32,
+    pub user_id: i32
+}
+
+#[derive(Serialize)]
+pub struct UserOrganizationMembership {
+    pub organization: Organization,
+    pub role: Option<OrganizationRole>,
 }
 
 #[derive(Insertable)]

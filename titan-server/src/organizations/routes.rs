@@ -6,6 +6,7 @@ use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::models;
 use crate::config;
 use crate::organizations;
+use crate::accounts;
 
 #[derive(Serialize)]
 pub struct FindOrganizationResponse {
@@ -24,8 +25,22 @@ pub fn get_all(titan_primary: TitanPrimary) -> Result<Json<Vec<models::Organizat
     Ok(Json(organizations.unwrap()))
 }
 
-#[get("/<slug>")]
-pub fn find_organization(
+#[get("/<id>", rank = 1)]
+pub fn get_organization_by_id(
+    id: i32,
+    titan_db: TitanPrimary
+) -> Result<Json<models::Organization>, status::NotFound<String>> {
+    let organization = organizations::organizations::find_by_id(id, &*titan_db);
+
+    if organization.is_err() {
+        return Err(status::NotFound("".to_string()));
+    }
+
+    Ok(Json(organization.unwrap()))
+}
+
+#[get("/<slug>", rank = 2)]
+pub fn get_organization_by_slug(
     slug: &RawStr,
     unkso_main: UnksoMainForums,
     unkso_titan: TitanPrimary,
@@ -41,7 +56,7 @@ pub fn find_organization(
     }
 
     let organization = organization_result.unwrap();
-    let users_query = organizations::organizations::find_users(
+    let users_query = organizations::organizations::find_users_old(
         &organization,
         &unkso_main
     );
@@ -88,4 +103,46 @@ pub fn find_organization(
         organization,
         users
     }))
+}
+
+#[get("/<id>/roles")]
+pub fn list_organization_roles(
+    id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::OrganizationRoleWithUser>> {
+    let titan_db_ref = &*titan_db;
+    let roles = organizations::roles::find_all_by_organization(id, titan_db_ref).unwrap();
+    let roles_with_users = organizations::roles::map_roles_to_users(
+        roles, titan_db_ref, &*wcf_db, app_config);
+
+    Json(roles_with_users.unwrap())
+}
+
+#[get("/<id>/users?<children>")]
+pub fn get_organization_users(
+    id: i32,
+    children: Option<bool>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::UserProfile>> {
+    let include_children = children.is_some() && children.unwrap();
+    let users = organizations::organizations::find_users(
+        id, include_children, &*titan_db).unwrap();
+
+    Json(accounts::users::map_users_to_profile(users, &*wcf_db, app_config).unwrap())
+}
+
+#[get("/<org_id>/users/<user_id>/coc")]
+pub fn get_organization_user_coc(
+    org_id: i32,
+    user_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::OrganizationRoleWithUser>> {
+    Json(organizations::roles::find_user_coc(
+        org_id, user_id, &*titan_db, &*wcf_db, app_config).unwrap())
 }
