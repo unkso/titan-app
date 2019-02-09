@@ -176,6 +176,24 @@ table! {
         group_type -> Varchar,
         wcf_user_group_id -> Integer,
         is_enabled -> Bool,
+        parent_id -> Nullable<Integer>,
+    }
+}
+
+table! {
+    organizations_users (organization_id, user_id) {
+        organization_id -> Integer,
+        user_id -> Integer,
+    }
+}
+
+table! {
+    organization_roles (id) {
+        id -> Integer,
+        organization_id -> Integer,
+        user_id -> Nullable<Integer>,
+        role -> Varchar,
+        rank -> Nullable<Integer>,
     }
 }
 
@@ -244,6 +262,9 @@ table! {
     }
 }
 
+joinable!(organizations_users -> users (user_id));
+joinable!(organizations_users -> organizations (organization_id));
+joinable!(organization_roles -> organizations (organization_id));
 joinable!(user_file_entries -> user_file_entry_types (user_file_entry_type_id));
 joinable!(user_event_excuses -> event_types (event_type_id));
 joinable!(wcf1_user_option_value -> wcf1_user (user_id));
@@ -253,24 +274,18 @@ joinable!(wcf1_user_to_group -> wcf1_user (user_id));
 joinable!(wcf1_user_to_group -> wcf1_user_group (group_id));
 joinable!(wcf1_user_activity_event -> wcf1_user (user_id));
 allow_tables_to_appear_in_same_query!(
-    wcf1_user_to_group,
-    wcf1_user,
-    wcf1_user_group,
-    wcf1_user_activity_event,
-    wcf1_user_avatar,
-);
-
-allow_tables_to_appear_in_same_query!(
+    event_types,
+    organizations,
+    organization_roles,
+    organizations_users,
+    users,
+    user_event_excuses,
     user_file_entries,
     user_file_entry_types,
-);
-
-allow_tables_to_appear_in_same_query!(
+    wcf1_acl_option_to_group,
+    wcf1_user,
+    wcf1_user_activity_event,
+    wcf1_user_avatar,
+    wcf1_user_group,
     wcf1_user_to_group,
-    wcf1_acl_option_to_group
-);
-
-allow_tables_to_appear_in_same_query!(
-    user_event_excuses,
-    event_types,
 );
