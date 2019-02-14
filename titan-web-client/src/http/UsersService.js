@@ -44,6 +44,27 @@ class UsersService {
   listUserFiles (userId) {
     return this.httpClient.get(`/users/${userId}/file-entries`);
   }
+
+  /**
+   * Lists all of a user's excuses.
+   *
+   * @param {string} userId - Titan user ID.
+   * @returns {*}
+   */
+  listUserEventExcuses (userId) {
+    return this.httpClient.get(`/users/${userId}/excuses`);
+  }
+
+  /**
+   * Save event excuse.
+   *
+   * @param {number} userId - Titan user id.
+   * @param {{event_date, event_type, comments}} excuse
+   * @returns {Promise}
+   */
+  saveUserEventExcuse (userId, excuse) {
+    return this.httpClient.post(`/users/${userId}/excuses`, excuse);
+  }
 }
 
 export default UsersService;

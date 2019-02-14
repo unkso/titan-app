@@ -10,6 +10,7 @@ pub mod config;
 pub mod db;
 pub mod models;
 pub mod organizations;
+pub mod events;
 pub mod routes;
 pub mod schema;
 pub mod woltlab_auth_helper;

@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::accounts::users;
 use crate::accounts::file_entries;
 use crate::accounts::file_entry_types;
+use crate::accounts::excuses;
 use crate::config;
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::woltlab_auth_helper;
@@ -263,4 +264,57 @@ pub fn save_user_file_entry(
     Ok(Json(CreateUserFileEntryResponse {
         file_entry: created_file_entry_res.unwrap()
     }))
+}
+
+/** **************************************************
+ *  Excuses
+ ** **************************************************/
+#[get("/<user_id>/excuses")]
+pub fn list_user_event_excuses(
+    user_id: i32,
+    titan_primary: TitanPrimary,
+    _auth_user: auth_guard::AuthenticatedUser
+) -> Result<Json<Vec<models::UserEventExcuseWithType>>, status::BadRequest<String>> {
+    let excuses_res = excuses::get_user_excuses(user_id, &*titan_primary);
+
+    if excuses_res.is_err() {
+        return Err(status::BadRequest(Some("Unable to fetch excuses.".to_string())))
+    }
+
+    Ok(Json(excuses_res.unwrap()))
+}
+
+#[derive(Deserialize)]
+pub struct CreateUserEventExcuseRequest {
+    pub event_date: chrono::NaiveDateTime,
+    pub event_type_id: i32,
+    pub comments: String,
+}
+
+#[post("/<user_id>/excuses", format = "application/json", data = "<excuse_form>")]
+pub fn save_user_event_excuse(
+    user_id: i32,
+    excuse_form: Json<CreateUserEventExcuseRequest>,
+    titan_db: TitanPrimary,
+    _auth_user: auth_guard::AuthenticatedUser,
+) -> Result<Json<models::UserEventExcuseWithType>, status::BadRequest<String>> {
+    let new_excuse = models::NewUserEventExcuse {
+        user_id,
+        event_type_id: excuse_form.event_type_id,
+        event_date: excuse_form.event_date,
+        comments: excuse_form.comments.clone(),
+        ack_user_id: None,
+        ack_date: None,
+        ack_comments: None,
+        date_modified: chrono::Utc::now().naive_utc(),
+        date_created: chrono::Utc::now().naive_utc()
+    };
+
+    let created_excuse = excuses::create_event_excuse(&new_excuse, &*titan_db);
+
+    if created_excuse.is_err() {
+        return Err(status::BadRequest(Some("Failed to save event excuse.".to_string())));
+    }
+
+    Ok(Json(created_excuse.unwrap()))
 }

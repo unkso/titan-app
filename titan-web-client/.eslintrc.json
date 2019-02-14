@@ -2,7 +2,17 @@
   "extends": ["semistandard", "semistandard-react", "react-app"],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
-    "semistandard-react/prop-types": [1, { "ignore": ["children", "theme", "match", "history", "actions"] }]
+    "semistandard-react/prop-types": [1, {
+      "ignore": [
+        "children",
+        "enqueueSnackbar",
+        "closeSnackbar",
+        "theme",
+        "match",
+        "history",
+        "actions"
+      ]
+    }]
   },
   "globals": {
     "localStorage": true

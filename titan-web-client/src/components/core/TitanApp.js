@@ -13,6 +13,7 @@ import {
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { SnackbarProvider } from 'notistack';
 
 const defaultMuiTheme = createMuiTheme(defaultTheme);
 
@@ -78,18 +79,23 @@ class TitanApp extends React.Component {
     return (
       <ThemeProvider theme={defaultTheme}>
         <MuiThemeProvider theme={defaultMuiTheme}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <div id="app-root">
-              <Provider store={this.props.context.getStore()}>
-                <BrowserRouter>
-                  <Switch>
-                    {this.renderRoutes(this.props.context.getRoutes())}
-                    <Redirect from="/" to="/branches" />
-                  </Switch>
-                </BrowserRouter>
-              </Provider>
-            </div>
-          </MuiPickersUtilsProvider>
+          <SnackbarProvider anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+          }}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <div id="app-root">
+                <Provider store={this.props.context.getStore()}>
+                  <BrowserRouter>
+                    <Switch>
+                      {this.renderRoutes(this.props.context.getRoutes())}
+                      <Redirect from="/" to="/branches" />
+                    </Switch>
+                  </BrowserRouter>
+                </Provider>
+              </div>
+            </MuiPickersUtilsProvider>
+          </SnackbarProvider>
         </MuiThemeProvider>
       </ThemeProvider>
     );

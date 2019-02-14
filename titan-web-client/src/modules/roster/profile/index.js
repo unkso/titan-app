@@ -7,8 +7,6 @@ import PageHeader
 import { ContentBlock } from 'titan/components/block/ContentBlock';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
-import GeneralProfile
-  from 'titan/modules/roster/profile/components/GeneralProfile';
 import CardHeader from '@material-ui/core/CardHeader/CardHeader';
 import UsersService from 'titan/http/UsersService';
 import * as profileActions from 'titan/actions/profileActions';
@@ -17,6 +15,10 @@ import FileEntryListContainer
 import CreateFileEntryContainer
   from 'titan/modules/roster/profile/containers/CreateFileEntryContainer';
 import Typography from '@material-ui/core/Typography/Typography';
+import CreateEventExcuseContainer
+  from 'titan/modules/roster/profile/containers/CreateEventExcuseContainer';
+import EventExcuseListContainer
+  from 'titan/modules/roster/profile/containers/EventExcuseListContainer';
 
 class Profile extends React.Component {
   constructor (props) {
@@ -57,6 +59,7 @@ class Profile extends React.Component {
           <Tabs value={this.state.tab} onChange={this.changeTabHandler}>
             {/* <Tab label="General" /> */}
             <Tab label="History" />
+            <Tab label="Excuses" />
           </Tabs>
         </PageHeader>
         <ContentBlock>
@@ -67,6 +70,15 @@ class Profile extends React.Component {
                 <CreateFileEntryContainer />
               </Typography>
               <FileEntryListContainer />
+            </React.Fragment>
+          )}
+
+          {this.state.tab === 1 && (
+            <React.Fragment>
+              <Typography align="right">
+                <CreateEventExcuseContainer />
+              </Typography>
+              <EventExcuseListContainer />
             </React.Fragment>
           )}
         </ContentBlock>
