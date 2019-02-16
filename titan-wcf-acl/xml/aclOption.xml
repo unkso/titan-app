@@ -11,6 +11,9 @@
             <option name="canCreateEventExcuse">
                 <objecttype>com.unkso.titan.canCreateEventExcuse</objecttype>
             </option>
+            <option name="canAckEventExcuse">
+                <objecttype>com.unkso.titan.canAckEventExcuse</objecttype>
+            </option>
         </options>
     </import>
 </data>

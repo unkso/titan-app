@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
 import defaultTheme from 'titan/themes/default';
 import AuthenticatedRoute from './routes/AuthenticatedRoute';
 import UnauthenticatedRoute from './routes/UnauthenticatedRoute';
@@ -77,27 +76,25 @@ class TitanApp extends React.Component {
 
   render () {
     return (
-      <ThemeProvider theme={defaultTheme}>
-        <MuiThemeProvider theme={defaultMuiTheme}>
-          <SnackbarProvider anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center'
-          }}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <div id="app-root">
-                <Provider store={this.props.context.getStore()}>
-                  <BrowserRouter>
-                    <Switch>
-                      {this.renderRoutes(this.props.context.getRoutes())}
-                      <Redirect from="/" to="/branches" />
-                    </Switch>
-                  </BrowserRouter>
-                </Provider>
-              </div>
-            </MuiPickersUtilsProvider>
-          </SnackbarProvider>
-        </MuiThemeProvider>
-      </ThemeProvider>
+      <MuiThemeProvider theme={defaultMuiTheme}>
+        <SnackbarProvider anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <div id="app-root">
+              <Provider store={this.props.context.getStore()}>
+                <BrowserRouter>
+                  <Switch>
+                    {this.renderRoutes(this.props.context.getRoutes())}
+                    <Redirect from="/" to="/branches" />
+                  </Switch>
+                </BrowserRouter>
+              </Provider>
+            </div>
+          </MuiPickersUtilsProvider>
+        </SnackbarProvider>
+      </MuiThemeProvider>
     );
   }
 }

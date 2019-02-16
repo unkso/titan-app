@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
 
-class CreateEventExcuseForm extends React.Component {
+export class CreateEventExcuseForm extends React.Component {
   render () {
     return (
       <React.Fragment>
@@ -63,5 +63,3 @@ CreateEventExcuseForm.propTypes = {
   fields: PropTypes.object.isRequired,
   onFieldChange: PropTypes.func.isRequired
 };
-
-export default CreateEventExcuseForm;

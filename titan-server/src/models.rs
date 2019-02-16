@@ -404,3 +404,17 @@ pub struct UserEventExcuseWithType {
     pub date_created: chrono::NaiveDateTime,
     pub date_modified: chrono::NaiveDateTime,
 }
+
+#[derive(Serialize)]
+pub struct UserEventExcuseWithAssoc {
+    pub id: i32,
+    pub user: UserProfile,
+    pub event_type: EventType,
+    pub event_date: chrono::NaiveDateTime,
+    pub comments: String,
+    pub ack_user: Option<UserProfile>,
+    pub ack_date: Option<chrono::NaiveDateTime>,
+    pub ack_comments: Option<String>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: chrono::NaiveDateTime,
+}

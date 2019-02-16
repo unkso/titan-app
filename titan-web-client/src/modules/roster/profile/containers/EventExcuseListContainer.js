@@ -5,8 +5,8 @@ import connect from 'react-redux/es/connect/connect';
 import UsersService from 'titan/http/UsersService';
 import CircularProgress
   from '@material-ui/core/CircularProgress/CircularProgress';
-import EventExcuseList
-  from 'titan/modules/roster/profile/components/EventExcuseList';
+import { EventExcuseList }
+  from 'titan/modules/roster/components/Excuse/EventExcuseList';
 
 class EventExcuseListContainer extends React.Component {
   constructor (props) {

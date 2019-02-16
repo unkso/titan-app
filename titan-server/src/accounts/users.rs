@@ -123,19 +123,25 @@ pub fn wcf_find_all_user_profiles_by_id(
     wcf_db: &MysqlConnection,
     app_config: State<config::AppConfig>
 ) -> Result<Vec<models::WcfUserProfile>, diesel::result::Error> {
-    let res = schema::wcf1_user::table.inner_join(schema::wcf1_user_avatar::table)
-        .select((schema::wcf1_user::all_columns, schema::wcf1_user_avatar::all_columns))
+    let user = schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq_any(wcf_user_ids))
-        .load::<(models::WcfUser, models::WcfUserAvatar)>(wcf_db)?;
+        .get_results::<models::WcfUser>(wcf_db)?;
 
     let mut wcf_user_profiles: Vec<models::WcfUserProfile> = vec!();
-    for (wcf_user, wcf_avatar) in res {
-        wcf_user_profiles.push(models::WcfUserProfile {
-            avatar_url: Some(format!(
+    for wcf_user in user {
+        let avatar_res = wcf_find_user_avatar(wcf_user.user_id, wcf_db);
+        let avatar_url = if avatar_res.is_ok() {
+            Some(format!(
                 "{}/{}",
                 app_config.avatar_base_url,
-                wcf_avatar.get_avatar_url()
-            )),
+                avatar_res.unwrap().get_avatar_url()
+            ))
+        } else {
+            None
+        };
+
+        wcf_user_profiles.push(models::WcfUserProfile {
+            avatar_url,
             last_activity_time: wcf_user.last_activity_time,
             user_title: wcf_user.user_title,
             username: wcf_user.username
@@ -151,20 +157,26 @@ pub fn wcf_find_user_profile_by_id(
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> Result<models::WcfUserProfile, diesel::result::Error> {
-    let profile = schema::wcf1_user::table.inner_join(schema::wcf1_user_avatar::table)
-        .select((schema::wcf1_user::all_columns, schema::wcf1_user_avatar::all_columns))
+    let profile = schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq(wcf_user_id))
-        .first::<(models::WcfUser, models::WcfUserAvatar)>(wcf_db)?;
+        .first::<models::WcfUser>(wcf_db)?;
 
-    Ok(models::WcfUserProfile {
-        avatar_url: Some(format!(
+    let avatar_res = wcf_find_user_avatar(profile.user_id, wcf_db);
+    let avatar_url = if avatar_res.is_ok() {
+        Some(format!(
             "{}/{}",
             app_config.avatar_base_url,
-            profile.1.get_avatar_url()
-        )),
-        last_activity_time: profile.0.last_activity_time,
-        user_title: profile.0.user_title,
-        username: profile.0.username
+            avatar_res.unwrap().get_avatar_url()
+        ))
+    } else {
+        None
+    };
+
+    Ok(models::WcfUserProfile {
+        avatar_url,
+        last_activity_time: profile.last_activity_time,
+        user_title: profile.user_title,
+        username: profile.username
     })
 }
 

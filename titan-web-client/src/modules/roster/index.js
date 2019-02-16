@@ -4,6 +4,7 @@ import { ROUTE_TYPE_AUTHENTICATED } from 'titan/lib/routing';
 import BranchesScene from 'titan/modules/roster/branches';
 import BranchScene from 'titan/modules/roster/branch';
 import ProfileScene from 'titan/modules/roster/profile';
+import { ExcusesScene } from 'titan/modules/roster/manage_excuses';
 import profileReducer from 'titan/reducers/profileReducer';
 
 export default function () {
@@ -23,6 +24,12 @@ export default function () {
         layout: DashboardLayout,
         path: '/branch/:slug',
         scene: BranchScene,
+        type: ROUTE_TYPE_AUTHENTICATED
+      },
+      {
+        layout: DashboardLayout,
+        path: '/roster/excuses',
+        scene: ExcusesScene,
         type: ROUTE_TYPE_AUTHENTICATED
       },
       {

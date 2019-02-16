@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Column from './Column';
 
 const Row = styled.div`
+  align-content: ${props => props.alignItems};
+  align-items: ${props => props.alignItems};
   display: flex;
   flex-direction: ${props => props.direction};
   flex-wrap: ${props => props.wrap};

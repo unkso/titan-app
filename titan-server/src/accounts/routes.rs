@@ -270,19 +270,26 @@ pub fn save_user_file_entry(
 /** **************************************************
  *  Excuses
  ** **************************************************/
+#[get("/excuses/unacknowledged")]
+pub fn list_unacknowledged_excuses(
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Json<Vec<models::UserEventExcuseWithAssoc>> {
+    Json(excuses::find_all_unacknowledged(
+        &*titan_db, &*wcf_db, &app_config).unwrap())
+}
 #[get("/<user_id>/excuses")]
 pub fn list_user_event_excuses(
     user_id: i32,
-    titan_primary: TitanPrimary,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
-) -> Result<Json<Vec<models::UserEventExcuseWithType>>, status::BadRequest<String>> {
-    let excuses_res = excuses::get_user_excuses(user_id, &*titan_primary);
-
-    if excuses_res.is_err() {
-        return Err(status::BadRequest(Some("Unable to fetch excuses.".to_string())))
-    }
-
-    Ok(Json(excuses_res.unwrap()))
+) -> Json<Vec<models::UserEventExcuseWithAssoc>> {
+    Json(excuses::get_user_excuses(
+        user_id, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
 #[derive(Deserialize)]
@@ -297,8 +304,10 @@ pub fn save_user_event_excuse(
     user_id: i32,
     excuse_form: Json<CreateUserEventExcuseRequest>,
     titan_db: TitanPrimary,
-    _auth_user: auth_guard::AuthenticatedUser,
-) -> Result<Json<models::UserEventExcuseWithType>, status::BadRequest<String>> {
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser
+) -> Result<Json<models::UserEventExcuseWithAssoc>, status::BadRequest<String>> {
     let new_excuse = models::NewUserEventExcuse {
         user_id,
         event_type_id: excuse_form.event_type_id,
@@ -311,13 +320,26 @@ pub fn save_user_event_excuse(
         date_created: chrono::Utc::now().naive_utc()
     };
 
-    let created_excuse = excuses::create_event_excuse(&new_excuse, &*titan_db);
+    let created_excuse = excuses::create_event_excuse(
+        &new_excuse, &*titan_db, &*wcf_db, &app_config);
 
     if created_excuse.is_err() {
         return Err(status::BadRequest(Some("Failed to save event excuse.".to_string())));
     }
 
     Ok(Json(created_excuse.unwrap()))
+}
+
+#[post("/excuses/<excuse_id>/ack", rank = 1)]
+pub fn ack_user_event_excuse(
+    excuse_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Json<models::UserEventExcuseWithAssoc> {
+    Json(excuses::ack_event_excuse(
+        excuse_id, &auth_user.user, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
 /** **************************************************

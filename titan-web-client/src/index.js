@@ -26,7 +26,9 @@ import {
   faDumbbell,
   faBan,
   faGamepad,
-  faUser
+  faUser,
+  faClipboardList,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faAward);
@@ -36,6 +38,7 @@ library.add(faHome);
 library.add(faFileAlt);
 library.add(faFlag);
 library.add(faCalendarAlt);
+library.add(faCheck);
 library.add(faGraduationCap);
 library.add(faUsers);
 library.add(faNewspaper);
@@ -48,6 +51,7 @@ library.add(faDumbbell);
 library.add(faBan);
 library.add(faGamepad);
 library.add(faUser);
+library.add(faClipboardList);
 
 let config;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {

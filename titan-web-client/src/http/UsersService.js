@@ -46,6 +46,15 @@ class UsersService {
   }
 
   /**
+   * Lists all excuses which have not been acknowledged by leadership.
+   *
+   * @returns {*}
+   */
+  listUnacknowledgedExcuses () {
+    return this.httpClient.get(`/users/excuses/unacknowledged`);
+  }
+
+  /**
    * Lists all of a user's excuses.
    *
    * @param {string} userId - Titan user ID.
@@ -64,6 +73,19 @@ class UsersService {
    */
   saveUserEventExcuse (userId, excuse) {
     return this.httpClient.post(`/users/${userId}/excuses`, excuse);
+  }
+
+  /**
+   * Acknowledges an excuse.
+   *
+   * The acknowledgement will be associated with the current
+   * authenticated user.
+   *
+   * @param excuseId
+   * @returns {Promise}
+   */
+  acknowledgeEventExcuse (excuseId) {
+    return this.httpClient.post(`/users/excuses/${excuseId}/ack`);
   }
 }
 
