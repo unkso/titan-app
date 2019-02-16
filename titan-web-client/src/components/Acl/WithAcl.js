@@ -6,7 +6,7 @@ import connect from 'react-redux/es/connect/connect';
  * Conditionally renders children if all the given ACL permissions
  * are present in the current user's session.
  */
-class WithAcl extends React.Component {
+class WithAclComponent extends React.Component {
   canAccess () {
     if (this.props.authUserOptions) {
       if (this.props.authUserOptions.mustHaveOptions) {
@@ -26,9 +26,13 @@ class WithAcl extends React.Component {
   }
 
   hasAclPermissions (options) {
-    return options.every((optionKey) => {
-      return this.props.auth.session.acl.hasOwnProperty(optionKey);
-    });
+    if (this.props.mustHaveAllOptions) {
+      return options.every((optionKey) =>
+        this.props.auth.session.acl.hasOwnProperty(optionKey));
+    }
+
+    return options.some((optionKey) =>
+      this.props.auth.session.acl.hasOwnProperty(optionKey));
   }
 
   render () {
@@ -44,7 +48,7 @@ class WithAcl extends React.Component {
   }
 }
 
-WithAcl.propTypes = {
+WithAclComponent.propTypes = {
   // If specified, the authenticated user must have the given user Id and/or
   // all the specified ACL options.
   authUserOptions: PropTypes.shape({
@@ -53,11 +57,13 @@ WithAcl.propTypes = {
   }),
 
   // A list of ACL options.
-  options: PropTypes.arrayOf(PropTypes.string).isRequired
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  mustHaveAllOptions: PropTypes.bool
 };
 
-WithAcl.defaultProps = {
-  authUserOptions: null
+WithAclComponent.defaultProps = {
+  authUserOptions: null,
+  mustHaveAllOptions: false
 };
 
 function mapStateToProps (state) {
@@ -66,4 +72,4 @@ function mapStateToProps (state) {
   };
 }
 
-export default connect(mapStateToProps)(WithAcl);
+export const WithAcl = connect(mapStateToProps)(WithAclComponent);

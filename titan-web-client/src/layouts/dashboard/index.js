@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { createGlobalStyle, withTheme } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
 import Sidebar from './components/sidebar/Sidebar';
 
 export const DashboardWrapper = styled.div`
@@ -69,4 +70,4 @@ DashboardLayout.propTypes = {
   children: PropTypes.object
 };
 
-export default withTheme(DashboardLayout);
+export default withTheme()(DashboardLayout);

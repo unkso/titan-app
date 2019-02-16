@@ -114,8 +114,8 @@ class FileEntry extends React.Component {
           <ListItem>
             <Typography style={{ color: theme.color }}>{theme.icon}</Typography>
             <ListItemText>
-              <Typography variant="subtitle1" color="textSecondary">{date}</Typography>
-              <Typography variant="body1">{this.props.type}</Typography>
+              <Typography variant="body1" color="textSecondary">{date}</Typography>
+              <Typography variant="subtitle1">{this.props.type}</Typography>
             </ListItemText>
           </ListItem>
         </BorderedCard>

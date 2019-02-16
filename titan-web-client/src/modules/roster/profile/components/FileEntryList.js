@@ -12,6 +12,7 @@ class FileEntryList extends React.Component {
     let prevDate = null;
 
     for (let x = 0; x < this.props.items.length; x++) {
+      const key = this.props.items[x].id;
       const date = new Date(this.props.items[x].start_date);
       const isNewMonth = (
         !prevDate ||
@@ -22,7 +23,7 @@ class FileEntryList extends React.Component {
 
       if (isNewMonth) {
         list.push(
-          <Row key={`month-title-${x}`} gutter={8}>
+          <Row key={`month-title-${key}`} gutter={8}>
             <Column grow={1}>
               <Typography variant="h3">
                 <span>{formatDate(this.props.items[x].start_date, 'MMMM yyyy')}</span>
@@ -33,7 +34,7 @@ class FileEntryList extends React.Component {
       }
 
       list.push(
-        <Row key={x} gutter={4}>
+        <Row key={`file-entry-${key}`} gutter={4}>
           <Column grow={1}>
             <FileEntry
               type={this.props.items[x].file_entry_type.name}

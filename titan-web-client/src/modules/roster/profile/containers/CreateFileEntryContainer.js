@@ -12,7 +12,7 @@ import { format as formatDate } from 'date-fns';
 import CreateFileEntryForm
   from 'titan/modules/roster/profile/components/CreateFileEntryForm';
 import { MULTI_DATE_FILE_ENTRY_TYPES } from 'titan/modules/roster/constants';
-import WithAcl from 'titan/components/Acl/WithAcl';
+import { WithAcl } from 'titan/components/Acl/WithAcl';
 
 class CreateFileEntryContainer extends React.Component {
   constructor (props) {

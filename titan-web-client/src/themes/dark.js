@@ -4,7 +4,7 @@ export default {
   },
   typography: {
     fontFamily: 'Roboto',
-    fontSize: 16
+    fontSize: 10
   },
   palette: {
     primary: {

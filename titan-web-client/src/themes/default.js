@@ -5,9 +5,7 @@ export default {
     base: 8
   },
   typography: {
-    fontFamily: 'Roboto',
-    fontSize: 10,
-    htmlFontSize: 10,
+    fontSize: 14,
     useNextVariants: true,
     ...createTypography({})
   },

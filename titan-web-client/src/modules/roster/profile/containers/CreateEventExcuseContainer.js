@@ -9,9 +9,9 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import UsersService from 'titan/http/UsersService';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
-import WithAcl from 'titan/components/Acl/WithAcl';
-import CreateEventExcuseForm
-  from 'titan/modules/roster/profile/components/CreateEventExcuseForm';
+import { WithAcl } from 'titan/components/Acl/WithAcl';
+import { CreateEventExcuseForm }
+  from 'titan/modules/roster/components/Excuse/CreateEventExcuseForm';
 import EventsService from 'titan/http/EventsService';
 import { withSnackbar } from 'notistack';
 
