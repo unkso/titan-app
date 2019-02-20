@@ -31,7 +31,7 @@ export const SidebarMenuItemLink = styled(Link)`
   }
 `;
 
-class SidebarMenuItem extends React.Component {
+class SidebarMenuItemComponent extends React.Component {
   render () {
     let iconColor, textColor, borderColor;
     if (this.props.isActive) {
@@ -66,7 +66,7 @@ class SidebarMenuItem extends React.Component {
   }
 }
 
-SidebarMenuItem.propTypes = {
+SidebarMenuItemComponent.propTypes = {
   url: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   leftIcon: PropTypes.object,
@@ -75,8 +75,8 @@ SidebarMenuItem.propTypes = {
   isActive: PropTypes.bool
 };
 
-SidebarMenuItem.defaultProps = {
+SidebarMenuItemComponent.defaultProps = {
   isActive: false
 };
 
-export default withTheme(SidebarMenuItem);
+export const SidebarMenuItem = withTheme(SidebarMenuItemComponent);
