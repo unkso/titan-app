@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import SidebarMenuItem from './SidebarMenuItem';
+import { SidebarMenuItem } from './SidebarMenuItem';
 import SidebarHeading from './SidebarHeading';
 import SidebarContentGroup from './SidebarContentGroup';
 import SidebarProfileBadge from './SidebarProfileBadge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ProfileLinkContainer } from './ProfileLinkContainer';
 
 const SidebarWrapper = styled.nav`
   margin-top: 25px;
@@ -19,6 +20,7 @@ class Sidebar extends React.Component {
         </SidebarContentGroup>
 
         <SidebarContentGroup>
+          <ProfileLinkContainer />
           {/* <SidebarMenuItem */}
           {/* url={'/'} */}
           {/* label="Dashboard" */}
