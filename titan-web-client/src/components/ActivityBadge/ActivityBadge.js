@@ -53,7 +53,6 @@ class ActivityBadge extends React.Component {
 
   render () {
     const color = this.getStatusColor(this.props.status);
-    console.log(!!this.props.children);
     return (
       <ActivityBadgeStyle hasChildren={!!this.props.children}>
         {this.props.children}

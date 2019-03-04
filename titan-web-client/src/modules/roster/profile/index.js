@@ -19,6 +19,7 @@ import CreateEventExcuseContainer
   from 'titan/modules/roster/profile/containers/CreateEventExcuseContainer';
 import EventExcuseListContainer
   from 'titan/modules/roster/profile/containers/EventExcuseListContainer';
+import { createAclInstanceFromSession } from 'titan/lib/acl';
 
 class Profile extends React.Component {
   constructor (props) {
@@ -26,11 +27,27 @@ class Profile extends React.Component {
 
     this.state = { tab: 0 };
     this.usersService = new UsersService();
-    this.changeTabHandler = this.setTab.bind(this);
   }
 
   componentDidMount () {
-    this.usersService.getUser(this.props.match.params.userId)
+    this.props.actions.profile.clearUser();
+    this.loadUser(this.props.match.params.userId);
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevProps.match.params.userId !== this.props.match.params.userId) {
+      this.setTab(0);
+      this.props.actions.profile.clearUser();
+      this.loadUser(this.props.match.params.userId);
+    }
+  }
+
+  componentWillUnmount () {
+    this.props.actions.profile.clearUser();
+  }
+
+  loadUser (userId) {
+    this.usersService.getUser(userId)
       .then((res) => {
         this.props.actions.profile.setUser(res.data);
       })
@@ -39,11 +56,7 @@ class Profile extends React.Component {
       });
   }
 
-  componentWillUnmount () {
-    this.props.actions.profile.setUser(null);
-  }
-
-  setTab (event, index) {
+  setTab (index) {
     this.setState({ tab: index });
   }
 
@@ -52,18 +65,33 @@ class Profile extends React.Component {
       return null;
     }
 
+    const canAccessExcuses =
+        createAclInstanceFromSession(this.props.auth.session)
+          .canAccess(['mod.titan:canCreateEventExcuse'], {
+            userId: this.props.profile.user.id,
+            mustHaveOptions: false
+          });
+
+    const headerTabs = [<Tab key={0} label="History" />];
+
+    if (canAccessExcuses) {
+      headerTabs.push(
+        <Tab
+          key={1}
+          label="Excuses"
+          onChange={() => this.setTab(1)} />
+      );
+    }
+
     return (
-      <div>
+      <div key={this.props.profile.user.id}>
         <PageHeader>
           <CardHeader title={this.props.profile.user.wcf.username} />
-          <Tabs value={this.state.tab} onChange={this.changeTabHandler}>
-            {/* <Tab label="General" /> */}
-            <Tab label="History" />
-            <Tab label="Excuses" />
+          <Tabs value={this.state.tab} onChange={(e, i) => this.setTab(i)}>
+            { headerTabs }
           </Tabs>
         </PageHeader>
         <ContentBlock>
-          { /* {this.state.tab === 0 && <GeneralProfile />} */ }
           {this.state.tab === 0 && (
             <React.Fragment>
               <Typography align="right">
@@ -89,6 +117,7 @@ class Profile extends React.Component {
 
 function mapStateToProps (state) {
   return {
+    auth: state.auth,
     profile: state.roster.profile
   };
 }
@@ -101,4 +130,5 @@ function mapActionsToProps (dispatch) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapActionsToProps)(Profile));
+export default withRouter(
+  connect(mapStateToProps, mapActionsToProps)(Profile));

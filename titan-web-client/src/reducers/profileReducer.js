@@ -4,7 +4,8 @@ import {
   PROFILE_SET_FILE_ENTRIES,
   PROFILE_ADD_FILE_ENTRY,
   PROFILE_SET_EXCUSES,
-  PROFILE_ADD_EXCUSE
+  PROFILE_ADD_EXCUSE,
+  PROFILE_CLEAR_USER
 } from 'titan/actions/actionTypes';
 
 const DEFAULT_STATE = {
@@ -53,6 +54,8 @@ export default function (state = DEFAULT_STATE, action) {
         ...state,
         excuses: addExcuse(action.data, _.map(state.excuses, _.clone))
       };
+    case PROFILE_CLEAR_USER:
+      return DEFAULT_STATE;
     default:
       return state;
   }

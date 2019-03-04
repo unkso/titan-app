@@ -3,7 +3,8 @@ import {
   PROFILE_ADD_FILE_ENTRY,
   PROFILE_SET_USER,
   PROFILE_SET_EXCUSES,
-  PROFILE_ADD_EXCUSE
+  PROFILE_ADD_EXCUSE,
+  PROFILE_CLEAR_USER
 } from './actionTypes';
 
 export function setUser (user) {
@@ -24,4 +25,8 @@ export function setExcuses (excuses) {
 
 export function addExcuse (excuse) {
   return { type: PROFILE_ADD_EXCUSE, data: excuse };
+}
+
+export function clearUser () {
+  return { type: PROFILE_CLEAR_USER };
 }

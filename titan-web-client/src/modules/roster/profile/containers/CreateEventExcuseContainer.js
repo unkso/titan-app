@@ -76,7 +76,10 @@ class CreateEventExcuseContainer extends React.Component {
     return (
       <React.Fragment>
         <WithAcl
-          options={['titan.user:canCreateEventExcuse']}
+          options={[
+            'mod.titan:canAckEventExcuse',
+            'mod.titan:canCreateEventExcuse'
+          ]}
           authUserOptions={{
             userId: this.props.profile.user.id,
             mustHaveOptions: false
