@@ -5,11 +5,8 @@
             <option name="canAddFileEntries">
                 <objecttype>com.unkso.titan.canAddFileEntries</objecttype>
             </option>
-            <option name="canSeeLoaDetails">
-                <objecttype>com.unkso.titan.canSeeLoaDetails</objecttype>
-            </option>
-            <option name="canCreateEventExcuse">
-                <objecttype>com.unkso.titan.canCreateEventExcuse</objecttype>
+            <option name="canViewLoa">
+                <objecttype>com.unkso.titan.canViewLoa</objecttype>
             </option>
             <option name="canAckEventExcuse">
                 <objecttype>com.unkso.titan.canAckEventExcuse</objecttype>

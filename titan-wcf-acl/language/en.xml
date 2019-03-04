@@ -3,8 +3,7 @@
     <category name="wcf.acp.group">
         <item name="wcf.acp.group.option.category.mod.titan"><![CDATA[Titan]]></item>
         <item name="wcf.acp.group.option.canCreateFileEntries"><![CDATA[Can add file entries]]></item>
-        <item name="wcf.acp.group.option.canViewLoaDetails"><![CDATA[Can view LOA details]]></item>
-        <item name="wcf.acp.group.option.canCreateEventExcuse"><![CDATA[Can create event excuses on behalf of others]]></item>
+        <item name="wcf.acp.group.option.canViewLoa"><![CDATA[Can view LOA details]]></item>
         <item name="wcf.acp.group.option.canAckEventExcuse"><![CDATA[Can ack an event excuse]]></item>
     </category>
 </language>
