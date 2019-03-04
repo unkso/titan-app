@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class AuthenticatedRoute extends React.Component {
   componentDidMount () {
@@ -34,4 +35,5 @@ function mapStateToProps (state) {
   };
 }
 
-export default connect(mapStateToProps)(AuthenticatedRoute);
+export default withRouter(
+  connect(mapStateToProps)(AuthenticatedRoute));
