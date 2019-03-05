@@ -73,7 +73,15 @@ pub fn get_organization_by_slug(
 
         // @todo Many other parts of the application will use this logic. Move to a common module
         // so other modules have access to it.
-        for ((wcf_user, wcf_avatar), ref titan_profile) in users_result.iter().zip(titan_profiles.unwrap()) {
+        for ref titan_profile in titan_profiles.unwrap() {
+            let (wcf_user, wcf_avatar) = users_result.iter().find(|(u, _)| u.user_id == titan_profile.wcf_id).unwrap();
+            let wcf_user_profile = models::WcfUserProfile {
+                avatar_url: Some(format!("{}/{}", app_config.avatar_base_url, wcf_avatar.get_avatar_url())),
+                last_activity_time: wcf_user.last_activity_time,
+                user_title: wcf_user.user_title.clone(),
+                username: wcf_user.username.clone(),
+            };
+
             users.push(models::UserProfile {
                 id: titan_profile.id,
                 wcf_id: titan_profile.wcf_id,
@@ -89,12 +97,7 @@ pub fn get_organization_by_slug(
                 a15: titan_profile.a15,
                 date_joined: titan_profile.date_joined,
                 last_activity: titan_profile.last_activity.unwrap_or(chrono::Utc::now().naive_utc()),
-                wcf: models::WcfUserProfile {
-                    avatar_url: Some(format!("{}/{}", app_config.avatar_base_url, wcf_avatar.get_avatar_url())),
-                    last_activity_time: wcf_user.last_activity_time,
-                    user_title: wcf_user.user_title.clone(),
-                    username: wcf_user.username.clone(),
-                }
+                wcf: wcf_user_profile,
             })
         }
     }
