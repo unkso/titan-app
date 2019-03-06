@@ -3,7 +3,7 @@
     <packageinformation>
         <packagename>=US= Titan ACL Package</packagename>
         <packagedescription>The package to add Titan ACL options to usergroups.</packagedescription>
-        <version>0.1.0</version>
+        <version>0.1.1</version>
         <date>2019-02-07</date>
     </packageinformation>
 
@@ -18,6 +18,11 @@
     </requiredpackages>
 
     <instructions type="install">
+        <instruction type="language">language/*.xml</instruction>
+        <instruction type="userGroupOption">xml/userGroupOption.xml</instruction>
+    </instructions>
+
+    <instructions type="update" fromversion="0.1.0">
         <instruction type="language">language/*.xml</instruction>
         <instruction type="userGroupOption">xml/userGroupOption.xml</instruction>
     </instructions>
