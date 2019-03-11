@@ -7,6 +7,9 @@ use crate::models;
 use crate::config;
 use crate::organizations;
 use crate::accounts;
+use crate::guards::auth_guard;
+use diesel::result::QueryResult;
+use chrono::format::Item::Error;
 
 #[derive(Serialize)]
 pub struct FindOrganizationResponse {
@@ -132,6 +135,9 @@ pub fn get_child_organizations(
         org_id, &*titan_db).unwrap())
 }
 
+/** ******************************************************************
+ *  Roles/members
+ ** *****************************************************************/
 #[get("/<id>/users?<children>")]
 pub fn get_organization_users(
     id: i32,
@@ -179,4 +185,42 @@ pub fn get_organization_unranked_roles(
 ) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
     Json(organizations::roles::find_unranked_roles(
         org_id, &*titan_db, &*wcf_db, &app_config).unwrap())
+}
+
+/** ******************************************************************
+ *  Reports
+ ** *****************************************************************/
+#[get("/<org_id>/reports")]
+pub fn list_organization_reports(
+    org_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Result<Json<Vec<models::ReportWithAssoc>>, status::BadRequest<String>> {
+    let titan_db_ref = &*titan_db;
+    let wcf_db_ref = &*wcf_db;
+    let mut coc = organizations::roles::find_org_coc(
+        org_id, std::i32::MAX, titan_db_ref, wcf_db_ref, &app_config).unwrap();
+    let mut roles = coc.local_coc;
+    roles.append(&mut coc.extended_coc);
+
+    for role in roles.drain(..) {
+        if role.user_profile.unwrap().id == auth_user.user.id {
+            let mut reports: QueryResult<Vec<models::ReportWithAssoc>>;
+            if role.organization.id != org_id {
+                reports = organizations::reports::find_all_by_organization(
+                    org_id, titan_db_ref, &*wcf_db, &app_config);
+            } else {
+                reports = organizations::reports::find_all_by_org_up_to_rank(
+                    org_id, role.rank.unwrap(), titan_db_ref,
+                    &*wcf_db, &app_config);
+            }
+
+            return Ok(Json(reports.unwrap()));
+        }
+    }
+
+    Err(status::BadRequest(Some(
+        "User is not present in COC.".to_string())))
 }

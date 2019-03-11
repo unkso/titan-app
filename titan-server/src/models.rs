@@ -5,6 +5,7 @@ use crate::schema::{
     event_types,
     organizations,
     organization_roles,
+    reports,
     users,
     user_file_entries,
     user_file_entry_types,
@@ -430,6 +431,45 @@ pub struct UserEventExcuseWithAssoc {
     pub ack_user: Option<UserProfile>,
     pub ack_date: Option<chrono::NaiveDateTime>,
     pub ack_comments: Option<String>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: chrono::NaiveDateTime,
+}
+
+#[derive(Identifiable, Serialize, Deserialize, Queryable)]
+pub struct Report {
+    pub id: i32,
+    pub role_id: i32,
+    pub term_start_date: chrono::NaiveDateTime,
+    pub submission_date: Option<chrono::NaiveDateTime>,
+    pub comments: Option<String>,
+    pub ack_user_id: Option<i32>,
+    pub ack_date: Option<chrono::NaiveDateTime>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: chrono::NaiveDateTime,
+}
+
+#[derive(Insertable)]
+#[table_name = "reports"]
+pub struct NewReport {
+    pub role_id: i32,
+    pub term_start_date: chrono::NaiveDateTime,
+    pub submission_date: Option<chrono::NaiveDateTime>,
+    pub comments: Option<String>,
+    pub ack_user_id: Option<i32>,
+    pub ack_date: Option<chrono::NaiveDateTime>,
+    pub date_created: chrono::NaiveDateTime,
+    pub date_modified: chrono::NaiveDateTime,
+}
+
+#[derive(Serialize)]
+pub struct ReportWithAssoc {
+    pub id: i32,
+    pub role: OrganizationRoleWithAssoc,
+    pub term_start_date: chrono::NaiveDateTime,
+    pub submission_date: Option<chrono::NaiveDateTime>,
+    pub comments: Option<String>,
+    pub ack_user: Option<UserProfile>,
+    pub ack_date: Option<chrono::NaiveDateTime>,
     pub date_created: chrono::NaiveDateTime,
     pub date_modified: chrono::NaiveDateTime,
 }

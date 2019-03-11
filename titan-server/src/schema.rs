@@ -288,9 +288,24 @@ table! {
     }
 }
 
+table! {
+    reports (id) {
+        id -> Integer,
+        role_id -> Integer,
+        term_start_date -> Datetime,
+        submission_date -> Nullable<Datetime>,
+        comments -> Nullable<Mediumtext>,
+        ack_user_id -> Nullable<Integer>,
+        ack_date -> Nullable<Datetime>,
+        date_created -> Datetime,
+        date_modified -> Datetime,
+    }
+}
+
 joinable!(organizations_users -> users (user_id));
 joinable!(organizations_users -> organizations (organization_id));
 joinable!(organization_roles -> organizations (organization_id));
+joinable!(reports -> organization_roles (role_id));
 joinable!(user_file_entries -> user_file_entry_types (user_file_entry_type_id));
 joinable!(user_event_excuses -> event_types (event_type_id));
 joinable!(wcf1_user_option_value -> wcf1_user (user_id));
@@ -306,6 +321,7 @@ allow_tables_to_appear_in_same_query!(
     organization_roles,
     organizations,
     organizations_users,
+    reports,
     user_event_excuses,
     user_file_entries,
     user_file_entry_types,
