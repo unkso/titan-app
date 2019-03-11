@@ -24,6 +24,29 @@ class OrganizationsService {
   findBySlug (slug) {
     return this.httpClient.get(`/organizations/${slug}`);
   }
+
+  /** List an organization's chan of command. */
+  findChainOfCommand (id) {
+    return this.httpClient.get(`/organizations/${id}/coc`);
+  }
+
+  /**
+   * List an organization's leadership roles that do not affect the
+   * chain of command.
+   */
+  findUnrankedRoles (id) {
+    return this.httpClient.get(`/organizations/${id}/roles/unranked`);
+  }
+
+  /** List the non-leadership users of an organization. */
+  findUsers (id) {
+    return this.httpClient.get(`/organizations/${id}/users`);
+  }
+
+  /** List the child organizations of a parent organization. */
+  findChildren (id) {
+    return this.httpClient.get(`/organizations/${id}/children`);
+  }
 }
 
 export default OrganizationsService;

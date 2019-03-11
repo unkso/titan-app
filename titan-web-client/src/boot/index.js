@@ -12,20 +12,20 @@ const reducers = {};
 const moduleConfig = {};
 
 // Mount core modules
-modules.forEach((init) => {
-  const module = init();
-  mountRoutes(routes, module.routes);
-  mountReducer(reducers, module.name, module.reducer);
-  mountConfig(moduleConfig, module.name, module.config);
-});
+modules.forEach(mountFeature);
 
 // Mount extensions
-extensions.forEach((init) => {
-  const extension = init();
-  mountRoutes(routes, extension.routes);
-  mountReducer(reducers, extension.name, extension.reducer);
-  mountConfig(moduleConfig, module.config);
-});
+extensions.forEach(mountFeature);
+
+function mountFeature (init) {
+  const module = init();
+  mountRoutes(routes, module.routes);
+  mountConfig(moduleConfig, module.name, module.config);
+
+  if (module.reducer) {
+    mountReducer(reducers, module.name, module.reducer);
+  }
+}
 
 // Prepare config
 const config = new Config();

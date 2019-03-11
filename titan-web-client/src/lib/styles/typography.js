@@ -36,7 +36,7 @@ export function createTypography (typography = {}) {
       h4: createElementStyles(FONT_WEIGHT_LIGHT, 1.4, 1.6, TEXT_CASE_REGULAR),
       h5: createElementStyles(FONT_WEIGHT_LIGHT, 1.25, 1.3, TEXT_CASE_REGULAR),
       h6: createElementStyles(FONT_WEIGHT_LIGHT, 1.25, 1.6, TEXT_CASE_REGULAR),
-      subtitle1: createElementStyles(FONT_WEIGHT_REGULAR, 1.15, 1.3, TEXT_CASE_REGULAR),
+      subtitle1: createElementStyles(FONT_WEIGHT_REGULAR, 1, 1.3, TEXT_CASE_REGULAR),
       p: createElementStyles(FONT_WEIGHT_REGULAR, 1, 1.1, TEXT_CASE_REGULAR),
       body1: createElementStyles(FONT_WEIGHT_REGULAR, 1, 1.1, TEXT_CASE_REGULAR)
     },

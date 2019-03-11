@@ -29,8 +29,8 @@ class Sidebar extends React.Component {
           {/* isActive */}
           {/* /> */}
           <SidebarMenuItem
-            url={'/branches'}
-            label="Branches"
+            url={'/organizations'}
+            label="Organizations"
             leftIcon={<FontAwesomeIcon icon="flag" />}
           />
           {/* <SidebarMenuItem */}

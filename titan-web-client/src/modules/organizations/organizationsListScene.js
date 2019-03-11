@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import PageHeader from '../../../layouts/dashboard/components/PageHeader/PageHeader';
-import PageHeaderTitle from '../../../layouts/dashboard/components/PageHeader/PageHeaderTitle';
-import { ContentBlock } from '../../../components/block/ContentBlock';
-import BranchCardGrid from '../components/BranchCardGrid';
-import OrganizationsService from '../../../http/OrganizationsService';
+import PageHeader from '../../layouts/dashboard/components/PageHeader/PageHeader';
+import PageHeaderTitle from '../../layouts/dashboard/components/PageHeader/PageHeaderTitle';
+import { ContentBlock } from '../../components/block/ContentBlock';
+import BranchCardGrid from '../roster/components/BranchCardGrid';
+import OrganizationsService from '../../http/OrganizationsService';
 
-class BranchesScene extends React.Component {
+class OrganizationsListScene extends React.Component {
   constructor (props) {
     super(props);
 
@@ -35,16 +35,16 @@ class BranchesScene extends React.Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <PageHeader>
           <PageHeaderTitle title="Branches" />
         </PageHeader>
         <ContentBlock>
           <BranchCardGrid branches={this.state.branches} />
         </ContentBlock>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default withRouter(BranchesScene);
+export default withRouter(OrganizationsListScene);

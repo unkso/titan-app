@@ -11,7 +11,7 @@ class RosterCard extends React.Component {
     return (
       <BorderedCard>
         <CardActionArea onClick={() => {
-          window.location = `/branch/${this.props.branch.slug}`;
+          window.location = `/organizations/${this.props.branch.slug}`;
         }}>
           <CardContent>
             <Avatar
