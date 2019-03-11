@@ -1,6 +1,6 @@
 import { DashboardLayout } from 'titan/layouts';
 import { ROUTE_TYPE_AUTHENTICATED } from 'titan/lib/routing';
-import OrganizationScene from './organizationScene';
+import { OrganizationDetailScene } from './organizationDetailScene';
 import OrganizationsListScene from './organizationsListScene';
 
 export default function () {
@@ -16,7 +16,7 @@ export default function () {
       {
         layout: DashboardLayout,
         path: '/organizations/:slug',
-        scene: OrganizationScene,
+        scene: OrganizationDetailScene,
         type: ROUTE_TYPE_AUTHENTICATED
       }
     ]

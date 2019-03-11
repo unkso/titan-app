@@ -4,7 +4,7 @@ use rocket_contrib::json::Json;
 use crate::db::{UnksoMainForums};
 use crate::models;
 use diesel::prelude::*;
-use crate::auth_guard;
+use crate::guards::auth_guard;
 use crate::schema::wcf1_user;
 
 #[get("/hello")]

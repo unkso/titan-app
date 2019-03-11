@@ -5,9 +5,9 @@
 #[macro_use] extern crate diesel;
 
 pub mod accounts;
-pub mod auth_guard;
 pub mod config;
 pub mod db;
+pub mod guards;
 pub mod models;
 pub mod organizations;
 pub mod events;

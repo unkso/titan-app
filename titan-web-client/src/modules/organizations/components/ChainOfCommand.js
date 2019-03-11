@@ -38,7 +38,7 @@ const Leaf = styled.div`
     content: '';
     height: 3px;
     position: absolute;
-    top: calc(50% - 2px);
+    top: 23px;
     width: 12px;
   }
   
@@ -53,12 +53,15 @@ const Leaf = styled.div`
     width: 10px;
     z-index: 1;
   }
-  
-  :first-child {
+
+  &.left:first-child,
+  &.right:first-child {
     align-items: center;
     background: #fff;
     flex-direction: column;
     margin-bottom: 28px;
+    margin-left: auto;
+    margin-right: auto;
     padding-bottom: 8px;
     width: 100%;
     z-index: 1;
@@ -80,8 +83,8 @@ const Leaf = styled.div`
       text-align: center;
     }
   }
-  
-  :nth-of-type(odd):not(:first-child) {
+
+  &.left {
     flex-direction: row-reverse;
     margin-right: 50%;
     
@@ -101,8 +104,8 @@ const Leaf = styled.div`
       text-align: right;
     }
   }
-  
-  :nth-of-type(even) {
+
+  &.right {
     margin-left: 50%;
     
     :after {
@@ -139,9 +142,13 @@ class ChainOfCommandComponent extends React.Component {
     });
   }
 
-  renderLeaf (coc, color) {
+  renderLeaf (coc, color, index) {
+    const side = index % 2 ? 'left' : 'right';
     return (
-      <Leaf branchColor={color} className="leaf">
+      <Leaf
+        key={index}
+        branchColor={color}
+        className={`leaf ${side}`}>
         <Avatar
           style={{ width: 50, height: 50 }}
           src={coc.user_profile.wcf.avatar_url}
@@ -155,10 +162,17 @@ class ChainOfCommandComponent extends React.Component {
   }
 
   render () {
-    const extendedCoc = this.props.extendedCoc.map(coc =>
-      this.renderLeaf(coc, this.props.theme.palette.primary.main));
-    const localCoc = this.props.localCoc.map(coc =>
-      this.renderLeaf(coc, this.props.theme.palette.secondary.light));
+    let index = 0;
+    const extendedCoc = this.props.extendedCoc.map(coc => {
+      index++;
+      return this.renderLeaf(
+        coc, this.props.theme.palette.primary.main, index);
+    });
+    const localCoc = this.props.localCoc.map(coc => {
+      index++;
+      return this.renderLeaf(
+        coc, this.props.theme.palette.secondary.light, index);
+    });
     const extendedCoCButtonLabel = this.state.extendedCocVisible
       ? 'hide extended CoC'
       : 'show extended CoC';

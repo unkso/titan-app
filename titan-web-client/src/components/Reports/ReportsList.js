@@ -1,29 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { EventExcuseListItem } from './EventExcuseListItem';
 import { ChronologicalItemList } from 'titan/components/List/ChronologicalItemList';
+import { ReportsListItem } from 'titan/components/Reports/ReportsListItem';
 
 /**
- * Renders a list of excuses grouped by month.
+ * Renders a list of reports grouped by month.
  */
-export class EventExcuseList extends React.Component {
+export class ReportsList extends React.Component {
   render () {
     return (
       <ChronologicalItemList
-        dateField="event_date"
+        dateField="term_start_date"
         items={this.props.items}
         renderer={item => (
-          <EventExcuseListItem
-            excuse={item}>
+          <ReportsListItem report={item}>
             {item.comments}
-          </EventExcuseListItem>
+          </ReportsListItem>
         )}
       />
     );
   }
 }
 
-EventExcuseList.propTypes = {
-  /** A list of event excuses. */
+ReportsList.propTypes = {
+  /** A list of reports. */
   items: PropTypes.arrayOf(PropTypes.object)
 };

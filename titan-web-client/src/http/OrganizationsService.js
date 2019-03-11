@@ -47,6 +47,15 @@ class OrganizationsService {
   findChildren (id) {
     return this.httpClient.get(`/organizations/${id}/children`);
   }
+
+  /**
+   * List an organization's reports. The result will only return
+   * reports that the current authenticated user has permission to
+   * access.
+   */
+  findReports (id) {
+    return this.httpClient.get(`/organizations/${id}/reports`);
+  }
 }
 
 export default OrganizationsService;

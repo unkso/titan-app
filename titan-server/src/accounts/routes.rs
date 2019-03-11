@@ -13,7 +13,7 @@ use crate::config;
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::woltlab_auth_helper;
 use crate::models;
-use crate::auth_guard;
+use crate::guards::auth_guard;
 
 /** **************************************************
  *  Auth
