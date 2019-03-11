@@ -87,7 +87,7 @@ class TitanApp extends React.Component {
                 <BrowserRouter>
                   <Switch>
                     {this.renderRoutes(this.props.context.getRoutes())}
-                    <Redirect from="/" to="/branches" />
+                    <Redirect from="/" to="/organizations" />
                   </Switch>
                 </BrowserRouter>
               </Provider>

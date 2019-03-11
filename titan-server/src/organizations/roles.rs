@@ -121,26 +121,13 @@ pub fn find_org_role_by_user_id(
 /// determines if the user is a standard member or a leader in the
 /// organization, then uses those details as a basis for calculating
 /// the CoC.
-///
-/// ## Deriving the next user in CoC
-/// If a user holds a role in the initial organization, search the
-/// current organization for a user with a lower value for `rank`.
-///
-/// If no such user is found or the user does not hold a leadership
-/// role, set the user's rank to the maximum i32 value, then query
-/// the or parent organization(s) for a user with the highest value
-/// for `rank`. The higher rank value indicates that user holds the
-/// lowest authority in the parent organization.
 pub fn find_user_coc(
     org_id: i32,
     user_id: i32,
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: State<config::AppConfig>
-) -> Result<Vec<models::OrganizationRoleWithUser>, diesel::result::Error> {
-    let mut superiors: Vec<models::OrganizationRoleWithUser> = vec!();
-    let mut internal_org_id = org_id;
-    let mut organization: models::Organization;
+) -> Result<models::ChainOfCommand, diesel::result::Error> {
     let role_res = find_org_role_by_user_id(org_id, user_id, titan_db);
     let mut rank: i32;
 
@@ -152,16 +139,35 @@ pub fn find_user_coc(
             std::i32::MAX
         };
     } else {
-        let is_org_user =
-            organizations::organizations::is_user_organization_member(
-                org_id, user_id, titan_db);
-
-        if !is_org_user {
-            return Ok(vec![]);
-        }
-
         rank = std::i32::MAX
     }
+
+    find_org_coc(org_id, rank, titan_db, wcf_db, &app_config)
+}
+
+/// Queries an organization's CoC.
+///
+/// ## Deriving the next user in CoC
+/// If a user holds a role in the initial organization, search the
+/// current organization for a user with a lower value for `rank`.
+///
+/// If no such user is found or the user does not hold a leadership
+/// role, set the user's rank to the maximum i32 value, then query
+/// the or parent organization(s) for a user with the highest value
+/// for `rank`. The higher rank value indicates that user holds the
+/// lowest authority in the parent organization.
+pub fn find_org_coc(
+    org_id: i32,
+    starting_rank: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> Result<models::ChainOfCommand, diesel::result::Error>{
+    let mut extended_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
+    let mut local_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
+    let mut internal_org_id = org_id;
+    let mut organization: models::Organization;
+    let mut rank = starting_rank;
 
     while internal_org_id != std::i32::MAX {
         organization = organizations::organizations::find_by_id(
@@ -171,20 +177,18 @@ pub fn find_user_coc(
 
         if superior_role_res.is_ok() {
             let superior_role = superior_role_res.unwrap();
-            let superior = accounts::users::find_by_id(
-                superior_role.user_id.unwrap(), titan_db)?;
-            let superior_profile =
-                accounts::users::map_user_to_profile(
-                    superior, wcf_db, &app_config)?;
+            let superior_rank = superior_role.rank;
 
-            superiors.push(models::OrganizationRoleWithUser {
-                id: superior_role.id,
-                organization_id: superior_role.organization_id,
-                user_profile: Some(superior_profile),
-                role: superior_role.role,
-                rank: superior_role.rank
-            });
-            rank = superior_role.rank.unwrap();
+            let coc_entry = map_role_assoc(
+                superior_role, titan_db, wcf_db, app_config)?;
+
+            if coc_entry.organization.id == org_id {
+                local_coc.push(coc_entry);
+            } else {
+                extended_coc.push(coc_entry);
+            }
+
+            rank = superior_rank.unwrap();
         } else if organization.parent_id.is_some() {
             internal_org_id = organization.parent_id.unwrap();
             rank = std::i32::MAX;
@@ -193,5 +197,60 @@ pub fn find_user_coc(
         }
     }
 
-    Ok(superiors)
+    Ok(models::ChainOfCommand {
+        extended_coc,
+        local_coc
+    })
+}
+
+pub fn find_unranked_roles(
+    org_id: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> Result<Vec<models::OrganizationRoleWithAssoc>, diesel::result::Error>{
+    let roles = schema::organization_roles::table
+        .filter(schema::organization_roles::organization_id.eq(org_id))
+        .filter(schema::organization_roles::rank.is_null())
+        .get_results::<models::OrganizationRole>(titan_db)?;
+
+    map_roles_assoc(roles, titan_db, wcf_db, app_config)
+}
+
+pub fn map_roles_assoc(
+    roles: Vec<models::OrganizationRole>,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> Result<Vec<models::OrganizationRoleWithAssoc>, diesel::result::Error> {
+    roles.into_iter().map(|role| {
+        map_role_assoc(role, titan_db, wcf_db, app_config)
+    }).collect()
+}
+
+pub fn map_role_assoc(
+    role: models::OrganizationRole,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> Result<models::OrganizationRoleWithAssoc, diesel::result::Error> {
+    let organization = organizations::organizations::find_by_id(
+        role.organization_id, titan_db)?;
+
+    let user_profile = match role.user_id {
+        Some(user_id) => {
+            let user = accounts::users::find_by_id(user_id, titan_db)?;
+            Some(accounts::users::map_user_to_profile(
+                user, wcf_db, app_config)?)
+        }
+        _ => None
+    };
+
+    Ok(models::OrganizationRoleWithAssoc {
+        id: role.id,
+        organization,
+        user_profile,
+        role: role.role,
+        rank: role.rank
+    })
 }

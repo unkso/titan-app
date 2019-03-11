@@ -114,13 +114,22 @@ pub fn list_organization_roles(
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
-) -> Json<Vec<models::OrganizationRoleWithUser>> {
+) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
     let titan_db_ref = &*titan_db;
     let roles = organizations::roles::find_all_by_organization(id, titan_db_ref).unwrap();
-    let roles_with_users = organizations::roles::map_roles_to_users(
-        roles, titan_db_ref, &*wcf_db, app_config);
+    let roles_with_users = organizations::roles::map_roles_assoc(
+        roles, titan_db_ref, &*wcf_db, &app_config);
 
     Json(roles_with_users.unwrap())
+}
+
+#[get("/<org_id>/children")]
+pub fn get_child_organizations(
+    org_id: i32,
+    titan_db: TitanPrimary
+) -> Json<Vec<models::Organization>> {
+    Json(organizations::organizations::find_children(
+        org_id, &*titan_db).unwrap())
 }
 
 #[get("/<id>/users?<children>")]
@@ -135,7 +144,7 @@ pub fn get_organization_users(
     let users = organizations::organizations::find_users(
         id, include_children, &*titan_db).unwrap();
 
-    Json(accounts::users::map_users_to_profile(users, &*wcf_db, app_config).unwrap())
+    Json(accounts::users::map_users_to_profile(users, &*wcf_db, &app_config).unwrap())
 }
 
 #[get("/<org_id>/users/<user_id>/coc")]
@@ -145,7 +154,29 @@ pub fn get_organization_user_coc(
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
-) -> Json<Vec<models::OrganizationRoleWithUser>> {
+) -> Json<models::ChainOfCommand> {
     Json(organizations::roles::find_user_coc(
         org_id, user_id, &*titan_db, &*wcf_db, app_config).unwrap())
+}
+
+#[get("/<org_id>/coc")]
+pub fn get_organization_coc(
+    org_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<models::ChainOfCommand> {
+    Json(organizations::roles::find_org_coc(
+        org_id, std::i32::MAX, &*titan_db, &*wcf_db, &app_config).unwrap())
+}
+
+#[get("/<org_id>/roles/unranked")]
+pub fn get_organization_unranked_roles(
+    org_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
+    Json(organizations::roles::find_unranked_roles(
+        org_id, &*titan_db, &*wcf_db, &app_config).unwrap())
 }

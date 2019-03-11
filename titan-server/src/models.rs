@@ -223,6 +223,21 @@ pub struct OrganizationRoleWithUser {
     pub rank: Option<i32>
 }
 
+#[derive(Serialize)]
+pub struct OrganizationRoleWithAssoc {
+    pub id: i32,
+    pub organization: Organization,
+    pub user_profile: Option<UserProfile>,
+    pub role: String,
+    pub rank: Option<i32>
+}
+
+#[derive(Serialize)]
+pub struct ChainOfCommand {
+    pub local_coc: Vec<OrganizationRoleWithAssoc>,
+    pub extended_coc: Vec<OrganizationRoleWithAssoc>
+}
+
 #[derive(Serialize, Queryable)]
 pub struct OrganizationUser {
     pub organization_id: i32,

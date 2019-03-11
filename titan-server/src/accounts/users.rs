@@ -121,7 +121,7 @@ pub fn wcf_find_user_avatar(
 pub fn wcf_find_all_user_profiles_by_id(
     wcf_user_ids: Vec<i32>,
     wcf_db: &MysqlConnection,
-    app_config: State<config::AppConfig>
+    app_config: &State<config::AppConfig>
 ) -> Result<Vec<models::WcfUserProfile>, diesel::result::Error> {
     let user = schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq_any(wcf_user_ids))
@@ -185,14 +185,13 @@ pub fn wcf_find_user_profile_by_id(
 pub fn map_users_to_profile(
     users: Vec<models::User>,
     wcf_db: &MysqlConnection,
-    app_config: State<config::AppConfig>
+    app_config: &State<config::AppConfig>
 ) ->  Result<Vec<models::UserProfile>, diesel::result::Error> {
-    let wcf_user_ids: Vec<i32> = users.iter().map(|u| u.wcf_id).collect();
-    let mut wcf_profiles = wcf_find_all_user_profiles_by_id(
-        wcf_user_ids, wcf_db, app_config)?;
-
     let mut profiles: Vec<models::UserProfile> = vec!();
-    for (user, wcf_profile) in users.iter().zip(wcf_profiles.drain(..)) {
+    for user in users.iter() {
+        let wcf_profile = wcf_find_user_profile_by_id(
+            user.wcf_id, wcf_db, app_config)?;
+
         profiles.push(models::UserProfile {
             id: user.id,
             wcf_id: user.wcf_id,

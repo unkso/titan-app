@@ -17,7 +17,7 @@ export default {
       text: '#fff'
     },
     secondary: {
-      light: '#383f48',
+      light: '#9ba4b1',
       main: '#383f48',
       dark: '#383f48',
       text: '#fff'

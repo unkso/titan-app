@@ -48,6 +48,15 @@ pub fn find_all(titan_primary: TitanPrimary) -> QueryResult<Vec<models::Organiza
     schema::organizations::table.load::<models::Organization>(&*titan_primary)
 }
 
+pub fn find_children(
+    org_id: i32,
+    titan_db: &MysqlConnection
+) -> QueryResult<Vec<models::Organization>> {
+    schema::organizations::table
+        .filter(schema::organizations::parent_id.eq(org_id))
+        .load::<models::Organization>(&*titan_db)
+}
+
 /// Returns the users belonging to an organization.
 pub fn find_users(
     id: i32, children: bool, titan_db: &MysqlConnection)-> QueryResult<Vec<models::User>> {
