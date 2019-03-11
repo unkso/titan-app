@@ -35,8 +35,8 @@ export class ListSupportLeadership extends React.Component {
       <React.Fragment>
         {this.state.roles.length > 0 ? (
           <List>
-            {this.state.roles.map(role => (
-              <ListItem>
+            {this.state.roles.map((role, index) => (
+              <ListItem key={index}>
                 <ListItemText
                   primary={role.user_profile.wcf.username}
                   secondary={role.role} />

@@ -6,6 +6,17 @@ use crate::schema;
 use crate::accounts;
 use crate::organizations;
 use crate::config;
+use crate::organizations::reports::map_report_to_assoc;
+
+/// Finds an organization role by ID.
+pub fn find_by_id(
+    role_id: i32,
+    titan_db: &MysqlConnection
+) -> QueryResult<models::OrganizationRole> {
+    schema::organization_roles::table
+        .find(role_id)
+        .first(titan_db)
+}
 
 /// Queries all the roles belonging to an organization.
 ///
@@ -17,39 +28,6 @@ pub fn find_all_by_organization(
     schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(organization_id))
         .get_results::<models::OrganizationRole>(titan_db)
-}
-
-/// Given a list of organization roles, loads the user profile for
-/// each role (if present) and returns a new object containing the
-/// original role and the full user profile.
-pub fn map_roles_to_users(
-    roles: Vec<models::OrganizationRole>,
-    titan_db: &MysqlConnection,
-    wcf_db: &MysqlConnection,
-    app_config: State<config::AppConfig>
-) -> QueryResult<Vec<models::OrganizationRoleWithUser>> {
-    let mut roles_with_users: Vec<models::OrganizationRoleWithUser> = vec!();
-    for role in roles {
-        let user_profile: Option<models::UserProfile>;
-        if role.user_id.is_some() {
-            let user = accounts::users::find_by_id(
-                role.user_id.unwrap(), titan_db).unwrap();
-            user_profile = Some(accounts::users::map_user_to_profile(
-                user, wcf_db, &app_config)?)
-        } else {
-            user_profile = None;
-        }
-
-        roles_with_users.push(models::OrganizationRoleWithUser {
-            id: role.id,
-            organization_id: role.organization_id,
-            user_profile,
-            role: role.role,
-            rank: role.rank
-        });
-    }
-
-    Ok(roles_with_users)
 }
 
 /// Finds the next user with ranking authority over the given rank.

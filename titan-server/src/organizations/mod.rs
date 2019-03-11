@@ -2,6 +2,7 @@ use rocket::{Route, routes};
 
 mod routes;
 pub mod organizations;
+pub mod reports;
 pub mod roles;
 
 pub fn get_routes() -> Vec<Route> {
@@ -14,6 +15,7 @@ pub fn get_routes() -> Vec<Route> {
         routes::get_organization_user_coc,
         routes::get_organization_coc,
         routes::get_organization_unranked_roles,
-        routes::get_child_organizations
+        routes::get_child_organizations,
+        routes::list_organization_reports,
     ]
 }
