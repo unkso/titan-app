@@ -192,20 +192,19 @@ pub fn list_user_file_entry_types(
 
 #[derive(Serialize)]
 pub struct ListUserFileEntriesResponse {
-    pub items: Vec<models::UserFileEntryWithType>
+    pub items: Vec<models::UserFileEntryAssoc>
 }
 
 #[get("/<user_id>/file-entries")]
 pub fn list_user_file_entries(
     user_id: i32,
-    titan_primary: TitanPrimary,
+    titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser,
 ) -> Result<Json<ListUserFileEntriesResponse>, status::NotFound<String>> {
     let file_entries_res = file_entries::find_by_user(
-        user_id,
-        &*titan_primary,
-    );
+        user_id, &*titan_db, &*wcf_db, &app_config);
 
     if file_entries_res.is_ok() {
         let mut file_entries = file_entries_res.unwrap();
@@ -236,7 +235,7 @@ pub struct CreateUserFileEntry {
 
 #[derive(Serialize)]
 pub struct CreateUserFileEntryResponse {
-    file_entry: models::UserFileEntryWithType
+    file_entry: models::UserFileEntryAssoc
 }
 
 #[post("/<user_id>/file-entries", format = "application/json", data = "<file_entry_form>")]
@@ -244,6 +243,8 @@ pub fn save_user_file_entry(
     user_id: i32,
     file_entry_form: Json<CreateUserFileEntry>,
     titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser,
 ) -> Result<Json<CreateUserFileEntryResponse>, status::BadRequest<String>> {
     let new_file_entry = models::NewUserFileEntry {
@@ -256,7 +257,8 @@ pub fn save_user_file_entry(
         date_modified: chrono::Utc::now().naive_utc(),
     };
 
-    let created_file_entry_res = file_entries::create_file_entry(&new_file_entry, &*titan_db);
+    let created_file_entry_res = file_entries::create_file_entry(
+        &new_file_entry, &*titan_db, &*wcf_db, &app_config);
 
     if created_file_entry_res.is_err() {
         return Err(status::BadRequest(Some("Failed to save file entry.".to_string())));
