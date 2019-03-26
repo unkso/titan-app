@@ -26,6 +26,10 @@ import {
   FILE_ENTRY_PROMOTION,
   FILE_ENTRY_TRANSFER
 } from 'titan/modules/roster/constants';
+import Row from 'titan/components/Grid/Row';
+import Column from 'titan/components/Grid/Column';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
 
 class FileEntry extends React.Component {
   constructor (props) {
@@ -103,8 +107,10 @@ class FileEntry extends React.Component {
   }
 
   render () {
-    const theme = this.getFileEntryTheme(this.props.type);
-    const date = (new Date(this.props.date)).toLocaleDateString();
+    const theme = this.getFileEntryTheme(
+      this.props.entry.file_entry_type.name);
+    const date = (new Date(
+      this.props.entry.start_date)).toLocaleDateString();
 
     return (
       <React.Fragment>
@@ -112,17 +118,45 @@ class FileEntry extends React.Component {
           highlightLeft={theme.color}
           onClick={this.openDialogHandler}>
           <ListItem>
-            <Typography style={{ color: theme.color }}>{theme.icon}</Typography>
+            <Typography style={{ color: theme.color }}>
+              {theme.icon}
+            </Typography>
             <ListItemText>
-              <Typography variant="body1" color="textSecondary">{date}</Typography>
-              <Typography variant="subtitle1">{this.props.type}</Typography>
+              <Typography variant="body1" color="textSecondary">
+                {date}
+              </Typography>
+              <Typography variant="subtitle1">
+                {this.props.entry.file_entry_type.name}
+              </Typography>
             </ListItemText>
           </ListItem>
         </BorderedCard>
         <Dialog open={this.state.dialogOpen} maxWidth="sm" fullWidth>
-          <DialogTitle>{this.props.type}</DialogTitle>
+          <DialogTitle>
+            <Row>
+              <Column>{this.props.entry.file_entry_type.name}</Column>
+              <Column grow={1}>
+                <Typography
+                  align="right"
+                  component="div"
+                  variant="body1">
+                  <Chip
+                    avatar={(
+                      <Avatar src={this.props.entry.modified_by.wcf.avatar_url} />
+                    )}
+                    clickable
+                    component="a"
+                    href={`/roster/${this.props.entry.modified_by.id}`}
+                    label={`${this.props.entry.modified_by.username}`}
+                  />
+                </Typography>
+              </Column>
+            </Row>
+          </DialogTitle>
           <DialogContent>
-            <DialogContentText>{this.props.children}</DialogContentText>
+            <DialogContentText>
+              {this.props.entry.comments}
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.closeDialogHandler}>Close</Button>
@@ -134,8 +168,16 @@ class FileEntry extends React.Component {
 }
 
 FileEntry.propTypes = {
-  type: PropTypes.string,
-  date: PropTypes.string
+  entry: PropTypes.shape({
+    id: PropTypes.number,
+    file_entry_type: PropTypes.object,
+    user_profile: PropTypes.object,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+    comments: PropTypes.string,
+    date_modified: PropTypes.string,
+    modified_by: PropTypes.object
+  })
 };
 
 export default withTheme()(FileEntry);

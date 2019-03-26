@@ -361,15 +361,15 @@ pub struct UserFileEntry {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct UserFileEntryWithType {
+pub struct UserFileEntryAssoc {
     pub id: i32,
     pub file_entry_type: UserFileEntryType,
-    pub user_id: i32,
+    pub user_profile: UserProfile,
     pub start_date: chrono::NaiveDateTime,
     pub end_date: Option<chrono::NaiveDateTime>,
     pub comments: Option<String>,
     pub date_modified: chrono::NaiveDateTime,
-    pub modified_by: i32
+    pub modified_by: UserProfile
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]

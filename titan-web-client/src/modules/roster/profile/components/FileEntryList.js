@@ -36,11 +36,7 @@ class FileEntryList extends React.Component {
       list.push(
         <Row key={`file-entry-${key}`} gutter={4}>
           <Column grow={1}>
-            <FileEntry
-              type={this.props.items[x].file_entry_type.name}
-              date={this.props.items[x].start_date}>
-              {this.props.items[x].comments}
-            </FileEntry>
+            <FileEntry entry={this.props.items[x]} />
           </Column>
         </Row>
       );
