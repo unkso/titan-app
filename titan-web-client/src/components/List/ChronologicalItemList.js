@@ -56,7 +56,7 @@ export class ChronologicalItemList extends React.Component {
             <Column grow={1}>
               <Typography variant="h3">
                 {formatDate(
-                  this.props.items[x][this.props.dateField],
+                  new Date(this.props.items[x][this.props.dateField]),
                   'MMMM yyyy')}
               </Typography>
             </Column>

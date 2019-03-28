@@ -307,6 +307,7 @@ joinable!(organizations_users -> organizations (organization_id));
 joinable!(organization_roles -> organizations (organization_id));
 joinable!(reports -> organization_roles (role_id));
 joinable!(user_file_entries -> user_file_entry_types (user_file_entry_type_id));
+joinable!(user_file_entries -> users (user_id));
 joinable!(user_event_excuses -> event_types (event_type_id));
 joinable!(wcf1_user_option_value -> wcf1_user (user_id));
 joinable!(wcf1_user_avatar -> wcf1_user (user_id));

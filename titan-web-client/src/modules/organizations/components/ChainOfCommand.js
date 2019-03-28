@@ -227,4 +227,4 @@ ChainOfCommandComponent.defaultProps = {
   userCount: 0
 };
 
-export const ChainOfCommand = withTheme()(ChainOfCommandComponent);
+export const ChainOfCommand = withTheme(ChainOfCommandComponent);

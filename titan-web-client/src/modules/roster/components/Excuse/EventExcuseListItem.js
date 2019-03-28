@@ -121,7 +121,7 @@ class EventExcuseListItemComponent extends React.Component {
           onClick={this.openDialogHandler}>
           <List>
             <ListItem>
-              <Typography style={{ color: theme.color }}>{theme.icon}</Typography>
+              <Typography style={{ color: theme.color, marginRight: 16 }}>{theme.icon}</Typography>
               <ListItemText>
                 <Typography variant="body1" color="textSecondary">{eventDate} | {this.props.excuse.user.username}</Typography>
                 <Typography variant="subtitle1">{this.props.type}</Typography>
@@ -130,9 +130,11 @@ class EventExcuseListItemComponent extends React.Component {
                 {this.state.ack_user && (
                   <Typography align="right">
                     <Tooltip title={`Ack by ${this.state.ack_user.username}`}>
-                      <FontAwesomeIcon
-                        icon="check"
-                        color={this.props.theme.palette.success} />
+                      <span>
+                        <FontAwesomeIcon
+                          icon="check"
+                          color={this.props.theme.palette.success} />
+                      </span>
                     </Tooltip>
                   </Typography>
                 )}
@@ -208,4 +210,4 @@ EventExcuseListItemComponent.propTypes = {
 };
 
 export const EventExcuseListItem =
-    withTheme()(EventExcuseListItemComponent);
+    withTheme(EventExcuseListItemComponent);

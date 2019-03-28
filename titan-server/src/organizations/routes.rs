@@ -1,14 +1,17 @@
 use rocket::{get, State, http::RawStr, response::status};
 use rocket_contrib::json::Json;
-use serde::Serialize;
+use rocket::request::Form;
+use serde::{Deserialize, Serialize};
+use diesel::result::QueryResult;
 
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::models;
 use crate::config;
 use crate::organizations;
 use crate::accounts;
+use crate::guards::form::NaiveDateTimeForm;
+use crate::accounts::file_entries;
 use crate::guards::auth_guard;
-use diesel::result::QueryResult;
 use chrono::format::Item::Error;
 
 #[derive(Serialize)]
@@ -223,4 +226,91 @@ pub fn list_organization_reports(
 
     Err(status::BadRequest(Some(
         "User is not present in COC.".to_string())))
+}
+
+#[derive(Deserialize)]
+pub struct CreateOrganizationReportRequest {
+    comments: String,
+    term_start_date: chrono::NaiveDateTime,
+}
+
+#[post("/<org_id>/reports", format = "application/json", data = "<report_form>")]
+pub fn create_organization_report(
+    org_id: i32,
+    report_form: Json<CreateOrganizationReportRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser,
+) -> Result<Json<models::ReportWithAssoc>, status::BadRequest<String>> {
+    let titan_db_ref = &*titan_db;
+    let role = organizations::roles::find_org_role_by_user_id(
+        org_id, auth_user.user.id, titan_db_ref);
+
+    match role {
+        Ok(role) => {
+            let new_report = models::NewReport {
+                role_id: role.id,
+                term_start_date: report_form.term_start_date,
+                submission_date: Some(chrono::Utc::now().naive_utc()),
+                comments: Some(report_form.comments.clone()),
+                ack_user_id: None,
+                ack_date: None,
+                date_created: chrono::Utc::now().naive_utc(),
+                date_modified: chrono::Utc::now().naive_utc(),
+            };
+
+            let saved_report = organizations::reports::save_report(
+                &new_report, titan_db_ref, &*wcf_db, &app_config);
+
+            match saved_report {
+                Ok(report) => Ok(Json(report)),
+                Err(err) => Err(status::BadRequest(Some(err.to_string())))
+            }
+        },
+        _ => {
+            Err(status::BadRequest(Some(
+                "Authenticated user does not have role for organization.".to_string())))
+        }
+    }
+}
+
+/** ******************************************************************
+ *  File entries
+ ** *****************************************************************/
+#[derive(FromForm)]
+pub struct ListOrgUserFileEntriesRequest {
+    /// A string delimited list of organization Ids.
+    pub organizations: String,
+    pub from_start_date: NaiveDateTimeForm,
+    pub to_start_date: NaiveDateTimeForm,
+}
+
+#[get("/file-entries?<fields..>")]
+pub fn list_organization_user_file_entries(
+    fields: Form<ListOrgUserFileEntriesRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::UserFileEntryWithAssoc>> {
+    let ListOrgUserFileEntriesRequest {
+        organizations,
+        from_start_date,
+        to_start_date
+    } = fields.into_inner();
+
+    let org_ids = organizations.split(',')
+        .map(|id| id.parse::<i32>().unwrap())
+        .collect();
+
+    let entries = file_entries::find_by_orgs(
+        org_ids,
+        *from_start_date,
+        *to_start_date,
+        &*titan_db,
+        &*wcf_db,
+        &app_config
+    );
+
+    Json(entries.unwrap())
 }

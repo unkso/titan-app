@@ -40,4 +40,4 @@ IconEmptyStateComponent.defaultProps = {
   spacing: 8
 };
 
-export const IconEmptyState = withTheme()(IconEmptyStateComponent);
+export const IconEmptyState = withTheme(IconEmptyStateComponent);

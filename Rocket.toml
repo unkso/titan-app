@@ -4,7 +4,7 @@ auth_key = "dummy_key"
 avatar_base_url = "https://clanunknownsoldiers.com/wcf/images/avatars"
 
 [development.databases.unkso_main_forums]
-url = "mysql://root@localhost/unkso_main_forums"
+url = "mysql://root:root@localhost/unkso_main_forums"
 
 [development.databases.titan_primary]
-url = "mysql://root@localhost/titan_primary"
+url = "mysql://root:root@localhost/titan_primary"

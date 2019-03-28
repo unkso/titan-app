@@ -17,7 +17,7 @@ pub fn find_all_by_organization(
         .select(schema::reports::all_columns)
         .inner_join(schema::organization_roles::table)
         .filter(schema::organization_roles::organization_id.eq(org_id))
-        .order_by(schema::reports::submission_date.desc())
+        .order_by(schema::reports::term_start_date.desc())
         .get_results::<models::Report>(titan_db)?;
 
     map_reports_to_assoc(reports, titan_db, wcf_db, app_config)
@@ -38,10 +38,27 @@ pub fn find_all_by_org_up_to_rank(
         .inner_join(schema::organization_roles::table)
         .filter(schema::organization_roles::organization_id.eq(org_id))
         .filter(schema::organization_roles::rank.ge(rank))
-        .order_by(schema::reports::submission_date.desc())
+        .order_by(schema::reports::term_start_date.desc())
         .get_results::<models::Report>(titan_db)?;
 
     map_reports_to_assoc(reports, titan_db, wcf_db, app_config)
+}
+
+pub fn save_report(
+    new_report: &models::NewReport,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> Result<models::ReportWithAssoc, diesel::result::Error> {
+    diesel::insert_into(schema::reports::table)
+        .values(new_report)
+        .execute(titan_db)?;
+
+    let last_inserted = schema::reports::table
+        .order_by(schema::reports::id.desc())
+        .first(titan_db)?;
+
+    map_report_to_assoc(last_inserted, titan_db, wcf_db, app_config)
 }
 
 pub fn map_reports_to_assoc(

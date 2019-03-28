@@ -2,6 +2,7 @@
 #![recursion_limit="256"]
 
 #[macro_use] extern crate rocket_contrib;
+#[macro_use] extern crate rocket;
 #[macro_use] extern crate diesel;
 
 pub mod accounts;

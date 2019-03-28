@@ -66,8 +66,10 @@ class ReportsListItemComponent extends React.Component {
   render () {
     const roleName = this.props.report.role.role;
     const unitName = this.props.report.role.organization.name;
-    const startDate = formatDate(
-      this.props.report.term_start_date, 'MMMM dd, yyyy');
+    const termStartDate = formatDate(
+      new Date(this.props.report.term_start_date), 'MMMM dd, yyyy');
+    const submissionDate = formatDate(
+      new Date(this.props.report.submission_date), 'MMMM dd, yyyy');
     const theme = {
       color: this.props.theme.palette.secondary.light,
       icon: <FontAwesomeIcon icon="file-alt" />
@@ -79,12 +81,14 @@ class ReportsListItemComponent extends React.Component {
           onClick={this.openDialogHandler}>
           <List>
             <ListItem>
-              <Typography style={{ color: theme.color }}>
+              <Typography style={{ color: theme.color, marginRight: 16 }}>
                 {theme.icon}
               </Typography>
               <ListItemText>
-                {formatDate(
-                  this.props.report.term_start_date, 'MM/dd')}
+                {formatDate(new Date(this.props.report.term_start_date), 'MM/dd')}
+              </ListItemText>
+              <ListItemText>
+                submitted {submissionDate}
               </ListItemText>
               <ListItemText>
                 <Chip
@@ -112,7 +116,7 @@ class ReportsListItemComponent extends React.Component {
               <Column>
                 <span>{this.props.report.role.organization.name} Weekly Report</span>
                 <Typography variant="body1" color="textSecondary">
-                  Week of {startDate}
+                  Week of {termStartDate}
                 </Typography>
               </Column>
               <Column grow={1}>
@@ -159,4 +163,4 @@ ReportsListItemComponent.propTypes = {
   })
 };
 
-export const ReportsListItem = withTheme()(ReportsListItemComponent);
+export const ReportsListItem = withTheme(ReportsListItemComponent);
