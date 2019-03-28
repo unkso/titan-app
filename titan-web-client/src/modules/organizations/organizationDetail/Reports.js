@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import OrganizationsService from 'titan/http/OrganizationsService';
 import { ReportsList } from 'titan/components/Reports/ReportsList';
 import { ContentBlock } from 'titan/components/block/ContentBlock';
+import Typography from '@material-ui/core/Typography';
+import { CreateReportButton } from 'titan/modules/organizations/components/CreateReportButton';
 
 export class Reports extends React.Component {
   constructor (props) {
@@ -14,7 +16,7 @@ export class Reports extends React.Component {
   }
 
   componentDidMount () {
-    this.organizationsService.findReports(this.props.organizationId)
+    this.organizationsService.findReports(this.props.organization.id)
       .then(res => {
         this.setState({ reports: res.data });
       });
@@ -23,6 +25,11 @@ export class Reports extends React.Component {
   render () {
     return (
       <ContentBlock>
+        <Typography align="right">
+          <CreateReportButton
+            organization={this.props.organization}
+          />
+        </Typography>
         <ReportsList items={this.state.reports} />
       </ContentBlock>
     );
@@ -30,5 +37,5 @@ export class Reports extends React.Component {
 }
 
 Reports.propTypes = {
-  organizationId: PropTypes.number.isRequired
+  organization: PropTypes.object.isRequired
 };

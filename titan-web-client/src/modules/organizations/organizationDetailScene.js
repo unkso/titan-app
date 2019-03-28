@@ -77,7 +77,7 @@ class OrganizationDetailSceneComponent extends React.Component {
         }
 
         {this.state.tab === 1 &&
-          <Reports organizationId={this.state.organization.id} />
+          <Reports organization={this.state.organization} />
         }
       </React.Fragment>
     );
