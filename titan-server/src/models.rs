@@ -362,7 +362,7 @@ pub struct UserFileEntry {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct UserFileEntryAssoc {
+pub struct UserFileEntryWithAssoc {
     pub id: i32,
     pub file_entry_type: UserFileEntryType,
     pub user_profile: UserProfile,
@@ -448,7 +448,7 @@ pub struct Report {
     pub date_modified: chrono::NaiveDateTime,
 }
 
-#[derive(Insertable)]
+#[derive(Deserialize, Insertable)]
 #[table_name = "reports"]
 pub struct NewReport {
     pub role_id: i32,

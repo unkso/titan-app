@@ -1,9 +1,6 @@
 import { createTypography } from 'titan/lib/styles/typography';
 
 export default {
-  spacing: {
-    base: 8
-  },
   typography: {
     fontSize: 14,
     useNextVariants: true,
@@ -92,11 +89,6 @@ export default {
             0px 6px 10px 0px rgba(0, 0, 0, 0.08),
             0px 1px 18px 0px rgba(0, 0, 0, 0.06)
         `
-      }
-    },
-    MuiTab: {
-      selected: {
-        borderColor: '#ff6600'
       }
     }
   }

@@ -15,6 +15,7 @@ class OrganizationDetailSceneComponent extends React.Component {
 
     this.organizationsService = new OrganizationsService();
     this.state = {
+      hasLocalCocRole: false,
       isMemberOfCoc: false,
       loading: true,
       organization: null,
@@ -34,11 +35,13 @@ class OrganizationDetailSceneComponent extends React.Component {
         const userId = this.props.auth.session.user.id;
 
         this.setState({
+          hasLocalCocRole: !!res.data.local_coc.find(
+            role => role.user_profile.id === userId),
           isMemberOfCoc: !!coc.find(role =>
             role.user_profile.id === userId)
         });
       })
-      .catch(() => {
+      .catch(e => {
         window.location = '/organizations';
       })
       .finally(() => {
@@ -56,7 +59,6 @@ class OrganizationDetailSceneComponent extends React.Component {
     }
 
     const headerTabs = [<Tab key={0} label="Overview" />];
-
     if (this.state.isMemberOfCoc) {
       headerTabs.push(<Tab key={1} label="Reports" />);
     }
@@ -77,7 +79,10 @@ class OrganizationDetailSceneComponent extends React.Component {
         }
 
         {this.state.tab === 1 &&
-          <Reports organizationId={this.state.organization.id} />
+          <Reports
+            canCreateReport={this.state.hasLocalCocRole}
+            organization={this.state.organization}
+          />
         }
       </React.Fragment>
     );

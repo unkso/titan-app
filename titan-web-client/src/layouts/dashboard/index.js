@@ -70,4 +70,4 @@ DashboardLayout.propTypes = {
   children: PropTypes.object
 };
 
-export default withTheme()(DashboardLayout);
+export default withTheme(DashboardLayout);

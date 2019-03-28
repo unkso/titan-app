@@ -73,4 +73,4 @@ ActivityBadge.propTypes = {
   ])
 };
 
-export default withTheme()(ActivityBadge);
+export default withTheme(ActivityBadge);

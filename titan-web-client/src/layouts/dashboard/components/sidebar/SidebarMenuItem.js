@@ -80,4 +80,4 @@ SidebarMenuItemComponent.defaultProps = {
   isActive: false
 };
 
-export const SidebarMenuItem = withTheme()(SidebarMenuItemComponent);
+export const SidebarMenuItem = withTheme(SidebarMenuItemComponent);

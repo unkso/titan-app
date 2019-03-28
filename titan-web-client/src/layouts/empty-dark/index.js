@@ -30,4 +30,4 @@ class EmptyDarkLayout extends React.Component {
   }
 }
 
-export default withTheme()(EmptyDarkLayout);
+export default withTheme(EmptyDarkLayout);

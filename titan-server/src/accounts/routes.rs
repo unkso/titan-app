@@ -177,6 +177,9 @@ pub fn get_user(
     ))
 }
 
+/** ******************************************************************
+ *  File entries
+ ** *****************************************************************/
 #[get("/file-entry-types")]
 pub fn list_user_file_entry_types(
     titan_db: TitanPrimary
@@ -192,7 +195,7 @@ pub fn list_user_file_entry_types(
 
 #[derive(Serialize)]
 pub struct ListUserFileEntriesResponse {
-    pub items: Vec<models::UserFileEntryAssoc>
+    pub items: Vec<models::UserFileEntryWithAssoc>
 }
 
 #[get("/<user_id>/file-entries")]
@@ -235,7 +238,7 @@ pub struct CreateUserFileEntry {
 
 #[derive(Serialize)]
 pub struct CreateUserFileEntryResponse {
-    file_entry: models::UserFileEntryAssoc
+    file_entry: models::UserFileEntryWithAssoc
 }
 
 #[post("/<user_id>/file-entries", format = "application/json", data = "<file_entry_form>")]

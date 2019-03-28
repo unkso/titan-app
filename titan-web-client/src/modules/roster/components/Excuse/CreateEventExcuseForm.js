@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DatePicker } from 'material-ui-pickers';
+import { DatePicker } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Row from 'titan/components/Grid/Row';
@@ -14,7 +14,7 @@ export class CreateEventExcuseForm extends React.Component {
           <Column grow={1}>
             <DatePicker
               label="Event Date"
-              variant="outlined"
+              inputVariant="outlined"
               value={this.props.fields.eventDate}
               onChange={date => this.props.onFieldChange('eventDate', date)}
             />

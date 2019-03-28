@@ -1,3 +1,4 @@
+import qs from 'query-string';
 import AuthenticatedService from 'titan/http/AuthenticatedService';
 
 class OrganizationsService {
@@ -48,6 +49,12 @@ class OrganizationsService {
     return this.httpClient.get(`/organizations/${id}/children`);
   }
 
+  /** List the child organizations of a parent organization. */
+  findChildrenIds (id, recursive = false) {
+    return this.httpClient.get(
+      `/organizations/${id}/children`, qs.stringify({ recursive }));
+  }
+
   /**
    * List an organization's reports. The result will only return
    * reports that the current authenticated user has permission to
@@ -55,6 +62,25 @@ class OrganizationsService {
    */
   findReports (id) {
     return this.httpClient.get(`/organizations/${id}/reports`);
+  }
+
+  /**
+   * Save an organization report.
+   */
+  saveReport (organizationId, report) {
+    return this.httpClient.post(
+      `/organizations/${organizationId}/reports`, report);
+  }
+
+  /**
+   * List file entries owned by one of the given organizations.
+   *
+   * @parm {string} params.organizations
+   * @param {string} params.from_start_date
+   * @param {string} params.to_start_date
+   */
+  findFileEntries (params) {
+    return this.httpClient.get('/organizations/file-entries', { params });
   }
 }
 

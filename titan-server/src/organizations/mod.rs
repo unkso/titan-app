@@ -7,6 +7,7 @@ pub mod roles;
 
 pub fn get_routes() -> Vec<Route> {
     routes![
+        routes::create_organization_report,
         routes::get_all,
         routes::get_organization_by_id,
         routes::get_organization_by_slug,
@@ -17,5 +18,6 @@ pub fn get_routes() -> Vec<Route> {
         routes::get_organization_unranked_roles,
         routes::get_child_organizations,
         routes::list_organization_reports,
+        routes::list_organization_user_file_entries,
     ]
 }
