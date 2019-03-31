@@ -45,6 +45,25 @@ pub fn find_most_recent(
         .first(titan_db)
 }
 
+pub fn find_for_orgs_between_dates(
+    org_ids: Vec<i32>,
+    start_date: chrono::NaiveDateTime,
+    end_date: chrono::NaiveDateTime,
+    titan_db: &MysqlConnection
+) -> QueryResult<Vec<models::UserFileEntry>> {
+    schema::user_file_entries::table
+        .select(schema::user_file_entries::all_columns)
+        .inner_join(
+            schema::users::table.inner_join(
+                schema::organizations_users::table)
+        )
+        .filter(schema::organizations_users::organization_id
+            .eq_any(org_ids))
+        .filter(schema::user_file_entries::start_date.ge(start_date))
+        .filter(schema::user_file_entries::end_date.le(end_date))
+        .get_results(titan_db)
+}
+
 /// Creates a new file entry.
 pub fn create_file_entry(
     new_file_entry: &models::NewUserFileEntry,

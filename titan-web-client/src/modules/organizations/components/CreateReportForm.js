@@ -1,17 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DatePicker } from 'material-ui-pickers';
+import TextField from '@material-ui/core/TextField';
+import Row from 'titan/components/Grid/Row';
+import Column from 'titan/components/Grid/Column';
 
 export class CreateReportForm extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <DatePicker
-          label="Term Start Date"
-          variant="outlined"
-          value={this.props.fields.termStartDate}
-          onChange={date => this.props.onFieldChange('termStartDate', date)}
-        />
+        <Row>
+          <Column grow={1}>
+            <DatePicker
+              label="Term Start Date"
+              variant="outlined"
+              value={this.props.fields.termStartDate}
+              onChange={date =>
+                this.props.onFieldChange('termStartDate', date)}
+            />
+          </Column>
+        </Row>
+        <Row>
+          <Column grow={1}>
+            <TextField
+              rows={14}
+              fullWidth
+              multiline
+              variant="outlined"
+              label="Comments"
+              value={this.props.fields.comments}
+              onChange={e =>
+                this.props.onFieldChange('comments', e.target.value)}
+            />
+          </Column>
+        </Row>
       </React.Fragment>
     );
   }
