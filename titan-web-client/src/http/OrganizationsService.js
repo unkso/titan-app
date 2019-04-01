@@ -1,3 +1,4 @@
+import qs from 'query-string';
 import AuthenticatedService from 'titan/http/AuthenticatedService';
 
 class OrganizationsService {
@@ -46,6 +47,12 @@ class OrganizationsService {
   /** List the child organizations of a parent organization. */
   findChildren (id) {
     return this.httpClient.get(`/organizations/${id}/children`);
+  }
+
+  /** List the child organizations of a parent organization. */
+  findChildrenIds (id, recursive = false) {
+    return this.httpClient.get(
+      `/organizations/${id}/children`, qs.stringify({ recursive }));
   }
 
   /**

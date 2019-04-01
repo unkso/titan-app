@@ -135,6 +135,21 @@ pub fn get_child_organizations(
         org_id, &*titan_db).unwrap())
 }
 
+#[get("/<org_id>/children/ids?<recursive>")]
+pub fn get_child_organization_ids(
+    org_id: i32,
+    recursive: Option<bool>,
+    titan_db: TitanPrimary
+) -> Json<Vec<i32>> {
+    let include_recursive = match recursive {
+        Some(recursive) => recursive,
+        _ => false
+    };
+
+    Json(organizations::organizations::find_children_ids(
+        org_id, include_recursive, &*titan_db))
+}
+
 /** ******************************************************************
  *  Roles/members
  ** *****************************************************************/

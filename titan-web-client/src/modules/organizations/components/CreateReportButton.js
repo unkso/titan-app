@@ -8,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { CreateReportForm } from 'titan/modules/organizations/components/CreateReportForm';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
-import { FileEntryList } from 'titan/modules/roster/profile/components/FileEntryList';
+import { List } from 'titan/components/FileEntry/FileEntryList';
 
 export class CreateReportButton extends React.Component {
   constructor (props) {
@@ -52,25 +52,94 @@ export class CreateReportButton extends React.Component {
               <Column basis="60%">
                 <CreateReportForm
                   fields={this.state.fields}
-                  onFieldChange={(field, value) => this.updateField(field, value)}
+                  onFieldChange={(field, value) => this.updateField(field,
+                    value)}
                 />
               </Column>
               <Column basis="40%">
-                <FileEntryList items={[
+                <List items={[
                   {
                     file_entry_type: { name: 'practice' },
                     start_date: '2019-01-01',
-                    comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.'
+                    comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.',
+                    modified_by: {
+                      wcf: {
+                        'id': 595,
+                        'wcf_id': 5507,
+                        'legacy_player_id': 11821,
+                        'rank_id': 11168,
+                        'username': 'mparsons',
+                        'orientation': 18052,
+                        'bct_e0': 18052,
+                        'bct_e1': 18161,
+                        'bct_e2': 18225,
+                        'bct_e3': 18347,
+                        'loa': null,
+                        'a15': null,
+                        'date_joined': '2016-12-17T00:00:00',
+                        'last_activity': '2018-12-21T19:25:58',
+                        'wcf': {
+                          'avatar_url': 'https://clanunknownsoldiers.com/wcf/images/avatars/3f/634-3f7071d457cfc2666c3fb42cc7d93c3fadb64517-128.png',
+                          'last_activity_time': 1529971747,
+                          'user_title': 'Staff Sergeant (E-6)<br> NCOIC of Engineering',
+                          'username': 'SSgt.mparsons=US='
+                        }
+                      }
+                    }
                   },
                   {
                     file_entry_type: { name: 'practice' },
                     start_date: '2019-01-01',
-                    comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.'
+                    comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.',
+                    modified_by: {
+                      'id': 595,
+                      'wcf_id': 5507,
+                      'legacy_player_id': 11821,
+                      'rank_id': 11168,
+                      'username': 'mparsons',
+                      'orientation': 18052,
+                      'bct_e0': 18052,
+                      'bct_e1': 18161,
+                      'bct_e2': 18225,
+                      'bct_e3': 18347,
+                      'loa': null,
+                      'a15': null,
+                      'date_joined': '2016-12-17T00:00:00',
+                      'last_activity': '2018-12-21T19:25:58',
+                      'wcf': {
+                        'avatar_url': 'https://clanunknownsoldiers.com/wcf/images/avatars/3f/634-3f7071d457cfc2666c3fb42cc7d93c3fadb64517-128.png',
+                        'last_activity_time': 1529971747,
+                        'user_title': 'Staff Sergeant (E-6)<br> NCOIC of Engineering',
+                        'username': 'SSgt.mparsons=US='
+                      }
+                    }
                   },
                   {
                     file_entry_type: { name: 'practice' },
                     start_date: '2019-01-01',
-                    comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.'
+                    comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.',
+                    modified_by: {
+                      'id': 595,
+                      'wcf_id': 5507,
+                      'legacy_player_id': 11821,
+                      'rank_id': 11168,
+                      'username': 'mparsons',
+                      'orientation': 18052,
+                      'bct_e0': 18052,
+                      'bct_e1': 18161,
+                      'bct_e2': 18225,
+                      'bct_e3': 18347,
+                      'loa': null,
+                      'a15': null,
+                      'date_joined': '2016-12-17T00:00:00',
+                      'last_activity': '2018-12-21T19:25:58',
+                      'wcf': {
+                        'avatar_url': 'https://clanunknownsoldiers.com/wcf/images/avatars/3f/634-3f7071d457cfc2666c3fb42cc7d93c3fadb64517-128.png',
+                        'last_activity_time': 1529971747,
+                        'user_title': 'Staff Sergeant (E-6)<br> NCOIC of Engineering',
+                        'username': 'SSgt.mparsons=US='
+                      }
+                    }
                   }
                 ]} />
               </Column>

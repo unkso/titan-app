@@ -2,6 +2,7 @@ use crate::accounts::acl;
 use frank_jwt::{Algorithm, encode};
 use rocket::{get, post, State, response::status};
 use rocket_contrib::json::Json;
+use rocket::request::Form;
 use serde::{Deserialize, Serialize};
 
 use crate::accounts::users;
@@ -14,6 +15,7 @@ use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::woltlab_auth_helper;
 use crate::models;
 use crate::guards::auth_guard;
+use crate::guards::form::NaiveDateTimeForm;
 
 /** **************************************************
  *  Auth
@@ -177,6 +179,9 @@ pub fn get_user(
     ))
 }
 
+/** ******************************************************************
+ *  File entries
+ ** *****************************************************************/
 #[get("/file-entry-types")]
 pub fn list_user_file_entry_types(
     titan_db: TitanPrimary
@@ -190,22 +195,54 @@ pub fn list_user_file_entry_types(
     Ok(Json(file_entries_res.unwrap()))
 }
 
+#[derive(FromForm)]
+pub struct SearchFileEntriesRequest {
+    /// A string delimited list of organization Ids.
+    pub organizations: Option<String>,
+    pub from_submission_date: NaiveDateTimeForm,
+    pub to_submission_date: NaiveDateTimeForm,
+}
+
+#[get("/file-entries?<search..>")]
+pub fn search_file_entries(
+    search: Form<SearchFileEntriesRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::UserFileEntryWithAssoc>> {
+    let org_ids: Option<Vec<i32>> = match &search.organizations {
+        Some(id_string) => Some(id_string.split(',')
+            .map(|id| id.parse::<i32>().unwrap())
+            .collect()),
+        _ => None
+    };
+    let entries = file_entries::search_file_entries(
+        org_ids,
+        Some(*search.from_submission_date),
+             Some(*search.to_submission_date),
+        &*titan_db,
+        &*wcf_db,
+        &app_config
+    );
+
+    Json(entries.unwrap())
+}
+
 #[derive(Serialize)]
 pub struct ListUserFileEntriesResponse {
-    pub items: Vec<models::UserFileEntryWithType>
+    pub items: Vec<models::UserFileEntryWithAssoc>
 }
 
 #[get("/<user_id>/file-entries")]
 pub fn list_user_file_entries(
     user_id: i32,
-    titan_primary: TitanPrimary,
+    titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser,
 ) -> Result<Json<ListUserFileEntriesResponse>, status::NotFound<String>> {
     let file_entries_res = file_entries::find_by_user(
-        user_id,
-        &*titan_primary,
-    );
+        user_id, &*titan_db, &*wcf_db, &app_config);
 
     if file_entries_res.is_ok() {
         let mut file_entries = file_entries_res.unwrap();
@@ -236,7 +273,7 @@ pub struct CreateUserFileEntry {
 
 #[derive(Serialize)]
 pub struct CreateUserFileEntryResponse {
-    file_entry: models::UserFileEntryWithType
+    file_entry: models::UserFileEntryWithAssoc
 }
 
 #[post("/<user_id>/file-entries", format = "application/json", data = "<file_entry_form>")]
@@ -244,6 +281,8 @@ pub fn save_user_file_entry(
     user_id: i32,
     file_entry_form: Json<CreateUserFileEntry>,
     titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser,
 ) -> Result<Json<CreateUserFileEntryResponse>, status::BadRequest<String>> {
     let new_file_entry = models::NewUserFileEntry {
@@ -256,7 +295,8 @@ pub fn save_user_file_entry(
         date_modified: chrono::Utc::now().naive_utc(),
     };
 
-    let created_file_entry_res = file_entries::create_file_entry(&new_file_entry, &*titan_db);
+    let created_file_entry_res = file_entries::create_file_entry(
+        &new_file_entry, &*titan_db, &*wcf_db, &app_config);
 
     if created_file_entry_res.is_err() {
         return Err(status::BadRequest(Some("Failed to save file entry.".to_string())));

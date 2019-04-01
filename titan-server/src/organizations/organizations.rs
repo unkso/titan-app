@@ -61,7 +61,7 @@ pub fn find_children(
 pub fn find_users(
     id: i32, children: bool, titan_db: &MysqlConnection)-> QueryResult<Vec<models::User>> {
     let child_ids =
-        if children { find_children_ids_recursive(id, titan_db) } else { vec![id] };
+        if children { find_children_ids(id, false, titan_db) } else { vec![id] };
 
     schema::users::table.inner_join(schema::organizations_users::table)
         .select(schema::users::all_columns)
@@ -133,7 +133,7 @@ pub fn find_all_by_user(
 /// // Returns [1, 2, 3, 4, 5]
 /// find_children_ids_recursive(0, titan_db);
 /// ```
-pub fn find_children_ids_recursive(id: i32, titan_db: &MysqlConnection) -> Vec<i32> {
+pub fn find_children_ids(id: i32, recursive: bool, titan_db: &MysqlConnection) -> Vec<i32> {
     let mut children_ids: Vec<i32> = vec![id];
     let mut child_to_visit: VecDeque<i32> = VecDeque::new();
     child_to_visit.push_back(id);
@@ -149,6 +149,10 @@ pub fn find_children_ids_recursive(id: i32, titan_db: &MysqlConnection) -> Vec<i
                 children_ids.push(grandchild.id);
                 child_to_visit.push_back(grandchild.id);
             }
+        }
+
+        if !recursive {
+            break;
         }
     }
 

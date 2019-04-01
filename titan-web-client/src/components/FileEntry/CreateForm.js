@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { DatePicker } from 'material-ui-pickers';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import Row from '../../../../components/Grid/Row';
-import Column from '../../../../components/Grid/Column';
+import Row from '../Grid/Row';
+import Column from '../Grid/Column';
 
-class CreateFileEntryForm extends React.Component {
+class CreateForm extends React.Component {
   render () {
     const startDateLabel = this.props.multiDate ? 'Start Date' : 'Date';
     const startDateKey = this.props.multiDate ? 'state-date' : 'date';
@@ -73,15 +73,15 @@ class CreateFileEntryForm extends React.Component {
   }
 }
 
-CreateFileEntryForm.propTypes = {
+CreateForm.propTypes = {
   multiDate: PropTypes.bool,
   entryTypes: PropTypes.arrayOf(PropTypes.object).isRequired,
   fields: PropTypes.object.isRequired,
   onFieldChange: PropTypes.func.isRequired
 };
 
-CreateFileEntryForm.defaultProps = {
+CreateForm.defaultProps = {
   multiDate: false
 };
 
-export default CreateFileEntryForm;
+export default CreateForm;
