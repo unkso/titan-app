@@ -4,8 +4,9 @@ import { DatePicker } from 'material-ui-pickers';
 import TextField from '@material-ui/core/TextField';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
+import { withSnackbar } from 'notistack';
 
-export class CreateReportForm extends React.Component {
+class CreateReportFormComponent extends React.Component {
   render () {
     return (
       <React.Fragment>
@@ -39,7 +40,10 @@ export class CreateReportForm extends React.Component {
   }
 }
 
-CreateReportForm.propTypes = {
+CreateReportFormComponent.propTypes = {
   fields: PropTypes.object.isRequired,
   onFieldChange: PropTypes.func.isRequired
 };
+
+export const CreateReportForm = withSnackbar(
+  CreateReportFormComponent);

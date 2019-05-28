@@ -1,15 +1,18 @@
 import React from 'react';
+import { withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import BorderedCard from '../Card/BorderedCard';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { FileEntryPropType } from 'titan/../../../models';
+import { FileEntryPropType } from 'titan/models';
 import { getFileEntryTheme } from 'titan/components/FileEntry/index';
 
-export class Detail extends React.Component {
+export class DetailComponent extends React.Component {
   render () {
     const theme = getFileEntryTheme(
-      this.props.entry.file_entry_type.name);
+      this.props.entry.file_entry_type.name,
+      this.props.theme
+    );
     const date = (new Date(
       this.props.entry.start_date)).toLocaleDateString();
 
@@ -35,6 +38,8 @@ export class Detail extends React.Component {
   }
 }
 
-Detail.propTypes = {
+DetailComponent.propTypes = {
   entry: FileEntryPropType
 };
+
+export const Detail = withTheme(DetailComponent);

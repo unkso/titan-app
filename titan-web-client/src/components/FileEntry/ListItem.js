@@ -17,7 +17,7 @@ import Column from '../Grid/Column';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import { getFileEntryTheme } from 'titan/components/FileEntry/index';
-import { FileEntryPropType } from 'titan/../../../models';
+import { FileEntryPropType } from 'titan/models';
 
 class ListItemComponent extends React.Component {
   constructor (props) {
@@ -38,7 +38,7 @@ class ListItemComponent extends React.Component {
 
   render () {
     const theme = getFileEntryTheme(
-      this.props.entry.file_entry_type.name);
+      this.props.entry.file_entry_type.name, this.props.theme);
     const date = (new Date(
       this.props.entry.start_date)).toLocaleDateString();
 
@@ -76,8 +76,6 @@ class ListItemComponent extends React.Component {
                         this.props.entry.modified_by.wcf.avatar_url}
                       />
                     )}
-                    clickableitem
-                    component="a"
                     href={`/roster/${this.props.entry.modified_by.id}`}
                     label={this.props.entry.modified_by.username}
                   />

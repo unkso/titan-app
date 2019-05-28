@@ -18,33 +18,34 @@ import {
  * entry.
  *
  * @param type
+ * @param {{palette: {}}} theme
  * @returns {{color, icon}}
  */
-export function getFileEntryTheme (type) {
+export function getFileEntryTheme (type, theme) {
   switch (type) {
     case FILE_ENTRY_A15:
       return {
-        color: this.props.theme.palette.danger,
+        color: theme.palette.danger,
         icon: 'ban'
       };
     case FILE_ENTRY_AWOL:
       return {
-        color: this.props.theme.palette.danger,
+        color: theme.palette.danger,
         icon: 'info'
       };
     case FILE_ENTRY_AWARD:
       return {
-        color: this.props.theme.palette.warning,
+        color: theme.palette.warning,
         icon: 'award'
       };
     case FILE_ENTRY_APP_WITHDRAWN:
       return {
-        color: this.props.theme.palette.info,
+        color: theme.palette.info,
         icon: 'file-alt'
       };
     case FILE_ENTRY_APP_DENIED:
       return {
-        color: this.props.theme.palette.danger,
+        color: theme.palette.danger,
         icon: 'file-alt'
       };
     case FILE_ENTRY_BCT_E0_COMPLETE:
@@ -52,27 +53,27 @@ export function getFileEntryTheme (type) {
     case FILE_ENTRY_BCT_E2_COMPLETE:
     case FILE_ENTRY_BCT_E3_COMPLETE:
       return {
-        color: this.props.theme.palette.success,
+        color: theme.palette.success,
         icon: 'shield-alt'
       };
     case FILE_ENTRY_PASS_JCS_INTERVIEW:
       return {
-        color: this.props.theme.palette.success,
+        color: theme.palette.success,
         icon: 'users'
       };
     case FILE_ENTRY_PROMOTION:
       return {
-        color: this.props.theme.palette.warning,
+        color: theme.palette.warning,
         icon: 'star'
       };
     case FILE_ENTRY_TRANSFER:
       return {
-        color: this.props.theme.palette.info,
+        color: theme.palette.info,
         icon: 'random'
       };
     default:
       return {
-        color: this.props.theme.palette.info,
+        color: theme.palette.info,
         icon: 'info'
       };
   }

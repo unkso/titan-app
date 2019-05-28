@@ -448,7 +448,7 @@ pub struct Report {
     pub date_modified: chrono::NaiveDateTime,
 }
 
-#[derive(Insertable)]
+#[derive(Deserialize, Insertable)]
 #[table_name = "reports"]
 pub struct NewReport {
     pub role_id: i32,

@@ -199,8 +199,8 @@ pub fn list_user_file_entry_types(
 pub struct SearchFileEntriesRequest {
     /// A string delimited list of organization Ids.
     pub organizations: Option<String>,
-    pub from_submission_date: NaiveDateTimeForm,
-    pub to_submission_date: NaiveDateTimeForm,
+    pub from_submission_date: Option<NaiveDateTimeForm>,
+    pub to_submission_date: Option<NaiveDateTimeForm>,
 }
 
 #[get("/file-entries?<search..>")]
@@ -210,16 +210,33 @@ pub fn search_file_entries(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
 ) -> Json<Vec<models::UserFileEntryWithAssoc>> {
-    let org_ids: Option<Vec<i32>> = match &search.organizations {
+    let SearchFileEntriesRequest {
+        organizations,
+        from_submission_date,
+        to_submission_date
+    } = search.into_inner();
+
+    let org_ids: Option<Vec<i32>> = match organizations {
         Some(id_string) => Some(id_string.split(',')
             .map(|id| id.parse::<i32>().unwrap())
             .collect()),
         _ => None
     };
+
+    let from_date = match from_submission_date {
+        Some(date) => Some(*date),
+        _ => None
+    };
+
+    let to_date = match to_submission_date {
+        Some(date) => Some(*date),
+        _ => None
+    };
+
     let entries = file_entries::search_file_entries(
         org_ids,
-        Some(*search.from_submission_date),
-             Some(*search.to_submission_date),
+        from_date,
+             to_date,
         &*titan_db,
         &*wcf_db,
         &app_config

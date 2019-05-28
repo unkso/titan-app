@@ -9,10 +9,9 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import UsersService from 'titan/http/UsersService';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
-import CreateForm
-  from 'titan/components/FileEntry/CreateFileEntryForm';
 import { MULTI_DATE_FILE_ENTRY_TYPES } from 'titan/components/FileEntry/constants';
 import { WithAcl } from 'titan/components/Acl/WithAcl';
+import CreateForm from 'titan/components/FileEntry/CreateForm';
 
 class CreateFileEntryContainer extends React.Component {
   constructor (props) {

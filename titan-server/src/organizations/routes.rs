@@ -1,6 +1,6 @@
 use rocket::{get, State, http::RawStr, response::status};
 use rocket_contrib::json::Json;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::models;
@@ -9,7 +9,6 @@ use crate::organizations;
 use crate::accounts;
 use crate::guards::auth_guard;
 use diesel::result::QueryResult;
-use chrono::format::Item::Error;
 
 #[derive(Serialize)]
 pub struct FindOrganizationResponse {
@@ -238,4 +237,42 @@ pub fn list_organization_reports(
 
     Err(status::BadRequest(Some(
         "User is not present in COC.".to_string())))
+}
+
+#[derive(Deserialize)]
+pub struct CreateOrganizationReportRequest {
+    comments: String,
+    term_start_date: chrono::NaiveDateTime,
+}
+
+#[post("/<org_id>/reports", format = "application/json", data = "<report_form>")]
+pub fn create_organization_report(
+    org_id: i32,
+    report_form: Json<CreateOrganizationReportRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser,
+) -> Result<Json<models::ReportWithAssoc>, status::BadRequest<String>> {
+    let titan_db_ref = &*titan_db;
+    let role = organizations::roles::find_org_role_by_user_id(
+        org_id, auth_user.user.id, titan_db_ref).unwrap();
+    let new_report = models::NewReport {
+        role_id: role.id,
+        term_start_date: report_form.term_start_date,
+        submission_date: None,
+        comments: Some(report_form.comments.clone()),
+        ack_user_id: None,
+        ack_date: None,
+        date_created: chrono::Utc::now().naive_utc(),
+        date_modified: chrono::Utc::now().naive_utc(),
+    };
+
+    let saved_report = organizations::reports::save_report(
+        &new_report, role, titan_db_ref, &*wcf_db, &app_config);
+
+    match saved_report {
+        Ok(report) => Ok(Json(report)),
+        _ => Err(status::BadRequest(Some("Unable to save report".to_string())))
+    }
 }

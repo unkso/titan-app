@@ -5,6 +5,7 @@ use crate::accounts;
 use crate::config;
 use crate::models;
 use crate::schema;
+use crate::models::UserProfile;
 
 /// Queries a single organization with the given slug.
 pub fn find_by_user(
@@ -40,17 +41,27 @@ pub fn search_file_entries(
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> QueryResult<Vec<models::UserFileEntryWithAssoc>> {
+    let unwrapped_org_ids = match org_ids {
+        Some(ids) => ids,
+        _ => vec![]
+    };
+
     let mut query = schema::user_file_entries::table
         .select(schema::user_file_entries::all_columns)
+        .inner_join(schema::users::table
+            .inner_join(schema::organizations_users::table))
+        .filter(schema::organizations_users::organization_id
+            .eq_any(&unwrapped_org_ids))
         .into_boxed();
 
-   /* if org_ids.is_some() {
-        query = query.inner_join(schema::users::table
-                .inner_join(schema::organizations_users::table))
-            .filter(schema::organizations_users::organization_id
-                .eq_any(org_ids.unwrap()));
-    }
+   //if &org_ids.is_some() {
+        // query = query.inner_join(schema::users::table);
+                // .inner_join(schema::organizations_users::table));
+            /*.filter(schema::organizations_users::organization_id
+                .eq_any(org_ids.unwrap()));*/
+    //}
 
+    /*
     if from_submission_date.is_some() {
         query = query.filter(schema::user_file_entries::start_date.ge(
             from_submission_date.unwrap()));
@@ -61,7 +72,7 @@ pub fn search_file_entries(
             to_submission_date.unwrap()));
     }*/
 
-    let entries = query.get_results(titan_db)?;
+    let entries = query.load(titan_db)?;
     map_file_entries_assoc(entries, titan_db, wcf_db, app_config)
 }
 
@@ -103,9 +114,18 @@ pub fn map_file_entry_assoc(
         user, wcf_db, app_config)?;
     let file_entry_type = accounts::file_entry_types::find_by_id(
         file_entry.user_file_entry_type_id, titan_db)?;
-    let modified_by_user = accounts::users::find_by_id(file_entry.modified_by, titan_db)?;
+    let modified_by_user = accounts::users::find_by_id(file_entry.modified_by, titan_db);
+
+    if modified_by_user.is_err() {
+        print!("Error");
+    }
+
     let modified_by_profile = accounts::users::map_user_to_profile(
-        modified_by_user, wcf_db, app_config)?;
+        modified_by_user.unwrap(), wcf_db, app_config);
+
+    if modified_by_profile.is_err() {
+        print!("Error");
+    }
     
     Ok(models::UserFileEntryWithAssoc {
         id: file_entry.id,
@@ -115,6 +135,6 @@ pub fn map_file_entry_assoc(
         end_date: file_entry.end_date,
         comments: file_entry.comments,
         date_modified: file_entry.date_modified,
-        modified_by: modified_by_profile
+        modified_by: modified_by_profile.unwrap()
     })
 }

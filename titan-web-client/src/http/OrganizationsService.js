@@ -63,6 +63,11 @@ class OrganizationsService {
   findReports (id) {
     return this.httpClient.get(`/organizations/${id}/reports`);
   }
+
+  saveReport (organizationId, report) {
+    return this.httpClient.post(
+      `/organizations/${organizationId}/report`, report);
+  }
 }
 
 export default OrganizationsService;

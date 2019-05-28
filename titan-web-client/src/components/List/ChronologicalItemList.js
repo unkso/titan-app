@@ -65,7 +65,7 @@ export class ChronologicalItemList extends React.Component {
       }
 
       list.push(
-        <Row key={`cil-item-${key}`} gutter={4}>
+        <Row key={`cil-item-${x}`} gutter={4}>
           <Column grow={1}>
             {this.props.renderer(this.props.items[x])}
           </Column>
