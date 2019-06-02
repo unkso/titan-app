@@ -64,9 +64,12 @@ class OrganizationsService {
     return this.httpClient.get(`/organizations/${id}/reports`);
   }
 
+  /**
+   * Save an organization report.
+   */
   saveReport (organizationId, report) {
     return this.httpClient.post(
-      `/organizations/${organizationId}/report`, report);
+      `/organizations/${organizationId}/reports`, report);
   }
 }
 

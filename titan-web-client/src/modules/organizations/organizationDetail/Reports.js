@@ -22,11 +22,20 @@ export class Reports extends React.Component {
       });
   }
 
+  addReport (report) {
+    const reports = [...this.state.reports, report];
+    reports.sort((x, y) => {
+      return x.term_start_date < y.term_start_date ? 1 : -1;
+    });
+    this.setState({ reports });
+  }
+
   render () {
     return (
       <ContentBlock>
         <Typography align="right">
           <CreateReportButton
+            onReportSaved={report => this.addReport(report)}
             organization={this.props.organization}
           />
         </Typography>

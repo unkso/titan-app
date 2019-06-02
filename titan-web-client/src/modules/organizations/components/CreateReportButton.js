@@ -12,6 +12,8 @@ import UsersService from 'titan/http/UsersService';
 import { List } from 'titan/components/FileEntry/List';
 import styled from 'styled-components';
 import OrganizationsService from 'titan/http/OrganizationsService';
+import { format as formatDate } from 'date-fns';
+import { withSnackbar } from 'notistack';
 
 const EntryListColumn = styled.div`
   height: 380px;
@@ -19,7 +21,7 @@ const EntryListColumn = styled.div`
   padding-bottom: 8px;
 `;
 
-export class CreateReportButton extends React.Component {
+class CreateReportButtonComponent extends React.Component {
   constructor (props) {
     super(props);
 
@@ -60,16 +62,16 @@ export class CreateReportButton extends React.Component {
   }
 
   save () {
-    // TODO rename to indicate saving draft.
     this.organizationsService.saveReport(this.props.organization.id, {
-      comments: this.state.comments,
-      term_start_date: this.state.fields.termStartDate
-    }).then(() => {
-      // TODO add to list of reports.
-      this.props.enqueueSnackbar('Excuse added', { variant: 'success' });
+      comments: this.state.fields.comments,
+      term_start_date: formatDate(this.state.fields.termStartDate, "yyyy-MM-dd'T'00:00:00")
+    }).then(res => {
+      this.props.enqueueSnackbar('Report submitted', { variant: 'success' });
       this.closeDialog();
+      console.log(res.data);
+      this.props.onReportSaved(res.data);
     }).catch(() => {
-      this.props.enqueueSnackbar('Unable to save draft report', {
+      this.props.enqueueSnackbar('Unable to save report', {
         variant: 'error',
         action: (<Button size="small">Dismiss</Button>)
       });
@@ -233,6 +235,10 @@ export class CreateReportButton extends React.Component {
   }
 }
 
-CreateReportButton.propsTypes = {
+CreateReportButtonComponent.propsTypes = {
+  onReportSaved: PropTypes.func,
   organization: PropTypes.object
 };
+
+export const CreateReportButton =
+  withSnackbar(CreateReportButtonComponent);

@@ -66,8 +66,10 @@ class ReportsListItemComponent extends React.Component {
   render () {
     const roleName = this.props.report.role.role;
     const unitName = this.props.report.role.organization.name;
-    const startDate = formatDate(
+    const termStartDate = formatDate(
       this.props.report.term_start_date, 'MMMM dd, yyyy');
+    const submissionDate = formatDate(
+      this.props.report.submission_date, 'MMMM dd, yyyy');
     const theme = {
       color: this.props.theme.palette.secondary.light,
       icon: <FontAwesomeIcon icon="file-alt" />
@@ -83,8 +85,10 @@ class ReportsListItemComponent extends React.Component {
                 {theme.icon}
               </Typography>
               <ListItemText>
-                {formatDate(
-                  this.props.report.term_start_date, 'MM/dd')}
+                {formatDate(this.props.report.term_start_date, 'MM/dd')}
+              </ListItemText>
+              <ListItemText>
+                submitted {submissionDate}
               </ListItemText>
               <ListItemText>
                 <Chip
@@ -112,7 +116,7 @@ class ReportsListItemComponent extends React.Component {
               <Column>
                 <span>{this.props.report.role.organization.name} Weekly Report</span>
                 <Typography variant="body1" color="textSecondary">
-                  Week of {startDate}
+                  Week of {termStartDate}
                 </Typography>
               </Column>
               <Column grow={1}>

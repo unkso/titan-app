@@ -260,7 +260,7 @@ pub fn create_organization_report(
     let new_report = models::NewReport {
         role_id: role.id,
         term_start_date: report_form.term_start_date,
-        submission_date: None,
+        submission_date: Some(chrono::Utc::now().naive_utc()),
         comments: Some(report_form.comments.clone()),
         ack_user_id: None,
         ack_date: None,
@@ -269,10 +269,10 @@ pub fn create_organization_report(
     };
 
     let saved_report = organizations::reports::save_report(
-        &new_report, role, titan_db_ref, &*wcf_db, &app_config);
+        &new_report, titan_db_ref, &*wcf_db, &app_config);
 
     match saved_report {
         Ok(report) => Ok(Json(report)),
-        _ => Err(status::BadRequest(Some("Unable to save report".to_string())))
+        Err(err) => Err(status::BadRequest(Some(err.to_string())))
     }
 }
