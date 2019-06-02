@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
 import { withSnackbar } from 'notistack';
+import { format } from 'date-fns';
 
 class CreateReportFormComponent extends React.Component {
   render () {
@@ -14,6 +15,7 @@ class CreateReportFormComponent extends React.Component {
           <Column grow={1}>
             <DatePicker
               value={this.props.fields.termStartDate}
+              labelFunc={date => !date ? '' : format(date, 'eee, MM/dd/yyyy')}
               onChange={date =>
                 this.props.onFieldChange('termStartDate', date)}
             />

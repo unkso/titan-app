@@ -12,7 +12,7 @@ import UsersService from 'titan/http/UsersService';
 import { List } from 'titan/components/FileEntry/List';
 import styled from 'styled-components';
 import OrganizationsService from 'titan/http/OrganizationsService';
-import { format as formatDate } from 'date-fns';
+import { format as formatDate, startOfWeek, subDays } from 'date-fns';
 import { withSnackbar } from 'notistack';
 
 const EntryListColumn = styled.div`
@@ -29,7 +29,10 @@ class CreateReportButtonComponent extends React.Component {
     this.organizationsService = new OrganizationsService();
     this.state = {
       dialogOpen: false,
-      fields: {},
+      fields: {
+        comments: '',
+        termStartDate: startOfWeek(new Date())
+      },
       fileEntries: []
     };
   }
@@ -69,7 +72,6 @@ class CreateReportButtonComponent extends React.Component {
     }).then(res => {
       this.props.enqueueSnackbar('Report submitted', { variant: 'success' });
       this.closeDialog();
-      console.log(res.data);
       this.props.onReportSaved(res.data);
     }).catch(() => {
       this.props.enqueueSnackbar('Unable to save report', {
