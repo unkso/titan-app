@@ -13,8 +13,6 @@ class CreateReportFormComponent extends React.Component {
         <Row>
           <Column grow={1}>
             <DatePicker
-              label="Term Start Date"
-              variant="outlined"
               value={this.props.fields.termStartDate}
               onChange={date =>
                 this.props.onFieldChange('termStartDate', date)}

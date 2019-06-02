@@ -29,7 +29,8 @@ class CreateReportButtonComponent extends React.Component {
     this.organizationsService = new OrganizationsService();
     this.state = {
       dialogOpen: false,
-      fields: {}
+      fields: {},
+      fileEntries: []
     };
   }
 
@@ -38,7 +39,7 @@ class CreateReportButtonComponent extends React.Component {
     this.usersService.searchFileEntries({
       organizations: `${this.props.organization.id}`
     }).then(res => {
-      console.log(res.data);
+      this.setState({ fileEntries: res.data });
     });
   }
 
@@ -100,124 +101,7 @@ class CreateReportButtonComponent extends React.Component {
               </Column>
               <Column basis="40%">
                 <EntryListColumn>
-                  <List items={[
-                    {
-                      file_entry_type: { name: 'practice' },
-                      start_date: '2019-01-01',
-                      comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.',
-                      modified_by: {
-                        wcf: {
-                          'id': 595,
-                          'wcf_id': 5507,
-                          'legacy_player_id': 11821,
-                          'rank_id': 11168,
-                          'username': 'mparsons',
-                          'orientation': 18052,
-                          'bct_e0': 18052,
-                          'bct_e1': 18161,
-                          'bct_e2': 18225,
-                          'bct_e3': 18347,
-                          'loa': null,
-                          'a15': null,
-                          'date_joined': '2016-12-17T00:00:00',
-                          'last_activity': '2018-12-21T19:25:58',
-                          'wcf': {
-                            'avatar_url': 'https://clanunknownsoldiers.com/wcf/images/avatars/3f/634-3f7071d457cfc2666c3fb42cc7d93c3fadb64517-128.png',
-                            'last_activity_time': 1529971747,
-                            'user_title': 'Staff Sergeant (E-6)<br> NCOIC of Engineering',
-                            'username': 'SSgt.mparsons=US='
-                          }
-                        }
-                      }
-                    },
-                    {
-                      file_entry_type: { name: 'practice' },
-                      start_date: '2019-01-01',
-                      comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.',
-                      modified_by: {
-                        wcf: {
-                          'id': 595,
-                          'wcf_id': 5507,
-                          'legacy_player_id': 11821,
-                          'rank_id': 11168,
-                          'username': 'mparsons',
-                          'orientation': 18052,
-                          'bct_e0': 18052,
-                          'bct_e1': 18161,
-                          'bct_e2': 18225,
-                          'bct_e3': 18347,
-                          'loa': null,
-                          'a15': null,
-                          'date_joined': '2016-12-17T00:00:00',
-                          'last_activity': '2018-12-21T19:25:58',
-                          'wcf': {
-                            'avatar_url': 'https://clanunknownsoldiers.com/wcf/images/avatars/3f/634-3f7071d457cfc2666c3fb42cc7d93c3fadb64517-128.png',
-                            'last_activity_time': 1529971747,
-                            'user_title': 'Staff Sergeant (E-6)<br> NCOIC of Engineering',
-                            'username': 'SSgt.mparsons=US='
-                          }
-                        }
-                      }
-                    },
-                    {
-                      file_entry_type: { name: 'practice' },
-                      start_date: '2019-01-01',
-                      comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.',
-                      modified_by: {
-                        wcf: {
-                          'id': 595,
-                          'wcf_id': 5507,
-                          'legacy_player_id': 11821,
-                          'rank_id': 11168,
-                          'username': 'mparsons',
-                          'orientation': 18052,
-                          'bct_e0': 18052,
-                          'bct_e1': 18161,
-                          'bct_e2': 18225,
-                          'bct_e3': 18347,
-                          'loa': null,
-                          'a15': null,
-                          'date_joined': '2016-12-17T00:00:00',
-                          'last_activity': '2018-12-21T19:25:58',
-                          'wcf': {
-                            'avatar_url': 'https://clanunknownsoldiers.com/wcf/images/avatars/3f/634-3f7071d457cfc2666c3fb42cc7d93c3fadb64517-128.png',
-                            'last_activity_time': 1529971747,
-                            'user_title': 'Staff Sergeant (E-6)<br> NCOIC of Engineering',
-                            'username': 'SSgt.mparsons=US='
-                          }
-                        }
-                      }
-                    },
-                    {
-                      file_entry_type: { name: 'practice' },
-                      start_date: '2019-01-01',
-                      comments: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate lacus et ex posuere condimentum.',
-                      modified_by: {
-                        wcf: {
-                          'id': 595,
-                          'wcf_id': 5507,
-                          'legacy_player_id': 11821,
-                          'rank_id': 11168,
-                          'username': 'mparsons',
-                          'orientation': 18052,
-                          'bct_e0': 18052,
-                          'bct_e1': 18161,
-                          'bct_e2': 18225,
-                          'bct_e3': 18347,
-                          'loa': null,
-                          'a15': null,
-                          'date_joined': '2016-12-17T00:00:00',
-                          'last_activity': '2018-12-21T19:25:58',
-                          'wcf': {
-                            'avatar_url': 'https://clanunknownsoldiers.com/wcf/images/avatars/3f/634-3f7071d457cfc2666c3fb42cc7d93c3fadb64517-128.png',
-                            'last_activity_time': 1529971747,
-                            'user_title': 'Staff Sergeant (E-6)<br> NCOIC of Engineering',
-                            'username': 'SSgt.mparsons=US='
-                          }
-                        }
-                      }
-                    }
-                  ]} />
+                  <List items={this.state.fileEntries} />
                 </EntryListColumn>
               </Column>
             </Row>
