@@ -93,17 +93,8 @@ pub fn map_file_entry_assoc(
     let file_entry_type = accounts::file_entry_types::find_by_id(
         file_entry.user_file_entry_type_id, titan_db)?;
     let modified_by_user = accounts::users::find_by_id(file_entry.modified_by, titan_db);
-
-    if modified_by_user.is_err() {
-        print!("Error");
-    }
-
     let modified_by_profile = accounts::users::map_user_to_profile(
         modified_by_user.unwrap(), wcf_db, app_config);
-
-    if modified_by_profile.is_err() {
-        print!("Error");
-    }
     
     Ok(models::UserFileEntryWithAssoc {
         id: file_entry.id,
