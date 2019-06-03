@@ -8,24 +8,30 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { CreateReportForm } from 'titan/modules/organizations/components/CreateReportForm';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
-import UsersService from 'titan/http/UsersService';
 import { List } from 'titan/components/FileEntry/List';
 import styled from 'styled-components';
 import OrganizationsService from 'titan/http/OrganizationsService';
-import { format as formatDate, startOfWeek, subDays } from 'date-fns';
+import { format as formatDate, startOfWeek, endOfWeek } from 'date-fns';
 import { withSnackbar } from 'notistack';
+import {
+  EmptyStateWrapper,
+  IconEmptyState
+} from 'titan/components/EmptyStates/IconEmptyState';
 
 const EntryListColumn = styled.div`
   height: 380px;
   overflow: auto;
   padding-bottom: 8px;
+  
+  ${EmptyStateWrapper} {
+    margin-top: 150px;
+  }
 `;
 
 class CreateReportButtonComponent extends React.Component {
   constructor (props) {
     super(props);
 
-    this.usersService = new UsersService();
     this.organizationsService = new OrganizationsService();
     this.state = {
       dialogOpen: false,
@@ -38,12 +44,13 @@ class CreateReportButtonComponent extends React.Component {
   }
 
   componentDidMount () {
-    // TODO Search file entries every time date changes.
-    this.usersService.searchFileEntries({
-      organizations: `${this.props.organization.id}`
-    }).then(res => {
-      this.setState({ fileEntries: res.data });
-    });
+    this.updateFileEntriesList();
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevState.fields.termStartDate !== this.state.fields.termStartDate) {
+      this.updateFileEntriesList();
+    }
   }
 
   openDialog () {
@@ -65,14 +72,24 @@ class CreateReportButtonComponent extends React.Component {
       !!this.state.fields.comments;
   }
 
+  updateFileEntriesList () {
+    this.organizationsService.findFileEntries({
+      organizations: `${this.props.organization.id}`,
+      from_start_date: formatDate(startOfWeek(this.state.fields.termStartDate), "yyyy-MM-dd'T'00:00:00"),
+      to_start_date: formatDate(endOfWeek(this.state.fields.termStartDate), "yyyy-MM-dd'T'00:00:00")
+    }).then(res => {
+      this.setState({ fileEntries: res.data });
+    });
+  }
+
   save () {
     this.organizationsService.saveReport(this.props.organization.id, {
       comments: this.state.fields.comments,
       term_start_date: formatDate(this.state.fields.termStartDate, "yyyy-MM-dd'T'00:00:00")
     }).then(res => {
       this.props.enqueueSnackbar('Report submitted', { variant: 'success' });
-      this.closeDialog();
       this.props.onReportSaved(res.data);
+      this.closeDialog();
     }).catch(() => {
       this.props.enqueueSnackbar('Unable to save report', {
         variant: 'error',
@@ -103,7 +120,10 @@ class CreateReportButtonComponent extends React.Component {
               </Column>
               <Column basis="40%">
                 <EntryListColumn>
-                  <List items={this.state.fileEntries} />
+                  {this.state.fileEntries.length > 0
+                    ? <List items={this.state.fileEntries} />
+                    : <IconEmptyState icon="file-alt" primaryText="No related file entries" />
+                  }
                 </EntryListColumn>
               </Column>
             </Row>

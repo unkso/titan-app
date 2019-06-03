@@ -31,48 +31,26 @@ pub fn find_most_recent(
         .first(titan_db)
 }
 
-/// A general method for searching through file entries. Supports
-/// filtering by submission date ranges, and organizations.
-pub fn search_file_entries(
-    org_ids: Option<Vec<i32>>,
-    from_submission_date: Option<chrono::NaiveDateTime>,
-    to_submission_date: Option<chrono::NaiveDateTime>,
+/// Find file entries belonging to one of the given organizations,
+/// where the file entry start date is between two dates (inclusive).
+pub fn find_by_orgs(
+    org_ids: Vec<i32>,
+    from_start_date: chrono::NaiveDateTime,
+    to_start_date: chrono::NaiveDateTime,
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> QueryResult<Vec<models::UserFileEntryWithAssoc>> {
-    let unwrapped_org_ids = match org_ids {
-        Some(ids) => ids,
-        _ => vec![]
-    };
-
-    let mut query = schema::user_file_entries::table
+    let entries = schema::user_file_entries::table
         .select(schema::user_file_entries::all_columns)
         .inner_join(schema::users::table
             .inner_join(schema::organizations_users::table))
         .filter(schema::organizations_users::organization_id
-            .eq_any(&unwrapped_org_ids))
-        .into_boxed();
+            .eq_any(&org_ids))
+        .filter(schema::user_file_entries::start_date.ge(from_start_date))
+        .filter(schema::user_file_entries::start_date.le(to_start_date))
+        .load(titan_db)?;
 
-   //if &org_ids.is_some() {
-        // query = query.inner_join(schema::users::table);
-                // .inner_join(schema::organizations_users::table));
-            /*.filter(schema::organizations_users::organization_id
-                .eq_any(org_ids.unwrap()));*/
-    //}
-
-    /*
-    if from_submission_date.is_some() {
-        query = query.filter(schema::user_file_entries::start_date.ge(
-            from_submission_date.unwrap()));
-    }
-
-    if to_submission_date.is_some() {
-        query = query.filter(schema::user_file_entries::end_date.le(
-            to_submission_date.unwrap()));
-    }*/
-
-    let entries = query.load(titan_db)?;
     map_file_entries_assoc(entries, titan_db, wcf_db, app_config)
 }
 

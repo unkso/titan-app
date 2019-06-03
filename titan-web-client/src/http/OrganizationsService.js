@@ -71,6 +71,17 @@ class OrganizationsService {
     return this.httpClient.post(
       `/organizations/${organizationId}/reports`, report);
   }
+
+  /**
+   * List file entries owned by one of the given organizations.
+   *
+   * @parm {string} params.organizations
+   * @param {string} params.from_start_date
+   * @param {string} params.to_start_date
+   */
+  findFileEntries (params) {
+    return this.httpClient.get('/organizations/file-entries', { params });
+  }
 }
 
 export default OrganizationsService;

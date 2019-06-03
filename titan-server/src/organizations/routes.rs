@@ -1,14 +1,17 @@
 use rocket::{get, State, http::RawStr, response::status};
 use rocket_contrib::json::Json;
+use rocket::request::Form;
 use serde::{Deserialize, Serialize};
+use diesel::result::QueryResult;
 
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::models;
 use crate::config;
 use crate::organizations;
 use crate::accounts;
+use crate::guards::form::NaiveDateTimeForm;
+use crate::accounts::file_entries;
 use crate::guards::auth_guard;
-use diesel::result::QueryResult;
 
 #[derive(Serialize)]
 pub struct FindOrganizationResponse {
@@ -275,4 +278,44 @@ pub fn create_organization_report(
         Ok(report) => Ok(Json(report)),
         Err(err) => Err(status::BadRequest(Some(err.to_string())))
     }
+}
+
+/** ******************************************************************
+ *  File entries
+ ** *****************************************************************/
+#[derive(FromForm)]
+pub struct ListOrgUserFileEntriesRequest {
+    /// A string delimited list of organization Ids.
+    pub organizations: String,
+    pub from_start_date: NaiveDateTimeForm,
+    pub to_start_date: NaiveDateTimeForm,
+}
+
+#[get("/file-entries?<fields..>")]
+pub fn list_organization_user_file_entries(
+    fields: Form<ListOrgUserFileEntriesRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::UserFileEntryWithAssoc>> {
+    let ListOrgUserFileEntriesRequest {
+        organizations,
+        from_start_date,
+        to_start_date
+    } = fields.into_inner();
+
+    let org_ids = organizations.split(',')
+        .map(|id| id.parse::<i32>().unwrap())
+        .collect();
+
+    let entries = file_entries::find_by_orgs(
+        org_ids,
+        *from_start_date,
+        *to_start_date,
+        &*titan_db,
+        &*wcf_db,
+        &app_config
+    );
+
+    Json(entries.unwrap())
 }

@@ -36,15 +36,6 @@ class UsersService {
   }
 
   /**
-   * @returns {*}
-   */
-  searchFileEntries (params) {
-    return this.httpClient.get('/users/file-entries', {
-      params
-    });
-  }
-
-  /**
    * Lists all of a user's file entries.
    *
    * @param {string} userId - Titan user ID.

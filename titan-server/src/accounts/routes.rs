@@ -2,7 +2,6 @@ use crate::accounts::acl;
 use frank_jwt::{Algorithm, encode};
 use rocket::{get, post, State, response::status};
 use rocket_contrib::json::Json;
-use rocket::request::Form;
 use serde::{Deserialize, Serialize};
 
 use crate::accounts::users;
@@ -15,7 +14,6 @@ use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::woltlab_auth_helper;
 use crate::models;
 use crate::guards::auth_guard;
-use crate::guards::form::NaiveDateTimeForm;
 
 /** **************************************************
  *  Auth
@@ -193,56 +191,6 @@ pub fn list_user_file_entry_types(
     }
 
     Ok(Json(file_entries_res.unwrap()))
-}
-
-#[derive(FromForm)]
-pub struct SearchFileEntriesRequest {
-    /// A string delimited list of organization Ids.
-    pub organizations: Option<String>,
-    pub from_submission_date: Option<NaiveDateTimeForm>,
-    pub to_submission_date: Option<NaiveDateTimeForm>,
-}
-
-#[get("/file-entries?<search..>")]
-pub fn search_file_entries(
-    search: Form<SearchFileEntriesRequest>,
-    titan_db: TitanPrimary,
-    wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
-) -> Json<Vec<models::UserFileEntryWithAssoc>> {
-    let SearchFileEntriesRequest {
-        organizations,
-        from_submission_date,
-        to_submission_date
-    } = search.into_inner();
-
-    let org_ids: Option<Vec<i32>> = match organizations {
-        Some(id_string) => Some(id_string.split(',')
-            .map(|id| id.parse::<i32>().unwrap())
-            .collect()),
-        _ => None
-    };
-
-    let from_date = match from_submission_date {
-        Some(date) => Some(*date),
-        _ => None
-    };
-
-    let to_date = match to_submission_date {
-        Some(date) => Some(*date),
-        _ => None
-    };
-
-    let entries = file_entries::search_file_entries(
-        org_ids,
-        from_date,
-             to_date,
-        &*titan_db,
-        &*wcf_db,
-        &app_config
-    );
-
-    Json(entries.unwrap())
 }
 
 #[derive(Serialize)]

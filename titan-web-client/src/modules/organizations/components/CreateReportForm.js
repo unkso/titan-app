@@ -15,9 +15,9 @@ class CreateReportFormComponent extends React.Component {
           <Column grow={1}>
             <DatePicker
               value={this.props.fields.termStartDate}
-              labelFunc={date => !date ? '' : format(date, 'eee, MM/dd/yyyy')}
-              onChange={date =>
-                this.props.onFieldChange('termStartDate', date)}
+              labelFunc={date => date ? format(date, 'eee, MM/dd/yyyy') : ''}
+              onChange={date => this.props.onFieldChange('termStartDate', date)}
+              variant="outlined"
             />
           </Column>
         </Row>
