@@ -65,6 +65,14 @@ class OrganizationsService {
   }
 
   /**
+   * Lists all the unacknowledged reports visbile to the authenticated
+   * user.
+   */
+  findUnacknowledgedReports () {
+    return this.httpClient.get(`/organizations/reports/unacknowledged`);
+  }
+
+  /**
    * Save an organization report.
    */
   saveReport (organizationId, report) {

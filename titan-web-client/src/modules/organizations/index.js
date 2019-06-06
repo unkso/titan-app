@@ -2,6 +2,7 @@ import { DashboardLayout } from 'titan/layouts';
 import { ROUTE_TYPE_AUTHENTICATED } from 'titan/lib/routing';
 import { OrganizationDetailScene } from './organizationDetailScene';
 import OrganizationsListScene from './organizationsListScene';
+import { ManageUnacknowledgedReportsScene } from 'titan/modules/organizations/manageUnacknowledgedReportsScene';
 
 export default function () {
   return {
@@ -11,6 +12,12 @@ export default function () {
         layout: DashboardLayout,
         path: '/organizations',
         scene: OrganizationsListScene,
+        type: ROUTE_TYPE_AUTHENTICATED
+      },
+      {
+        layout: DashboardLayout,
+        path: '/organizations/unacknowledged-reports',
+        scene: ManageUnacknowledgedReportsScene,
         type: ROUTE_TYPE_AUTHENTICATED
       },
       {

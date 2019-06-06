@@ -9,6 +9,7 @@ pub fn get_routes() -> Vec<Route> {
     routes![
         routes::create_organization_report,
         routes::get_all,
+        routes::get_all_unacknowledged_reports,
         routes::get_organization_by_id,
         routes::get_organization_by_slug,
         routes::get_organization_users,

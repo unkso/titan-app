@@ -242,6 +242,33 @@ pub fn list_organization_reports(
         "User is not present in COC.".to_string())))
 }
 
+#[get("/reports/unacknowledged", format = "application/json")]
+pub fn get_all_unacknowledged_reports(
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Json<Vec<models::ReportWithAssoc>> {
+    let titan_db_ref = &*titan_db;
+    let wcf_db_ref = &*wcf_db;
+
+    let mut roles = organizations::roles::find_ranked_by_user_id(
+        auth_user.user.id, titan_db_ref).unwrap();
+    let mut direct_report_ids: Vec<i32> = vec!();
+
+    for role in roles.drain(..) {
+        let mut direct_reports = organizations::roles::find_direct_reports(
+            role.organization_id, role.rank.unwrap(), titan_db_ref, wcf_db_ref, &app_config).unwrap();
+        direct_report_ids.append(&mut direct_reports.iter_mut()
+            .map(|role| role.id).collect());
+    }
+
+    let reports = organizations::reports::find_unacknowledged_by_role_ids(
+        &direct_report_ids, titan_db_ref, wcf_db_ref, &app_config).unwrap();
+
+    Json(reports)
+}
+
 #[derive(Deserialize)]
 pub struct CreateOrganizationReportRequest {
     comments: String,
