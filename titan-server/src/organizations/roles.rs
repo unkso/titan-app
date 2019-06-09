@@ -7,6 +7,7 @@ use crate::accounts;
 use crate::organizations;
 use crate::config;
 use std::collections::VecDeque;
+use crate::organizations::routes::list_organization_roles;
 
 /// Finds an organization role by ID.
 pub fn find_by_id(
@@ -79,6 +80,28 @@ pub fn find_direct_reports(
     }
 
     Ok(roles)
+}
+
+pub fn find_all_recursive_direct_reports_by_user(
+    user_id: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> QueryResult<Vec<models::OrganizationRoleWithAssoc>> {
+    let user_roles = find_ranked_by_user_id(user_id, titan_db)?;
+    let mut parent_org_ids: Vec<i32> = user_roles.iter()
+        .map(|role| role.organization_id).collect();
+    let mut child_org_ids: Vec<i32> = vec!();
+
+    parent_org_ids.iter().for_each(|parent_org_id| {
+        child_org_ids.append(
+            &mut organizations::organizations::find_children_ids(
+                parent_org_id, true, titan_db));
+    });
+
+    schema::organization_roles::table
+        .filter(schema::organization_roles::organization_id.eq_any(child_org_ids))
+        .filter(schema::organization_roles::organization_id.eq());
 }
 
 pub fn find_local_direct_report(

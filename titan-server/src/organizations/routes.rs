@@ -182,6 +182,17 @@ pub fn get_organization_user_coc(
         org_id, user_id, &*titan_db, &*wcf_db, app_config).unwrap())
 }
 
+/// Returns a list of all the roles that are under the chain of
+/// command of the authenticated user.
+pub fn get_all_organization_child_coc(
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) {
+
+}
+
 #[get("/<org_id>/coc")]
 pub fn get_organization_coc(
     org_id: i32,

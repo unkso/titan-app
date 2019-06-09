@@ -1,6 +1,4 @@
 import React from 'react';
-import { EventExcuseList }
-  from 'titan/modules/roster/components/Excuse/EventExcuseList';
 import { ContentBlock } from 'titan/components/block/ContentBlock';
 import PageHeader
   from 'titan/layouts/dashboard/components/PageHeader/PageHeader';
@@ -15,6 +13,7 @@ export class ManageUnacknowledgedReportsScene extends React.Component {
     this.organizationsService = new OrganizationsService();
     this.state = {
       reports: [],
+      coc_cache: {},
       loading: true
     };
   }

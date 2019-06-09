@@ -142,6 +142,7 @@ class ReportsListItemComponent extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.closeDialogHandler}>Close</Button>
+            <Button onClick={this.closeDialogHandler}>Ack</Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>
