@@ -7,6 +7,7 @@ use crate::accounts;
 use crate::organizations;
 use crate::config;
 use crate::organizations::reports::map_report_to_assoc;
+use std::collections::VecDeque;
 
 /// Finds an organization role by ID.
 pub fn find_by_id(
@@ -47,6 +48,56 @@ pub fn find_next_local_org_coc(
         .first::<models::OrganizationRole>(titan_db)
 }
 
+/// Finds the next role that reports directly to the current role.
+pub fn find_direct_reports(
+    org_id: i32,
+    starting_rank: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> QueryResult<Vec<models::OrganizationRoleWithAssoc>> {
+    let mut rank = starting_rank;
+    let mut roles: Vec<models::OrganizationRoleWithAssoc> = vec!();
+    let mut orgs_to_visit: VecDeque<i32> = VecDeque::new();
+    orgs_to_visit.push_back(org_id);
+
+    while !orgs_to_visit.is_empty() {
+        let curr_org_id = orgs_to_visit.pop_front().unwrap();
+        let role = find_local_direct_report(curr_org_id, rank, titan_db, wcf_db, app_config);
+
+        match role {
+            Ok(role) => {
+                roles.push(role);
+            },
+            _ => {
+                rank = -1;
+                let mut child_org_ids = organizations::organizations::find_children_ids(curr_org_id, false, titan_db);
+                for child_id in child_org_ids.drain(..) {
+                    orgs_to_visit.push_back(child_id);
+                }
+            }
+        }
+    }
+
+    Ok(roles)
+}
+
+pub fn find_local_direct_report(
+    org_id: i32,
+    rank: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> QueryResult<models::OrganizationRoleWithAssoc> {
+    let role = schema::organization_roles::table
+        .filter(schema::organization_roles::organization_id.eq(org_id))
+        .filter(schema::organization_roles::user_id.is_not_null())
+        .filter(schema::organization_roles::rank.gt(rank))
+        .first(titan_db)?;
+
+    map_role_assoc(role, titan_db, wcf_db, app_config)
+}
+
 /// Lists all the organizations where a user holds a leadership
 /// position.
 ///
@@ -72,6 +123,15 @@ pub fn find_all_by_user(
     }
 
     Ok(memberships)
+}
+
+pub fn find_ranked_by_user_id(
+    user_id: i32,
+    titan_db: &MysqlConnection
+) -> QueryResult<Vec<models::OrganizationRole>> {
+    schema::organization_roles::table
+        .filter(schema::organization_roles::user_id.eq(user_id))
+        .get_results(titan_db)
 }
 
 /// Finds a user's role within a specific organization.

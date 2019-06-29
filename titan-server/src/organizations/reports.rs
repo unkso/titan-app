@@ -61,6 +61,20 @@ pub fn save_report(
     map_report_to_assoc(last_inserted, titan_db, wcf_db, app_config)
 }
 
+pub fn find_unacknowledged_by_role_ids(
+    role_ids: &Vec<i32>,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> QueryResult<Vec<models::ReportWithAssoc>> {
+    let reports = schema::reports::table
+        .filter(schema::reports::role_id.eq_any(role_ids))
+        .filter(schema::reports::ack_user_id.is_null())
+        .get_results(titan_db)?;
+
+    map_reports_to_assoc(reports, titan_db, wcf_db, app_config)
+}
+
 pub fn map_reports_to_assoc(
     reports: Vec<models::Report>,
     titan_db: &MysqlConnection,

@@ -73,6 +73,14 @@ class OrganizationsService {
   }
 
   /**
+   * Lists all the unacknowledged reports visible to the authenticated
+   * user.
+   */
+  findUnacknowledgedReports () {
+    return this.httpClient.get(`/organizations/reports/unacknowledged`);
+  }
+
+  /**
    * List file entries owned by one of the given organizations.
    *
    * @parm {string} params.organizations
