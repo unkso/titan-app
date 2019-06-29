@@ -6,13 +6,38 @@ import SidebarContentGroup from './SidebarContentGroup';
 import SidebarProfileBadge from './SidebarProfileBadge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ProfileLinkContainer } from './ProfileLinkContainer';
-import { WithAcl } from 'titan/components/Acl/WithAcl';
+import { createAclInstanceFromSession } from 'titan/lib/acl';
+import { connect } from 'react-redux';
 
 const SidebarWrapper = styled.nav`
   margin-top: 25px;
 `;
 
 class Sidebar extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      canCreateEvents: false,
+      canAckReports: false
+    };
+  }
+
+  componentDidMount () {
+    const canCreateEvents = createAclInstanceFromSession(this.props.auth.session)
+      .canAccess(['mod.titan:canAckEventExcuse'], {
+        userId: this.props.auth.session.user.id
+      });
+    const canAckReports = this.props.auth.session.roles &&
+      this.props.auth.session.roles.length > 0;
+
+    this.setState({
+      canCreateEvents,
+      canAckReports,
+      showLeadershipTools: [canCreateEvents, canAckReports].some(
+        hasPermission => hasPermission)
+    });
+  }
+
   render () {
     return (
       <SidebarWrapper>
@@ -70,20 +95,28 @@ class Sidebar extends React.Component {
         {/* /> */}
         {/* </SidebarContentGroup> */}
 
-        <WithAcl
-          options={['mod.titan:canAckEventExcuse']}
-          mustHaveAllOptions={false}>
-          <SidebarHeading>Leadership Tools</SidebarHeading>
-          <SidebarContentGroup>
-            <WithAcl options={['mod.titan:canAckEventExcuse']}>
+        {this.state.showLeadershipTools && (
+          <React.Fragment>
+            <SidebarHeading>Leadership Tools</SidebarHeading>
+            <SidebarContentGroup>
+              {this.state.canCreateEvents &&
               <SidebarMenuItem
                 url={'/roster/excuses'}
                 label="Manage Excuses"
                 leftIcon={<FontAwesomeIcon icon="clipboard-list" />}
               />
-            </WithAcl>
-          </SidebarContentGroup>
-        </WithAcl>
+              }
+              {this.state.canAckReports &&
+              <SidebarMenuItem
+                url={'/organizations/unacknowledged-reports'}
+                label="Manage Reports"
+                leftIcon={<FontAwesomeIcon icon="file-alt" />}
+              />
+              }
+            </SidebarContentGroup>
+          </React.Fragment>
+        )
+        }
 
         <SidebarHeading>Account</SidebarHeading>
 
@@ -104,4 +137,10 @@ class Sidebar extends React.Component {
   }
 }
 
-export default Sidebar;
+function mapStateToProps (state) {
+  return {
+    auth: state.auth
+  };
+}
+
+export default connect(mapStateToProps)(Sidebar);

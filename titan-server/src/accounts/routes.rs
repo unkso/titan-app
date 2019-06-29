@@ -31,6 +31,7 @@ pub struct WoltlabLoginResponse {
     pub wcf_username: String,
     pub wcf_user_title: String,
     pub acl: Vec<models::WcfUserGroupOption>,
+    pub roles: Vec<models::OrganizationRole>,
 }
 
 #[post("/woltlab", format = "application/json", data = "<login_creds>")]
@@ -41,6 +42,7 @@ pub fn woltlab_login(
     app_config: State<config::AppConfig>,
 ) -> Result<Json<WoltlabLoginResponse>, status::NotFound<String>> {
     let wcf_db = &*unkso_main;
+    let titan_db = &*titan_primary;
 
     // @Todo Handle error state
     let wcf_user: models::WcfUser = users::wcf_find_by_user_id(
@@ -57,7 +59,7 @@ pub fn woltlab_login(
         return Err(status::NotFound("Invalid credentials".to_string()));
     }
 
-    let user_res = users::create_if_not_exists(&wcf_user, &*titan_primary);
+    let user_res = users::create_if_not_exists(&wcf_user, &*titan_db);
 
     if user_res.is_err() {
         return Err(status::NotFound("".to_string()));
@@ -112,10 +114,10 @@ pub fn woltlab_login(
         },
         wcf_username: wcf_user.username,
         wcf_user_title: wcf_user.user_title,
-        acl: match acl::get_user_acl(wcf_user.user_id, wcf_db) {
-            Ok(options) => options,
-            _ => vec!()
-        },
+        acl: acl::get_user_acl(
+            wcf_user.user_id, wcf_db).unwrap_or(vec!()),
+        roles: organizations::roles::find_ranked_by_user_id(
+            user.id, titan_db).unwrap_or(vec!())
     }));
 }
 

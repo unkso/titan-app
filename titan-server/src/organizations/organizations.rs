@@ -134,7 +134,7 @@ pub fn find_all_by_user(
 /// find_children_ids_recursive(0, titan_db);
 /// ```
 pub fn find_children_ids(id: i32, recursive: bool, titan_db: &MysqlConnection) -> Vec<i32> {
-    let mut children_ids: Vec<i32> = vec![id];
+    let mut children_ids: Vec<i32> = vec![];
     let mut child_to_visit: VecDeque<i32> = VecDeque::new();
     child_to_visit.push_back(id);
 
