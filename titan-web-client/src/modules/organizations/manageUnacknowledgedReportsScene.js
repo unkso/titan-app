@@ -5,7 +5,6 @@ import PageHeader
 import PageHeaderTitle from 'titan/layouts/dashboard/components/PageHeader/PageHeaderTitle';
 import OrganizationsService from 'titan/http/OrganizationsService';
 import { ReportsList } from 'titan/components/Reports/ReportsList';
-import Button from '@material-ui/core/Button';
 import { withSnackbar } from 'notistack';
 
 export class ManageUnacknowledgedReportsScene extends React.Component {
@@ -41,7 +40,7 @@ export class ManageUnacknowledgedReportsScene extends React.Component {
     return (
       <React.Fragment>
         <PageHeader>
-          <PageHeaderTitle title="Unacknowledged Excuses" />
+          <PageHeaderTitle title="Latest Reports" />
         </PageHeader>
         <ContentBlock>
           <ReportsList items={this.state.reports} />

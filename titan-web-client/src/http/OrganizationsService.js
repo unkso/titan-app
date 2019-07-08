@@ -39,6 +39,14 @@ class OrganizationsService {
     return this.httpClient.get(`/organizations/${id}/roles/unranked`);
   }
 
+  /**
+   * Finds the parent of the given role, where the parent role is
+   * assigned to another user.
+   */
+  findParentRole (roleId) {
+    return this.httpClient.get(`/organizations/roles/${roleId}/parent`);
+  }
+
   /** List the non-leadership users of an organization. */
   findUsers (id) {
     return this.httpClient.get(`/organizations/${id}/users`);
@@ -78,6 +86,16 @@ class OrganizationsService {
    */
   findUnacknowledgedReports () {
     return this.httpClient.get(`/organizations/reports/unacknowledged`);
+  }
+
+  /**
+   * Acknowledges a report.
+   *
+   * The acknowledgement will be associated with the current
+   * authenticated user.
+   */
+  acknowledgeReport (reportId) {
+    return this.httpClient.post(`/organizations/reports/${reportId}/ack`);
   }
 
   /**

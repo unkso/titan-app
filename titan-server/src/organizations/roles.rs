@@ -1,13 +1,11 @@
 use diesel::prelude::*;
 use rocket::State;
-
+use std::collections::VecDeque;
 use crate::models;
 use crate::schema;
 use crate::accounts;
 use crate::organizations;
 use crate::config;
-use crate::organizations::reports::map_report_to_assoc;
-use std::collections::VecDeque;
 
 /// Finds an organization role by ID.
 pub fn find_by_id(
@@ -38,14 +36,23 @@ pub fn find_all_by_organization(
 pub fn find_next_local_org_coc(
     org_id: i32,
     rank: i32,
+    include_unfilled_role: bool,
     titan_db: &MysqlConnection
-) -> QueryResult<models::OrganizationRole> {
-    schema::organization_roles::table
+) -> QueryResult<Option<models::OrganizationRole>> {
+    let mut query = schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(org_id))
         .filter(schema::organization_roles::rank.lt(rank))
-        .filter(schema::organization_roles::user_id.is_not_null())
+        .filter(schema::organization_roles::rank.is_not_null())
+        .into_boxed();
+
+    if !include_unfilled_role {
+        query = query.filter(schema::organization_roles::user_id.is_not_null());
+    }
+
+    query
         .order_by(schema::organization_roles::rank.desc())
         .first::<models::OrganizationRole>(titan_db)
+        .optional()
 }
 
 /// Finds the next role that reports directly to the current role.
@@ -93,9 +100,10 @@ pub fn find_local_direct_report(
         .filter(schema::organization_roles::organization_id.eq(org_id))
         .filter(schema::organization_roles::user_id.is_not_null())
         .filter(schema::organization_roles::rank.gt(rank))
-        .first(titan_db)?;
+        .filter(schema::organization_roles::rank.is_not_null())
+        .first::<models::OrganizationRole>(titan_db)?;
 
-    map_role_assoc(role, titan_db, wcf_db, app_config)
+    map_role_assoc(&role, titan_db, wcf_db, app_config)
 }
 
 /// Lists all the organizations where a user holds a leadership
@@ -200,38 +208,32 @@ pub fn find_org_coc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<models::ChainOfCommand, diesel::result::Error>{
+) -> Result<models::ChainOfCommand, diesel::result::Error> {
     let mut extended_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
     let mut local_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
-    let mut internal_org_id = org_id;
-    let mut organization: models::Organization;
-    let mut rank = starting_rank;
+    let mut coc: Vec<models::OrganizationRole> = vec!();
+    let mut curr_org_id = org_id;
+    let mut curr_rank = starting_rank;
+    loop {
+        let parent_role = find_parent_role_by_org(
+            curr_org_id, curr_rank, false, titan_db)?;
+        match parent_role {
+            Some(role) => {
+                let role_assoc = map_role_assoc(
+                    &role, titan_db, wcf_db, app_config)?;
+                if role.organization_id.clone() == org_id {
+                    local_coc.push(role_assoc);
+                } else {
+                    extended_coc.push(role_assoc);
+                }
 
-    while internal_org_id != std::i32::MAX {
-        organization = organizations::organizations::find_by_id(
-            internal_org_id, titan_db)?;
-        let superior_role_res =
-            find_next_local_org_coc(internal_org_id, rank, titan_db);
-
-        if superior_role_res.is_ok() {
-            let superior_role = superior_role_res.unwrap();
-            let superior_rank = superior_role.rank;
-
-            let coc_entry = map_role_assoc(
-                superior_role, titan_db, wcf_db, app_config)?;
-
-            if coc_entry.organization.id == org_id {
-                local_coc.push(coc_entry);
-            } else {
-                extended_coc.push(coc_entry);
+                curr_org_id = role.organization_id;
+                // find_parent_role guarantees the role will have a rank.
+                curr_rank = role.rank.unwrap();
+            },
+            _ => {
+                break
             }
-
-            rank = superior_rank.unwrap();
-        } else if organization.parent_id.is_some() {
-            internal_org_id = organization.parent_id.unwrap();
-            rank = std::i32::MAX;
-        } else {
-            internal_org_id = std::i32::MAX;
         }
     }
 
@@ -239,6 +241,51 @@ pub fn find_org_coc(
         extended_coc,
         local_coc
     })
+}
+
+/// Finds the next user with ranking authority over the given rank.
+///
+/// If no ranking role is found within the role's organization, parent
+/// organizations will be searched.
+pub fn find_parent_role(
+    role_id: i32,
+    include_unfilled_role: bool,
+    titan_db: &MysqlConnection,
+) -> QueryResult<Option<models::OrganizationRole>> {
+    let role = find_by_id(role_id, titan_db)?;
+
+    // Unranked roles do not have a parent.
+    if role.rank.is_none() {
+        return Ok(None);
+    }
+
+    find_parent_role_by_org(role.organization_id, role.rank.unwrap(), include_unfilled_role, titan_db)
+}
+
+pub fn find_parent_role_by_org(
+    org_id: i32,
+    rank: i32,
+    include_unfilled_role: bool,
+    titan_db: &MysqlConnection,
+) -> QueryResult<Option<models::OrganizationRole>> {
+    let local_parent = find_next_local_org_coc(
+        org_id, rank, include_unfilled_role, titan_db)?;
+
+    if local_parent.is_some() {
+        return Ok(local_parent)
+    }
+
+    let parent_org_res = organizations::organizations::find_parent(org_id, titan_db)?;
+    match parent_org_res {
+        Some(parent_org) => {
+            match parent_org.parent_id {
+                Some(parent_id) => find_parent_role_by_org(
+                    parent_id, std::i32::MAX, include_unfilled_role, titan_db),
+                _ => Ok(None)
+            }
+        },
+        _ => Ok(None)
+    }
 }
 
 pub fn find_unranked_roles(
@@ -262,12 +309,12 @@ pub fn map_roles_assoc(
     app_config: &State<config::AppConfig>
 ) -> Result<Vec<models::OrganizationRoleWithAssoc>, diesel::result::Error> {
     roles.into_iter().map(|role| {
-        map_role_assoc(role, titan_db, wcf_db, app_config)
+        map_role_assoc(&role, titan_db, wcf_db, app_config)
     }).collect()
 }
 
 pub fn map_role_assoc(
-    role: models::OrganizationRole,
+    role: &models::OrganizationRole,
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
@@ -288,7 +335,7 @@ pub fn map_role_assoc(
         id: role.id,
         organization,
         user_profile,
-        role: role.role,
+        role: role.role.clone(),
         rank: role.rank
     })
 }

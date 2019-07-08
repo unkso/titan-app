@@ -17,6 +17,8 @@ use crate::schema::{
     wcf1_user_group_option,
     wcf1_user_group_option_value,
 };
+use rocket::request::{FromRequest, Outcome};
+use rocket::Request;
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "wcf1_user"]
@@ -211,15 +213,6 @@ pub struct OrganizationRole {
     pub id: i32,
     pub organization_id: i32,
     pub user_id: Option<i32>,
-    pub role: String,
-    pub rank: Option<i32>
-}
-
-#[derive(Serialize)]
-pub struct OrganizationRoleWithUser {
-    pub id: i32,
-    pub organization_id: i32,
-    pub user_profile: Option<UserProfile>,
     pub role: String,
     pub rank: Option<i32>
 }

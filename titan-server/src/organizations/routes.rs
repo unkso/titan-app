@@ -1,6 +1,7 @@
 use rocket::{get, State, http::RawStr, response::status};
+use rocket::http::Status;
+use rocket::request::{Form, Outcome};
 use rocket_contrib::json::Json;
-use rocket::request::Form;
 use serde::{Deserialize, Serialize};
 use diesel::result::QueryResult;
 
@@ -190,6 +191,26 @@ pub fn get_organization_unranked_roles(
         org_id, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
+#[get("/roles/<role_id>/parent")]
+pub fn get_parent_role(
+    role_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Option<models::OrganizationRoleWithAssoc>> {
+    let titan_db_ref = &*titan_db;
+    let parent_role_res = organizations::roles::find_parent_role(
+        role_id, false, titan_db_ref).unwrap();
+    match parent_role_res {
+        Some(parent_role) => {
+            let parent_role_assoc = organizations::roles::map_role_assoc(
+                &parent_role, titan_db_ref, &*wcf_db, &app_config).unwrap();
+            Json(Some(parent_role_assoc))
+        },
+        None => Json(None)
+    }
+}
+
 /** ******************************************************************
  *  Reports
  ** *****************************************************************/
@@ -299,6 +320,37 @@ pub fn create_organization_report(
             Err(status::BadRequest(Some(
                 "Authenticated user does not have role for organization.".to_string())))
         }
+    }
+}
+
+#[post("/reports/<report_id>/ack")]
+pub fn ack_organization_report(
+    report_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Result<Json<models::ReportWithAssoc>, Status> {
+    let titan_db_ref = &*titan_db;
+    let mut report_res = organizations::reports::find_by_id(report_id, titan_db_ref);
+    match report_res {
+        Ok(report) => {
+            let parent_role = organizations::roles::find_parent_role(
+                report.role_id, false, titan_db_ref).unwrap();
+            match parent_role {
+                Some(role) => {
+                    if role.user_id.is_none() || role.user_id.unwrap() != auth_user.user.id {
+                        return Err(Status::Unauthorized)
+                    }
+                    let report = organizations::reports::ack_report(
+                        report_id, auth_user.user.id, titan_db_ref).unwrap();
+                    Ok(Json(organizations::reports::map_report_to_assoc(
+                        report, titan_db_ref, &*wcf_db, &app_config).unwrap()))
+                },
+                _ => Err(Status::BadRequest)
+            }
+        },
+        _ => Err(Status::NotFound)
     }
 }
 

@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
+import { AckReportButton } from 'titan/components/Reports/AckReportButton';
 
 /**
  * List item for an organization's weekly report. Includes a dialog
@@ -33,7 +34,6 @@ class ReportsListItemComponent extends React.Component {
       ack_date: null
     };
 
-    this.ackHandler = this.onAck.bind(this);
     this.closeDialogHandler = this.closeDialog.bind(this);
     this.openDialogHandler = this.openDialog.bind(this);
   }
@@ -142,6 +142,12 @@ class ReportsListItemComponent extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.closeDialogHandler}>Close</Button>
+            {this.props.canAck &&
+            <AckReportButton
+              reportId={this.props.report.id}
+              onAck={report => this.onAck(report)}
+            />
+            }
           </DialogActions>
         </Dialog>
       </React.Fragment>
@@ -150,6 +156,7 @@ class ReportsListItemComponent extends React.Component {
 }
 
 ReportsListItemComponent.propTypes = {
+  canAck: PropTypes.bool,
   report: PropTypes.shape({
     ack_date: PropTypes.string,
     ack_user: PropTypes.object,

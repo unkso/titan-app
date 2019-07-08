@@ -16,6 +16,22 @@ pub fn find_by_id(
         .first::<models::Organization>(titan_db);
 }
 
+pub fn find_parent(
+    child_id: i32,
+    titan_db: &MysqlConnection
+) -> QueryResult<Option<models::Organization>> {
+    let child_org = find_by_id(child_id, titan_db);
+    match child_org {
+        Ok(org) => {
+            schema::organizations::table.filter(
+                schema::organizations::parent_id.eq(org.parent_id))
+                .first::<models::Organization>(titan_db)
+                .optional()
+        },
+        _ => Ok(None)
+    }
+}
+
 /// Queries a single organization with the given slug.
 pub fn find_by_slug(
     slug: &str,
