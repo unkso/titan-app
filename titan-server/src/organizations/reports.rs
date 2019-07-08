@@ -6,6 +6,16 @@ use crate::accounts;
 use crate::organizations;
 use crate::config;
 
+/// Queries a report with the given ID.
+pub fn find_by_id(
+    report_id: i32,
+    titan_db: &MysqlConnection
+) -> QueryResult<models::Report> {
+    schema::reports::table
+        .find(report_id)
+        .first(titan_db)
+}
+
 /// Queries all the reports for an organization.
 pub fn find_all_by_organization(
     org_id: i32,
@@ -61,6 +71,24 @@ pub fn save_report(
     map_report_to_assoc(last_inserted, titan_db, wcf_db, app_config)
 }
 
+pub fn ack_report(
+    report_id: i32,
+    ack_user_id: i32,
+    titan_db: &MysqlConnection
+) -> QueryResult<models::Report> {
+    let mut report = find_by_id(report_id, titan_db)?;
+    report.ack_user_id = Some(ack_user_id);
+    report.ack_date = Some(chrono::Utc::now().naive_utc());
+    diesel::update(&report)
+        .set((
+            schema::reports::ack_user_id.eq(&Some(ack_user_id)),
+            schema::reports::ack_date.eq(&Some(chrono::Utc::now().naive_utc()))
+        ))
+        .execute(titan_db)?;
+
+    Ok(report)
+}
+
 pub fn find_unacknowledged_by_role_ids(
     role_ids: &Vec<i32>,
     titan_db: &MysqlConnection,
@@ -107,7 +135,7 @@ pub fn map_report_to_assoc(
     return Ok(models::ReportWithAssoc {
         id: report.id,
         role: organizations::roles::map_role_assoc(
-            role, titan_db, wcf_db, app_config)?,
+            &role, titan_db, wcf_db, app_config)?,
         term_start_date: report.term_start_date,
         submission_date: report.submission_date,
         comments: report.comments,
