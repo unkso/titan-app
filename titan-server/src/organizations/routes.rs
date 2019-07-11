@@ -1,6 +1,6 @@
 use rocket::{get, State, http::RawStr, response::status};
 use rocket::http::Status;
-use rocket::request::{Form, Outcome};
+use rocket::request::{Form};
 use rocket_contrib::json::Json;
 use serde::{Deserialize, Serialize};
 use diesel::result::QueryResult;
@@ -13,7 +13,6 @@ use crate::accounts;
 use crate::guards::form::NaiveDateTimeForm;
 use crate::accounts::file_entries;
 use crate::guards::auth_guard;
-use chrono::format::Item::Error;
 
 #[derive(Serialize)]
 pub struct FindOrganizationResponse {
@@ -332,7 +331,7 @@ pub fn ack_organization_report(
     auth_user: auth_guard::AuthenticatedUser
 ) -> Result<Json<models::ReportWithAssoc>, Status> {
     let titan_db_ref = &*titan_db;
-    let mut report_res = organizations::reports::find_by_id(report_id, titan_db_ref);
+    let report_res = organizations::reports::find_by_id(report_id, titan_db_ref);
     match report_res {
         Ok(report) => {
             let parent_role = organizations::roles::find_parent_role(

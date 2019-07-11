@@ -17,8 +17,6 @@ use crate::schema::{
     wcf1_user_group_option,
     wcf1_user_group_option_value,
 };
-use rocket::request::{FromRequest, Outcome};
-use rocket::Request;
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 #[table_name = "wcf1_user"]

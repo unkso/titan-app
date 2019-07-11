@@ -282,7 +282,7 @@ pub fn list_unacknowledged_excuses(
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
-    auth_user: auth_guard::AuthenticatedUser
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> Json<Vec<models::UserEventExcuseWithAssoc>> {
     Json(excuses::find_all_unacknowledged(
         &*titan_db, &*wcf_db, &app_config).unwrap())

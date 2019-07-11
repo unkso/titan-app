@@ -1,6 +1,5 @@
-use rocket::{get, http::RawStr, response::status};
+use rocket::{get, response::status};
 use rocket_contrib::json::Json;
-use serde::Serialize;
 
 use crate::db::{TitanPrimary};
 use crate::models;

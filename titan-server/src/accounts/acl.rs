@@ -2,8 +2,6 @@ use diesel::{prelude::*, MysqlConnection};
 
 use crate::models;
 use crate::schema;
-use crate::models::WcfUserOptionValue;
-use diesel::mysql::Mysql;
 
 pub fn get_user_acl(wcf_user_id: i32, wcf_db: &MysqlConnection) -> QueryResult<Vec<models::WcfUserGroupOption>> {
     schema::wcf1_user_group_option::table

@@ -175,7 +175,7 @@ pub fn find_user_coc(
     app_config: State<config::AppConfig>
 ) -> Result<models::ChainOfCommand, diesel::result::Error> {
     let role_res = find_org_role_by_user_id(org_id, user_id, titan_db);
-    let mut rank: i32;
+    let rank: i32;
 
     if role_res.is_ok() {
         let role = role_res.unwrap();
@@ -211,7 +211,6 @@ pub fn find_org_coc(
 ) -> Result<models::ChainOfCommand, diesel::result::Error> {
     let mut extended_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
     let mut local_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
-    let mut coc: Vec<models::OrganizationRole> = vec!();
     let mut curr_org_id = org_id;
     let mut curr_rank = starting_rank;
     loop {

@@ -5,7 +5,6 @@ use crate::accounts;
 use crate::config;
 use crate::models;
 use crate::schema;
-use crate::models::UserProfile;
 
 /// Queries a single organization with the given slug.
 pub fn find_by_user(
