@@ -40,7 +40,7 @@ export class ChronologicalItemList extends React.Component {
   }
 
   render () {
-    let list = [];
+    const list = [];
     let prevDate = null;
 
     for (let x = 0; x < this.props.items.length; x++) {

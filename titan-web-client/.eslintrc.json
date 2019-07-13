@@ -2,7 +2,16 @@
   "extends": ["semistandard", "semistandard-react", "react-app"],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
-    "semistandard-react/prop-types": [1, {
+    "jsx-a11y/href-no-hash": [0],
+    "href-no-hash": [0],
+    "camelcase": [0, {
+      "allow": [
+        "UNSAFE_componentDidMount",
+        "UNSAFE_componentWillReceiveProps",
+        "UNSAFE_componentWillUpdate"
+      ]
+    }],
+    "semistandard-react/prop-types": [0, {
       "ignore": [
         "children",
         "enqueueSnackbar",

@@ -29,11 +29,11 @@ class Acl {
   hasAclPermissions (expectedAclOptions, mustHaveAllOptions) {
     if (mustHaveAllOptions) {
       return expectedAclOptions.every((optionKey) =>
-        this.authUserAclOptions.hasOwnProperty(optionKey));
+        this.authUserAclOptions[optionKey]);
     }
 
     return expectedAclOptions.some((optionKey) =>
-      this.authUserAclOptions.hasOwnProperty(optionKey));
+      this.authUserAclOptions[optionKey]);
   }
 }
 

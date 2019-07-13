@@ -59,7 +59,7 @@ class TitanApp extends React.Component {
   }
 
   renderRoutes (routes) {
-    let routeComponents = [];
+    const routeComponents = [];
 
     Object.keys(routes).forEach((key) => {
       const RouteComponent = TitanApp.getRouteComponent(routes[key]);

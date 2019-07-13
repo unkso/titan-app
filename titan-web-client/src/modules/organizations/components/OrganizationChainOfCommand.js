@@ -14,7 +14,7 @@ export class OrganizationChainOfCommand extends React.Component {
     };
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.loadOrganizationCoC(this.props.organizationId);
   }
 

@@ -15,8 +15,8 @@ class Config {
     const parts = path.split('.');
     let value = this.config;
 
-    for (let part of parts) {
-      if (!value.hasOwnProperty(part)) {
+    for (const part of parts) {
+      if (!value[part]) {
         return null;
       }
 

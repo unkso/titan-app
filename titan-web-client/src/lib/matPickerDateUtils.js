@@ -12,6 +12,7 @@ export class MatPickerDateUtils extends DateFnsUtils {
   startOfMonth (date) {
     return this.getStartOfMonth(date);
   }
+
   getDatePickerHeaderText (date) {
     return formatDate(date, 'd MMMM', { locale: this.locale });
   }
