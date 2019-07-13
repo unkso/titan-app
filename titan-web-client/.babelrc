@@ -4,6 +4,7 @@
     "@babel/preset-react"
   ],
   "plugins": [
+    "@babel/plugin-transform-runtime",
     "@babel/plugin-transform-async-to-generator",
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-syntax-import-meta",

@@ -34,7 +34,7 @@ table! {
         // disableSignature -> Bool,
         // disableSignatureReason -> Nullable<Text>,
         // disableSignatureExpires -> Integer,
-        lastActivityTime -> Integer,
+        lastActivityTime -> BigInt,
         // profileHits -> Integer,
         // rankID -> Nullable<Integer>,
         #[sql_name = "userTitle"]

@@ -65,7 +65,7 @@ pub struct WcfUser {
     // pub disableSignature: bool,
     // pub disableSignatureReason: Option<String>,
     // pub disableSignatureExpires: i32,
-    pub last_activity_time: i32,
+    pub last_activity_time: i64,
     // pub profileHits: i32,
     // pub rankID: Option<i32>,
     pub user_title: String,
@@ -309,7 +309,7 @@ pub struct UserProfile {
 #[derive(Serialize, Deserialize)]
 pub struct WcfUserProfile {
     pub avatar_url: Option<String>,
-    pub last_activity_time: i32,
+    pub last_activity_time: i64,
     pub user_title: String,
     pub username: String,
 }

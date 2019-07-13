@@ -1,5 +1,6 @@
 use crate::accounts::acl;
 use frank_jwt::{Algorithm, encode};
+use rocket::request::Form;
 use rocket::{get, post, State, response::status};
 use rocket_contrib::json::Json;
 use serde::{Deserialize, Serialize};
@@ -124,6 +125,33 @@ pub fn woltlab_login(
 /** **************************************************
  *  Users
  ** **************************************************/
+
+#[derive(FromForm)]
+pub struct ListUsersRequest {
+    /// The username to filter by. Only users with this value as a
+    /// prefix will be included in the result set.
+    username: Option<String>,
+    /// The maximum number of users to return.
+    limit: Option<u16>,
+}
+
+#[get("/?<fields..>")]
+pub fn list_users(
+    fields: Form<ListUsersRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::UserProfile>> {
+    let users_res = users::search(
+        fields.username.clone(), fields.limit, &*titan_db).unwrap();
+
+    match users_res {
+        Some(users) => Json(users::map_users_to_profile(
+            &users, &*wcf_db, &app_config).unwrap()),
+        None => Json(vec![])
+    }
+}
+
 #[get("/<user_id>")]
 pub fn get_user(
     user_id: i32,
@@ -132,51 +160,11 @@ pub fn get_user(
     app_config: State<config::AppConfig>,
     _auth_guard: auth_guard::AuthenticatedUser,
 ) -> Result<Json<models::UserProfile>, status::NotFound<String>> {
-    let titan_db_conn = &*titan_db;
-    let wcf_db_conn = &*wcf_db;
-
-    let user_res = users::find_by_id(user_id, titan_db_conn);
-    if user_res.is_err() {
-        return Err(status::NotFound("User not found".to_string()));
+    let user_res = users::find_by_id(user_id, &*titan_db);
+    match user_res {
+        Ok(user) => Ok(Json(users::map_user_to_profile(&user, &*wcf_db, &app_config).unwrap())),
+        _ => Err(status::NotFound("WCF user not found".to_string()))
     }
-
-    let user = user_res.unwrap();
-    let wcf_user_res = users::wcf_find_by_user_id(user.wcf_id, wcf_db_conn);
-    if wcf_user_res.is_err() {
-        return Err(status::NotFound("WCF user not found".to_string()));
-    }
-
-    let wcf_user = wcf_user_res.unwrap();
-    let avatar_res = users::wcf_find_user_avatar(wcf_user.user_id, wcf_db_conn);
-    let mut avatar_url = "".to_string();
-    if !avatar_res.is_err() {
-        avatar_url = format!("{}/{}", app_config.avatar_base_url, avatar_res.unwrap().get_avatar_url());
-    }
-
-    Ok(Json(
-        models::UserProfile {
-            id: user.id,
-            wcf_id: user.wcf_id,
-            legacy_player_id: user.legacy_player_id,
-            rank_id: user.rank_id,
-            username: user.username,
-            orientation: user.orientation,
-            bct_e0: user.bct_e0,
-            bct_e1: user.bct_e1,
-            bct_e2: user.bct_e2,
-            bct_e3: user.bct_e3,
-            loa: user.loa,
-            a15: user.a15,
-            date_joined: user.date_joined,
-            last_activity: user.last_activity.unwrap_or(chrono::Utc::now().naive_utc()),
-            wcf: models::WcfUserProfile {
-                user_title: wcf_user.user_title,
-                username: wcf_user.username,
-                last_activity_time: wcf_user.last_activity_time,
-                avatar_url: Some(avatar_url),
-            },
-        }
-    ))
 }
 
 /** ******************************************************************

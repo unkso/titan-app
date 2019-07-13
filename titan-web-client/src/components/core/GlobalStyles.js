@@ -13,9 +13,9 @@ function convertThemeToString (theme) {
     }
   `;
 
-  for (let tag in elements) {
+  for (const tag of elements) {
     let propertiesStr = '';
-    for (let property in elements[tag]) {
+    for (const property of elements[tag]) {
       const propRegex = /([A-Z]+)/g;
       const normalizedPropName = property.replace(propRegex, '-$1').toLowerCase();
       propertiesStr += `${normalizedPropName}: ${elements[tag][property]};`;

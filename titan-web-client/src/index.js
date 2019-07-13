@@ -29,7 +29,8 @@ import {
   faUser,
   faClipboardList,
   faCheck,
-  faLifeRing
+  faLifeRing,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faAward);
@@ -54,6 +55,7 @@ library.add(faGamepad);
 library.add(faUser);
 library.add(faClipboardList);
 library.add(faLifeRing);
+library.add(faSearch);
 
 let config;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
