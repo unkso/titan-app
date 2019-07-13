@@ -115,14 +115,14 @@ fn map_excuse_assoc(
         .find(excuse.event_type_id)
         .first(titan_db)?;
     let excuse_user = accounts::users::map_user_to_profile(
-        accounts::users::find_by_id(excuse.user_id, titan_db)?,
+        &accounts::users::find_by_id(excuse.user_id, titan_db)?,
         wcf_db, app_config)?;
     let excuse_ack_user_profile: Option<models::UserProfile> = if excuse.ack_user_id.is_some() {
         let ack_user = accounts::users::find_by_id(
             excuse.ack_user_id.unwrap(), titan_db)?;
 
         Some(accounts::users::map_user_to_profile(
-            ack_user, wcf_db, app_config)?)
+            &ack_user, wcf_db, app_config)?)
     } else {
         None
     };

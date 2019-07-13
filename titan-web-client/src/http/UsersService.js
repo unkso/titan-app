@@ -1,9 +1,22 @@
+import qs from 'query-string';
 import AuthenticatedService from 'titan/http/AuthenticatedService';
 
 class UsersService {
   constructor () {
     this.httpService = new AuthenticatedService();
     this.httpClient = this.httpService.getHttpClient();
+  }
+
+  /**
+   * List all users.
+   *
+   * @param {string} username - A username or prefix of a
+   *  username. If present, only results with the given username
+   *  prefix with be returned.
+   * @returns {Promise}
+   */
+  listUsers (username = '') {
+    return this.httpClient.get(`/users`, qs.stringify({ username }));
   }
 
   /**

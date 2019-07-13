@@ -153,7 +153,7 @@ pub fn get_organization_users(
     let users = organizations::organizations::find_users(
         id, include_children, &*titan_db).unwrap();
 
-    Json(accounts::users::map_users_to_profile(users, &*wcf_db, &app_config).unwrap())
+    Json(accounts::users::map_users_to_profile(&users, &*wcf_db, &app_config).unwrap())
 }
 
 #[get("/<org_id>/users/<user_id>/coc")]

@@ -6,6 +6,29 @@ use crate::models;
 use crate::schema;
 use crate::config;
 
+pub fn search(
+    username: Option<String>,
+    limit: Option<u16>,
+    titan_db: &MysqlConnection
+) -> QueryResult<Option<Vec<models::User>>> {
+    let max = limit.unwrap_or(25);
+    let mut query = schema::users::table
+        .limit(max as i64)
+        .into_boxed();
+
+    if username.is_some() {
+        query = query.filter(schema::users::username.like(
+            [username.unwrap(), "%".to_string()].join("")))
+            .order_by(schema::users::username.asc());
+    } else {
+        query = query.order_by(schema::users::date_joined.desc())
+    }
+
+    query
+        .get_results::<models::User>(titan_db)
+        .optional()
+}
+
 /// Finds a single user by ID.
 pub fn find_by_id(
     user_id: i32,
@@ -160,16 +183,14 @@ pub fn wcf_find_user_profile_by_id(
     let profile = schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq(wcf_user_id))
         .first::<models::WcfUser>(wcf_db)?;
-
     let avatar_res = wcf_find_user_avatar(profile.user_id, wcf_db);
-    let avatar_url = if avatar_res.is_ok() {
-        Some(format!(
+    let avatar_url = match avatar_res {
+        Ok(avatar) => Some(format!(
             "{}/{}",
             app_config.avatar_base_url,
-            avatar_res.unwrap().get_avatar_url()
-        ))
-    } else {
-        None
+            avatar.get_avatar_url()
+        )),
+        _ => None
     };
 
     Ok(models::WcfUserProfile {
@@ -183,47 +204,42 @@ pub fn wcf_find_user_profile_by_id(
 /// Given a list of users, returns a list of objects containing the
 /// titan and WCF profile for each user.
 pub fn map_users_to_profile(
-    users: Vec<models::User>,
+    users: &Vec<models::User>,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) ->  Result<Vec<models::UserProfile>, diesel::result::Error> {
-    let mut profiles: Vec<models::UserProfile> = vec!();
-    for user in users.iter() {
-        let wcf_profile = wcf_find_user_profile_by_id(
-            user.wcf_id, wcf_db, app_config)?;
-
-        profiles.push(models::UserProfile {
-            id: user.id,
-            wcf_id: user.wcf_id,
-            legacy_player_id: user.legacy_player_id,
-            rank_id: user.rank_id,
-            username: user.username.clone(),
-            orientation: user.orientation,
-            bct_e0: user.bct_e0,
-            bct_e1: user.bct_e1,
-            bct_e2: user.bct_e2,
-            bct_e3: user.bct_e3,
-            loa: user.loa,
-            a15: user.a15,
-            date_joined: user.date_joined,
-            last_activity: user.last_activity.unwrap_or(
-                chrono::Utc::now().naive_utc()),
-            wcf: wcf_profile
-        });
-    }
-
-    Ok(profiles)
+) -> Result<Vec<models::UserProfile>, diesel::result::Error> {
+    users.into_iter().map(|user| {
+        map_user_to_profile(&user, &wcf_db, &app_config)
+    }).collect()
 }
 
 /// Given a user, returns an object containing the user's titan and
 /// WCF profiles.
 pub fn map_user_to_profile(
-    user: models::User,
+    user: &models::User,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) ->  Result<models::UserProfile, diesel::result::Error> {
-    let wcf_profile = wcf_find_user_profile_by_id(
-        user.wcf_id, wcf_db, app_config)?;
+    let wcf_profile_res = wcf_find_user_profile_by_id(
+        user.wcf_id, wcf_db, app_config);
+
+    // TODO Not all titan users have a corresponding WCF profile.
+    //  If the profile isn't found, the fields are manually filled
+    //  as accurately as possible. Long term, we should remove
+    //  titan's dependency on WCF by syncing data across platforms
+    //  to prevent brittle circumstances such as this.
+    let wcf_profile = match wcf_profile_res {
+        Ok(profile) => profile,
+        _ => models::WcfUserProfile {
+            avatar_url: None,
+            username: user.username.clone(),
+            user_title: "".to_string(),
+            last_activity_time: match user.last_activity.clone() {
+                Some(date) => date.timestamp(),
+                _ => chrono::Utc::now().naive_utc().timestamp()
+            }
+        }
+    };
 
     Ok(models::UserProfile {
         id: user.id,

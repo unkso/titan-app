@@ -24,6 +24,7 @@ pub fn get_user_routes() -> Vec<Route> {
         routes::list_user_file_entries,
         routes::list_user_event_excuses,
         routes::save_user_event_excuse,
+        routes::list_users,
         routes::get_user_organizations,
     ]
 }

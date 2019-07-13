@@ -46,59 +46,21 @@ class Sidebar extends React.Component {
         </SidebarContentGroup>
 
         <SidebarContentGroup>
-          <ProfileLinkContainer />
-          {/* <SidebarMenuItem */}
-          {/* url={'/'} */}
-          {/* label="Dashboard" */}
-          {/* leftIcon={<FontAwesomeIcon icon="home" />} */}
-          {/* isActive */}
-          {/* /> */}
+          <SidebarHeading>Community</SidebarHeading>
+          <SidebarMenuItem
+            url={'/roster'}
+            label="Members"
+            leftIcon={<FontAwesomeIcon icon="users" />}
+          />
           <SidebarMenuItem
             url={'/organizations'}
             label="Organizations"
             leftIcon={<FontAwesomeIcon icon="flag" />}
           />
-          {/* <SidebarMenuItem */}
-          {/* url={'/'} */}
-          {/* label="Events" */}
-          {/* leftIcon={<FontAwesomeIcon icon="calendar-alt" />} */}
-          {/* /> */}
-          {/* <SidebarMenuItem */}
-          {/* url={'/'} */}
-          {/* label="Reports" */}
-          {/* leftIcon={<FontAwesomeIcon icon="file-alt" />} */}
-          {/* /> */}
-          {/* <SidebarMenuItem */}
-          {/* url={'/'} */}
-          {/* label="Training" */}
-          {/* leftIcon={<FontAwesomeIcon icon="graduation-cap" />} */}
-          {/* /> */}
-        </SidebarContentGroup>
 
-        {/* <SidebarHeading>Administrative</SidebarHeading> */}
-
-        {/* <SidebarContentGroup> */}
-        {/* <SidebarMenuItem */}
-        {/* url={'/'} */}
-        {/* label="Members" */}
-        {/* leftIcon={<FontAwesomeIcon icon="users" />} */}
-        {/* /> */}
-        {/* <SidebarMenuItem */}
-        {/* url={'/'} */}
-        {/* label="Awards" */}
-        {/* leftIcon={<FontAwesomeIcon icon="trophy" />} */}
-        {/* /> */}
-        {/* <SidebarMenuItem */}
-        {/* url={'https://clanunknownsoldiers.com'} */}
-        {/* label="Forums" */}
-        {/* leftIcon={<FontAwesomeIcon icon="newspaper" />} */}
-        {/* /> */}
-        {/* </SidebarContentGroup> */}
-
-        {this.state.showLeadershipTools && (
-          <React.Fragment>
-            <SidebarHeading>Leadership Tools</SidebarHeading>
-            <SidebarContentGroup>
+          {this.state.showLeadershipTools && (
+            <React.Fragment>
+              <SidebarHeading>Leadership Tools</SidebarHeading>
               {this.state.canCreateEvents &&
               <SidebarMenuItem
                 url={'/roster/excuses'}
@@ -113,19 +75,12 @@ class Sidebar extends React.Component {
                 leftIcon={<FontAwesomeIcon icon="file-alt" />}
               />
               }
-            </SidebarContentGroup>
-          </React.Fragment>
-        )
-        }
+            </React.Fragment>
+          )
+          }
 
-        <SidebarHeading>Account</SidebarHeading>
-
-        <SidebarContentGroup>
-          {/* <SidebarMenuItem */}
-          {/* url={'/'} */}
-          {/* label="Settings" */}
-          {/* leftIcon={<FontAwesomeIcon icon="cog" />} */}
-          {/* /> */}
+          <SidebarHeading>Account</SidebarHeading>
+          <ProfileLinkContainer />
           <SidebarMenuItem
             url={'/auth/logout'}
             label="Sign Out"

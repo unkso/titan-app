@@ -88,12 +88,12 @@ pub fn map_file_entry_assoc(
 ) -> Result<models::UserFileEntryWithAssoc, diesel::result::Error> {
     let user = accounts::users::find_by_id(file_entry.user_id, titan_db)?;
     let user_profile = accounts::users::map_user_to_profile(
-        user, wcf_db, app_config)?;
+        &user, wcf_db, app_config)?;
     let file_entry_type = accounts::file_entry_types::find_by_id(
         file_entry.user_file_entry_type_id, titan_db)?;
     let modified_by_user = accounts::users::find_by_id(file_entry.modified_by, titan_db);
     let modified_by_profile = accounts::users::map_user_to_profile(
-        modified_by_user.unwrap(), wcf_db, app_config);
+        &modified_by_user.unwrap(), wcf_db, app_config);
 
     Ok(models::UserFileEntryWithAssoc {
         id: file_entry.id,

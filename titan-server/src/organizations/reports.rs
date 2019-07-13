@@ -127,7 +127,7 @@ pub fn map_report_to_assoc(
         Some(id) => {
             let ack_user = accounts::users::find_by_id(
                 id, titan_db)?;
-            Some(accounts::users::map_user_to_profile(ack_user, wcf_db, app_config)?)
+            Some(accounts::users::map_user_to_profile(&ack_user, wcf_db, app_config)?)
         },
         None => None
     };

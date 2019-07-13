@@ -325,7 +325,7 @@ pub fn map_role_assoc(
         Some(user_id) => {
             let user = accounts::users::find_by_id(user_id, titan_db)?;
             Some(accounts::users::map_user_to_profile(
-                user, wcf_db, app_config)?)
+                &user, wcf_db, app_config)?)
         }
         _ => None
     };
