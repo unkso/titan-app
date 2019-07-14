@@ -98,7 +98,7 @@
   "scripts": {
     "start": "babel-node scripts/start.js",
     "build": "babel-node scripts/build.js",
-    "test": "mocha --compilers babel-core/register ./src/**/*.test.js"
+    "test": "mocha --require @babel/register ./src/**/*.test.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
