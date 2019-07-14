@@ -56,35 +56,35 @@ export default {
       }
     },
     MuiPaper: {
-      'elevation1': {
+      elevation1: {
         boxShadow: `0px 1px 3px 0px rgba(0, 0, 0, 0.06),
                     0px 1px 1px 0px rgba(0, 0, 0, 0.08),
                     0px 2px 1px -1px rgba(0, 0, 0, 0.06)`
       },
-      'elevation2': {
+      elevation2: {
         boxShadow: `0px 1px 5px 0px rgba(0, 0, 0, 0.06),
                     0px 2px 2px 0px rgba(0, 0, 0, 0.08),
                     0px 3px 1px -2px rgba(0, 0, 0, 0.06)`
       },
-      'elevation3': {
+      elevation3: {
         boxShadow: `0px 1px 8px 0px rgba(0, 0, 0, 0.06),
                     0px 3px 4px 0px rgba(0, 0, 0, 0.08),
                     0px 3px 3px -2px rgba(0, 0, 0, 0.06)
         `
       },
-      'elevation4': {
+      elevation4: {
         boxShadow: `0px 2px 20px -1px rgba(0, 0, 0, 0.06),
                     0px 4px 5px 0px rgba(0, 0, 0, 0.08),
                     0px 1px 10px 0px rgba(0, 0, 0, 0.06)
         `
       },
-      'elevation5': {
+      elevation5: {
         boxShadow: `0px 3px 5px -1px rgba(0, 0, 0, 0.06),
                     0px 5px 8px 0px rgba(0, 0, 0, 0.08),
                     0px 1px 14px 0px rgba(0, 0, 0, 0.06)
         `
       },
-      'elevation6': {
+      elevation6: {
         boxShadow: `0px 3px 5px -1px rgba(0, 0, 0, 0.06),
             0px 6px 10px 0px rgba(0, 0, 0, 0.08),
             0px 1px 18px 0px rgba(0, 0, 0, 0.06)

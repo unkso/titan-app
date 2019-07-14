@@ -28,7 +28,7 @@ class AuthenticatedService {
   }
 
   authHeadersInterceptor (config) {
-    let state = this.appContext.getStore().getState();
+    const state = this.appContext.getStore().getState();
 
     if (_.isEmpty(state.auth.session.token)) {
       this.appContext.getStore().dispatch(authActions.logout());

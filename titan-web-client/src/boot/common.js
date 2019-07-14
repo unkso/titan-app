@@ -37,7 +37,7 @@ export const mountRoutes = (routesMap, routes) => {
   routes.forEach((route) => {
     const routeKey = makeRouteKey(route.path);
 
-    if (routesMap.hasOwnProperty(routeKey)) {
+    if (routesMap[routeKey]) {
       throw new Error(`Duplicate route pattern: ${routeKey}.`);
     }
 
@@ -53,7 +53,7 @@ export const mountRoutes = (routesMap, routes) => {
  * @param {object} reducer
  */
 export const mountReducer = (reducersMap, name, reducer) => {
-  if (reducersMap.hasOwnProperty(name)) {
+  if (reducersMap[name]) {
     throw new Error(`Duplicate module name for reducer: ${name}.`);
   }
 
@@ -66,7 +66,7 @@ export const mountReducer = (reducersMap, name, reducer) => {
  * @param moduleConfig
  */
 export const mountConfig = (rootConfig, name, moduleConfig) => {
-  if (rootConfig.hasOwnProperty(name)) {
+  if (rootConfig[name]) {
     throw new Error(`Duplicate module name for config: ${name}.`);
   }
 
