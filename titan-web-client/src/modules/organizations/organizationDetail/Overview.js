@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ContentBlock } from 'titan/components/block/ContentBlock';
-import RosterCardGrid from 'titan/modules/roster/components/RosterCardGrid';
 import OrganizationsService from 'titan/http/OrganizationsService';
 import { CardContent, CardHeader } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
 import { OrganizationChainOfCommand } from 'titan/modules/organizations/components/OrganizationChainOfCommand';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
@@ -29,8 +27,7 @@ export class Overview extends React.Component {
 
     this.organizationsHttpService = new OrganizationsService();
     this.state = {
-      childOrgs: [],
-      users: []
+      childOrgs: []
     };
   }
 
@@ -45,14 +42,7 @@ export class Overview extends React.Component {
   }
 
   init () {
-    this.loadUsers(this.props.organizationId);
     this.loadChildOrgs(this.props.organizationId);
-  }
-
-  loadUsers (orgId) {
-    this.organizationsHttpService.findUsers(orgId).then(res => {
-      this.setState({ users: res.data });
-    });
   }
 
   loadChildOrgs (orgId) {
@@ -62,10 +52,6 @@ export class Overview extends React.Component {
   }
 
   render () {
-    const memberButtonLabel = this.state.users.length !== 1
-      ? 'members'
-      : 'member';
-
     return (
       <React.Fragment>
         <ContentBlock>
@@ -87,14 +73,6 @@ export class Overview extends React.Component {
                         {org.name}
                       </Button>
                     ))}
-
-                    <Button
-                      color="secondary"
-                      disabled
-                      size="small"
-                      variant="outlined">
-                      {this.state.users.length} {memberButtonLabel}
-                    </Button>
                   </CoCActions>
                 </CardContent>
               </Card>
@@ -109,12 +87,6 @@ export class Overview extends React.Component {
               </Card>
             </Column>
           </Row>
-        </ContentBlock>
-
-        {this.state.users.length > 0 &&
-        <ContentBlock>
-          <Typography variant="h2">Members</Typography>
-          <RosterCardGrid roster={this.state.users} />
         </ContentBlock>
         }
       </React.Fragment>

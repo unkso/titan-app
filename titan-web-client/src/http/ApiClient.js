@@ -23,6 +23,17 @@ export function ListUsersRequest (fields = {}) {
   };
 }
 
+export function ListOrganizationUsersRequest (fields = {}) {
+  const { org_id } = fields;
+  return {
+    auth: false,
+    config: {
+      url: `/organizations/${org_id}/users`,
+      method: 'get'
+    }
+  };
+}
+
 /**
  * Sends requests to Titan's API services.
  *
