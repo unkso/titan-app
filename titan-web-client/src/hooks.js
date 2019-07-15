@@ -19,7 +19,6 @@ export function useDebounce (initialValue, duration) {
   const handler = (newValue) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      console.log('setting value');
       setValue(newValue);
     }, duration);
   };
@@ -43,7 +42,6 @@ export function useThrottle (initialValue, duration) {
   const [value, setValue] = useState(initialValue);
   function changeHandler (newValue) {
     if (!timeout.current) {
-      console.log('setting value');
       setValue(newValue);
       timeout.current = setTimeout(() => {
         clearTimeout(timeout.current);

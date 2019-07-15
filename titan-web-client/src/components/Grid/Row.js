@@ -9,6 +9,7 @@ const Row = styled.div`
   flex-direction: ${props => props.direction};
   flex-wrap: ${props => props.wrap};
   justify-content: ${props => props.justifyContent};
+  width: 100%;
   
   ${Column} {
     padding: ${props => props.gutter}px;

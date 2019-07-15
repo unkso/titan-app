@@ -5,6 +5,7 @@ use crate::schema::{
     event_types,
     organizations,
     organization_roles,
+    organizations_users,
     reports,
     users,
     user_file_entries,
@@ -230,7 +231,8 @@ pub struct ChainOfCommand {
     pub extended_coc: Vec<OrganizationRoleWithAssoc>
 }
 
-#[derive(Serialize, Queryable)]
+#[derive(Serialize, Queryable, Insertable)]
+#[table_name = "organizations_users"]
 pub struct OrganizationUser {
     pub organization_id: i32,
     pub user_id: i32

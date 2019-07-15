@@ -7,6 +7,7 @@ pub mod roles;
 
 pub fn get_routes() -> Vec<Route> {
     routes![
+        routes::add_user,
         routes::ack_organization_report,
         routes::create_organization_report,
         routes::get_all,

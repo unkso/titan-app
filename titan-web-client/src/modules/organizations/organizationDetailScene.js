@@ -16,6 +16,7 @@ class OrganizationDetailSceneComponent extends React.Component {
 
     this.organizationsService = new OrganizationsService();
     this.state = {
+      chainOfCommand: [],
       hasLocalCocRole: false,
       isMemberOfCoc: false,
       loading: true,
@@ -36,6 +37,7 @@ class OrganizationDetailSceneComponent extends React.Component {
         const userId = this.props.auth.session.user.id;
 
         this.setState({
+          chainOfCommand: coc,
           hasLocalCocRole: !!res.data.local_coc.find(
             role => role.user_profile.id === userId),
           isMemberOfCoc: !!coc.find(role =>
@@ -83,7 +85,11 @@ class OrganizationDetailSceneComponent extends React.Component {
         }
 
         {this.state.tab === 1 &&
-          <Members organizationId={this.state.organization.id} />
+          <Members
+            organizationId={this.state.organization.id}
+            orgCoc={this.state.chainOfCommand}
+            canAddMembers={this.state.isMemberOfCoc}
+          />
         }
 
         {this.state.tab === 2 &&

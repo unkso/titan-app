@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ChronologicalItemList } from 'titan/components/List/ChronologicalItemList';
 import { ReportsListItem } from 'titan/components/Reports/ReportsListItem';
@@ -11,21 +11,21 @@ import { useForceUpdate } from 'titan/hooks';
  */
 export function ReportsList (props) {
   const organizationsService = new OrganizationsService();
-  const [parentRoleMap] = useState(new Map());
+  const parentRoleMap = useRef(new Map());
   const forceUpdate = useForceUpdate();
 
   function canAckReport (report) {
-    if (!parentRoleMap.has(report.id)) {
-      parentRoleMap.set(report.id, false);
+    if (!parentRoleMap.current.has(report.role.id)) {
+      parentRoleMap.current.set(report.role.id, false);
       loadParentRole(report);
     }
 
-    return parentRoleMap.get(report.id);
+    return parentRoleMap.current.get(report.role.id);
   }
 
   function loadParentRole (report) {
     organizationsService.findParentRole(report.role.id).then(res => {
-      parentRoleMap.set(report.id, !!res.data);
+      parentRoleMap.current.set(report.role.id, !!res.data);
       forceUpdate();
     });
   }

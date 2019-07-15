@@ -88,7 +88,6 @@ export class Overview extends React.Component {
             </Column>
           </Row>
         </ContentBlock>
-        }
       </React.Fragment>
     );
   }

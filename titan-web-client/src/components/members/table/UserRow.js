@@ -7,8 +7,16 @@ import { routeBuilder, USER_PROFILE_ROUTE } from 'titan/routes';
 import { format as formatDate } from 'date-fns';
 import TableRow from '@material-ui/core/TableRow';
 import React from 'react';
+import { Menu } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 export function UserRow (props) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const isOpen = Boolean(anchorEl);
+
+  // TODO Hide action menu for non-admins
   return (
     <TableRow key={props.user.id} hover>
       <TableCell>
@@ -28,6 +36,24 @@ export function UserRow (props) {
         'MMMM dd, yyyy')}</TableCell>
       <TableCell>{formatDate(props.user.date_joined,
         'MMMM dd, yyyy')}</TableCell>
+      <TableCell>
+        <IconButton
+          aria-label="More"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={e => setAnchorEl(e.currentTarget)}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={isOpen}
+          onClose={() => setAnchorEl(null)}>
+          <MenuItem>Remove</MenuItem>
+        </Menu>
+      </TableCell>
     </TableRow>
   );
 }
