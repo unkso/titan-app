@@ -18,19 +18,20 @@ export function UsersTable (props) {
           <TableCell>Username</TableCell>
           <TableCell>Last Active</TableCell>
           <TableCell>Date Joined</TableCell>
+          <TableCell />
         </TableRow>
       </TableHead>
       <TableBody>
         <React.Fragment>
           {props.error ? (
             <TableRow>
-              <TableCell colSpan={3}>
+              <TableCell colSpan={4}>
                 <Typography align="center">Unable to load users.</Typography>
               </TableCell>
             </TableRow>
           ) : !props.loading && props.data.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={3}>
+              <TableCell colSpan={4}>
                 <Typography align="center">No results found.</Typography>
               </TableCell>
             </TableRow>

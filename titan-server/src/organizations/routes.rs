@@ -156,6 +156,35 @@ pub fn get_organization_users(
     Json(accounts::users::map_users_to_profile(&users, &*wcf_db, &app_config).unwrap())
 }
 
+#[derive(Deserialize)]
+pub struct AddUserRequest {
+    #[serde(rename(serialize = "userId", deserialize = "userId"))]
+    user_id: i32,
+}
+
+#[post("/<org_id>/users", format = "application/json", data = "<user_fields>")]
+pub fn add_user(
+    org_id: i32,
+    user_fields: Json<AddUserRequest>,
+    titan_db: TitanPrimary,
+) -> Json<bool> {
+    let titan_db_ref = &*titan_db;
+    let org_user = &models::OrganizationUser {
+        organization_id: org_id,
+        user_id: user_fields.user_id,
+    };
+
+    if organizations::organizations::is_user_org_member(org_user, titan_db_ref) {
+        return Json(true);
+    }
+
+    let res = organizations::organizations::add_user(&org_user, titan_db_ref);
+    match res {
+        Ok(_) => Json(true),
+        _ => Json(false),
+    }
+}
+
 #[get("/<org_id>/users/<user_id>/coc")]
 pub fn get_organization_user_coc(
     org_id: i32,

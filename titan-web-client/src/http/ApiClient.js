@@ -3,6 +3,24 @@ import AuthenticatedService from 'titan/http/AuthenticatedService';
 import UnauthenticatedService from 'titan/http/UnauthenticatedService';
 
 /**
+ * Adds a user to an organization.
+ *
+ * @param {{orgId: number, userId: number}} fields
+ * @returns {{auth: boolean, config: {method: string, data: {userId}, url: string}}}
+ */
+export function AddUserToOrganizationRequest (fields = {}) {
+  const { orgId, userId } = fields;
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${orgId}/users`,
+      method: 'post',
+      data: { userId }
+    }
+  };
+}
+
+/**
  * Lists all users.
  *
  * @param {{limit: number, username: string}} fields
@@ -35,7 +53,7 @@ export function ListOrganizationUsersRequest (fields = {}) {
 }
 
 /**
- * Sends requests to Titan's API services.
+ * React hook for sending requests to Titan's API services.
  *
  * @param {Function<{
  *  auth: boolean,
@@ -51,16 +69,7 @@ export function useTitanApiClient (reqFactory, fields = {}, options = {}) {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
-
-  /**
-   * @param {{auth: boolean}} request
-   * @returns {AxiosInstance}
-   */
-  function getClient (request) {
-    return request.auth
-      ? (new AuthenticatedService()).httpClient
-      : (new UnauthenticatedService()).httpClient;
-  }
+  const [callCount, setCallCount] = useState(0);
 
   function complete (data, err) {
     setData(data);
@@ -72,25 +81,56 @@ export function useTitanApiClient (reqFactory, fields = {}, options = {}) {
     }
   }
 
+  function reload () {
+    setCallCount(callCount + 1);
+  }
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const request = reqFactory(fields);
-        if (request.config.params) {
-          // Empty querystring parms should not be sent to the server.
-          request.config.params =
-            removeEmptyValues(request.config.params);
-        }
-        const res = await getClient(request).request(request.config);
+        const res = await makeTitanApiRequest(reqFactory, fields);
         complete(res.data);
       } catch (err) {
         complete(undefined, err);
       }
     })();
-  }, [...Object.values(fields)]);
+  }, [...Object.values(fields), callCount]);
 
-  return { data, error, loading };
+  return { data, error, loading, reload };
+}
+
+/**
+ * Sends requests to Titan's API services.
+ *
+ * @param {Function<{
+ *  auth: boolean,
+ *  config: AxiosRequestConfig
+ * }>} reqFactory
+ * @param {{}} fields - The fields required by the API endpoint to
+ *  handle the request. If any of these values change, the request
+ *  will be sent again.
+ * @returns {Promise<{}>}
+ */
+export function makeTitanApiRequest (reqFactory, fields = []) {
+  const request = reqFactory(fields);
+
+  // Empty querystring params should not be sent to the server.
+  if (request.config.params) {
+    request.config.params = removeEmptyValues(request.config.params);
+  }
+
+  return getClient(request).request(request.config);
+}
+
+/**
+ * @param {{auth: boolean}} request
+ * @returns {AxiosInstance}
+ */
+function getClient (request) {
+  return request.auth
+    ? (new AuthenticatedService()).httpClient
+    : (new UnauthenticatedService()).httpClient;
 }
 
 /**

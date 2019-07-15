@@ -4,6 +4,7 @@ use diesel::prelude::*;
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::models;
 use crate::schema::{self, wcf1_user, wcf1_user_avatar, wcf1_user_to_group};
+use crate::models::OrganizationUser;
 
 /// Queries a single organization with the given id.
 pub fn find_by_id(
@@ -57,6 +58,27 @@ pub fn find_users_old(
         .filter(schema::wcf1_user_to_group::group_id.eq(organization.wcf_user_group_id));
 
     users_query.load::<(models::WcfUser, models::WcfUserAvatar)>(&**unkso_main)
+}
+
+pub fn is_user_org_member(
+    org_user: &models::OrganizationUser,
+    titan_db: &MysqlConnection
+) -> bool {
+    schema::organizations_users::table
+        .filter(schema::organizations_users::organization_id.eq(
+            org_user.organization_id))
+        .filter(schema::organizations_users::user_id.eq(org_user.user_id))
+        .first::<OrganizationUser>(titan_db)
+        .is_ok()
+}
+
+pub fn add_user(
+    org_user: &models::OrganizationUser,
+    titan_db: &MysqlConnection
+) -> QueryResult<usize> {
+    diesel::insert_into(schema::organizations_users::table)
+        .values(org_user)
+        .execute(titan_db)
 }
 
 /// Returns all organizations.
