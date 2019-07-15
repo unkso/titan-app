@@ -5,9 +5,10 @@ import PageHeader from '../../layouts/dashboard/components/PageHeader/PageHeader
 import PageHeaderTitle from '../../layouts/dashboard/components/PageHeader/PageHeaderTitle';
 import OrganizationsService from '../../http/OrganizationsService';
 import { Tab, Tabs } from '@material-ui/core';
+import { connect } from 'react-redux';
 import { Overview } from 'titan/modules/organizations/organizationDetail/Overview';
 import { Reports } from 'titan/modules/organizations/organizationDetail/Reports';
-import { connect } from 'react-redux';
+import { Members } from 'titan/modules/organizations/organizationDetail/Members';
 
 class OrganizationDetailSceneComponent extends React.Component {
   constructor (props) {
@@ -58,9 +59,12 @@ class OrganizationDetailSceneComponent extends React.Component {
       return null;
     }
 
-    const headerTabs = [<Tab key={0} label="Overview" />];
+    const headerTabs = [
+      <Tab key={0} label="Overview" />,
+      <Tab key={1} label="Members" />
+    ];
     if (this.state.isMemberOfCoc) {
-      headerTabs.push(<Tab key={1} label="Reports" />);
+      headerTabs.push(<Tab key={2} label="Reports" />);
     }
 
     return (
@@ -79,6 +83,10 @@ class OrganizationDetailSceneComponent extends React.Component {
         }
 
         {this.state.tab === 1 &&
+          <Members organizationId={this.state.organization.id} />
+        }
+
+        {this.state.tab === 2 &&
           <Reports
             canCreateReport={this.state.hasLocalCocRole}
             organization={this.state.organization}
