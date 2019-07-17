@@ -12,11 +12,18 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+/**
+ * @param {{user: {}, onRemove: Function}} props
+ */
 export function UserRow (props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isOpen = Boolean(anchorEl);
 
-  // TODO Hide action menu for non-admins
+  function removeUser () {
+    setAnchorEl(undefined);
+    props.onRemove(props.user);
+  }
+
   return (
     <TableRow key={props.user.id} hover>
       <TableCell>
@@ -37,22 +44,26 @@ export function UserRow (props) {
       <TableCell>{formatDate(props.user.date_joined,
         'MMMM dd, yyyy')}</TableCell>
       <TableCell>
-        <IconButton
-          aria-label="More"
-          aria-controls="long-menu"
-          aria-haspopup="true"
-          onClick={e => setAnchorEl(e.currentTarget)}
-        >
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={isOpen}
-          onClose={() => setAnchorEl(null)}>
-          <MenuItem>Remove</MenuItem>
-        </Menu>
+        {props.onRemove && (
+          <React.Fragment>
+            <IconButton
+              aria-label="More"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={e => setAnchorEl(e.currentTarget)}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="long-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={isOpen}
+              onClose={() => setAnchorEl(null)}>
+              <MenuItem onClick={() => removeUser()}>Remove</MenuItem>
+            </Menu>
+          </React.Fragment>
+        )}
       </TableCell>
     </TableRow>
   );

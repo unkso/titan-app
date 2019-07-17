@@ -8,7 +8,12 @@ import { UserRow } from 'titan/components/members/table/UserRow';
 import Table from '@material-ui/core/Table';
 
 /**
- * @param {{loading: boolean, data: {}, error: {}}} props
+ * @param {{
+ *  loading: boolean,
+ *  data: {},
+ *  error: {},
+ *  onRemove: Function
+ * }} props
  */
 export function UsersTable (props) {
   return (
@@ -38,7 +43,7 @@ export function UsersTable (props) {
           ) : (
             <React.Fragment>
               {props.data && props.data.map((user, key) => (
-                <UserRow key={key} user={user} />
+                <UserRow key={key} user={user} onRemove={props.onRemove} />
               ))
               }
             </React.Fragment>

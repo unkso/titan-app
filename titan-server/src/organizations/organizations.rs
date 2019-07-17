@@ -81,6 +81,18 @@ pub fn add_user(
         .execute(titan_db)
 }
 
+pub fn remove_user(
+    org_user: &models::OrganizationUser,
+    titan_db: &MysqlConnection
+) -> QueryResult<usize> {
+    let query = schema::organizations_users::table
+        .filter(schema::organizations_users::organization_id.eq(org_user.organization_id))
+        .filter(schema::organizations_users::user_id.eq(org_user.user_id));
+
+    diesel::delete(query)
+        .execute(titan_db)
+}
+
 /// Returns all organizations.
 pub fn find_all(titan_primary: TitanPrimary) -> QueryResult<Vec<models::Organization>> {
     schema::organizations::table.load::<models::Organization>(&*titan_primary)

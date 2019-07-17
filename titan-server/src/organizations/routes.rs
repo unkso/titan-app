@@ -162,6 +162,7 @@ pub struct AddUserRequest {
     user_id: i32,
 }
 
+/// TODO Verify CoC permissions.
 #[post("/<org_id>/users", format = "application/json", data = "<user_fields>")]
 pub fn add_user(
     org_id: i32,
@@ -178,11 +179,31 @@ pub fn add_user(
         return Json(true);
     }
 
-    let res = organizations::organizations::add_user(&org_user, titan_db_ref);
-    match res {
-        Ok(_) => Json(true),
-        _ => Json(false),
-    }
+    let res = organizations::organizations::add_user(
+        &org_user, titan_db_ref);
+    Json(res.is_ok())
+}
+
+#[derive(Deserialize)]
+pub struct RemoveUserRequest {
+    #[serde(rename(serialize = "userId", deserialize = "userId"))]
+    user_id: i32,
+}
+
+/// TODO Verify CoC permissions.
+#[delete("/<org_id>/users", format = "application/json", data = "<user_fields>")]
+pub fn remove_user(
+    org_id: i32,
+    user_fields: Json<RemoveUserRequest>,
+    titan_db: TitanPrimary,
+) -> Json<bool> {
+    let titan_db_ref = &*titan_db;
+    let res = organizations::organizations::remove_user(&models::OrganizationUser {
+        organization_id: org_id,
+        user_id: user_fields.user_id,
+    }, titan_db_ref);
+
+    Json(res.is_ok())
 }
 
 #[get("/<org_id>/users/<user_id>/coc")]

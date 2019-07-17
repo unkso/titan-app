@@ -23,5 +23,6 @@ pub fn get_routes() -> Vec<Route> {
         routes::get_child_organizations,
         routes::list_organization_reports,
         routes::list_organization_user_file_entries,
+        routes::remove_user,
     ]
 }
