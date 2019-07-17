@@ -89,6 +89,7 @@ class OrganizationDetailSceneComponent extends React.Component {
             organizationId={this.state.organization.id}
             orgCoc={this.state.chainOfCommand}
             canAddMembers={this.state.isMemberOfCoc}
+            canRemoveMembers={this.state.isMemberOfCoc}
           />
         }
 

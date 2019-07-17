@@ -21,6 +21,24 @@ export function AddUserToOrganizationRequest (fields = {}) {
 }
 
 /**
+ * Removes a user from an organization.
+ *
+ * @param {{orgId: number, userId: number}} fields
+ * @returns {{auth: boolean, config: {method: string, data: {userId}, url: string}}}
+ */
+export function RemoveUserFromOrganizationRequest (fields = {}) {
+  const { orgId, userId } = fields;
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${orgId}/users`,
+      method: 'delete',
+      data: { userId }
+    }
+  };
+}
+
+/**
  * Lists all users.
  *
  * @param {{limit: number, username: string}} fields
