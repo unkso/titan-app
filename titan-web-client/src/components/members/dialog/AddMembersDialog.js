@@ -26,7 +26,7 @@ export function AddMembersDialog (props) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>Close</Button>
+          <Button onClick={() => setDialogOpen(false)}>Done</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

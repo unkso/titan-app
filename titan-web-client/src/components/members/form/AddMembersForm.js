@@ -63,7 +63,7 @@ export function AddMembersForm (props) {
         placeholder="Search by username"
         onChange={e => setUsername(e.target.value)}
       />
-      <List dense style={{ height: 280 }}>
+      <List dense style={{ height: 285 }}>
         {fetchUsers.data && fetchUsers.data.map((user, index) => (
           <ListItem key={index} button>
             <Row alignItems="center" alignContent="center">

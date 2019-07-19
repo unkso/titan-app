@@ -43,7 +43,7 @@ export function UserRow (props) {
         'MMMM dd, yyyy')}</TableCell>
       <TableCell>{formatDate(props.user.date_joined,
         'MMMM dd, yyyy')}</TableCell>
-      <TableCell>
+      <TableCell align="right">
         {props.onRemove && (
           <React.Fragment>
             <IconButton

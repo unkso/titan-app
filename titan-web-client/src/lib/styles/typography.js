@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 
 const DEFAULT_FONT_FAMILY = '"Roboto", "Helvetica", "Arial", sans-serif';
-const DEFAULT_FONT_SIZE = '10px';
+const DEFAULT_FONT_SIZE = 14;
 const FONT_WEIGHT_LIGHT = 300;
 const FONT_WEIGHT_REGULAR = 400;
 const TEXT_CASE_REGULAR = 'none';
