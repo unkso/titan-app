@@ -6,6 +6,7 @@ const AdapterLink = React.forwardRef((props, ref) => <RouterDomLink innerRef={re
 
 export function RouteLink (props) {
   return (
-    <Link component={AdapterLink} {...props}>{props.children}</Link>
+    <Link underline="none"
+      component={AdapterLink} {...props}>{props.children}</Link>
   );
 }

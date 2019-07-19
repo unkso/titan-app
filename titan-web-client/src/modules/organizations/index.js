@@ -3,6 +3,10 @@ import { ROUTE_TYPE_AUTHENTICATED } from 'titan/lib/routing';
 import { OrganizationDetailScene } from './organizationDetailScene';
 import OrganizationsListScene from './organizationsListScene';
 import ManageUnacknowledgedReportsScene from './manageUnacknowledgedReportsScene';
+import {
+  ORGANIZATION_DETAILS_ROUTE,
+  ORGANIZATIONS_LIST_ROUTE
+} from 'titan/routes';
 
 export default function () {
   return {
@@ -10,7 +14,7 @@ export default function () {
     routes: [
       {
         layout: DashboardLayout,
-        path: '/organizations',
+        path: ORGANIZATIONS_LIST_ROUTE,
         scene: OrganizationsListScene,
         type: ROUTE_TYPE_AUTHENTICATED
       },
@@ -22,7 +26,7 @@ export default function () {
       },
       {
         layout: DashboardLayout,
-        path: '/organizations/:slug',
+        path: ORGANIZATION_DETAILS_ROUTE,
         scene: OrganizationDetailScene,
         type: ROUTE_TYPE_AUTHENTICATED
       }

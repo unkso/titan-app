@@ -1,5 +1,7 @@
 export const LIST_USERS_ROUTE = '/roster';
 export const USER_PROFILE_ROUTE = '/roster/:userId';
+export const ORGANIZATIONS_LIST_ROUTE = '/organizations';
+export const ORGANIZATION_DETAILS_ROUTE = '/organizations/:slug';
 
 /**
  *
