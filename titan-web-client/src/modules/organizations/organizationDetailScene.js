@@ -26,6 +26,16 @@ class OrganizationDetailSceneComponent extends React.Component {
   }
 
   componentDidMount () {
+    this.init();
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevProps.match.params.slug !== this.props.match.params.slug) {
+      this.init();
+    }
+  }
+
+  init () {
     this.organizationsService.findBySlug(this.props.match.params.slug)
       .then((res) => {
         this.setState({ organization: res.data.organization });

@@ -9,7 +9,7 @@ import {
   routeBuilder
 } from 'titan/routes';
 import Button from '@material-ui/core/Button';
-import { RouteLink } from 'titan/components/Routes/RouteLink';
+import { RouteButton } from 'titan/components/Routes/RouteLink';
 
 class RosterCard extends React.Component {
   render () {
@@ -30,7 +30,7 @@ class RosterCard extends React.Component {
           <Typography align="center">
             <Button
               color="primary"
-              component={RouteLink}
+              component={RouteButton}
               to={routeBuilder(ORGANIZATION_DETAILS_ROUTE, [this.props.branch.slug])}>View</Button>
           </Typography>
         </CardContent>
