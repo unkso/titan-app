@@ -10,6 +10,7 @@ import Column from 'titan/components/Grid/Column';
 import { ListSupportLeadership } from 'titan/modules/organizations/components/ListSupportLeadership';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
+import { RouteButton } from 'titan/components/Routes/RouteLink';
 
 const CoCActions = styled.div`
   font-size: 12px;
@@ -66,7 +67,8 @@ export class Overview extends React.Component {
                     {this.state.childOrgs.map((org, key) => (
                       <Button
                         color="secondary"
-                        href={`/organizations/${org.slug}`}
+                        component={RouteButton}
+                        to={`/organizations/${org.slug}`}
                         key={key}
                         size="small"
                         variant="outlined">

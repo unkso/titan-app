@@ -19,8 +19,7 @@ class BranchCardGrid extends React.Component {
             basisSm="100%"
             key={index}
           >
-            <BranchCard
-              branch={branch} />
+            <BranchCard branch={branch} />
           </Column>
         ))}
       </Row>

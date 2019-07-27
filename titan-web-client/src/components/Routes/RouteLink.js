@@ -1,12 +1,13 @@
+import React from 'react';
 import RouterDomLink from 'react-router-dom/Link';
 import Link from '@material-ui/core/Link';
-import React from 'react';
 
-const AdapterLink = React.forwardRef((props, ref) => <RouterDomLink innerRef={ref} {...props} />);
+const AdapterLink = React.forwardRef((props, ref) => (
+  <RouterDomLink innerRef={ref} {...props} />
+));
 
-export function RouteLink (props) {
-  return (
-    <Link underline="none"
-      component={AdapterLink} {...props}>{props.children}</Link>
-  );
-}
+export const RouteButton = React.forwardRef(
+  (props, ref) => <Link underline="none" innerRef={ref} component={AdapterLink} {...props} />);
+
+export const RouteLink = React.forwardRef(
+  (props, ref) => <Link innerRef={ref} component={AdapterLink} {...props} />);
