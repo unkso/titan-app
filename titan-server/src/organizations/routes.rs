@@ -229,6 +229,18 @@ pub fn get_organization_coc(
         org_id, std::i32::MAX, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
+#[get("/<org_id>/roles")]
+pub fn get_organization_roles(
+    org_id: i32,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
+    Json(organizations::roles::find_unranked_roles(
+        org_id, &*titan_db, &*wcf_db, &app_config).unwrap())
+}
+
+/// [deprecated(note = "Use get_organization_roles instead.")]
 #[get("/<org_id>/roles/unranked")]
 pub fn get_organization_unranked_roles(
     org_id: i32,

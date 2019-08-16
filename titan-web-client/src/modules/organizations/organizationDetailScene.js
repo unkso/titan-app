@@ -9,6 +9,14 @@ import { connect } from 'react-redux';
 import { Overview } from 'titan/modules/organizations/organizationDetail/Overview';
 import { Reports } from 'titan/modules/organizations/organizationDetail/Reports';
 import { Members } from 'titan/modules/organizations/organizationDetail/Members';
+import { Roles } from 'titan/modules/organizations/organizationDetail/Roles';
+
+const TABS_INDEXES = {
+  overview: 0,
+  members: 1,
+  reports: 2,
+  roles: 3
+};
 
 class OrganizationDetailSceneComponent extends React.Component {
   constructor (props) {
@@ -72,11 +80,12 @@ class OrganizationDetailSceneComponent extends React.Component {
     }
 
     const headerTabs = [
-      <Tab key={0} label="Overview" />,
-      <Tab key={1} label="Members" />
+      <Tab key={TABS_INDEXES.overview} label="Overview" />,
+      <Tab key={TABS_INDEXES.members} label="Members" />
     ];
     if (this.state.isMemberOfCoc) {
-      headerTabs.push(<Tab key={2} label="Reports" />);
+      headerTabs.push(<Tab key={TABS_INDEXES.reports} label="Reports" />);
+      headerTabs.push(<Tab key={TABS_INDEXES.roles} label="Roles" />);
     }
 
     return (
@@ -90,11 +99,11 @@ class OrganizationDetailSceneComponent extends React.Component {
           </Tabs>
         </PageHeader>
 
-        {this.state.tab === 0 &&
+        {this.state.tab === TABS_INDEXES.overview &&
           <Overview organizationId={this.state.organization.id} />
         }
 
-        {this.state.tab === 1 &&
+        {this.state.tab === TABS_INDEXES.members &&
           <Members
             organizationId={this.state.organization.id}
             orgCoc={this.state.chainOfCommand}
@@ -103,11 +112,17 @@ class OrganizationDetailSceneComponent extends React.Component {
           />
         }
 
-        {this.state.tab === 2 &&
+        {this.state.tab === TABS_INDEXES.reports &&
           <Reports
             canCreateReport={this.state.hasLocalCocRole}
             organization={this.state.organization}
           />
+        }
+
+        {this.state.tab === TABS_INDEXES.roles &&
+        <Roles
+          organization={this.state.organization}
+        />
         }
       </React.Fragment>
     );

@@ -65,6 +65,37 @@ export function ListUsersRequest (fields = {}) {
  * @param {{orgId: number}} fields
  * @returns {{auth: boolean, config: {method: string, url: string}}}
  */
+export const ROLE_SCOPES = {
+  RANKED: 0,
+  SUPPORT: 1,
+  ALL: 2
+};
+
+/**
+ * Lists an organization's roles.
+ *
+ * @param {{orgId: number, scope: string}} fields
+ * @returns {{
+ *  auth: boolean,
+ *  config: {method: string, params: {limit, username}, url: string}
+ * }}
+ */
+export function ListOrganizationRoles (fields = {}) {
+  let { orgId, scope } = fields;
+  if (!scope) {
+    scope = ROLE_SCOPES.ALL;
+  }
+
+  return {
+    auth: false,
+    config: {
+      url: `/organizations/${orgId}/roles`,
+      method: 'get',
+      params: { scope }
+    }
+  };
+}
+
 export function ListOrganizationUsersRequest (fields = {}) {
   const { orgId } = fields;
   return {

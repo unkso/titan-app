@@ -7,6 +7,20 @@ use crate::accounts;
 use crate::organizations;
 use crate::config;
 
+/// Indicates the relation of a role or set of roles to an
+/// organization's chain of command.
+pub enum RoleRankScope {
+    /// Set includes only roles that are in the chain of command for
+    /// one or more members.
+    ChainOfCommand,
+    /// Set includes only supporting roles, which are not in the chain
+    /// of command for other members.
+    Support,
+    /// Includes all roles, regardless of their relation to an
+    /// organization's leadership structure.
+    All
+}
+
 /// Finds an organization role by ID.
 pub fn find_by_id(
     role_id: i32,
@@ -287,6 +301,26 @@ pub fn find_parent_role_by_org(
     }
 }
 
+pub fn find_org_roles(
+    org_id: i32,
+    rank_scope: RoleRankScope,
+    titan_db: &MysqlConnection,
+) -> QueryResult<Vec<models::OrganizationRole>> {
+    let mut query = schema::organization_roles::table
+        .filter(schema::organization_roles::organization_id.eq(org_id))
+        .into_boxed();
+    query = match rank_scope {
+        RoleRankScope::ChainOfCommand => query.filter(
+            schema::organization_roles::rank.is_not_null()),
+        RoleRankScope::Support => query.filter(
+            schema::organization_roles::rank.is_null()),
+        _ => query
+    };
+
+    query.get_results::<models::OrganizationRole>(titan_db)
+}
+
+/// [deprecated(note = "Use find_org_roles instead.")]
 pub fn find_unranked_roles(
     org_id: i32,
     titan_db: &MysqlConnection,
