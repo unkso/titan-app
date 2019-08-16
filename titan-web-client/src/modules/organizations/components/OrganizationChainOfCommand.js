@@ -28,8 +28,8 @@ export class OrganizationChainOfCommand extends React.Component {
     this.organizationsService.findChainOfCommand(organizationId)
       .then(res => {
         this.setState({
-          extendedCoc: res.data.extended_coc,
-          localCoc: res.data.local_coc
+          extendedCoc: res.data.extended_coc.reverse(),
+          localCoc: res.data.local_coc.reverse()
         });
       });
   }
@@ -37,8 +37,8 @@ export class OrganizationChainOfCommand extends React.Component {
   render () {
     return (
       <ChainOfCommand
-        extendedCoc={this.state.extendedCoc.reverse()}
-        localCoc={this.state.localCoc.reverse()}
+        extendedCoc={this.state.extendedCoc}
+        localCoc={this.state.localCoc}
       />
     );
   }
