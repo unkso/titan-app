@@ -24,15 +24,18 @@ import { AckEventExcuseButton }
   from './AckEventExcuseButton';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
-import {
-  Divider,
-  ListItemAvatar
-} from '@material-ui/core';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Row from 'titan/components/Grid/Row';
 import Column from 'titan/components/Grid/Column';
 import Tooltip from '@material-ui/core/Tooltip';
 import { WithAcl } from 'titan/components/Acl/WithAcl';
+import Chip from '@material-ui/core/Chip';
+import styled from 'styled-components';
+
+/** TODO Move to a dedicated component with theme variants. */
+const Callout = styled.div`
+    background: #f0f0f0;
+    border-radius: 4px;
+`;
 
 class EventExcuseListItemComponent extends React.Component {
   constructor (props) {
@@ -142,44 +145,68 @@ class EventExcuseListItemComponent extends React.Component {
             </ListItem>
           </List>
         </BorderedCard>
-        <Dialog open={this.state.dialogOpen} maxWidth="md" fullWidth>
+        <Dialog open={this.state.dialogOpen} maxWidth="sm" fullWidth>
           <DialogTitle>
-            <span>Excuse for {this.props.excuse.event_type.name}</span>
-            <Typography variant="body1" color="textSecondary">{eventDate}</Typography>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>{this.props.children}</DialogContentText>
-          </DialogContent>
-          <Divider />
-          <DialogContent>
             <Row>
-              <Column grow={1}>
-                <List subheader={<ListSubheader>Submitted by ({submissionDate})</ListSubheader>}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar src={this.props.excuse.user.wcf.avatar_url} />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={this.props.excuse.user.username}
-                    />
-                  </ListItem>
-                </List>
+              <Column>
+                <span>Excuse for {this.props.excuse.event_type.name}</span>
+                <Typography variant="body1" color="textSecondary">{eventDate}</Typography>
               </Column>
               <Column grow={1}>
-                {this.state.ack_user &&
-                  <List subheader={<ListSubheader>Acknowledged by ({this.state.ack_date})</ListSubheader>}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar src={this.state.ack_user.wcf.avatar_url} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={this.state.ack_user.username}
+                <Typography
+                  align="right"
+                  component="div"
+                  variant="body1">
+                  <Chip
+                    avatar={(
+                      <Avatar src={
+                        this.props.excuse.user.wcf.avatar_url}
                       />
-                    </ListItem>
-                  </List>
-                }
+                    )}
+                    component="a"
+                    href={`/roster/${this.props.excuse.user.id}`}
+                    label={this.props.excuse.user.username}
+                    clickable
+                  />
+                </Typography>
               </Column>
             </Row>
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <Callout>
+                <Row alignItems="center">
+                  <Column grow={1}>
+                    <Typography variant="subtitle2" element="span">
+                      <b>Created:</b> {submissionDate}</Typography>
+                  </Column>
+                  {this.state.ack_date && (
+                    <React.Fragment>
+                      <Column>
+                        <Typography variant="subtitle2" element="span">
+                          <span><b>Ack:</b> {this.state.ack_date} by </span>
+                          <Chip
+                            size="small"
+                            avatar={(
+                              <Avatar src={
+                                this.state.ack_user.wcf.avatar_url}
+                              />
+                            )}
+                            component="a"
+                            href={`/roster/${this.state.ack_user.id}`}
+                            label={this.state.ack_user.username}
+                            clickable
+                          />
+                        </Typography>
+                      </Column>
+                    </React.Fragment>
+                  )}
+                </Row>
+              </Callout>
+            </DialogContentText>
+            <DialogContentText>
+              <Typography variant="body2">{this.props.children}</Typography>
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.closeDialogHandler}>Close</Button>

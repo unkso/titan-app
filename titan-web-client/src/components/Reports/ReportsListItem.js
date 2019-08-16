@@ -138,7 +138,7 @@ class ReportsListItemComponent extends React.Component {
             </Row>
           </DialogTitle>
           <DialogContent>
-            <Typography gutterBottom>{this.props.children}</Typography>
+            <Typography gutterBottom variant="body2">{this.props.children}</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.closeDialogHandler}>Close</Button>

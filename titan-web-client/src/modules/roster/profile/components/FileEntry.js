@@ -155,7 +155,7 @@ class FileEntry extends React.Component {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {this.props.entry.comments}
+              <Typography variant="body2">{this.props.entry.comments}</Typography>
             </DialogContentText>
           </DialogContent>
           <DialogActions>

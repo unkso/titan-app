@@ -76,8 +76,10 @@ class ListItemComponent extends React.Component {
                         this.props.entry.modified_by.wcf.avatar_url}
                       />
                     )}
+                    component="a"
                     href={`/roster/${this.props.entry.modified_by.id}`}
                     label={this.props.entry.modified_by.username}
+                    clickable
                   />
                 </Typography>
               </Column>
@@ -85,7 +87,7 @@ class ListItemComponent extends React.Component {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {this.props.entry.comments}
+              <Typography variant="body2">{this.props.entry.comments}</Typography>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
