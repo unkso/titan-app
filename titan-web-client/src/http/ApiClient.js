@@ -59,12 +59,35 @@ export function ListUsersRequest (fields = {}) {
   };
 }
 
+/**
+ * Lists all users in an organization.
+ *
+ * @param {{orgId: number}} fields
+ * @returns {{auth: boolean, config: {method: string, url: string}}}
+ */
 export function ListOrganizationUsersRequest (fields = {}) {
-  const { org_id } = fields;
+  const { orgId } = fields;
   return {
     auth: false,
     config: {
-      url: `/organizations/${org_id}/users`,
+      url: `/organizations/${orgId}/users`,
+      method: 'get'
+    }
+  };
+}
+
+/**
+ * Lists all of an organization's reports.
+ *
+ * @param {{orgId: number}} fields
+ * @returns {{auth: boolean, config: {method: string, url: string}}}
+ */
+export function ListOrganizationReportsRequest (fields = {}) {
+  const { orgId } = fields;
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${orgId}/reports`,
       method: 'get'
     }
   };

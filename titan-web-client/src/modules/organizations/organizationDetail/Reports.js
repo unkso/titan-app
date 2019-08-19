@@ -1,50 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import OrganizationsService from 'titan/http/OrganizationsService';
 import { ReportsList } from 'titan/components/Reports/ReportsList';
 import { ContentBlock } from 'titan/components/block/ContentBlock';
 import Typography from '@material-ui/core/Typography';
 import { CreateReportButton } from 'titan/modules/organizations/components/CreateReportButton';
+import {
+  ListOrganizationReportsRequest,
+  makeTitanApiRequest
+} from 'titan/http/ApiClient';
+import { useSnackbar } from 'notistack';
 
-export class Reports extends React.Component {
-  constructor (props) {
-    super(props);
-    this.organizationsService = new OrganizationsService();
-    this.state = {
-      reports: []
-    };
-  }
+export function Reports (props) {
+  const [reports, setReports] = useState([]);
+  const snackbar = useSnackbar();
 
-  componentDidMount () {
-    this.organizationsService.findReports(this.props.organization.id)
+  useEffect(() => {
+    makeTitanApiRequest(ListOrganizationReportsRequest,
+      { orgId: props.organization.id })
       .then(res => {
-        this.setState({ reports: res.data });
+        setReports(res.data);
+      })
+      .catch(() => {
+        snackbar.enqueueSnackbar('Unable to load reports', {
+          variant: 'error'
+        });
       });
+  }, [props.organization.id]);
+
+  function addReport (report) {
+    const updatedReports = [...reports, report];
+    reports.sort((x, y) =>
+      x.term_start_date < y.term_start_date ? 1 : -1);
+    setReports(updatedReports);
   }
 
-  addReport (report) {
-    const reports = [...this.state.reports, report];
-    reports.sort((x, y) => {
-      return x.term_start_date < y.term_start_date ? 1 : -1;
-    });
-    this.setState({ reports });
-  }
-
-  render () {
-    return (
-      <ContentBlock>
-        <Typography align="right">
-          {this.props.canCreateReport &&
-            <CreateReportButton
-              onReportSaved={report => this.addReport(report)}
-              organization={this.props.organization}
-            />
-          }
-        </Typography>
-        <ReportsList items={this.state.reports} />
-      </ContentBlock>
-    );
-  }
+  return (
+    <ContentBlock>
+      <Typography align="right">
+        {props.canCreateReport &&
+        <CreateReportButton
+          onReportSaved={report => addReport(report)}
+          organization={props.organization}
+        />
+        }
+      </Typography>
+      <ReportsList items={reports} />
+    </ContentBlock>
+  );
 }
 
 Reports.propTypes = {
