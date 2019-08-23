@@ -17,8 +17,8 @@ const CoCActions = styled.div`
   margin-top: 4px;
   text-align: center;
 
-  > button {
-    margin: 8px;
+  > a {
+    margin: 4px;
   }
 `;
 
