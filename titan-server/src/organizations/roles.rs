@@ -1,6 +1,9 @@
 use diesel::prelude::*;
 use rocket::State;
+use rocket::http::RawStr;
+use rocket::request::FromFormValue;
 use std::collections::VecDeque;
+use std::str;
 use crate::models;
 use crate::schema;
 use crate::accounts;
@@ -19,6 +22,21 @@ pub enum RoleRankScope {
     /// Includes all roles, regardless of their relation to an
     /// organization's leadership structure.
     All
+}
+
+impl<'v> FromFormValue<'v> for RoleRankScope {
+    type Error = &'v RawStr;
+
+    fn from_form_value(form_value: &'v RawStr) -> Result<RoleRankScope, &'v RawStr> {
+        match form_value.parse() {
+            Ok(value) => _,
+            _ =>
+        }
+        match chrono::NaiveDateTime::parse_from_str(form_value, "%Y-%m-%dT%H:%M:%S") {
+            Ok(date_time) => Ok(RoleRankScope(date_time)),
+            _ => Err(form_value),
+        }
+    }
 }
 
 /// Finds an organization role by ID.

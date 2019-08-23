@@ -8,10 +8,16 @@ import {
 } from 'titan/http/ApiClient';
 import CardHeader from '@material-ui/core/CardHeader';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem/ListItem';
+import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import Typography from '@material-ui/core/Typography';
 
 export function Roles (props) {
   const fetchRoles = useTitanApiClient(
@@ -25,12 +31,27 @@ export function Roles (props) {
           <CardContent>
             {fetchRoles.data &&
             <List>
-              {fetchRoles.data.filter(role => !!role.rank).forEach(role => (
-                <ListItem>
+              {fetchRoles.data.filter(role => !!role.rank).map((role, index) => (
+                <ListItem key={index}>
                   <ListItemIcon>
-                    <DragIndicatorIcon />
+                    <IconButton href="">
+                      <DragIndicatorIcon />
+                    </IconButton>
                   </ListItemIcon>
                   <ListItemText>{role.role}</ListItemText>
+                  <ListItemText>
+                    <Chip
+                      avatar={(
+                        <Avatar src={role.user_profile.wcf.avatar_url} />
+                      )}
+                      label={role.user_profile.username}
+                    />
+                  </ListItemText>
+                  <ListItemText>
+                    <Typography align="right" component="div">
+                      <Button color="primary">Edit</Button>
+                    </Typography>
+                  </ListItemText>
                 </ListItem>
               ))}
             </List>
@@ -44,7 +65,7 @@ export function Roles (props) {
           <CardContent>
             {fetchRoles.data &&
             <List>
-              {fetchRoles.data.filter(role => !role.rank).forEach(role => (
+              {fetchRoles.data.filter(role => !role.rank).map(role => (
                 <ListItem>
                   <ListItemIcon>
                     <DragIndicatorIcon />

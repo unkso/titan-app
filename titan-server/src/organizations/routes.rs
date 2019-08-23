@@ -13,6 +13,7 @@ use crate::accounts;
 use crate::guards::form::NaiveDateTimeForm;
 use crate::accounts::file_entries;
 use crate::guards::auth_guard;
+use crate::organizations::roles::RoleRankScope;
 
 #[derive(Serialize)]
 pub struct FindOrganizationResponse {
@@ -229,15 +230,16 @@ pub fn get_organization_coc(
         org_id, std::i32::MAX, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
-#[get("/<org_id>/roles")]
+#[get("/<org_id>/roles?<scope>")]
 pub fn get_organization_roles(
     org_id: i32,
+    scope: RoleRankScope,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
 ) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
-    Json(organizations::roles::find_unranked_roles(
-        org_id, &*titan_db, &*wcf_db, &app_config).unwrap())
+    Json(organizations::roles::find_org_roles(
+        org_id, scope, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
 /// [deprecated(note = "Use get_organization_roles instead.")]
