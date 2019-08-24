@@ -24,7 +24,7 @@ import { useSnackbar } from 'notistack';
 export function Members (props) {
   const snackbar = useSnackbar();
   const fetchUsers = useTitanApiClient(ListOrganizationUsersRequest,
-    { org_id: props.organizationId });
+    { orgId: props.organizationId });
   const userCount = fetchUsers.data ? fetchUsers.data.length : 0;
   const users = fetchUsers.data || [];
 
