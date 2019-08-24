@@ -64,7 +64,7 @@ export class Overview extends React.Component {
                   <OrganizationChainOfCommand
                     organizationId={this.props.organizationId} />
                   <CoCActions>
-                    {this.state.childOrgs.map((org, key) => (
+                    {this.state.childOrgs.filter(childOrg => childOrg.is_enabled).map((org, key) => (
                       <Button
                         color="secondary"
                         component={RouteButton}
