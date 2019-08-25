@@ -6,6 +6,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { UserRow } from 'titan/components/members/table/UserRow';
 import Table from '@material-ui/core/Table';
+import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
 
 /**
  * @param {{
@@ -31,13 +32,22 @@ export function UsersTable (props) {
           {props.error ? (
             <TableRow>
               <TableCell colSpan={4}>
-                <Typography align="center">Unable to load users.</Typography>
+                <IconEmptyState
+                  icon="exclamation-circle"
+                  primaryText="Unable to load users"
+                  secondaryText="An unexpected error occurred."
+                  verticalMargin={48}
+                />
               </TableCell>
             </TableRow>
           ) : !props.loading && props.data.length === 0 ? (
             <TableRow>
               <TableCell colSpan={4}>
-                <Typography align="center">No results found.</Typography>
+                <IconEmptyState
+                  icon="users"
+                  primaryText="No users found"
+                  verticalMargin={48}
+                />
               </TableCell>
             </TableRow>
           ) : (

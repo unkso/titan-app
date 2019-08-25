@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ProfileLinkContainer } from './ProfileLinkContainer';
 import { createAclInstanceFromSession } from 'titan/lib/acl';
 import { connect } from 'react-redux';
+import { LIST_USERS_ROUTE } from 'titan/routes';
 
 const SidebarWrapper = styled.nav`
   margin-top: 25px;
@@ -48,7 +49,7 @@ class Sidebar extends React.Component {
         <SidebarContentGroup>
           <SidebarHeading>Community</SidebarHeading>
           <SidebarMenuItem
-            url={'/roster'}
+            url={LIST_USERS_ROUTE}
             label="Members"
             leftIcon={<FontAwesomeIcon icon="users" />}
           />

@@ -31,7 +31,8 @@ import {
   faCheck,
   faLifeRing,
   faSearch,
-  faEllipsisV
+  faEllipsisV,
+  faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faAward);
@@ -58,6 +59,7 @@ library.add(faClipboardList);
 library.add(faLifeRing);
 library.add(faSearch);
 library.add(faEllipsisV);
+library.add(faExclamationCircle);
 
 let config;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
