@@ -4,7 +4,7 @@ import OrganizationsService from 'titan/http/OrganizationsService';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
-import ListItemText from '@material-ui/core/ListItemText';
+import { MemberNameTag } from 'titan/components/members/MemberNameTag';
 
 export class ListSupportLeadership extends React.Component {
   constructor (props) {
@@ -37,9 +37,13 @@ export class ListSupportLeadership extends React.Component {
           <List>
             {this.state.roles.map((role, index) => (
               <ListItem key={index}>
-                <ListItemText
-                  primary={role.user_profile.wcf.username}
-                  secondary={role.role} />
+                <MemberNameTag
+                  avatarUrl={role.user_profile.wcf.avatar_url}
+                  avatarPosition="left"
+                  label={role.role}
+                  labelPosition="below"
+                  username={role.user_profile.wcf.username}
+                />
               </ListItem>
             ))}
           </List>

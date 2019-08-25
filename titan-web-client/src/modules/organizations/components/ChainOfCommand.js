@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import MatAvatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { RouteLink } from 'titan/components/Routes/RouteLink';
 import { ORGANIZATION_DETAILS_ROUTE, routeBuilder } from 'titan/routes';
+import {
+  MemberNameTag,
+  StyledMemberNameTag
+} from 'titan/components/members/MemberNameTag';
 
-const Avatar = styled(MatAvatar)``;
 const Tree = styled.div`
   padding-bottom: 16px;
   position: relative;
@@ -30,8 +31,7 @@ const Leaf = styled.div`
   position: relative;
   margin-bottom: 8px;
   
-  ${Avatar} {
-    background: #ccc;
+  ${StyledMemberNameTag} {
     z-index: 1;
   }
   
@@ -56,8 +56,7 @@ const Leaf = styled.div`
     z-index: 1;
   }
 
-  &.left:first-child,
-  &.right:first-child {
+  &.top {
     align-items: center;
     background: #fff;
     flex-direction: column;
@@ -77,12 +76,8 @@ const Leaf = styled.div`
       display: none;
     }
     
-    ${Avatar} {
+    ${StyledMemberNameTag} {
       margin: auto;
-    }
-    
-    .user-details {
-      text-align: center;
     }
   }
 
@@ -98,12 +93,8 @@ const Leaf = styled.div`
       right: 8px;
     }
     
-    ${Avatar} {
-      margin: 0 16px 0 8px;
-    }
-    
-    .user-details {
-      text-align: right;
+    ${StyledMemberNameTag} {
+      margin-right: 16px;
     }
   }
 
@@ -118,8 +109,8 @@ const Leaf = styled.div`
       left: 8px;
     }
     
-    ${Avatar} {
-      margin: 0 8px 0 16px;
+    ${StyledMemberNameTag} {
+      margin-left: 16px;
     }
   }
 `;
@@ -145,32 +136,41 @@ class ChainOfCommandComponent extends React.Component {
   }
 
   renderLeaf (coc, color, index, isLocal = false) {
-    const side = index % 2 ? 'left' : 'right';
-    const orgRoute = routeBuilder(ORGANIZATION_DETAILS_ROUTE, [coc.organization.slug]);
+    let leafPosition;
+    let avatarPosition;
+    if (index === 0) {
+      avatarPosition = 'top';
+      leafPosition = 'top';
+    } else if (index % 2 === 0) {
+      avatarPosition = 'right';
+      leafPosition = 'left';
+    } else {
+      avatarPosition = 'left';
+      leafPosition = 'right';
+    }
+    const orgRoute = routeBuilder(
+      ORGANIZATION_DETAILS_ROUTE, [coc.organization.slug]);
     return (
       <Leaf
         key={index}
         branchColor={color}
-        className={`leaf ${side}`}>
-        <Avatar
-          style={{ width: 50, height: 50 }}
-          src={coc.user_profile.wcf.avatar_url}
+        className={`leaf ${leafPosition}`}>
+        <MemberNameTag
+          avatarUrl={coc.user_profile.wcf.avatar_url}
+          avatarPosition={avatarPosition}
+          label={(isLocal
+            ? <RouteLink to={orgRoute}>{coc.role}</RouteLink>
+            : coc.role
+          )}
+          labelPosition="below"
+          username={coc.user_profile.wcf.username}
         />
-        <div className="user-details">
-          <Typography>{coc.user_profile.wcf.username}</Typography>
-          <Typography color="textSecondary">
-            {isLocal
-              ? <RouteLink to={orgRoute}>{coc.role}</RouteLink>
-              : coc.role
-            }
-          </Typography>
-        </div>
       </Leaf>
     );
   }
 
   render () {
-    let index = 0;
+    let index = -1;
     const extendedCoc = this.props.extendedCoc.map(coc => {
       index++;
       return this.renderLeaf(
