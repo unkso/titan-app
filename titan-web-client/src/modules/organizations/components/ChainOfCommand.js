@@ -5,6 +5,8 @@ import MatAvatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { RouteLink } from 'titan/components/Routes/RouteLink';
+import { ORGANIZATION_DETAILS_ROUTE, routeBuilder } from 'titan/routes';
 
 const Avatar = styled(MatAvatar)``;
 const Tree = styled.div`
@@ -142,8 +144,9 @@ class ChainOfCommandComponent extends React.Component {
     });
   }
 
-  renderLeaf (coc, color, index) {
+  renderLeaf (coc, color, index, isLocal = false) {
     const side = index % 2 ? 'left' : 'right';
+    const orgRoute = routeBuilder(ORGANIZATION_DETAILS_ROUTE, [coc.organization.slug]);
     return (
       <Leaf
         key={index}
@@ -155,7 +158,12 @@ class ChainOfCommandComponent extends React.Component {
         />
         <div className="user-details">
           <Typography>{coc.user_profile.wcf.username}</Typography>
-          <Typography color="textSecondary">{coc.role}</Typography>
+          <Typography color="textSecondary">
+            {isLocal
+              ? <RouteLink to={orgRoute}>{coc.role}</RouteLink>
+              : coc.role
+            }
+          </Typography>
         </div>
       </Leaf>
     );
@@ -166,7 +174,7 @@ class ChainOfCommandComponent extends React.Component {
     const extendedCoc = this.props.extendedCoc.map(coc => {
       index++;
       return this.renderLeaf(
-        coc, this.props.theme.palette.primary.main, index);
+        coc, this.props.theme.palette.primary.main, index, true);
     });
     const localCoc = this.props.localCoc.map(coc => {
       index++;
