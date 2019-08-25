@@ -6,14 +6,16 @@ import Typography from '@material-ui/core/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const EmptyStateWrapper = styled.div`
-  padding: ${props => `${props.spacing}px`};
+  margin: ${props => `${props.verticalMargin}px ${props.horizontalMargin}px`};
   text-align: center;
 `;
 
 class IconEmptyStateComponent extends React.Component {
   render () {
     return (
-      <EmptyStateWrapper padding={this.props.spacing}>
+      <EmptyStateWrapper
+        horizontalMargin={this.props.horizontalMargin}
+        verticalMargin={this.props.verticalMargin}>
         <FontAwesomeIcon
           icon={this.props.icon}
           size="lg"
@@ -30,14 +32,16 @@ class IconEmptyStateComponent extends React.Component {
 }
 
 IconEmptyStateComponent.propTypes = {
-  spacing: PropTypes.number,
+  horizontalMargin: PropTypes.number,
   icon: PropTypes.string.isRequired,
   primaryText: PropTypes.string.isRequired,
-  secondaryText: PropTypes.string
+  secondaryText: PropTypes.string,
+  verticalMargin: PropTypes.number
 };
 
 IconEmptyStateComponent.defaultProps = {
-  spacing: 8
+  horizontalMargin: 8,
+  verticalMargin: 8
 };
 
 export const IconEmptyState = withTheme(IconEmptyStateComponent);

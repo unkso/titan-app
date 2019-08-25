@@ -9,6 +9,7 @@ import {
   makeTitanApiRequest
 } from 'titan/http/ApiClient';
 import { useSnackbar } from 'notistack';
+import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
 
 export function Reports (props) {
   const [reports, setReports] = useState([]);
@@ -44,7 +45,15 @@ export function Reports (props) {
         />
         }
       </Typography>
-      <ReportsList items={reports} />
+      {reports.length > 0 ? (
+        <ReportsList items={reports} />
+      ) : (
+        <IconEmptyState
+          icon="file-alt"
+          primaryText="No reports have been created"
+          verticalMargin={64}
+        />
+      )}
     </ContentBlock>
   );
 }

@@ -6,6 +6,7 @@ import PageHeaderTitle from 'titan/layouts/dashboard/components/PageHeader/PageH
 import OrganizationsService from 'titan/http/OrganizationsService';
 import { ReportsList } from 'titan/components/Reports/ReportsList';
 import { withSnackbar } from 'notistack';
+import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
 
 export class ManageUnacknowledgedReportsScene extends React.Component {
   constructor (props) {
@@ -43,7 +44,16 @@ export class ManageUnacknowledgedReportsScene extends React.Component {
           <PageHeaderTitle title="Latest Reports" />
         </PageHeader>
         <ContentBlock>
-          <ReportsList items={this.state.reports} />
+          {this.state.reports.length > 0 ? (
+            <ReportsList items={this.state.reports} />
+          ) : (
+            <IconEmptyState
+              icon="file-alt"
+              primaryText="All caught up!"
+              secondaryText="There are no new reports to review"
+              verticalMargin={64}
+            />
+          )}
         </ContentBlock>
       </React.Fragment>
     );

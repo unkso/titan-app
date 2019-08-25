@@ -66,11 +66,11 @@ class Profile extends React.Component {
     }
 
     const canAccessExcuses =
-        createAclInstanceFromSession(this.props.auth.session)
-          .canAccess(['mod.titan:canCreateEventExcuse'], {
-            userId: this.props.profile.user.id,
-            mustHaveOptions: false
-          });
+      createAclInstanceFromSession(this.props.auth.session)
+        .canAccess(['mod.titan:canCreateEventExcuse'], {
+          userId: this.props.profile.user.id,
+          mustHaveOptions: false
+        });
 
     const headerTabs = [<Tab key={0} label="History" />];
 

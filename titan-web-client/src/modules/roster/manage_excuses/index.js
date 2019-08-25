@@ -6,6 +6,7 @@ import { ContentBlock } from 'titan/components/block/ContentBlock';
 import PageHeader
   from 'titan/layouts/dashboard/components/PageHeader/PageHeader';
 import PageHeaderTitle from 'titan/layouts/dashboard/components/PageHeader/PageHeaderTitle';
+import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
 
 export class ExcusesScene extends React.Component {
   constructor (props) {
@@ -37,10 +38,19 @@ export class ExcusesScene extends React.Component {
     return (
       <React.Fragment>
         <PageHeader>
-          <PageHeaderTitle title="Unacknowledged Excuses" />
+          <PageHeaderTitle title="Latest Event Excuses" />
         </PageHeader>
         <ContentBlock>
-          <EventExcuseList items={this.state.excuses} />
+          {this.state.excuses.length > 0 ? (
+            <EventExcuseList items={this.state.excuses} />
+          ) : (
+            <IconEmptyState
+              icon="clipboard-list"
+              primaryText="All caught up!"
+              secondaryText="There are no new event excuses to review"
+              verticalMargin={64}
+            />
+          )}
         </ContentBlock>
       </React.Fragment>
     );
