@@ -82,7 +82,7 @@ export const ROLE_SCOPES = {
  */
 export function ListOrganizationRoles (fields = {}) {
   let { orgId, scope } = fields;
-  if (!scope) {
+  if (scope === undefined) {
     scope = ROLE_SCOPES.ALL;
   }
 

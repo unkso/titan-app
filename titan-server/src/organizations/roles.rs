@@ -3,7 +3,6 @@ use rocket::State;
 use rocket::http::RawStr;
 use rocket::request::FromFormValue;
 use std::collections::VecDeque;
-use std::str;
 use crate::models;
 use crate::schema;
 use crate::accounts;
@@ -15,13 +14,13 @@ use crate::config;
 pub enum RoleRankScope {
     /// Set includes only roles that are in the chain of command for
     /// one or more members.
-    ChainOfCommand,
+    ChainOfCommand = 0,
     /// Set includes only supporting roles, which are not in the chain
     /// of command for other members.
-    Support,
+    Support = 1,
     /// Includes all roles, regardless of their relation to an
     /// organization's leadership structure.
-    All
+    All = 2,
 }
 
 impl<'v> FromFormValue<'v> for RoleRankScope {
@@ -29,12 +28,14 @@ impl<'v> FromFormValue<'v> for RoleRankScope {
 
     fn from_form_value(form_value: &'v RawStr) -> Result<RoleRankScope, &'v RawStr> {
         match form_value.parse() {
-            Ok(value) => _,
-            _ =>
-        }
-        match chrono::NaiveDateTime::parse_from_str(form_value, "%Y-%m-%dT%H:%M:%S") {
-            Ok(date_time) => Ok(RoleRankScope(date_time)),
-            _ => Err(form_value),
+            Ok(value) => {
+                match value {
+                    0 => Ok(RoleRankScope::ChainOfCommand),
+                    1 => Ok(RoleRankScope::Support),
+                    _ => Ok(RoleRankScope::All),
+                }
+            },
+            _ => Err(form_value)
         }
     }
 }

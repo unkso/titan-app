@@ -238,8 +238,10 @@ pub fn get_organization_roles(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
 ) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
-    Json(organizations::roles::find_org_roles(
-        org_id, scope, &*titan_db, &*wcf_db, &app_config).unwrap())
+    let roles = organizations::roles::find_org_roles(
+        org_id, scope, &*titan_db).unwrap();
+    Json(organizations::roles::map_roles_assoc(
+        roles, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
 /// [deprecated(note = "Use get_organization_roles instead.")]
