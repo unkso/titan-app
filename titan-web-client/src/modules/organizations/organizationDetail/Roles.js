@@ -13,10 +13,11 @@ import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import { OrderableList } from 'titan/components/List/OrderableList';
+import { MemberNameTag } from 'titan/components/members/MemberNameTag';
+import CardActions from '@material-ui/core/CardActions';
+import { MemberAutocomplete } from 'titan/components/members/form/MemberAutocomplete';
 
 export function Roles (props) {
   const fetchRoles = useTitanApiClient(ListOrganizationRoles,
@@ -24,6 +25,14 @@ export function Roles (props) {
 
   return (
     <React.Fragment>
+      <ContentBlock>
+        <Card>
+          <CardHeader title="Autocomplete" />
+          <CardContent style={{ height: 500 }}>
+            <MemberAutocomplete />
+          </CardContent>
+        </Card>
+      </ContentBlock>
       <ContentBlock>
         <Card>
           <CardHeader title="Chain of Command" />
@@ -35,15 +44,10 @@ export function Roles (props) {
                   <React.Fragment>
                     <ListItemText>{role.role}</ListItemText>
                     <ListItemText>
-                      <Chip
-                        avatar={(
-                          <Avatar
-                            component="div"
-                            src={role.user_profile.wcf.avatar_url}
-                          />
-                        )}
-                        label={role.user_profile.username}
-                        component="div"
+                      <MemberNameTag
+                        avatarUrl={role.user_profile.wcf.avatar_url}
+                        avatarPosition="left"
+                        username={role.user_profile.username}
                       />
                     </ListItemText>
                     <ListItemText>
@@ -56,6 +60,9 @@ export function Roles (props) {
               />
             }
           </CardContent>
+          <CardActions>
+            <Button color="primary">Add Role</Button>
+          </CardActions>
         </Card>
       </ContentBlock>
       <ContentBlock>
