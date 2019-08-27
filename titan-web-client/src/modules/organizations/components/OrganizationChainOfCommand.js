@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ChainOfCommand } from 'titan/modules/organizations/components/ChainOfCommand';
 import OrganizationsService from 'titan/http/OrganizationsService';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
 
 export class OrganizationChainOfCommand extends React.Component {
   constructor (props) {
@@ -37,19 +36,10 @@ export class OrganizationChainOfCommand extends React.Component {
 
   render () {
     return (
-      <React.Fragment>
-        {this.state.extendedCoc.length || this.state.localCoc.length ? (
-          <ChainOfCommand
-            extendedCoc={this.state.extendedCoc}
-            localCoc={this.state.localCoc}
-          />
-        ) : (
-          <IconEmptyState
-            icon="users"
-            primaryText="There are no members in this organization's Chain of Command."
-          />
-        )}
-      </React.Fragment>
+      <ChainOfCommand
+        extendedCoc={this.state.extendedCoc}
+        localCoc={this.state.localCoc}
+      />
     );
   }
 }

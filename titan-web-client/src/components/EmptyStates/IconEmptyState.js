@@ -22,7 +22,7 @@ class IconEmptyStateComponent extends React.Component {
             fontSize: '4em',
             marginBottom: '8px'
           }} />
-        <Typography variant="h4">{this.props.primaryText}</Typography>
+        <Typography variant="subtitle1">{this.props.primaryText}</Typography>
         <Typography variant="body1" color="textSecondary">{this.props.secondaryText}</Typography>
       </EmptyStateWrapper>
     );
