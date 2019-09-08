@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
+import React from 'react';
+import Async from 'react-select/async';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import MenuItem from 'titan/components/menu/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import { useThrottle } from 'titan/hooks';
-import { ListUsersRequest, useTitanApiClient } from 'titan/http/ApiClient';
+import MenuItem from '@material-ui/core/MenuItem';
+import {
+  ListUsersRequest,
+  makeTitanApiRequest
+} from 'titan/http/ApiClient';
 
 function SingleValue (props) {
-  console.log('data:', props.data);
   return (
     <Chip
       avatar={<Avatar src={props.data.wcf.avatar_url} />}
-      label={`${props.username}`}
+      label={`${props.data.username}`}
+      size="small"
     />
   );
 }
 
 function Option (props) {
-  console.log('option:', props);
   return (
     <MenuItem
       ref={props.innerRef}
@@ -29,17 +30,15 @@ function Option (props) {
         fontWeight: props.isSelected ? 500 : 400
       }}
       {...props.innerProps}
-    >
-      test
-    </MenuItem>
+    >{props.data.username}</MenuItem>
   );
 }
 
 function Menu (props) {
-  console.log('menu:', props);
+  console.log('menu', props);
   return (
     <Paper square {...props.innerProps}>
-      test
+      {props.children}
     </Paper>
   );
 }
@@ -53,10 +52,8 @@ function Control (props) {
     children,
     innerProps,
     innerRef,
-    selectProps: { classes, TextFieldProps }
+    selectProps: { TextFieldProps }
   } = props;
-
-  console.log('control', props.getValue());
 
   return (
     <TextField
@@ -74,42 +71,34 @@ function Control (props) {
   );
 }
 
-/*
-const components = {
-  Control,
-  Menu,
-  Option,
-  SingleValue
-};
-*/
-
 const components = {
   Control,
   SingleValue,
   Menu,
-  Option
+  Option,
+  DropdownIndicator: () => null,
+  LoadingIndicator: () => null
 };
 
 export function MemberAutocomplete () {
-  const [username, setUsername] = useThrottle('', 325);
-  const fetchUsers = useTitanApiClient(
-    ListUsersRequest, { username, limit: 5 });
   return (
-    <Select
+    <Async
       inputId="react-select-single"
       components={components}
       TextFieldProps={{
         label: 'Country',
-        onChange: (e) => {
-          setUsername(e.target.value);
-        },
         InputLabelProps: {
           htmlFor: 'react-select-single',
           shrink: true
         }
       }}
-      placeholder="Search a country (start with a)"
-      options={fetchUsers.data ? fetchUsers.data : []}
+      placeholder="Select user"
+      cacheOptions
+      defaultOptions
+      loadOptions={(username) => {
+        return makeTitanApiRequest(ListUsersRequest, { username, limit: 5 })
+          .then(res => res.data);
+      }}
       onChange={value => {
         console.log('changed:', value);
       }}
