@@ -9,15 +9,17 @@ import { useThrottle } from 'titan/hooks';
 import { ListUsersRequest, useTitanApiClient } from 'titan/http/ApiClient';
 
 function SingleValue (props) {
+  console.log('data:', props.data);
   return (
     <Chip
-      avatar={<Avatar src={props.wcf.avatar_url} />}
+      avatar={<Avatar src={props.data.wcf.avatar_url} />}
       label={`${props.username}`}
     />
   );
 }
 
 function Option (props) {
+  console.log('option:', props);
   return (
     <MenuItem
       ref={props.innerRef}
@@ -28,15 +30,16 @@ function Option (props) {
       }}
       {...props.innerProps}
     >
-      {props.children}
+      test
     </MenuItem>
   );
 }
 
 function Menu (props) {
+  console.log('menu:', props);
   return (
     <Paper square {...props.innerProps}>
-      {props.children}
+      test
     </Paper>
   );
 }
@@ -52,6 +55,8 @@ function Control (props) {
     innerRef,
     selectProps: { classes, TextFieldProps }
   } = props;
+
+  console.log('control', props.getValue());
 
   return (
     <TextField
@@ -79,7 +84,10 @@ const components = {
 */
 
 const components = {
-  Control
+  Control,
+  SingleValue,
+  Menu,
+  Option
 };
 
 export function MemberAutocomplete () {
@@ -92,16 +100,18 @@ export function MemberAutocomplete () {
       components={components}
       TextFieldProps={{
         label: 'Country',
+        onChange: (e) => {
+          setUsername(e.target.value);
+        },
         InputLabelProps: {
           htmlFor: 'react-select-single',
           shrink: true
         }
       }}
       placeholder="Search a country (start with a)"
-      options={fetchUsers.data ? fetchUsers.data.map(user => ({ value: user.username, label: user.username })) : []}
+      options={fetchUsers.data ? fetchUsers.data : []}
       onChange={value => {
         console.log('changed:', value);
-        setUsername(value);
       }}
     />
   );
