@@ -4,6 +4,7 @@
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate diesel;
+extern crate serde_json;
 
 pub mod api;
 pub mod accounts;

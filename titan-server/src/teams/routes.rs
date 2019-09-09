@@ -192,21 +192,88 @@ pub fn reorder_roles(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser
-) -> Status {
+) -> ApiResponse<Option<String>> {
     let titan_db_ref = &*titan_db;
     let is_authorized = teams::roles::is_user_in_parent_coc(
         auth_user.user.id, org_id, titan_db_ref, &*wcf_db, &app_config);
 
     if !is_authorized {
-        return Status::Unauthorized;
+        return ApiResponse::from(ApiError::ValidationError("User not found in parent CoC."));
     }
 
-    let res = teams::roles::reorder_roles(
-        org_id, &request.role_ids, &*titan_db);
-    match res {
-        Ok(_) => Status::Ok,
-        _ => Status::InternalServerError,
+    ApiResponse::from(
+        teams::roles::reorder_roles(org_id, &request.role_ids, &*titan_db)
+            .map(|_| None))
+}
+
+#[post("/<org_id>/roles", format = "application/json", data = "<fields>")]
+pub fn create_organization_role(
+    org_id: i32,
+    fields: Json<models::UpdateOrganizationRole>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser,
+) -> ApiResponse<models::OrganizationRoleWithAssoc> {
+    let titan_db_ref = &*titan_db;
+    let wcf_db_ref = &*wcf_db;
+    let is_valid = match fields.user_id {
+        Some(user_id) => !teams::roles::is_user_in_coc(
+            user_id, org_id, titan_db_ref, wcf_db_ref, &app_config),
+        None => true,
+    };
+
+    if !is_valid {
+        return ApiResponse::from(ApiError::ValidationError("Assignee is already in CoC"));
     }
+
+    let role = teams::roles::create_role(&models::NewOrganizationRole {
+        organization_id: org_id,
+        user_id: fields.user_id,
+        role: fields.role.clone(),
+        rank: fields.rank,
+    }, titan_db_ref)
+        .and_then(|role| teams::roles::map_role_assoc(
+            &role, titan_db_ref, wcf_db_ref, &app_config));
+
+    ApiResponse::from(role)
+}
+
+#[post("/<org_id>/roles/<role_id>", format = "application/json", data = "<fields>")]
+pub fn update_organization_role(
+    role_id: i32,
+    org_id: i32,
+    fields: Json<models::UpdateOrganizationRole>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>
+) -> ApiResponse<models::OrganizationRoleWithAssoc> {
+    let titan_db_ref = &*titan_db;
+    let wcf_db_ref = &*wcf_db;
+    let update = models::UpdateOrganizationRole {
+        user_id: fields.user_id,
+        role: fields.role.clone(),
+        rank: fields.rank,
+    };
+    let is_in_coc = match fields.user_id {
+        Some(user_id) => {
+            // Checks if the user is assigned to another role
+            // in the same COC.
+            teams::roles::find_role_in_coc(user_id, org_id, titan_db_ref, wcf_db_ref, &app_config)
+                .map_or(false, |role| role.organization.id != org_id)
+        },
+        None => false,
+    };
+
+    if is_in_coc {
+        return ApiResponse::from(ApiError::ValidationError("Assignee is already in CoC"));
+    }
+
+    let role = teams::roles::update_role(role_id, org_id, &update, titan_db_ref)
+        .and_then(|role| teams::roles::map_role_assoc(
+            &role, titan_db_ref, wcf_db_ref, &app_config));
+
+    ApiResponse::from(role)
 }
 
 /** ******************************************************************
@@ -308,8 +375,9 @@ pub fn create_organization_report(
     ApiResponse::from(res)
 }
 
-#[post("/reports/<report_id>/ack")]
+#[post("/<org_id>/reports/<report_id>/ack")]
 pub fn ack_organization_report(
+    org_id: i32,
     report_id: i32,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,

@@ -144,6 +144,7 @@ class ReportsListItemComponent extends React.Component {
             <Button onClick={this.closeDialogHandler}>Close</Button>
             {this.props.canAck &&
             <AckReportButton
+              organizationId={this.props.report.role.organization.id}
               reportId={this.props.report.id}
               onAck={report => this.onAck(report)}
             />

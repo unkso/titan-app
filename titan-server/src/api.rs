@@ -4,7 +4,9 @@ use rocket::response::{Responder};
 use rocket::{Response, Request};
 use rocket::http::{ContentType, Status};
 use serde::Serialize;
+use serde_json;
 use crate::db::TitanDatabaseError;
+use std::error::Error;
 
 /// A structure that translates a `Result` into a well-formed API
 /// response.
@@ -58,40 +60,54 @@ impl<'r, T: Serialize> Responder<'r> for ApiResponse<T> {
             Ok(res) => {
                 json!(res).respond_to(req)
             },
-            Err(err) => err.respond_to(req)
+            Err(err) => {
+                err.respond_to(req)
+            }
         }
     }
 }
 
 /// Fields returned from the API when an error occurs.
 pub struct ApiErrorResponse {
-    body: ApiResponseBody,
+    body: ApiErrorResponseBody,
     status: Status,
 }
 
-pub type ApiErrorResponseResult = Result<ApiErrorResponse, Status>;
+pub type ApiErrorResponseResult<'r> = Result<ApiErrorResponse, Status>;
 
-impl From<TitanDatabaseError> for ApiErrorResponseResult {
+impl<'r> From<TitanDatabaseError> for ApiErrorResponseResult<'r> {
     fn from(err: TitanDatabaseError) -> Self {
         match err {
             TitanDatabaseError::DieselError(db_error) => {
                 if db_error == DieselError::NotFound {
                     return Err(Status::NotFound);
                 }
-                Err(Status::InternalServerError)
+
+                Ok(ApiErrorResponse {
+                    body: ApiErrorResponseBody {
+                        code: 500,
+                        description: "Internal server error".to_owned(),
+                        message: Some(db_error.description().to_owned()),
+                    },
+                    status: Status::InternalServerError
+                })
             },
             _ => Err(Status::InternalServerError),
         }
     }
 }
 
-#[derive(Serialize)]
-pub struct ApiResponseBody {
+#[derive(Debug, Serialize)]
+pub struct ApiErrorResponseBody {
+    /// HTTP status code
+    pub code: i16,
+    /// HTTP status description
+    pub description: String,
     /// Describes the cause of an error. The contents of this message
     /// should be easily understood by the user and not expose
     /// sensitive details that may violate the security of the user
     /// or system.
-    pub message: String,
+    pub message: Option<String>,
 }
 
 /// Enumeration of error types that may be returned in a response
@@ -99,6 +115,7 @@ pub struct ApiResponseBody {
 pub enum ApiError {
     AuthenticationError,
     TitanDatabaseError(TitanDatabaseError),
+    ValidationError(&'static str),
 }
 
 impl<'r> Responder<'r> for ApiError {
@@ -109,22 +126,38 @@ impl<'r> Responder<'r> for ApiError {
             ApiError::AuthenticationError => Err(Status::Unauthorized),
             ApiError::TitanDatabaseError(err) =>
                 ApiErrorResponseResult::from(err),
+            ApiError::ValidationError(err) => Ok(ApiErrorResponse {
+                body: ApiErrorResponseBody {
+                    code: 400,
+                    description: "Invalid input".to_owned(),
+                    message: Some(err.to_owned()),
+                },
+                status: Status::BadRequest,
+            })
         };
 
         match result {
             Ok(res) => {
-                let response = json!(res.body);
-                Response::build()
-                    .sized_body(Cursor::new(format!("{:?}", response)))
-                    .header(ContentType::new("application", "json"))
-                    .ok()
+                match serde_json::to_string(&res.body) {
+                    Ok(json) => {
+                        Response::build()
+                            .sized_body(Cursor::new(json))
+                            .header(ContentType::new("application", "json"))
+                            .status(res.status)
+                            .ok()
+                    },
+                    _ => Err(Status::InternalServerError)
+                }
+
             },
-            Err(err) => Err(err)
+            Err(err) => {
+                Err(err)
+            }
         }
     }
 }
 
-impl From<TitanDatabaseError> for ApiError {
+impl<'r> From<TitanDatabaseError> for ApiError {
     fn from(err: TitanDatabaseError) -> Self {
         ApiError::TitanDatabaseError(err)
     }

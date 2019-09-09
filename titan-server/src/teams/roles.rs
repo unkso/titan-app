@@ -53,6 +53,16 @@ pub fn find_by_id(
         .map_err(db::TitanDatabaseError::from)
 }
 
+/// Queries the last inserted role.
+pub fn find_last_inserted(
+    titan_db: &MysqlConnection
+) -> Result<models::OrganizationRole, db::TitanDatabaseError> {
+    schema::organization_roles::table
+        .order_by(schema::organization_roles::id.desc())
+        .first(titan_db)
+        .map_err(db::TitanDatabaseError::from)
+}
+
 /// Queries all the roles belonging to an organization.
 ///
 /// Will still return results if the organization is disabled.
@@ -412,6 +422,33 @@ pub fn reorder_roles(
     })
 }
 
+pub fn create_role(
+    new_role: &models::NewOrganizationRole,
+    titan_db: &MysqlConnection
+) -> Result<models::OrganizationRole, db::TitanDatabaseError> {
+    diesel::insert_into(schema::organization_roles::table)
+        .values(new_role)
+        .execute(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
+    find_last_inserted(titan_db)
+}
+
+pub fn update_role(
+    role_id: i32,
+    org_id: i32,
+    fields: &models::UpdateOrganizationRole,
+    titan_db: &MysqlConnection
+) -> Result<models::OrganizationRole, db::TitanDatabaseError> {
+    let role = schema::organization_roles::table
+        .filter(schema::organization_roles::id.eq(role_id))
+        .filter(schema::organization_roles::organization_id.eq(org_id));
+    diesel::update(role)
+        .set(fields)
+        .execute(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
+    find_by_id(role_id, titan_db)
+}
+
 /// Returns true if the given user is assigned to a role in the COC
 /// above the given organization.
 pub fn is_user_in_parent_coc(
@@ -435,6 +472,19 @@ pub fn is_user_in_parent_coc(
     }
 }
 
+/// Returns true if the given user is assigned to a role given
+/// organization's CoC.
+pub fn is_user_in_coc(
+    user_id: i32,
+    org_id: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> bool {
+    find_role_in_coc(user_id, org_id, titan_db, wcf_db, app_config)
+        .is_some()
+}
+
 pub fn find_role_in_coc(
     user_id: i32,
     org_id: i32,
@@ -442,18 +492,18 @@ pub fn find_role_in_coc(
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> Option<models::OrganizationRoleWithAssoc> {
-    let org_coc_res = find_org_coc(org_id, std::i32::MAX, titan_db, wcf_db, app_config);
-    match org_coc_res {
+    let coc_res = find_org_coc(org_id, std::i32::MAX, titan_db, wcf_db, app_config);
+    match coc_res {
         Ok(mut coc) => {
-            let mut flattened_coc = coc.extended_coc;
-            flattened_coc.append(&mut coc.local_coc);
-            flattened_coc.into_iter().find_map(|role| {
+            let mut roles = coc.extended_coc;
+            roles.append(&mut coc.local_coc);
+            roles.into_iter().find_map(|role| {
                 match role.user_profile.as_ref() {
                     Some(profile) => if profile.id == user_id {
                         Some(role)
                     } else {
                         None
-                    },
+                    }
                     _ => None
                 }
             })
