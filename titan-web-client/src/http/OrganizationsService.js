@@ -94,8 +94,8 @@ class OrganizationsService {
    * The acknowledgement will be associated with the current
    * authenticated user.
    */
-  acknowledgeReport (reportId) {
-    return this.httpClient.post(`/organizations/reports/${reportId}/ack`);
+  acknowledgeReport (orgId, reportId) {
+    return this.httpClient.post(`/organizations/${orgId}/reports/${reportId}/ack`);
   }
 
   /**

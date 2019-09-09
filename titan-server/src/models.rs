@@ -216,6 +216,25 @@ pub struct OrganizationRole {
     pub rank: Option<i32>
 }
 
+#[derive(Deserialize, Insertable)]
+#[table_name = "organization_roles"]
+pub struct NewOrganizationRole {
+    pub organization_id: i32,
+    pub user_id: Option<i32>,
+    pub role: String,
+    pub rank: Option<i32>
+}
+
+#[derive(AsChangeset, Deserialize)]
+#[table_name = "organization_roles"]
+#[changeset_options(treat_none_as_null="true")]
+pub struct UpdateOrganizationRole {
+    #[serde(rename(serialize = "userId", deserialize = "userId"))]
+    pub user_id: Option<i32>,
+    pub role: String,
+    pub rank: Option<i32>
+}
+
 #[derive(AsChangeset)]
 #[table_name = "organization_roles"]
 #[changeset_options(treat_none_as_null="true")]

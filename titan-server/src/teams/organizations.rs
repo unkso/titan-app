@@ -13,7 +13,6 @@ pub fn find_by_id(
     titan_db: &MysqlConnection
 ) -> db::TitanQueryResult<models::Organization> {
     schema::organizations::table
-        .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations::id.eq(id))
         .first::<models::Organization>(titan_db)
         .map_err(db::TitanDatabaseError::from)

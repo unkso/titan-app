@@ -11,19 +11,21 @@ export function AckReportButton (props) {
 
   function acknowledgeReport () {
     setLoading(true);
-    organizationsService.acknowledgeReport(props.reportId).then(res => {
-      setLoading(false);
-      snackbar.enqueueSnackbar('Report acknowledged', {
-        variant: 'success'
-      });
+    organizationsService.acknowledgeReport(props.organizationId, props.reportId)
+      .then(res => {
+        setLoading(false);
+        snackbar.enqueueSnackbar('Report acknowledged', {
+          variant: 'success'
+        });
 
-      props.onAck(res.data);
-    }).catch(() => {
-      setLoading(false);
-      snackbar.enqueueSnackbar('Unable to ack report', {
-        variant: 'error'
+        props.onAck(res.data);
+      })
+      .catch(() => {
+        setLoading(false);
+        snackbar.enqueueSnackbar('Unable to ack report', {
+          variant: 'error'
+        });
       });
-    });
   }
 
   return (

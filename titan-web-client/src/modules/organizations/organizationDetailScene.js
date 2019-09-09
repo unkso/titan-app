@@ -74,7 +74,7 @@ export function OrganizationDetailScene () {
     headerTabs.push(<Tab key={TABS_INDEXES.reports} label="Reports" />);
 
     if (!hasLocalCocRole) {
-      headerTabs.push(<Tab key={TABS_INDEXES.roles} label="Roles" />);
+      headerTabs.push(<Tab key={TABS_INDEXES.roles} label="Settings" />);
     }
   }
 
@@ -114,7 +114,7 @@ export function OrganizationDetailScene () {
 
       {(isMemberOfCoc && !hasLocalCocRole) && (
         <TabPanel value={tabIndex} index={TABS_INDEXES.roles} key={TABS_INDEXES.roles}>
-          <Roles organization={organization} />
+          <Roles orgId={organization.id} />
         </TabPanel>
       )}
     </React.Fragment>

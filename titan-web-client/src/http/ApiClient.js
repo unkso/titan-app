@@ -239,6 +239,35 @@ export function AuthWoltlabLoginRequest (fields) {
 }
 
 /**
+ * Create or update an organization role.
+ *
+ * @param {{id, orgId, user_id, role, rank }} fields
+ */
+export function SaveOrganizationRoleRequest (fields = {}) {
+  const { id, orgId, ...others } = fields;
+
+  if (id) {
+    return {
+      auth: true,
+      config: {
+        url: `/organizations/${orgId}/roles/${id}`,
+        method: 'post',
+        data: others
+      }
+    };
+  }
+
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${orgId}/roles`,
+      method: 'post',
+      data: others
+    }
+  };
+}
+
+/**
  * React hook for sending requests to Titan's API services.
  *
  * @param {Function<{

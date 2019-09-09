@@ -10,6 +10,7 @@ pub fn get_routes() -> Vec<Route> {
         routes::add_user,
         routes::ack_organization_report,
         routes::create_organization_report,
+        routes::create_organization_role,
         routes::get_all,
         routes::get_all_unacknowledged_reports,
         routes::get_organization_by_id,
@@ -25,5 +26,6 @@ pub fn get_routes() -> Vec<Route> {
         routes::list_organization_roles,
         routes::remove_user,
         routes::reorder_roles,
+        routes::update_organization_role,
     ]
 }

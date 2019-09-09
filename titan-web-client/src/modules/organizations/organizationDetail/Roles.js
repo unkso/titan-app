@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as orgActions from 'titan/actions/organizationActions';
 import { useSnackbar } from 'notistack';
 import useTheme from '@material-ui/core/styles/useTheme';
+import { AddRoleButton } from 'titan/components/Roles/AddRoleButton';
+import { getUserMessageFromError } from 'titan/lib/response';
 
 export const StyledListItem = styled(ListItem)`
   &:hover {
@@ -42,6 +44,7 @@ export const StyledListItem = styled(ListItem)`
 export const StyledRole = styled.div`
   align-items: center;
   display: flex;
+  min-height: 40px;
 
   .drag-handle {
     cursor: row-resize;
@@ -71,7 +74,7 @@ const GlobalStyle = createGlobalStyle`
       display: block;
     }
     
-    .role-name {
+    .edit-icon {
       display: none;
     }
   }
@@ -85,28 +88,31 @@ export function Roles (props) {
 
   useEffect(() => {
     makeTitanApiRequest(ListOrganizationRolesRequest,
-      { orgId: props.organization.id, scope: ROLE_SCOPES.RANKED })
+      { orgId: props.orgId, scope: ROLE_SCOPES.RANKED })
       .then(res => {
         dispatch(orgActions.setRoles(res.data));
       });
-  }, [props.organization.id]);
+  }, [props.orgId]);
 
   function updateRoleOrder (dropResult) {
     const previousRoles = [...roles];
     const reorderedRoles = [...roles];
     const tmp = reorderedRoles[dropResult.removedIndex];
-    reorderedRoles[dropResult.removedIndex] = reorderedRoles[dropResult.addedIndex];
-    reorderedRoles[dropResult.addedIndex] = tmp;
-    dispatch(orgActions.setRoles(reorderedRoles));
+    reorderedRoles.splice(dropResult.removedIndex, 1);
+    reorderedRoles.splice(dropResult.addedIndex, 0, tmp);
+    for (let x = 0; x < reorderedRoles.length; x++) {
+      reorderedRoles[x] = { ...reorderedRoles[x], rank: x };
+    }
+    dispatch(orgActions.setRoles([...reorderedRoles]));
     makeTitanApiRequest(ReorderOrganizationRolesRequest,
-      { orgId: props.organization.id, roleIds: reorderedRoles.map(role => role.id) })
+      { orgId: props.orgId, roleIds: reorderedRoles.map(role => role.id) })
       .then(() => {
         snackbar.enqueueSnackbar('Saved', { variant: 'success' });
       })
-      .catch(() => {
+      .catch(err => {
         // If the reorder fails, restore the previous order.
         dispatch(orgActions.setRoles(previousRoles));
-        snackbar.enqueueSnackbar('Failed to reorder roles', { variant: 'error' });
+        snackbar.enqueueSnackbar(getUserMessageFromError(err, 'Failed to reorder roles'), { variant: 'error' });
       });
   }
 
@@ -115,7 +121,12 @@ export function Roles (props) {
       <GlobalStyle dragElShadow={theme.shadows[4]} />
       <ContentBlock>
         <Card>
-          <CardHeader title="Chain of Command" />
+          <CardHeader
+            action={
+              <AddRoleButton orgId={props.orgId} />
+            }
+            title="Chain of Command"
+          />
           <CardContent>
             {roles &&
             <Container
@@ -147,10 +158,16 @@ export function Roles (props) {
                             ) : (
                               <div className="assignee-placeholder">Unassigned</div>
                             )}
+                            <span>{role.role}</span>
                             <div className="report-to-indicator">
                               Reports to <span className="far fa-level-up" />
                             </div>
-                            <span className="role-name">{role.role}</span>
+                            <AddRoleButton
+                              orgId={props.orgId}
+                              roleId={role.id}
+                              roleName={role.role}
+                              roleAssignee={role.user_profile}
+                            />
                           </div>
                         </StyledRole>
                       </ListItemText>
