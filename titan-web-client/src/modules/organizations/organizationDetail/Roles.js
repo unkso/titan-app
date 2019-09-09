@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ContentBlock } from 'titan/components/block/ContentBlock';
 import Card from '@material-ui/core/Card';
-import { CardContent } from '@material-ui/core';
+import {
+  CardContent,
+  DialogActions,
+  DialogContent,
+  DialogTitle, TextField
+} from '@material-ui/core';
 import {
   ListOrganizationRoles, ROLE_SCOPES,
   useTitanApiClient
@@ -18,21 +23,40 @@ import { OrderableList } from 'titan/components/List/OrderableList';
 import { MemberNameTag } from 'titan/components/members/MemberNameTag';
 import CardActions from '@material-ui/core/CardActions';
 import { MemberAutocomplete } from 'titan/components/members/form/MemberAutocomplete';
+import Dialog from '@material-ui/core/Dialog';
+import Row from 'titan/components/Grid/Row';
+import Column from 'titan/components/Grid/Column';
 
 export function Roles (props) {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const fetchRoles = useTitanApiClient(ListOrganizationRoles,
     { orgId: props.organization.id, scope: ROLE_SCOPES.RANKED });
 
   return (
     <React.Fragment>
-      <ContentBlock>
-        <Card>
-          <CardHeader title="Autocomplete" />
-          <CardContent style={{ height: 500 }}>
-            <MemberAutocomplete />
-          </CardContent>
-        </Card>
-      </ContentBlock>
+      <Dialog open={dialogOpen} fullWidth maxWidth="sm">
+        <DialogTitle>Organization Role</DialogTitle>
+        <DialogContent>
+          <Row>
+            <Column>
+              <TextField label="Name" />
+            </Column>
+          </Row>
+          <Row>
+            <Column grow={1}>
+              <MemberAutocomplete
+                inputLabel="Assignee"
+                inputPlaceholder="unassigned"
+                onChange={() => {}}
+              />
+            </Column>
+          </Row>
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={() => setDialogOpen(false)}>Close</Button>
+          <Button color="primary">Save</Button>
+        </DialogActions>
+      </Dialog>
       <ContentBlock>
         <Card>
           <CardHeader title="Chain of Command" />
@@ -52,7 +76,9 @@ export function Roles (props) {
                     </ListItemText>
                     <ListItemText>
                       <Typography align="right" component="div">
-                        <Button color="primary">Edit</Button>
+                        <Button
+                          color="primary"
+                          onClick={() => setDialogOpen(true)}>Edit</Button>
                       </Typography>
                     </ListItemText>
                   </React.Fragment>
