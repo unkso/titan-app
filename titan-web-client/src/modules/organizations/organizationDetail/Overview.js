@@ -11,6 +11,7 @@ import { ListSupportLeadership } from 'titan/modules/organizations/components/Li
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { RouteButton } from 'titan/components/Routes/RouteLink';
+import { MemberNameTag } from 'titan/components/members/MemberNameTag';
 
 const CoCActions = styled.div`
   font-size: 12px;
