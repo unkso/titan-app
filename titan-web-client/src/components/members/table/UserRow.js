@@ -11,6 +11,7 @@ import { Menu } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { MemberNameTag } from 'titan/components/members/MemberNameTag';
 
 /**
  * @param {{user: {}, onRemove: Function}} props
@@ -18,6 +19,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 export function UserRow (props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isOpen = Boolean(anchorEl);
+  const orgRoute = routeBuilder(USER_PROFILE_ROUTE, [props.user.id]);
 
   function removeUser () {
     setAnchorEl(undefined);
@@ -27,17 +29,11 @@ export function UserRow (props) {
   return (
     <TableRow key={props.user.id} hover>
       <TableCell>
-        <Row>
-          <Column>
-            <Avatar
-              style={{ width: 20, height: 20 }}
-              src={props.user.wcf.avatar_url}
-            />
-          </Column>
-          <Column>
-            <RouteLink to={routeBuilder(USER_PROFILE_ROUTE, [props.user.id])}>{props.user.username}</RouteLink>
-          </Column>
-        </Row>
+        <MemberNameTag
+          avatarUrl={props.user.wcf.avatar_url}
+          username={<RouteLink to={orgRoute}>{props.user.username}</RouteLink>}
+          size="small"
+        />
       </TableCell>
       <TableCell>{formatDate(props.user.wcf.last_activity_time,
         'MMMM dd, yyyy')}</TableCell>

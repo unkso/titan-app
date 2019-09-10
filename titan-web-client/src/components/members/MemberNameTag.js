@@ -4,29 +4,68 @@ import Avatar from '@material-ui/core/Avatar';
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 
-/**
- * Displays general information about a titan user, including their
- * name and an optional label (i.e. role, organization, etc.).
- *
- * {@code
- * <MemberNameTag
- *   avatarUrl={avatarUrl}
- *   avatarPosition="left"
- *   label={organizationName}
- *   labelPosition="below"
- *   username={username}"
- * />
- * }
- */
 export const StyledMemberNameTag = styled.div`
   align-items: center;
   display: flex;
   flex-direction: ${props => props.avatarPosition === 'top' ? 'column' : 'row'};
   text-align: ${props => props.avatarPosition === 'top' ? 'center' : props.avatarPosition};
+  
+  .username {
+    font-size: 14px;
+  }
+
+  .detail-label {
+    font-size: 12px;
+  }
+
+  &.small {
+    .avatar {
+      height: 32px;
+      width: 32px;
+    }
+    
+    .username {
+      font-size: 16px;
+    }
+    
+    .detail-label {
+      font-size: 13px;
+    }
+  }
+  
+  &.medium {
+    .avatar {
+      height: 36px;
+      width: 36px;
+    }
+  
+    .username {
+      font-size: 16px;
+    }
+  
+    .detail-label {
+      font-size: 13px;
+    }
+  }
+  
+  &.large {
+    .avatar {
+      height: 48px;
+      width: 48px;
+    }
+
+    .username {
+      font-size: 16px;
+    }
+
+    .detail-label {
+      font-size: 14px;
+    }
+  }
 
   .avatar {
-    height: 50px;
-    width: 50px;
+    height: 24px;
+    width: 24px;
 
     &.top {
       margin-bottom: 8px;
@@ -53,19 +92,34 @@ export const StyledMemberNameTagDetails = styled.div`
   }
 `;
 
+/**
+ * Displays general information about a titan user, including their
+ * name and an optional label (i.e. role, organization, etc.).
+ *
+ * @example
+ * <MemberNameTag
+ *   avatarUrl={avatarUrl}
+ *   avatarPosition="left"
+ *   label={organizationName}
+ *   labelPosition="below"
+ *   username={username}"
+ * />
+ */
 export function MemberNameTag (props) {
   const avatarClass = `avatar ${props.avatarPosition}`;
   return (
-    <StyledMemberNameTag avatarPosition={props.avatarPosition}>
+    <StyledMemberNameTag avatarPosition={props.avatarPosition} className={props.size}>
       <Avatar
         className={avatarClass}
         component="div"
         src={props.avatarUrl}
       />
       <StyledMemberNameTagDetails labelPosition={props.labelPosition}>
-        <Typography component="div">{props.username}</Typography>
+        <Typography component="div" className="username">
+          {props.username}
+        </Typography>
         <Typography
-          className="profile-label"
+          className="detail-label"
           color="textSecondary"
           component="div">{props.label}</Typography>
       </StyledMemberNameTagDetails>
@@ -78,5 +132,12 @@ MemberNameTag.propTypes = {
   avatarPosition: PropTypes.oneOf(['left', 'right', 'top']),
   label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   labelPosition: PropTypes.oneOf(['above', 'below']),
-  username: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired
+  username: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
+  size: PropTypes.oneOf(['small', 'medium', 'large'])
+};
+
+MemberNameTag.defaultProps = {
+  avatarPosition: 'left',
+  labelPosition: 'below',
+  size: ''
 };

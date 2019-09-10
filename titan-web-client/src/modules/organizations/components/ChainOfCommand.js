@@ -164,6 +164,7 @@ class ChainOfCommandComponent extends React.Component {
           )}
           labelPosition="below"
           username={coc.user_profile.wcf.username}
+          size="large"
         />
       </Leaf>
     );
