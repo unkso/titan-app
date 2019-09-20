@@ -59,6 +59,37 @@ export function ListUsersRequest (fields = {}) {
   };
 }
 
+export const ROLE_SCOPES = {
+  RANKED: 0,
+  SUPPORT: 1,
+  ALL: 2
+};
+
+/**
+ * Lists an organization's roles.
+ *
+ * @param {{orgId: number, scope: string}} fields
+ * @returns {{
+ *  auth: boolean,
+ *  config: {method: string, params: {limit, username}, url: string}
+ * }}
+ */
+export function ListOrganizationRoles (fields = {}) {
+  let { orgId, scope } = fields;
+  if (scope === undefined) {
+    scope = ROLE_SCOPES.ALL;
+  }
+
+  return {
+    auth: false,
+    config: {
+      url: `/organizations/${orgId}/roles`,
+      method: 'get',
+      params: { scope }
+    }
+  };
+}
+
 /**
  * Lists all users in an organization.
  *
