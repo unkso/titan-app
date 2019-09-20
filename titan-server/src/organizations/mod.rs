@@ -14,6 +14,7 @@ pub fn get_routes() -> Vec<Route> {
         routes::get_all_unacknowledged_reports,
         routes::get_organization_by_id,
         routes::get_organization_by_slug,
+        routes::get_organization_roles,
         routes::get_organization_users,
         routes::get_parent_role,
         routes::list_organization_roles,

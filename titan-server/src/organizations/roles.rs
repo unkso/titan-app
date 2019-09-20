@@ -1,11 +1,44 @@
 use diesel::prelude::*;
 use rocket::State;
+use rocket::http::RawStr;
+use rocket::request::FromFormValue;
 use std::collections::VecDeque;
 use crate::models;
 use crate::schema;
 use crate::accounts;
 use crate::organizations;
 use crate::config;
+
+/// Indicates the relation of a role or set of roles to an
+/// organization's chain of command.
+pub enum RoleRankScope {
+    /// Set includes only roles that are in the chain of command for
+    /// one or more members.
+    ChainOfCommand = 0,
+    /// Set includes only supporting roles, which are not in the chain
+    /// of command for other members.
+    Support = 1,
+    /// Includes all roles, regardless of their relation to an
+    /// organization's leadership structure.
+    All = 2,
+}
+
+impl<'v> FromFormValue<'v> for RoleRankScope {
+    type Error = &'v RawStr;
+
+    fn from_form_value(form_value: &'v RawStr) -> Result<RoleRankScope, &'v RawStr> {
+        match form_value.parse() {
+            Ok(value) => {
+                match value {
+                    0 => Ok(RoleRankScope::ChainOfCommand),
+                    1 => Ok(RoleRankScope::Support),
+                    _ => Ok(RoleRankScope::All),
+                }
+            },
+            _ => Err(form_value)
+        }
+    }
+}
 
 /// Finds an organization role by ID.
 pub fn find_by_id(
@@ -287,6 +320,26 @@ pub fn find_parent_role_by_org(
     }
 }
 
+pub fn find_org_roles(
+    org_id: i32,
+    rank_scope: RoleRankScope,
+    titan_db: &MysqlConnection,
+) -> QueryResult<Vec<models::OrganizationRole>> {
+    let mut query = schema::organization_roles::table
+        .filter(schema::organization_roles::organization_id.eq(org_id))
+        .into_boxed();
+    query = match rank_scope {
+        RoleRankScope::ChainOfCommand => query.filter(
+            schema::organization_roles::rank.is_not_null()),
+        RoleRankScope::Support => query.filter(
+            schema::organization_roles::rank.is_null()),
+        _ => query
+    };
+
+    query.get_results::<models::OrganizationRole>(titan_db)
+}
+
+/// [deprecated(note = "Use find_org_roles instead.")]
 pub fn find_unranked_roles(
     org_id: i32,
     titan_db: &MysqlConnection,
