@@ -218,6 +218,36 @@ pub fn get_parent_role(
     }
 }
 
+#[derive(Deserialize)]
+pub struct ReorderRolesRequest {
+    role_ids: Vec<i32>,
+}
+
+#[post("/<org_id>/roles:reorder", format = "application/json", data = "<request>")]
+pub fn reorder_roles(
+    org_id: i32,
+    request: Json<ReorderRolesRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Status {
+    let titan_db_ref = &*titan_db;
+    let is_authorized = organizations::roles::is_user_in_parent_coc(
+        auth_user.user.id, org_id, titan_db_ref, &*wcf_db, &app_config);
+
+    if !is_authorized {
+        return Status::Unauthorized;
+    }
+
+    let res = organizations::roles::reorder_roles(
+        org_id, &request.role_ids, &*titan_db);
+    match res {
+        Ok(_) => Status::Ok,
+        _ => Status::InternalServerError,
+    }
+}
+
 /** ******************************************************************
  *  Reports
  ** *****************************************************************/
