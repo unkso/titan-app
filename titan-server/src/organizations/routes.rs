@@ -245,6 +245,30 @@ pub fn get_organization_roles(
         roles, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
+#[post("/<org_id>/roles", format = "application/json", data = "<role>")]
+pub fn create_role(
+    org_id: i32,
+    role: Json<models::NewOrganizationRole>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) ->  {
+    let titan_db_ref = &*titan_db;
+    if organizations::roles::is_user_in_parent_coc(auth_user.user.id, org_id, titan_db_ref, &*wcf_db, &app_config) {
+        return json!(organizations::roles::create(&role));
+    }
+}
+
+#[patch("/<org_id>/roles/<role_id>")]
+pub fn update_role(
+    org_id: i32,
+    role_id: i32,
+    titan_db: TitanPrimary
+) {
+
+}
+
 /// [deprecated(note = "Use get_organization_roles instead.")]
 #[get("/<org_id>/roles/unranked")]
 pub fn get_organization_unranked_roles(

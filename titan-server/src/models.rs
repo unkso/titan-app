@@ -216,6 +216,15 @@ pub struct OrganizationRole {
     pub rank: Option<i32>
 }
 
+#[derive(Insertable)]
+#[table_name = "organization_roles"]
+pub struct NewOrganizationRole {
+    pub organization_id: i32,
+    pub user_id: Option<i32>,
+    pub role: String,
+    pub rank: Option<i32>
+}
+
 #[derive(AsChangeset)]
 #[table_name = "organization_roles"]
 #[changeset_options(treat_none_as_null="true")]

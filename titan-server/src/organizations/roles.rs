@@ -52,6 +52,15 @@ pub fn find_by_id(
         .first(titan_db)
 }
 
+/// Queries the last inserted organization role.
+pub fn find_last_inserted(
+    titan_db: &MysqlConnection
+) -> QueryResult<models::OrganizationRole> {
+    schema::organization_roles::table
+        .order_by(schema::organization_roles::id.desc())
+        .first(titan_db)
+}
+
 /// Queries all the roles belonging to an organization.
 ///
 /// Will still return results if the organization is disabled.
@@ -424,6 +433,17 @@ pub fn is_user_in_parent_coc(
         },
         _ => false
     }
+}
+
+pub fn create(
+    role: &models::NewOrganizationRole,
+    titan_db: &MysqlConnection
+) -> QueryResult<models::OrganizationRole> {
+    let role = diesel::insert_into(schema::organization_roles::table)
+        .values(role)
+        .execute(titan_db);
+
+    find_last_inserted(titan_db)
 }
 
 pub fn map_roles_assoc(
