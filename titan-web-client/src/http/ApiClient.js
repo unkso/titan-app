@@ -183,6 +183,26 @@ export function ListOrganizationChainOfCommandRequest (fields) {
 }
 
 /**
+ * Login using woltlab credentials.
+ *
+ * @param {{userId: string, token: string}} fields
+ * @returns {{auth: boolean, config: {method: string, url: string}}}
+ */
+export function AuthWoltlabLoginRequest (fields) {
+  return {
+    auth: false,
+    config: {
+      url: '/auth/woltlab',
+      method: 'post',
+      data: {
+        cookie_password: fields.token,
+        user_id: fields.userId
+      }
+    }
+  };
+}
+
+/**
  * React hook for sending requests to Titan's API services.
  *
  * @param {Function<{
