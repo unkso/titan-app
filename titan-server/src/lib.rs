@@ -5,6 +5,7 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate diesel;
 
+pub mod api;
 pub mod accounts;
 pub mod config;
 pub mod db;
