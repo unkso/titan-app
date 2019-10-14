@@ -16,14 +16,10 @@ export function AddMembersDialog (props) {
         color="primary"
         variant="contained"
         onClick={() => setDialogOpen(true)}>Add Members</Button>
-      <Dialog fullWidth maxWidth="sm" open={dialogOpen} onExit={() => props.onClose()}>
+      <Dialog fullWidth maxWidth="sm" open={dialogOpen}>
         <DialogTitle>Add Members</DialogTitle>
         <DialogContent>
-          <AddMembersForm
-            orgId={props.orgId}
-            orgCoc={props.orgCoc}
-            users={props.users}
-          />
+          <AddMembersForm />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Done</Button>

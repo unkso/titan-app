@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import PageHeader from '../../layouts/dashboard/components/PageHeader/PageHeader';
 import PageHeaderTitle from '../../layouts/dashboard/components/PageHeader/PageHeaderTitle';
-import OrganizationsService from '../../http/OrganizationsService';
 import { Tab, Tabs } from '@material-ui/core';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { TabPanel } from 'titan/components/tabs/TabPanel';
 import { Overview } from 'titan/modules/organizations/organizationDetail/Overview';
 import { Reports } from 'titan/modules/organizations/organizationDetail/Reports';
 import { Members } from 'titan/modules/organizations/organizationDetail/Members';
+<<<<<<< 67f4a5945a2e7030b85e79911e9431216c1bd715
 
 class OrganizationDetailSceneComponent extends React.Component {
   constructor (props) {
@@ -41,89 +41,98 @@ class OrganizationDetailSceneComponent extends React.Component {
         this.setState({ organization: res.data });
         return this.organizationsService.findChainOfCommand(
           res.data.id);
-      })
-      .then((res) => {
-        const coc = res.data.local_coc.concat(res.data.extended_coc);
-        const userId = this.props.auth.session.user.id;
+=======
+import * as orgActions from 'titan/actions/organizationActions';
+import {
+  GetOrganizationBySlugRequest,
+  ListOrganizationChainOfCommandRequest,
+  makeTitanApiRequest
+} from 'titan/http/ApiClient';
 
-        this.setState({
-          chainOfCommand: coc,
-          hasLocalCocRole: !!res.data.local_coc.find(
-            role => role.user_profile.id === userId),
-          isMemberOfCoc: !!coc.find(role =>
-            role.user_profile.id === userId)
-        });
+export function OrganizationDetailScene () {
+  const dispatch = useDispatch();
+  const { slug } = useParams();
+  const [tabIndex, setTabIndex] = useState(0);
+  const chainOfCommand = useSelector(
+    state => state.organization.chainOfCommand);
+  const organization = useSelector(state => state.organization.details);
+  const [hasLocalCocRole, setHasLocalCocRole] = useState(false);
+  const [isMemberOfCoc, setIsMemberOfCoc] = useState(false);
+  const authSessionUserId = useSelector(state =>
+    state.auth.session.user.id);
+
+  useEffect(() => {
+    dispatch(orgActions.clear());
+    makeTitanApiRequest(GetOrganizationBySlugRequest, { slug })
+      .then(res => {
+        dispatch(orgActions.setDetails(res.data));
+        return makeTitanApiRequest(ListOrganizationChainOfCommandRequest,
+          { id: res.data.id });
+>>>>>>> Refactored organization state management
+      })
+      .then(res => {
+        const coc = res.data.local_coc.concat(res.data.extended_coc);
+
+        dispatch(orgActions.setChainOfCommand(res.data));
+        setHasLocalCocRole(!!res.data.local_coc.find(
+          role => role.user_profile.id === authSessionUserId));
+        setIsMemberOfCoc(!!coc.find(role =>
+          role.user_profile.id === authSessionUserId));
       })
       .catch(err => {
         console.error(err);
         window.location = '/organizations';
-      })
-      .finally(() => {
-        this.setState({ loading: false });
       });
+
+    return () => {
+      dispatch(orgActions.clear());
+    };
+  }, [slug]);
+
+  if (!organization || !chainOfCommand) {
+    return null;
   }
 
-  setTab (index) {
-    this.setState({ tab: index });
+  const headerTabs = [
+    <Tab key={0} label="Overview" />,
+    <Tab key={1} label="Members" />
+  ];
+  if (isMemberOfCoc) {
+    headerTabs.push(<Tab key={2} label="Reports" />);
   }
 
-  render () {
-    if (!this.state.organization) {
-      return null;
-    }
-
-    const headerTabs = [
-      <Tab key={0} label="Overview" />,
-      <Tab key={1} label="Members" />
-    ];
-    if (this.state.isMemberOfCoc) {
-      headerTabs.push(<Tab key={2} label="Reports" />);
-    }
-
-    return (
-      <React.Fragment>
-        <PageHeader>
-          <PageHeaderTitle title={this.state.organization.name} />
-          <Tabs
-            onChange={(e, index) => this.setTab(index)}
-            value={this.state.tab}>
-            {headerTabs}
-          </Tabs>
-        </PageHeader>
-
-        {this.state.tab === 0 &&
-          <Overview organizationId={this.state.organization.id} />
-        }
-
-        {this.state.tab === 1 &&
-          <Members
-            organizationId={this.state.organization.id}
-            orgCoc={this.state.chainOfCommand}
-            canAddMembers={this.state.isMemberOfCoc}
-            canRemoveMembers={this.state.isMemberOfCoc}
-          />
-        }
-
-        {this.state.tab === 2 &&
-          <Reports
-            canCreateReport={this.state.hasLocalCocRole}
-            organization={this.state.organization}
-          />
-        }
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <PageHeader>
+        <PageHeaderTitle title={organization.name} />
+        <Tabs
+          onChange={(e, index) => setTabIndex(index)}
+          value={tabIndex}>
+          {headerTabs}
+        </Tabs>
+      </PageHeader>
+      <TabPanel value={tabIndex} index={0}>
+        <Overview
+          orgId={organization.id}
+          orgCoc={chainOfCommand}
+        />
+      </TabPanel>
+      <TabPanel value={tabIndex} index={1}>
+        <Members
+          organizationId={organization.id}
+          orgCoc={chainOfCommand}
+          canAddMembers={isMemberOfCoc}
+          canRemoveMembers={isMemberOfCoc}
+        />
+      </TabPanel>
+      {isMemberOfCoc &&
+      <TabPanel value={tabIndex} index={2}>
+        <Reports
+          canCreateReport={hasLocalCocRole}
+          organization={organization}
+        />
+      </TabPanel>
+      }
+    </React.Fragment>
+  );
 }
-
-OrganizationDetailSceneComponent.propTypes = {
-  match: PropTypes.object
-};
-
-function mapStateToProps (state) {
-  return {
-    auth: state.auth
-  };
-}
-
-export const OrganizationDetailScene = withRouter(
-  connect(mapStateToProps)(OrganizationDetailSceneComponent));

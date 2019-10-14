@@ -7,10 +7,12 @@ import {
   ORGANIZATION_DETAILS_ROUTE,
   ORGANIZATIONS_LIST_ROUTE
 } from 'titan/routes';
+import organizationReducer from 'titan/reducers/organizationReducer';
 
 export default function () {
   return {
-    name: 'organizations',
+    name: 'organization',
+    reducer: organizationReducer,
     routes: [
       {
         layout: DashboardLayout,
