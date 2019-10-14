@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  ListOrganizationUsersRequest,
+  ListOrganizationMembersRequest,
   makeTitanApiRequest,
-  RemoveUserFromOrganizationRequest,
-  useTitanApiClient
+  RemoveUserFromOrganizationRequest
 } from 'titan/http/ApiClient';
 import { ContentBlock } from 'titan/components/block/ContentBlock';
 import { UsersTable } from 'titan/components/members/table/UsersTable';
@@ -12,27 +11,40 @@ import Typography from '@material-ui/core/Typography';
 import { AddMembersDialog } from 'titan/components/members/dialog/AddMembersDialog';
 import { CardContent } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
+import * as orgActions from 'titan/actions/organizationActions';
+import { useForceUpdate } from 'titan/hooks';
 
 /**
  * @param {{
  *  organizationId: number,
  *  canAddMembers: boolean,
- *  canRemoveMembers: boolean,
- *  orgCoc: []
+ *  canRemoveMembers: boolean
  * }} props
  */
 export function Members (props) {
   const snackbar = useSnackbar();
-  const fetchUsers = useTitanApiClient(ListOrganizationUsersRequest,
-    { orgId: props.organizationId });
-  const userCount = fetchUsers.data ? fetchUsers.data.length : 0;
-  const users = fetchUsers.data || [];
+  const dispatch = useDispatch();
+  const members = useSelector(state => state.organization.members);
+  const memberCount = members ? members.length : 0;
 
-  function removeUser (user) {
+  useEffect(() => {
+    loadMembers();
+  }, [props.organizationId]);
+
+  function loadMembers () {
+    makeTitanApiRequest(ListOrganizationMembersRequest,
+      { orgId: props.organizationId })
+      .then(res => {
+        dispatch(orgActions.setMembers(res.data));
+      });
+  }
+
+  function removeUser (member) {
     makeTitanApiRequest(RemoveUserFromOrganizationRequest,
-      { orgId: props.organizationId, userId: user.id })
+      { orgId: props.organizationId, userId: member.id })
       .then(() => {
-        fetchUsers.reload();
+        dispatch(orgActions.removeMember(member));
         snackbar.enqueueSnackbar('Member removed', {
           variant: 'success'
         });
@@ -50,21 +62,20 @@ export function Members (props) {
       {props.canAddMembers &&
       <ContentBlock>
         <Typography align="right">
-          <AddMembersDialog
-            orgId={props.organizationId}
-            orgCoc={props.orgCoc}
-            users={users}
-            onClose={() => fetchUsers.reload()}
-          />
+          <AddMembersDialog />
         </Typography>
       </ContentBlock>
       }
       <ContentBlock>
         <Card>
           <CardContent>
-            <Typography align="right" style={{ marginTop: 8 }}>showing {userCount} of {userCount}</Typography>
+            <Typography align="right" style={{ marginTop: 8 }}>showing {memberCount} of {memberCount}</Typography>
           </CardContent>
-          <UsersTable {...fetchUsers} onRemove={removeUserFunc} />
+          <UsersTable
+            data={members || []}
+            loading={members !== null}
+            onRemove={removeUserFunc}
+          />
         </Card>
       </ContentBlock>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ReportsList } from 'titan/components/Reports/ReportsList';
 import { ContentBlock } from 'titan/components/block/ContentBlock';
@@ -10,16 +10,20 @@ import {
 } from 'titan/http/ApiClient';
 import { useSnackbar } from 'notistack';
 import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
+import { useDispatch, useSelector } from 'react-redux';
+import * as orgActions from 'titan/actions/organizationActions';
 
 export function Reports (props) {
-  const [reports, setReports] = useState([]);
+  const dispatch = useDispatch();
+  const reports = useSelector(
+    state => state.organization.reports);
   const snackbar = useSnackbar();
 
   useEffect(() => {
     makeTitanApiRequest(ListOrganizationReportsRequest,
       { orgId: props.organization.id })
       .then(res => {
-        setReports(res.data);
+        dispatch(orgActions.setReports(res.data));
       })
       .catch(() => {
         snackbar.enqueueSnackbar('Unable to load reports', {
@@ -32,7 +36,11 @@ export function Reports (props) {
     const updatedReports = [...reports, report];
     reports.sort((x, y) =>
       x.term_start_date < y.term_start_date ? 1 : -1);
-    setReports(updatedReports);
+    dispatch(orgActions.setReports(updatedReports));
+  }
+
+  if (!reports) {
+    return null;
   }
 
   return (

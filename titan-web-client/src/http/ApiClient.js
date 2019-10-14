@@ -74,7 +74,7 @@ export const ROLE_SCOPES = {
  *  config: {method: string, params: {limit, username}, url: string}
  * }}
  */
-export function ListOrganizationRoles (fields = {}) {
+export function ListOrganizationRolesRequest (fields = {}) {
   let { orgId, scope } = fields;
   if (scope === undefined) {
     scope = ROLE_SCOPES.ALL;
@@ -91,15 +91,15 @@ export function ListOrganizationRoles (fields = {}) {
 }
 
 /**
- * Lists all users in an organization.
+ * Lists all members in an organization.
  *
  * @param {{orgId: number}} fields
  * @returns {{auth: boolean, config: {method: string, url: string}}}
  */
-export function ListOrganizationUsersRequest (fields = {}) {
+export function ListOrganizationMembersRequest (fields = {}) {
   const { orgId } = fields;
   return {
-    auth: false,
+    auth: true,
     config: {
       url: `/organizations/${orgId}/users`,
       method: 'get'
@@ -132,6 +132,51 @@ export function ListFileEntryTypes () {
     auth: true,
     config: {
       url: `/users/file-entry-types`,
+      method: 'get'
+    }
+  };
+}
+
+/**
+ * Finds an organizations with the given slug.
+ *
+ * @param {string} fields.slug - The url friendly name of an organization.
+ */
+export function GetOrganizationBySlugRequest (fields) {
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${fields.slug}`,
+      method: 'get'
+    }
+  };
+}
+
+/**
+ * List an organization's chan of command.
+ *
+ * @param {number} fields.id
+ */
+export function ListOrganizationChildrenRequest (fields) {
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${fields.id}/children`,
+      method: 'get'
+    }
+  };
+}
+
+/**
+ * List an organization's chan of command.
+ *
+ * @param {number} fields.id
+ */
+export function ListOrganizationChainOfCommandRequest (fields) {
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${fields.id}/coc`,
       method: 'get'
     }
   };

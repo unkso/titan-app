@@ -17,11 +17,15 @@ import Avatar from '@material-ui/core/Avatar';
 import Row from 'titan/components/Grid/Row';
 import { Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
+import * as orgActions from 'titan/actions/organizationActions';
 
-/**
- * @param {{orgId, orgCoc, users}} props
- */
-export function AddMembersForm (props) {
+export function AddMembersForm () {
+  const dispatch = useDispatch();
+  const orgId = useSelector(state => state.organization.details.id);
+  const chainOfCommand = useSelector(state =>
+    state.organization.chainOfCommand);
+  const members = useSelector(state => state.organization.members);
   const [addedUsers, setAddedUsers] = useState([]);
   const [username, setUsername] = useThrottle('', 325);
   const fetchUsers = useTitanApiClient(
@@ -29,15 +33,17 @@ export function AddMembersForm (props) {
   const snackbar = useSnackbar();
 
   useEffect(() => {
-    setAddedUsers(props.users.map(user => user.id)
-      .concat(props.orgCoc.map(role => role.user_profile.id)));
-  }, [props.users]);
+    setAddedUsers(members.map(user => user.id)
+      .concat(chainOfCommand.local_coc.map(role => role.user_profile.id))
+      .concat(chainOfCommand.extended_coc.map(role => role.user_profile.id)));
+  }, [members]);
 
   // TODO Handle users already assigned to role in COC.
-  function addMember (userId) {
-    makeTitanApiRequest(AddUserToOrganizationRequest, { orgId: props.orgId, userId })
+  function addMember (member) {
+    makeTitanApiRequest(AddUserToOrganizationRequest, { orgId, userId: member.id })
       .then(() => {
-        setAddedUsers([...addedUsers, userId]);
+        dispatch(orgActions.addMember(member));
+        setAddedUsers([...addedUsers, member.id]);
         snackbar.enqueueSnackbar('Member added', {
           variant: 'success'
         });
@@ -81,7 +87,7 @@ export function AddMembersForm (props) {
                   ) : (
                     <Button
                       color="primary"
-                      onClick={() => addMember(user.id)}>Add</Button>
+                      onClick={() => addMember(user)}>Add</Button>
                   )}
                 </Typography>
               </Column>
