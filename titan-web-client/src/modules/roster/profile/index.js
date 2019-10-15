@@ -12,7 +12,7 @@ import UsersService from 'titan/http/UsersService';
 import * as profileActions from 'titan/actions/profileActions';
 import FileEntryListContainer
   from 'titan/modules/roster/profile/containers/FileEntryListContainer';
-import CreateFileEntryContainer
+import { CreateFileEntryContainer }
   from 'titan/modules/roster/profile/containers/CreateFileEntryContainer';
 import Typography from '@material-ui/core/Typography/Typography';
 import CreateEventExcuseContainer

@@ -1,63 +1,56 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
+import React, { useEffect, useState } from 'react';
 import * as profileActions from 'titan/actions/profileActions';
-import connect from 'react-redux/es/connect/connect';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import UsersService from 'titan/http/UsersService';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
 import { MULTI_DATE_FILE_ENTRY_TYPES } from 'titan/components/FileEntry/constants';
 import { WithAcl } from 'titan/components/Acl/WithAcl';
 import CreateForm from 'titan/components/FileEntry/CreateForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { ListFileEntryTypes, makeTitanApiRequest } from 'titan/http/ApiClient';
+import * as fileEntryActions from 'titan/actions/fileEntries';
 
-class CreateFileEntryContainer extends React.Component {
-  constructor (props) {
-    super(props);
+export function CreateFileEntryContainer () {
+  const dispatch = useDispatch();
+  const fileEntryTypes = useSelector(
+    state => state.roster.fileEntries.types);
+  const profileUserId = useSelector(
+    state => state.roster.profile.user.id);
+  const [open, setOpen] = useState(false);
+  const [formFields, setFormFields] = useState({
+    fileEntryTypeIndex: -1
+  });
 
-    this.usersService = new UsersService();
-    this.state = {
-      open: false,
-      fileEntryTypes: [],
-      fileEntryTypeIndex: -1,
-      comments: '',
-      startDate: null,
-      endDate: null
-    };
+  useEffect(() => {
+    if (!fileEntryTypes) {
+      makeTitanApiRequest(ListFileEntryTypes)
+        .then(res => {
+          dispatch(fileEntryActions.setTypes(res.data));
+        });
+    }
+  }, [fileEntryTypes]);
 
-    this.openDialogHandler = () => this.setState({ open: true });
-    this.closeDialogHandler = () => this.setState({ open: false });
-    this.fieldChangeHandler = this.updateField.bind(this);
-    this.saveFileEntryHandler = this.saveFileEntry.bind(this);
-  }
-
-  componentDidMount () {
-    this.usersService.listUserFileEntryTypes()
-      .then((res) => {
-        this.setState({ fileEntryTypes: res.data });
-      });
-  }
-
-  saveFileEntry () {
-    let endDate = this.state.startDate;
-    if (this.isSelectedFileTypeMultiDate()) {
-      endDate = this.state.endDate;
+  function saveFileEntry () {
+    let endDate = formFields.startDate;
+    if (isSelectedFileTypeMultiDate()) {
+      endDate = formFields.endDate;
     }
 
-    const entryType = this.state.fileEntryTypes[this.state.fileEntryTypeIndex];
+    const entryType = fileEntryTypes[formFields.fileEntryTypeIndex];
     const payload = {
       file_entry_type_id: entryType.id,
-      start_date: formatDate(this.state.startDate, "yyyy-MM-dd'T'00:00:00"),
+      start_date: formatDate(formFields.startDate, "yyyy-MM-dd'T'00:00:00"),
       end_date: formatDate(endDate, "yyyy-MM-dd'T'00:00:00"),
-      comments: this.state.comments
+      comments: formFields.comments
     };
 
-    this.usersService.saveUserFileEntry(this.props.profile.user.id, payload)
+    this.usersService.saveUserFileEntry(profileUserId, payload)
       .then((res) => {
-        this.props.actions.profile.addFileEntry(res.data.file_entry);
-        this.setState({ open: false });
+        dispatch(profileActions.addFileEntry(res.data.file_entry));
+        setOpen(false);
       })
       .catch(() => {
         // TODO indicate error in UI
@@ -65,72 +58,52 @@ class CreateFileEntryContainer extends React.Component {
       });
   }
 
-  updateField (field, value) {
-    this.setState({ [field]: value });
+  function updateField (field, value) {
+    setFormFields({ ...formFields, [field]: value });
   }
 
-  isSelectedFileTypeMultiDate () {
-    if (this.state.fileEntryTypeIndex === -1) {
+  function isSelectedFileTypeMultiDate () {
+    if (formFields.fileEntryTypeIndex === -1) {
       return false;
     }
 
-    const entryType = this.state.fileEntryTypes[this.state.fileEntryTypeIndex];
+    const entryType = fileEntryTypes[formFields.fileEntryTypeIndex];
     return MULTI_DATE_FILE_ENTRY_TYPES.indexOf(entryType.name) !== -1;
   }
 
-  isFormValid () {
-    return this.state.startDate &&
-        (!this.isSelectedFileTypeMultiDate() || this.state.endDate) &&
-        this.state.fileEntryTypeIndex !== -1;
+  function isFormValid () {
+    return formFields.startDate &&
+        (!isSelectedFileTypeMultiDate() || formFields.endDate) &&
+      formFields.fileEntryTypeIndex !== -1;
   }
 
-  render () {
-    return (
-      <React.Fragment>
-        <WithAcl options={['mod.titan:canCreateFileEntries']}>
+  return (
+    <React.Fragment>
+      <WithAcl options={['mod.titan:canCreateFileEntries']}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setOpen(true)}>Add Entry</Button>
+      </WithAcl>
+
+      <Dialog open={open} fullWidth>
+        <DialogTitle>Add File Entry</DialogTitle>
+        <DialogContent>
+          <CreateForm
+            multiDate={isSelectedFileTypeMultiDate()}
+            entryTypes={fileEntryTypes}
+            fields={formFields}
+            onFieldChange={(field, value) => updateField(field, value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Close</Button>
           <Button
-            variant="contained"
             color="primary"
-            onClick={this.openDialogHandler}>Add Entry</Button>
-        </WithAcl>
-
-        <Dialog open={this.state.open} fullWidth>
-          <DialogTitle>Add File Entry</DialogTitle>
-          <DialogContent>
-            <CreateForm
-              multiDate={this.isSelectedFileTypeMultiDate()}
-              entryTypes={this.state.fileEntryTypes}
-              fields={this.state}
-              onFieldChange={this.fieldChangeHandler}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeDialogHandler}>Close</Button>
-            <Button
-              color="primary"
-              onClick={this.saveFileEntryHandler}
-              disabled={!this.isFormValid()}>Submit</Button>
-          </DialogActions>
-        </Dialog>
-      </React.Fragment>
-    );
-  }
+            onClick={() => saveFileEntry()}
+            disabled={!isFormValid()}>Submit</Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+  );
 }
-
-function mapStateToProps (state) {
-  return {
-    profile: state.roster.profile
-  };
-}
-
-function mapActionsToProps (dispatch) {
-  return {
-    actions: {
-      profile: bindActionCreators(profileActions, dispatch)
-    }
-  };
-}
-
-export default connect(mapStateToProps, mapActionsToProps)(
-  CreateFileEntryContainer
-);
