@@ -125,6 +125,19 @@ export function ListOrganizationReportsRequest (fields = {}) {
 }
 
 /**
+ * Lists file entry types.
+ */
+export function ListFileEntryTypes () {
+  return {
+    auth: true,
+    config: {
+      url: `/users/file-entry-types`,
+      method: 'get'
+    }
+  };
+}
+
+/**
  * React hook for sending requests to Titan's API services.
  *
  * @param {Function<{

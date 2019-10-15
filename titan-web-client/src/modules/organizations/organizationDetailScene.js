@@ -38,9 +38,9 @@ class OrganizationDetailSceneComponent extends React.Component {
   init () {
     this.organizationsService.findBySlug(this.props.match.params.slug)
       .then((res) => {
-        this.setState({ organization: res.data.organization });
+        this.setState({ organization: res.data });
         return this.organizationsService.findChainOfCommand(
-          res.data.organization.id);
+          res.data.id);
       })
       .then((res) => {
         const coc = res.data.local_coc.concat(res.data.extended_coc);
@@ -54,7 +54,8 @@ class OrganizationDetailSceneComponent extends React.Component {
             role.user_profile.id === userId)
         });
       })
-      .catch(e => {
+      .catch(err => {
+        console.error(err);
         window.location = '/organizations';
       })
       .finally(() => {

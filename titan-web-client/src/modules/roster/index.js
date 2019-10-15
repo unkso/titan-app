@@ -6,11 +6,13 @@ import { ExcusesScene } from 'titan/modules/roster/manage_excuses';
 import profileReducer from 'titan/reducers/profileReducer';
 import { ListAllUsersScene } from 'titan/modules/roster/ListAllUsersScene';
 import { USER_PROFILE_ROUTE } from 'titan/routes';
+import fileEntriesReducer from 'titan/reducers/fileEntriesReducer';
 
 export default function () {
   return {
     name: 'roster',
     reducer: createStateReducer({
+      fileEntries: fileEntriesReducer,
       profile: profileReducer
     }),
     routes: [
