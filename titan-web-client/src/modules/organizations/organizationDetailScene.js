@@ -14,6 +14,14 @@ import {
   ListOrganizationChainOfCommandRequest,
   makeTitanApiRequest
 } from 'titan/http/ApiClient';
+import { Roles } from 'titan/modules/organizations/organizationDetail/Roles';
+
+const TABS_INDEXES = {
+  overview: 0,
+  members: 1,
+  reports: 2,
+  roles: 3
+};
 
 export function OrganizationDetailScene () {
   const dispatch = useDispatch();
@@ -59,11 +67,15 @@ export function OrganizationDetailScene () {
   }
 
   const headerTabs = [
-    <Tab key={0} label="Overview" />,
-    <Tab key={1} label="Members" />
+    <Tab key={TABS_INDEXES.overview} label="Overview" />,
+    <Tab key={TABS_INDEXES.members} label="Members" />
   ];
   if (isMemberOfCoc) {
-    headerTabs.push(<Tab key={2} label="Reports" />);
+    headerTabs.push(<Tab key={TABS_INDEXES.reports} label="Reports" />);
+
+    if (!hasLocalCocRole) {
+      headerTabs.push(<Tab key={TABS_INDEXES.roles} label="Roles" />);
+    }
   }
 
   return (
@@ -76,13 +88,13 @@ export function OrganizationDetailScene () {
           {headerTabs}
         </Tabs>
       </PageHeader>
-      <TabPanel value={tabIndex} index={0}>
+      <TabPanel value={tabIndex} index={TABS_INDEXES.overview}>
         <Overview
           orgId={organization.id}
           orgCoc={chainOfCommand}
         />
       </TabPanel>
-      <TabPanel value={tabIndex} index={1}>
+      <TabPanel value={tabIndex} index={TABS_INDEXES.members}>
         <Members
           organizationId={organization.id}
           orgCoc={chainOfCommand}
@@ -90,14 +102,21 @@ export function OrganizationDetailScene () {
           canRemoveMembers={isMemberOfCoc}
         />
       </TabPanel>
-      {isMemberOfCoc &&
-      <TabPanel value={tabIndex} index={2}>
-        <Reports
-          canCreateReport={hasLocalCocRole}
-          organization={organization}
-        />
-      </TabPanel>
-      }
+
+      {isMemberOfCoc && (
+        <TabPanel value={tabIndex} index={TABS_INDEXES.reports} key={TABS_INDEXES.reports}>
+          <Reports
+            canCreateReport={hasLocalCocRole}
+            organization={organization}
+          />
+        </TabPanel>
+      )}
+
+      {(isMemberOfCoc && !hasLocalCocRole) && (
+        <TabPanel value={tabIndex} index={TABS_INDEXES.roles} key={TABS_INDEXES.roles}>
+          <Roles organization={organization} />
+        </TabPanel>
+      )}
     </React.Fragment>
   );
 }

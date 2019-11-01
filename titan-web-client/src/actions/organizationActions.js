@@ -6,7 +6,8 @@ import {
   ORGANIZATION_SET_COC,
   ORGANIZATION_SET_DETAILS,
   ORGANIZATION_SET_REPORTS,
-  ORGANIZATION_SET_MEMBERS
+  ORGANIZATION_SET_MEMBERS,
+  ORGANIZATION_SET_ROLES
 } from './actionTypes';
 
 export function addMember (member) {
@@ -39,4 +40,8 @@ export function setMembers (users) {
 
 export function setReports (reports) {
   return { type: ORGANIZATION_SET_REPORTS, data: reports };
+}
+
+export function setRoles (roles) {
+  return { type: ORGANIZATION_SET_ROLES, data: roles };
 }

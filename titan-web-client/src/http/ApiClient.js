@@ -81,11 +81,27 @@ export function ListOrganizationRolesRequest (fields = {}) {
   }
 
   return {
-    auth: false,
+    auth: true,
     config: {
       url: `/organizations/${orgId}/roles`,
       method: 'get',
-      params: { scope }
+      params: { scope: String(scope) }
+    }
+  };
+}
+
+/**
+ * Reorders an organization's roles.
+ *
+ * @param {{orgId: number, roleIds: Array<number>}} fields
+ */
+export function ReorderOrganizationRolesRequest (fields = {}) {
+  return {
+    auth: true,
+    config: {
+      url: `/organizations/${fields.orgId}/roles:reorder`,
+      method: 'post',
+      data: { roleIds: fields.roleIds }
     }
   };
 }
@@ -155,13 +171,13 @@ export function GetOrganizationBySlugRequest (fields) {
 /**
  * List an organization's chan of command.
  *
- * @param {number} fields.id
+ * @param {number} fields.orgId
  */
 export function ListOrganizationChildrenRequest (fields) {
   return {
     auth: true,
     config: {
-      url: `/organizations/${fields.id}/children`,
+      url: `/organizations/${fields.orgId}/children`,
       method: 'get'
     }
   };

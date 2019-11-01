@@ -216,6 +216,13 @@ pub struct OrganizationRole {
     pub rank: Option<i32>
 }
 
+#[derive(AsChangeset)]
+#[table_name = "organization_roles"]
+#[changeset_options(treat_none_as_null="true")]
+pub struct OrganizationRoleRankChangeSet {
+    pub rank: Option<i32>
+}
+
 #[derive(Serialize)]
 pub struct OrganizationRoleWithAssoc {
     pub id: i32,

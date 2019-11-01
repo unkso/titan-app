@@ -20,8 +20,8 @@ export const StyledMemberNameTag = styled.div`
 
   &.small {
     .avatar {
-      height: 32px;
-      width: 32px;
+      height: 24px;
+      width: 24px;
     }
     
     .username {
@@ -139,5 +139,5 @@ MemberNameTag.propTypes = {
 MemberNameTag.defaultProps = {
   avatarPosition: 'left',
   labelPosition: 'below',
-  size: ''
+  size: 'small'
 };

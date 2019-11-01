@@ -56,21 +56,6 @@ pub fn get_organization_by_slug(
     Ok(Json(organization))
 }
 
-#[get("/<id>/roles")]
-pub fn list_organization_roles(
-    id: i32,
-    titan_db: TitanPrimary,
-    wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
-) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
-    let titan_db_ref = &*titan_db;
-    let roles = organizations::roles::find_all_by_organization(id, titan_db_ref).unwrap();
-    let roles_with_users = organizations::roles::map_roles_assoc(
-        roles, titan_db_ref, &*wcf_db, &app_config);
-
-    Json(roles_with_users.unwrap())
-}
-
 #[get("/<org_id>/children")]
 pub fn get_child_organizations(
     org_id: i32,
@@ -172,7 +157,7 @@ pub fn get_organization_coc(
 }
 
 #[get("/<org_id>/roles?<scope>")]
-pub fn get_organization_roles(
+pub fn list_organization_roles(
     org_id: i32,
     scope: RoleRankScope,
     titan_db: TitanPrimary,
@@ -215,6 +200,37 @@ pub fn get_parent_role(
             Json(Some(parent_role_assoc))
         },
         None => Json(None)
+    }
+}
+
+#[derive(Deserialize)]
+pub struct ReorderRolesRequest {
+    #[serde(alias = "roleIds")]
+    role_ids: Vec<i32>,
+}
+
+#[post("/<org_id>/roles:reorder", format = "application/json", data = "<request>")]
+pub fn reorder_roles(
+    org_id: i32,
+    request: Json<ReorderRolesRequest>,
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> Status {
+    let titan_db_ref = &*titan_db;
+    let is_authorized = organizations::roles::is_user_in_parent_coc(
+        auth_user.user.id, org_id, titan_db_ref, &*wcf_db, &app_config);
+
+    if !is_authorized {
+        return Status::Unauthorized;
+    }
+
+    let res = organizations::roles::reorder_roles(
+        org_id, &request.role_ids, &*titan_db);
+    match res {
+        Ok(_) => Status::Ok,
+        _ => Status::InternalServerError,
     }
 }
 

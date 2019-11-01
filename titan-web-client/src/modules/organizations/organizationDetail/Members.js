@@ -13,7 +13,6 @@ import { CardContent } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
 import * as orgActions from 'titan/actions/organizationActions';
-import { useForceUpdate } from 'titan/hooks';
 
 /**
  * @param {{

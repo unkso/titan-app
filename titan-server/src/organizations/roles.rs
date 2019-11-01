@@ -1,13 +1,15 @@
+use std::collections::VecDeque;
+use std::convert::TryFrom;
 use diesel::prelude::*;
 use rocket::State;
 use rocket::http::RawStr;
 use rocket::request::FromFormValue;
-use std::collections::VecDeque;
 use crate::models;
 use crate::schema;
 use crate::accounts;
 use crate::organizations;
 use crate::config;
+use crate::db;
 
 /// Indicates the relation of a role or set of roles to an
 /// organization's chain of command.
@@ -352,6 +354,76 @@ pub fn find_unranked_roles(
         .get_results::<models::OrganizationRole>(titan_db)?;
 
     map_roles_assoc(roles, titan_db, wcf_db, app_config)
+}
+
+/// Updates the `rank` for the given list of roles, where the role's
+/// index in the list indicates it's position in the organization's
+/// chain of command. For example, the role at index 0 holds the most
+/// authority, the role at index 1 has the second most authority, and
+/// so on.
+///
+/// All the given role IDs must belong to the same organization.
+/// Otherwise, and error will occur.
+pub fn reorder_roles(
+    org_id: i32,
+    role_ids: &Vec<i32>,
+    titan_db: &MysqlConnection
+) -> Result<(), db::TitanDatabaseError> {
+    titan_db.transaction::<_, db::TitanDatabaseError, _>(|| {
+        let changes = models::OrganizationRoleRankChangeSet {
+            rank: None
+        };
+        let roles = schema::organization_roles::table
+            .filter(schema::organization_roles::organization_id.eq(org_id))
+            .filter(schema::organization_roles::id.eq_any(role_ids));
+        let num_ranks_cleared = diesel::update(roles)
+            .set(&changes)
+            .execute(titan_db)
+            .map_err(db::TitanDatabaseError::from)?;
+
+        if num_ranks_cleared != role_ids.len() {
+            return Err(db::TitanDatabaseError::UnexpectedResultCountError(format!(
+                "Expected {} roles to be updated, but {} were updated instead.",
+                role_ids.len(),
+                num_ranks_cleared
+            )))
+        }
+
+        for (i, role_id) in role_ids.iter().enumerate() {
+            let role_query = schema::organization_roles::table
+                .filter(schema::organization_roles::organization_id.eq(org_id))
+                .find(role_id);
+            diesel::update(role_query)
+                .set(schema::organization_roles::rank.eq(i32::try_from(i).ok()))
+                .execute(titan_db)
+                .map_err(db::TitanDatabaseError::from)?;
+        }
+
+        Ok(())
+    })
+}
+
+/// Returns true if the given user is assigned to a role in the COC
+/// above the given organization.
+pub fn is_user_in_parent_coc(
+    user_id: i32,
+    org_id: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> bool {
+    let org_coc_res = find_org_coc(org_id, std::i32::MAX, titan_db, wcf_db, app_config);
+    match org_coc_res {
+        Ok(coc) => {
+            coc.extended_coc.into_iter().any(|role| {
+                match role.user_profile {
+                    Some(profile) => profile.id == user_id,
+                    _ => false
+                }
+            })
+        },
+        _ => false
+    }
 }
 
 pub fn map_roles_assoc(

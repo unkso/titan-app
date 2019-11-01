@@ -100,7 +100,7 @@ class ReportsListItemComponent extends React.Component {
                   <Typography align="right">
                     <Tooltip title={`Ack by ${this.state.ack_user.username}`}>
                       <span
-                        className="fas fa-check"
+                        className="fal fa-check"
                         style={{ color: this.props.theme.palette.success }}
                       />
                     </Tooltip>
