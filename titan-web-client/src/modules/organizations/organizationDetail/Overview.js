@@ -10,7 +10,12 @@ import { ListSupportLeadership } from 'titan/modules/organizations/components/Li
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { RouteButton } from 'titan/components/Routes/RouteLink';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as orgActions from 'titan/actions/organizationActions';
+import {
+  ListOrganizationChildrenRequest,
+  makeTitanApiRequest
+} from 'titan/http/ApiClient';
 
 const CoCActions = styled.div`
   font-size: 12px;
@@ -23,12 +28,16 @@ const CoCActions = styled.div`
 `;
 
 export function Overview (props) {
+  const dispatch = useDispatch();
   const childOrgs = useSelector(
     state => state.organization.children || []);
 
   useEffect(() => {
-
-  }, []);
+    makeTitanApiRequest(ListOrganizationChildrenRequest, { orgId: props.orgId })
+      .then(res => {
+        dispatch(orgActions.setChildren(res.data));
+      });
+  }, [props.orgId]);
 
   return (
     <ContentBlock>

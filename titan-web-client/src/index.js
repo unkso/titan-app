@@ -6,61 +6,6 @@ import devConfig from 'titan/config/config.dev';
 import prodConfig from 'titan/config/config.prod';
 import TitanApp from 'titan/components/core/TitanApp';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faAward,
-  faStar,
-  faInfo,
-  faHome,
-  faFlag,
-  faCalendarAlt,
-  faFileAlt,
-  faGraduationCap,
-  faUsers,
-  faTrophy,
-  faNewspaper,
-  faCog,
-  faPowerOff,
-  faRandom,
-  faShieldAlt,
-  faDumbbell,
-  faBan,
-  faGamepad,
-  faUser,
-  faClipboardList,
-  faCheck,
-  faLifeRing,
-  faSearch,
-  faEllipsisV,
-  faExclamationCircle
-} from '@fortawesome/free-solid-svg-icons';
-
-library.add(faAward);
-library.add(faStar);
-library.add(faInfo);
-library.add(faHome);
-library.add(faFileAlt);
-library.add(faFlag);
-library.add(faCalendarAlt);
-library.add(faCheck);
-library.add(faGraduationCap);
-library.add(faUsers);
-library.add(faNewspaper);
-library.add(faTrophy);
-library.add(faCog);
-library.add(faPowerOff);
-library.add(faRandom);
-library.add(faShieldAlt);
-library.add(faDumbbell);
-library.add(faBan);
-library.add(faGamepad);
-library.add(faUser);
-library.add(faClipboardList);
-library.add(faLifeRing);
-library.add(faSearch);
-library.add(faEllipsisV);
-library.add(faExclamationCircle);
-
 let config;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   config = devConfig;
