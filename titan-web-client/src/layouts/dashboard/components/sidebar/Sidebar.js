@@ -4,7 +4,6 @@ import { SidebarMenuItem } from './SidebarMenuItem';
 import SidebarHeading from './SidebarHeading';
 import SidebarContentGroup from './SidebarContentGroup';
 import SidebarProfileBadge from './SidebarProfileBadge';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ProfileLinkContainer } from './ProfileLinkContainer';
 import { createAclInstanceFromSession } from 'titan/lib/acl';
 import { connect } from 'react-redux';
@@ -51,12 +50,12 @@ class Sidebar extends React.Component {
           <SidebarMenuItem
             url={LIST_USERS_ROUTE}
             label="Members"
-            leftIcon={<FontAwesomeIcon icon="users" />}
+            leftIcon={<span className="fas fa-users" />}
           />
           <SidebarMenuItem
             url={'/organizations'}
             label="Organizations"
-            leftIcon={<FontAwesomeIcon icon="flag" />}
+            leftIcon={<span className="fas fa-flag" />}
           />
 
           {this.state.showLeadershipTools && (
@@ -66,14 +65,14 @@ class Sidebar extends React.Component {
               <SidebarMenuItem
                 url={'/roster/excuses'}
                 label="Manage Excuses"
-                leftIcon={<FontAwesomeIcon icon="clipboard-list" />}
+                leftIcon={<span className="fas fa-clipboard-list" />}
               />
               }
               {this.state.canAckReports &&
               <SidebarMenuItem
                 url={'/organizations/unacknowledged-reports'}
                 label="Manage Reports"
-                leftIcon={<FontAwesomeIcon icon="file-alt" />}
+                leftIcon={<span className="fas fa-file-alt" />}
               />
               }
             </React.Fragment>
@@ -85,7 +84,7 @@ class Sidebar extends React.Component {
           <SidebarMenuItem
             url={'/auth/logout'}
             label="Sign Out"
-            leftIcon={<FontAwesomeIcon icon="power-off" />}
+            leftIcon={<span className="fas fa-power-off" />}
           />
         </SidebarContentGroup>
       </SidebarWrapper>

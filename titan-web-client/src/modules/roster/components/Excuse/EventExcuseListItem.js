@@ -11,7 +11,6 @@ import DialogContentText
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTheme } from '@material-ui/core/styles';
 import {
   EVENT_TYPE_MEETING,
@@ -74,32 +73,32 @@ class EventExcuseListItemComponent extends React.Component {
       case EVENT_TYPE_MEETING:
         return {
           color: this.props.theme.palette.secondary.light,
-          icon: <FontAwesomeIcon icon="users" />
+          icon: <span className="fas fa-users" />
         };
       case EVENT_TYPE_NCO_MEETING:
         return {
           color: this.props.theme.palette.secondary.light,
-          icon: <FontAwesomeIcon icon="users" />
+          icon: <span className="fas fa-users" />
         };
       case EVENT_TYPE_PRACTICE:
         return {
           color: this.props.theme.palette.secondary.light,
-          icon: <FontAwesomeIcon icon="gamepad" />
+          icon: <span className="fas fa-gamepad" />
         };
       case EVENT_TYPE_SCRIM:
         return {
           color: this.props.theme.palette.primary.light,
-          icon: <FontAwesomeIcon icon="shield-alt" />
+          icon: <span className="fas fa-shield-alt" />
         };
       case EVENT_TYPE_TRAINING:
         return {
           color: this.props.theme.palette.secondary.light,
-          icon: <FontAwesomeIcon icon="dumbbell" />
+          icon: <span className="fas fa-dumbbell" />
         };
       default:
         return {
           color: this.props.theme.palette.secondary.light,
-          icon: <FontAwesomeIcon icon="info" />
+          icon: <span className="fas fa-info" />
         };
     }
   }
@@ -133,11 +132,10 @@ class EventExcuseListItemComponent extends React.Component {
                 {this.state.ack_user && (
                   <Typography align="right">
                     <Tooltip title={`Ack by ${this.state.ack_user.username}`}>
-                      <span>
-                        <FontAwesomeIcon
-                          icon="check"
-                          color={this.props.theme.palette.success} />
-                      </span>
+                      <span
+                        className="fas fa-check"
+                        style={{ color: this.props.theme.palette.success }}
+                      />
                     </Tooltip>
                   </Typography>
                 )}

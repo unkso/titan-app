@@ -11,7 +11,6 @@ import Column from 'titan/components/Grid/Column';
 import { TextField } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useThrottle } from 'titan/hooks';
 import Typography from '@material-ui/core/Typography';
 import { UsersTable } from 'titan/components/members/table/UsersTable';
@@ -35,7 +34,7 @@ export function ListAllUsersScene () {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <FontAwesomeIcon icon="search" />
+                        <span className="fas fa-search" />
                       </InputAdornment>
                     )
                   }}

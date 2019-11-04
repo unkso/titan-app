@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const EmptyStateWrapper = styled.div`
   margin: ${props => `${props.verticalMargin}px ${props.horizontalMargin}px`};
@@ -16,14 +15,14 @@ class IconEmptyStateComponent extends React.Component {
       <EmptyStateWrapper
         horizontalMargin={this.props.horizontalMargin}
         verticalMargin={this.props.verticalMargin}>
-        <FontAwesomeIcon
-          icon={this.props.icon}
-          size="lg"
+        <span
+          className={`fas fa-${this.props.icon}`}
           style={{
             color: this.props.theme.palette.secondary.light,
             fontSize: '4em',
             marginBottom: '8px'
-          }} />
+          }}
+        />
         <Typography variant="h4">{this.props.primaryText}</Typography>
         <Typography variant="body1" color="textSecondary">{this.props.secondaryText}</Typography>
       </EmptyStateWrapper>

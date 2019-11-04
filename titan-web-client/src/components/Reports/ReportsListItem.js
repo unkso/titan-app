@@ -10,7 +10,6 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import { Avatar } from '@material-ui/core';
@@ -72,7 +71,7 @@ class ReportsListItemComponent extends React.Component {
       new Date(this.props.report.submission_date), 'MMMM dd, yyyy');
     const theme = {
       color: this.props.theme.palette.secondary.light,
-      icon: <FontAwesomeIcon icon="file-alt" />
+      icon: <span className="fas fa-file-alt" />
     };
 
     return (
@@ -100,9 +99,10 @@ class ReportsListItemComponent extends React.Component {
                 {this.state.ack_user && (
                   <Typography align="right">
                     <Tooltip title={`Ack by ${this.state.ack_user.username}`}>
-                      <FontAwesomeIcon
-                        icon="check"
-                        color={this.props.theme.palette.success} />
+                      <span
+                        className="fas fa-check"
+                        style={{ color: this.props.theme.palette.success }}
+                      />
                     </Tooltip>
                   </Typography>
                 )}

@@ -11,7 +11,6 @@ import DialogContentText
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTheme } from '@material-ui/core/styles';
 import {
   FILE_ENTRY_A15,
@@ -53,27 +52,27 @@ class FileEntry extends React.Component {
       case FILE_ENTRY_A15:
         return {
           color: this.props.theme.palette.danger,
-          icon: <FontAwesomeIcon icon="ban" />
+          icon: <span className="fas fa-ban" />
         };
       case FILE_ENTRY_AWOL:
         return {
           color: this.props.theme.palette.danger,
-          icon: <FontAwesomeIcon icon="info" />
+          icon: <span className="fas fa-info" />
         };
       case FILE_ENTRY_AWARD:
         return {
           color: this.props.theme.palette.warning,
-          icon: <FontAwesomeIcon icon="award" />
+          icon: <span className="fas fa-award" />
         };
       case FILE_ENTRY_APP_WITHDRAWN:
         return {
           color: this.props.theme.palette.info,
-          icon: <FontAwesomeIcon icon="file-alt" />
+          icon: <span className="fas fa-file-alt" />
         };
       case FILE_ENTRY_APP_DENIED:
         return {
           color: this.props.theme.palette.danger,
-          icon: <FontAwesomeIcon icon="file-alt" />
+          icon: <span className="fas fa-file-alt" />
         };
       case FILE_ENTRY_BCT_E0_COMPLETE:
       case FILE_ENTRY_BCT_E1_COMPLETE:
@@ -81,27 +80,27 @@ class FileEntry extends React.Component {
       case FILE_ENTRY_BCT_E3_COMPLETE:
         return {
           color: this.props.theme.palette.success,
-          icon: <FontAwesomeIcon icon="shield-alt" />
+          icon: <span className="fas fa-shield-alt" />
         };
       case FILE_ENTRY_PASS_JCS_INTERVIEW:
         return {
           color: this.props.theme.palette.success,
-          icon: <FontAwesomeIcon icon="users" />
+          icon: <span className="fas fa-users" />
         };
       case FILE_ENTRY_PROMOTION:
         return {
           color: this.props.theme.palette.warning,
-          icon: <FontAwesomeIcon icon="star" />
+          icon: <span className="fas fa-star" />
         };
       case FILE_ENTRY_TRANSFER:
         return {
           color: this.props.theme.palette.info,
-          icon: <FontAwesomeIcon icon="random" />
+          icon: <span className="fas fa-random" />
         };
       default:
         return {
           color: this.props.theme.palette.info,
-          icon: <FontAwesomeIcon icon="info" />
+          icon: <span className="fas fa-info" />
         };
     }
   }
