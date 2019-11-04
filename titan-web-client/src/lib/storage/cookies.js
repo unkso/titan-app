@@ -1,5 +1,7 @@
 import Cookies from 'universal-cookie';
 
-export function setupCookies () {
-  return new Cookies();
+const instance = new Cookies();
+
+export function getCookieManager () {
+  return instance;
 }

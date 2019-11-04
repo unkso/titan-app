@@ -8,6 +8,7 @@ import {
 } from 'titan/http/ApiClient';
 import { getAppContext } from 'titan/titan';
 import * as authActions from 'titan/actions/authActions';
+import { useCookie } from 'titan/hooks/cookies';
 
 const StyledLoaderContainer = styled.div`
   position: absolute;
@@ -21,31 +22,30 @@ const StyledLoaderContainer = styled.div`
 const appContext = getAppContext();
 
 export function SessionCredentialLoader (props) {
+  const wcfUserIdCookie = useCookie('wcf21_userID', {
+    domain: appContext.getConfig().get('woltlab.cookie.domain')
+  });
+  const wcfPasswordTokenCookie = useCookie('wcf21_password', {
+    domain: appContext.getConfig().get('woltlab.cookie.domain')
+  });
   const dispatch = useDispatch();
   const authUser = useSelector(
     state => state.auth);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userId = appContext.getCookies().get('wcf21_userID', {
-      domain: appContext.getConfig().get('woltlab.cookie.domain')
-    });
-    const token = appContext.getCookies().get('wcf21_password', {
-      domain: appContext.getConfig().get('woltlab.cookie.domain')
-    });
-
     // Refreshing user credentials and permissions can have the
     // side-effect of signing in the user. To avoid conflicting
     // with the login view, check if the user is logged in already
     // before attempting to refresh credentials.
-    if (!authUser || !userId || !token) {
+    if (!authUser || !wcfUserIdCookie || !wcfPasswordTokenCookie) {
       setLoading(false);
       return;
     }
 
     const authRequest = makeTitanApiRequest(AuthWoltlabLoginRequest, {
-      userId: parseInt(userId, 10),
-      token
+      userId: parseInt(wcfUserIdCookie, 10),
+      wcfPasswordTokenCookie
     });
 
     authRequest

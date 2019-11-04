@@ -1,7 +1,6 @@
 import modules from 'titan/modules';
 import extensions from 'titan/extensions';
 import Config from 'titan/lib/config';
-import { setupCookies } from 'titan/lib/storage/cookies';
 import { setupStore } from 'titan/lib/redux/store';
 import defaultConfig from 'titan/config/config.default';
 import { mountConfig, mountReducer, mountRoutes } from 'titan/boot/common';
@@ -31,9 +30,6 @@ function mountFeature (init) {
 const config = new Config();
 config.load({ ...defaultConfig, ...moduleConfig });
 
-// Prepare cookies
-const cookies = setupCookies();
-
 // Prepare store
 const store = setupStore(
   createStateReducer(reducers),
@@ -43,7 +39,6 @@ const store = setupStore(
 export default () => {
   return {
     config,
-    cookies,
     routes,
     store
   };
