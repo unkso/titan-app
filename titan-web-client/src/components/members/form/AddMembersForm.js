@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useThrottle } from 'titan/hooks';
 import {
   AddUserToOrganizationRequest,
@@ -62,7 +61,7 @@ export function AddMembersForm () {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <FontAwesomeIcon icon="search" />
+              <span className="fas fa-search" />
             </InputAdornment>
           )
         }}

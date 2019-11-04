@@ -10,7 +10,6 @@ import DialogContentText
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTheme } from '@material-ui/core/styles';
 import Row from '../Grid/Row';
 import Column from '../Grid/Column';
@@ -49,7 +48,7 @@ class ListItemComponent extends React.Component {
           onClick={this.openDialogHandler}>
           <MatListItem>
             <Typography style={{ color: theme.color, marginRight: 16 }}>
-              <FontAwesomeIcon icon={theme.icon} />
+              <span className={`fas fa-${theme.icon}`} />
             </Typography>
             <ListItemText>
               <Typography variant="body1" color="textSecondary">

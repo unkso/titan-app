@@ -8,40 +8,6 @@ import { TabPanel } from 'titan/components/tabs/TabPanel';
 import { Overview } from 'titan/modules/organizations/organizationDetail/Overview';
 import { Reports } from 'titan/modules/organizations/organizationDetail/Reports';
 import { Members } from 'titan/modules/organizations/organizationDetail/Members';
-<<<<<<< 67f4a5945a2e7030b85e79911e9431216c1bd715
-
-class OrganizationDetailSceneComponent extends React.Component {
-  constructor (props) {
-    super(props);
-
-    this.organizationsService = new OrganizationsService();
-    this.state = {
-      chainOfCommand: [],
-      hasLocalCocRole: false,
-      isMemberOfCoc: false,
-      loading: true,
-      organization: null,
-      tab: 0
-    };
-  }
-
-  componentDidMount () {
-    this.init();
-  }
-
-  componentDidUpdate (prevProps, prevState, snapshot) {
-    if (prevProps.match.params.slug !== this.props.match.params.slug) {
-      this.init();
-    }
-  }
-
-  init () {
-    this.organizationsService.findBySlug(this.props.match.params.slug)
-      .then((res) => {
-        this.setState({ organization: res.data });
-        return this.organizationsService.findChainOfCommand(
-          res.data.id);
-=======
 import * as orgActions from 'titan/actions/organizationActions';
 import {
   GetOrganizationBySlugRequest,
@@ -68,7 +34,6 @@ export function OrganizationDetailScene () {
         dispatch(orgActions.setDetails(res.data));
         return makeTitanApiRequest(ListOrganizationChainOfCommandRequest,
           { id: res.data.id });
->>>>>>> Refactored organization state management
       })
       .then(res => {
         const coc = res.data.local_coc.concat(res.data.extended_coc);
