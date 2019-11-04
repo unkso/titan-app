@@ -3,6 +3,26 @@ import AuthenticatedService from 'titan/http/AuthenticatedService';
 import UnauthenticatedService from 'titan/http/UnauthenticatedService';
 
 /**
+ * Login a user with woltlab credentials.
+ *
+ * @param {number} fields.userId - A user's WoltLab user ID.
+ * @param {string} fields.token - A user's password token.
+ */
+export function WoltlabLoginRequest (fields = {}) {
+  return {
+    auth: false,
+    config: {
+      url: '/auth/woltlab',
+      method: 'post',
+      data: {
+        user_id: fields.userId,
+        cookie_password: fields.token
+      }
+    }
+  };
+}
+
+/**
  * Adds a user to an organization.
  *
  * @param {{orgId: number, userId: number}} fields

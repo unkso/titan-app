@@ -23,10 +23,6 @@ TitanContext.prototype.getConfig = function () {
   return this.config;
 };
 
-TitanContext.prototype.getCookies = function () {
-  return this.cookies;
-};
-
 TitanContext.prototype.getStore = function () {
   return this.store;
 };
