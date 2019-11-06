@@ -11,7 +11,7 @@ pub mod config;
 pub mod db;
 pub mod guards;
 pub mod models;
-pub mod organizations;
+pub mod teams;
 pub mod events;
 pub mod routes;
 pub mod schema;

@@ -31,7 +31,7 @@ impl ApiError {
                 if db_error == DieselError::NotFound {
                     return Err(Status::NotFound);
                 }
-                return Err(Status::InternalServerError)
+                Err(Status::InternalServerError)
             },
             _ => Err(Status::InternalServerError),
         }

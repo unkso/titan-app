@@ -28,8 +28,7 @@ pub fn get_user_acl(wcf_user_id: i32, wcf_db: &MysqlConnection) -> QueryResult<V
 pub fn has_acl_option(wcf_user_id: i32, option_name: &str, wcf_db: &MysqlConnection) -> bool {
     let options_res = get_user_acl(wcf_user_id, wcf_db);
 
-    if options_res.is_ok() {
-        let options = options_res.unwrap();
+    if let Ok(options) = options_res {
         for option in options {
             if option.option_name == option_name {
                 return true;

@@ -21,5 +21,5 @@ pub fn test_database_conn(user_id: i32, unkso_main: UnksoMainForums) -> Json<mod
 
 #[get("/pulse", format = "application/json")]
 pub fn health_check(token: auth_guard::AuthenticatedUser) -> Json<auth_guard::AuthenticatedUser> {
-    return Json(token)
+    Json(token)
 }

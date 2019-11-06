@@ -5,7 +5,7 @@ use rocket::routes;
 use libtitan::accounts;
 use libtitan::config;
 use libtitan::db;
-use libtitan::organizations;
+use libtitan::teams;
 use libtitan::events;
 use libtitan::routes;
 
@@ -17,7 +17,7 @@ fn main() {
         .mount("/api/auth/pulse", routes![routes::health_check])
         .mount("/api/auth", accounts::get_auth_routes())
         .mount("/api/users", accounts::get_user_routes())
-        .mount("/api/organizations", organizations::get_routes())
+        .mount("/api/organizations", teams::get_routes())
         .mount("/api/events", events::get_routes())
         .launch();
 }
