@@ -7,24 +7,24 @@ lazy_static! {
     static ref BLOWFISH_CHARACTERS: Vec<char> = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./".chars().collect();
 }
 const BCRYPT_TYPE: BcryptVariant = BcryptVariant::V2a;
-const BCRYPT_COST: &'static str = "08";
+const BCRYPT_COST: &str = "08";
 
 pub fn check_password(password: &str, hash: &str) -> bool {
-    return is_blowfish(password) &&
+    is_blowfish(password) &&
         is_blowfish(password) &&
         !is_different_blowfish_alg(hash) &&
         !is_different_blowfish_alg(password) &&
-        verify(hash, password);
+        verify(hash, password)
 }
 
 fn is_blowfish(hash: &str) -> bool {
     let re = Regex::new(r"^\$2[afxy]\$").unwrap();
 
-    return re.is_match(hash);
+    re.is_match(hash)
 }
 
 fn is_different_blowfish_alg(hash: &str) -> bool {
-    return &hash[4..6] != BCRYPT_COST;
+    &hash[4..6] != BCRYPT_COST
 }
 
 /// In the case that the user doesn't have an existing password, this generates

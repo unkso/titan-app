@@ -7,7 +7,7 @@ use rocket::request::FromFormValue;
 use crate::models;
 use crate::schema;
 use crate::accounts;
-use crate::organizations;
+use crate::teams;
 use crate::config;
 use crate::db;
 
@@ -113,7 +113,7 @@ pub fn find_direct_reports(
             },
             _ => {
                 rank = -1;
-                let mut child_org_ids = organizations::organizations::find_children_ids(curr_org_id, false, titan_db);
+                let mut child_org_ids = teams::organizations::find_children_ids(curr_org_id, false, titan_db);
                 for child_id in child_org_ids.drain(..) {
                     orgs_to_visit.push_back(child_id);
                 }
@@ -212,8 +212,7 @@ pub fn find_user_coc(
     let role_res = find_org_role_by_user_id(org_id, user_id, titan_db);
     let rank: i32;
 
-    if role_res.is_ok() {
-        let role = role_res.unwrap();
+    if let Ok(role) = role_res {
         rank = if role.rank.is_some() {
             role.rank.unwrap()
         } else {
@@ -255,7 +254,7 @@ pub fn find_org_coc(
             Some(role) => {
                 let role_assoc = map_role_assoc(
                     &role, titan_db, wcf_db, app_config)?;
-                if role.organization_id.clone() == org_id {
+                if role.organization_id == org_id {
                     local_coc.push(role_assoc);
                 } else {
                     extended_coc.push(role_assoc);
@@ -309,7 +308,7 @@ pub fn find_parent_role_by_org(
         return Ok(local_parent)
     }
 
-    let parent_org_res = organizations::organizations::find_parent(org_id, titan_db)?;
+    let parent_org_res = teams::organizations::find_parent(org_id, titan_db)?;
     match parent_org_res {
         Some(parent_org) => {
             match parent_org.parent_id {
@@ -366,7 +365,7 @@ pub fn find_unranked_roles(
 /// Otherwise, and error will occur.
 pub fn reorder_roles(
     org_id: i32,
-    role_ids: &Vec<i32>,
+    role_ids: &[i32],
     titan_db: &MysqlConnection
 ) -> Result<(), db::TitanDatabaseError> {
     titan_db.transaction::<_, db::TitanDatabaseError, _>(|| {
@@ -443,7 +442,7 @@ pub fn map_role_assoc(
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> Result<models::OrganizationRoleWithAssoc, diesel::result::Error> {
-    let organization = organizations::organizations::find_by_id(
+    let organization = teams::organizations::find_by_id(
         role.organization_id, titan_db)?;
 
     let user_profile = match role.user_id {

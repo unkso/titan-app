@@ -5,9 +5,9 @@ use crate::schema;
 
 /// Queries a single event type with the given id.
 pub fn find_by_id(id: i32, titan_db: &MysqlConnection) -> QueryResult<models::EventType> {
-    return schema::event_types::table
+    schema::event_types::table
         .find(id)
-        .first::<models::EventType>(titan_db);
+        .first::<models::EventType>(titan_db)
 }
 
 /// Queries all event types.

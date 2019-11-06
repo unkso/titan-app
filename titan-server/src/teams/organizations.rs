@@ -11,10 +11,10 @@ pub fn find_by_id(
     id: i32,
     titan_db: &MysqlConnection
 ) -> QueryResult<models::Organization> {
-    return schema::organizations::table
+    schema::organizations::table
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations::id.eq(id))
-        .first::<models::Organization>(titan_db);
+        .first::<models::Organization>(titan_db)
 }
 
 pub fn find_parent(
@@ -38,10 +38,10 @@ pub fn find_by_slug(
     slug: &str,
     unkso_titan: &TitanPrimary
 ) -> QueryResult<models::Organization> {
-    return schema::organizations::table
+    schema::organizations::table
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations::slug.eq(slug))
-        .first::<models::Organization>(&**unkso_titan);
+        .first::<models::Organization>(&**unkso_titan)
 }
 
 /// Queries all the WCF users associated with an organization.
@@ -117,7 +117,7 @@ pub fn find_users(
         .select(schema::users::all_columns)
         .filter(schema::organizations_users::organization_id.eq_any(child_ids))
         .order_by(schema::users::username.asc())
-        .load::<(models::User)>(titan_db)
+        .load::<models::User>(titan_db)
 }
 
 /// Returns true if a user is a non-leadership member of an
@@ -129,7 +129,7 @@ pub fn is_user_organization_member(org_id: i32, user_id: i32, titan_db: &MysqlCo
     let organization = schema::organizations_users::table
         .filter(schema::organizations_users::organization_id.eq(org_id))
         .filter(schema::organizations_users::user_id.eq(user_id))
-        .first::<(models::OrganizationUser)>(titan_db);
+        .first::<models::OrganizationUser>(titan_db);
 
     organization.is_ok()
 }
@@ -147,7 +147,7 @@ pub fn find_all_by_user(
         .select(schema::organizations::all_columns)
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations_users::user_id.eq(user_id))
-        .get_results::<(models::Organization)>(titan_db)?;
+        .get_results::<models::Organization>(titan_db)?;
 
     let mut memberships: Vec<models::UserOrganizationMembership> = vec!();
     for org in orgs.drain(..) {
@@ -194,8 +194,8 @@ pub fn find_children_ids(id: i32, recursive: bool, titan_db: &MysqlConnection) -
                 .eq_any(vec![child_to_visit.pop_front().unwrap()]))
             .get_results::<models::Organization>(titan_db);
 
-        if grandchild_orgs.is_ok() {
-            for grandchild in grandchild_orgs.unwrap().iter() {
+        if let Ok(grandchild_orgs) = grandchild_orgs {
+            for grandchild in grandchild_orgs.iter() {
                 children_ids.push(grandchild.id);
                 child_to_visit.push_back(grandchild.id);
             }

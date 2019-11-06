@@ -8,9 +8,9 @@ pub fn find_by_id(
     file_entry_type_id: i32,
     titan_primary: &MysqlConnection
 ) -> QueryResult<models::UserFileEntryType> {
-    return schema::user_file_entry_types::table
+    schema::user_file_entry_types::table
         .find(file_entry_type_id)
-        .first::<models::UserFileEntryType>(titan_primary);
+        .first::<models::UserFileEntryType>(titan_primary)
 }
 
 /// Queries all file entry types.

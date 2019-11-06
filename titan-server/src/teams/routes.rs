@@ -2,22 +2,21 @@ use rocket::{get, State, http::RawStr, response::status};
 use rocket::http::Status;
 use rocket::request::{Form};
 use rocket_contrib::json::Json;
-use serde::{Deserialize, Serialize};
-use diesel::result::QueryResult;
+use serde::Deserialize;
 
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::models;
 use crate::config;
-use crate::organizations;
+use crate::teams;
 use crate::accounts;
 use crate::guards::form::NaiveDateTimeForm;
 use crate::accounts::file_entries;
 use crate::guards::auth_guard;
-use crate::organizations::roles::RoleRankScope;
+use crate::teams::roles::RoleRankScope;
 
 #[get("/")]
 pub fn get_all(titan_primary: TitanPrimary) -> Result<Json<Vec<models::Organization>>, status::NotFound<String>> {
-    let organizations = organizations::organizations::find_all(titan_primary);
+    let organizations = teams::organizations::find_all(titan_primary);
 
     if organizations.is_err() {
         return Err(status::NotFound("".to_string()))
@@ -31,7 +30,7 @@ pub fn get_organization_by_id(
     id: i32,
     titan_db: TitanPrimary
 ) -> Result<Json<models::Organization>, status::NotFound<String>> {
-    let organization = organizations::organizations::find_by_id(id, &*titan_db);
+    let organization = teams::organizations::find_by_id(id, &*titan_db);
 
     if organization.is_err() {
         return Err(status::NotFound("".to_string()));
@@ -46,7 +45,7 @@ pub fn get_organization_by_slug(
     unkso_titan: TitanPrimary
 ) -> Result<Json<models::Organization>, status::NotFound<String>> {
     let organization_result =
-        organizations::organizations::find_by_slug(slug.as_str(), &unkso_titan);
+        teams::organizations::find_by_slug(slug.as_str(), &unkso_titan);
 
     if organization_result.is_err() {
         return Err(status::NotFound("".to_string()))
@@ -61,7 +60,7 @@ pub fn get_child_organizations(
     org_id: i32,
     titan_db: TitanPrimary
 ) -> Json<Vec<models::Organization>> {
-    Json(organizations::organizations::find_children(
+    Json(teams::organizations::find_children(
         org_id, &*titan_db).unwrap())
 }
 
@@ -77,7 +76,7 @@ pub fn get_organization_users(
     app_config: State<config::AppConfig>
 ) -> Json<Vec<models::UserProfile>> {
     let include_children = children.is_some() && children.unwrap();
-    let users = organizations::organizations::find_users(
+    let users = teams::organizations::find_users(
         id, include_children, &*titan_db).unwrap();
 
     Json(accounts::users::map_users_to_profile(&users, &*wcf_db, &app_config).unwrap())
@@ -102,11 +101,11 @@ pub fn add_user(
         user_id: user_fields.user_id,
     };
 
-    if organizations::organizations::is_user_org_member(org_user, titan_db_ref) {
+    if teams::organizations::is_user_org_member(org_user, titan_db_ref) {
         return Json(true);
     }
 
-    let res = organizations::organizations::add_user(
+    let res = teams::organizations::add_user(
         &org_user, titan_db_ref);
     Json(res.is_ok())
 }
@@ -125,7 +124,7 @@ pub fn remove_user(
     titan_db: TitanPrimary,
 ) -> Json<bool> {
     let titan_db_ref = &*titan_db;
-    let res = organizations::organizations::remove_user(&models::OrganizationUser {
+    let res = teams::organizations::remove_user(&models::OrganizationUser {
         organization_id: org_id,
         user_id: user_fields.user_id,
     }, titan_db_ref);
@@ -141,7 +140,7 @@ pub fn get_organization_user_coc(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
 ) -> Json<models::ChainOfCommand> {
-    Json(organizations::roles::find_user_coc(
+    Json(teams::roles::find_user_coc(
         org_id, user_id, &*titan_db, &*wcf_db, app_config).unwrap())
 }
 
@@ -152,7 +151,7 @@ pub fn get_organization_coc(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
 ) -> Json<models::ChainOfCommand> {
-    Json(organizations::roles::find_org_coc(
+    Json(teams::roles::find_org_coc(
         org_id, std::i32::MAX, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
@@ -165,9 +164,9 @@ pub fn list_organization_roles(
     app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
 ) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
-    let roles = organizations::roles::find_org_roles(
+    let roles = teams::roles::find_org_roles(
         org_id, scope, &*titan_db).unwrap();
-    Json(organizations::roles::map_roles_assoc(
+    Json(teams::roles::map_roles_assoc(
         roles, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
@@ -179,7 +178,7 @@ pub fn get_organization_unranked_roles(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
 ) -> Json<Vec<models::OrganizationRoleWithAssoc>> {
-    Json(organizations::roles::find_unranked_roles(
+    Json(teams::roles::find_unranked_roles(
         org_id, &*titan_db, &*wcf_db, &app_config).unwrap())
 }
 
@@ -191,11 +190,11 @@ pub fn get_parent_role(
     app_config: State<config::AppConfig>
 ) -> Json<Option<models::OrganizationRoleWithAssoc>> {
     let titan_db_ref = &*titan_db;
-    let parent_role_res = organizations::roles::find_parent_role(
+    let parent_role_res = teams::roles::find_parent_role(
         role_id, false, titan_db_ref).unwrap();
     match parent_role_res {
         Some(parent_role) => {
-            let parent_role_assoc = organizations::roles::map_role_assoc(
+            let parent_role_assoc = teams::roles::map_role_assoc(
                 &parent_role, titan_db_ref, &*wcf_db, &app_config).unwrap();
             Json(Some(parent_role_assoc))
         },
@@ -219,14 +218,14 @@ pub fn reorder_roles(
     auth_user: auth_guard::AuthenticatedUser
 ) -> Status {
     let titan_db_ref = &*titan_db;
-    let is_authorized = organizations::roles::is_user_in_parent_coc(
+    let is_authorized = teams::roles::is_user_in_parent_coc(
         auth_user.user.id, org_id, titan_db_ref, &*wcf_db, &app_config);
 
     if !is_authorized {
         return Status::Unauthorized;
     }
 
-    let res = organizations::roles::reorder_roles(
+    let res = teams::roles::reorder_roles(
         org_id, &request.role_ids, &*titan_db);
     match res {
         Ok(_) => Status::Ok,
@@ -247,22 +246,21 @@ pub fn list_organization_reports(
 ) -> Result<Json<Vec<models::ReportWithAssoc>>, status::BadRequest<String>> {
     let titan_db_ref = &*titan_db;
     let wcf_db_ref = &*wcf_db;
-    let mut coc = organizations::roles::find_org_coc(
+    let mut coc = teams::roles::find_org_coc(
         org_id, std::i32::MAX, titan_db_ref, wcf_db_ref, &app_config).unwrap();
     let mut roles = coc.local_coc;
     roles.append(&mut coc.extended_coc);
 
     for role in roles.drain(..) {
         if role.user_profile.unwrap().id == auth_user.user.id {
-            let mut reports: QueryResult<Vec<models::ReportWithAssoc>>;
-            if role.organization.id != org_id {
-                reports = organizations::reports::find_all_by_organization(
-                    org_id, titan_db_ref, &*wcf_db, &app_config);
+            let reports = if role.organization.id != org_id {
+                teams::reports::find_all_by_organization(
+                    org_id, titan_db_ref, &*wcf_db, &app_config)
             } else {
-                reports = organizations::reports::find_all_by_org_up_to_rank(
+                teams::reports::find_all_by_org_up_to_rank(
                     org_id, role.rank.unwrap(), titan_db_ref,
-                    &*wcf_db, &app_config);
-            }
+                    &*wcf_db, &app_config)
+            };
 
             return Ok(Json(reports.unwrap()));
         }
@@ -282,18 +280,18 @@ pub fn get_all_unacknowledged_reports(
     let titan_db_ref = &*titan_db;
     let wcf_db_ref = &*wcf_db;
 
-    let mut roles = organizations::roles::find_ranked_by_user_id(
+    let mut roles = teams::roles::find_ranked_by_user_id(
         auth_user.user.id, titan_db_ref).unwrap();
     let mut direct_report_ids: Vec<i32> = vec!();
 
     for role in roles.drain(..) {
-        let mut direct_reports = organizations::roles::find_direct_reports(
+        let mut direct_reports = teams::roles::find_direct_reports(
             role.organization_id, role.rank.unwrap(), titan_db_ref, wcf_db_ref, &app_config).unwrap();
         direct_report_ids.append(&mut direct_reports.iter_mut()
             .map(|role| role.id).collect());
     }
 
-    let reports = organizations::reports::find_unacknowledged_by_role_ids(
+    let reports = teams::reports::find_unacknowledged_by_role_ids(
         &direct_report_ids, titan_db_ref, wcf_db_ref, &app_config).unwrap();
 
     Json(reports)
@@ -315,7 +313,7 @@ pub fn create_organization_report(
     auth_user: auth_guard::AuthenticatedUser,
 ) -> Result<Json<models::ReportWithAssoc>, status::BadRequest<String>> {
     let titan_db_ref = &*titan_db;
-    let role = organizations::roles::find_org_role_by_user_id(
+    let role = teams::roles::find_org_role_by_user_id(
         org_id, auth_user.user.id, titan_db_ref);
 
     match role {
@@ -331,7 +329,7 @@ pub fn create_organization_report(
                 date_modified: chrono::Utc::now().naive_utc(),
             };
 
-            let saved_report = organizations::reports::save_report(
+            let saved_report = teams::reports::save_report(
                 &new_report, titan_db_ref, &*wcf_db, &app_config);
 
             match saved_report {
@@ -355,19 +353,19 @@ pub fn ack_organization_report(
     auth_user: auth_guard::AuthenticatedUser
 ) -> Result<Json<models::ReportWithAssoc>, Status> {
     let titan_db_ref = &*titan_db;
-    let report_res = organizations::reports::find_by_id(report_id, titan_db_ref);
+    let report_res = teams::reports::find_by_id(report_id, titan_db_ref);
     match report_res {
         Ok(report) => {
-            let parent_role = organizations::roles::find_parent_role(
+            let parent_role = teams::roles::find_parent_role(
                 report.role_id, false, titan_db_ref).unwrap();
             match parent_role {
                 Some(role) => {
                     if role.user_id.is_none() || role.user_id.unwrap() != auth_user.user.id {
                         return Err(Status::Unauthorized)
                     }
-                    let report = organizations::reports::ack_report(
+                    let report = teams::reports::ack_report(
                         report_id, auth_user.user.id, titan_db_ref).unwrap();
-                    Ok(Json(organizations::reports::map_report_to_assoc(
+                    Ok(Json(teams::reports::map_report_to_assoc(
                         report, titan_db_ref, &*wcf_db, &app_config).unwrap()))
                 },
                 _ => Err(Status::BadRequest)

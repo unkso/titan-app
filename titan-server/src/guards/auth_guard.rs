@@ -59,7 +59,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
                 .unwrap();
 
                 let wcf_id = user.wcf_id;
-                return rocket::Outcome::Success(AuthenticatedUser {
+                rocket::Outcome::Success(AuthenticatedUser {
                     credentials: AuthCredentials {
                         header: JsonValue(result.0),
                         payload: JsonValue(result.1),
@@ -70,10 +70,10 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
                         Ok(options) => options,
                         _ => vec!()
                     }
-                });
+                })
             }
             _ => {
-                return rocket::Outcome::Failure((Status::BadRequest, AuthTokenError::InvalidToken))
+                rocket::Outcome::Failure((Status::BadRequest, AuthTokenError::InvalidToken))
             }
         }
     }

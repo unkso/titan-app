@@ -16,9 +16,9 @@ pub fn search(
         .limit(max as i64)
         .into_boxed();
 
-    if username.is_some() {
+    if let Some(username) = username {
         query = query.filter(schema::users::username.like(
-            [username.unwrap(), "%".to_string()].join("")))
+            [username, "%".to_string()].join("")))
             .order_by(schema::users::username.asc());
     } else {
         query = query.order_by(schema::users::date_joined.desc())
@@ -42,9 +42,9 @@ pub fn find_by_wcf_id(
     wcf_id: i32,
     titan_primary: &MysqlConnection
 ) -> QueryResult<models::User> {
-    return schema::users::table
+    schema::users::table
         .filter(schema::users::wcf_id.eq(wcf_id))
-        .first::<models::User>(titan_primary);
+        .first::<models::User>(titan_primary)
 }
 
 /// Finds titan users with any of the WCF IDs.
@@ -67,23 +67,25 @@ pub fn create_if_not_exists(
         .filter(schema::users::wcf_id.eq(wcf_user.user_id))
         .first::<models::User>(titan_primary);
 
-    if user.is_ok() {
-        return Ok(user.unwrap());
+    if let Ok(user) = user {
+        return Ok(user);
     }
 
     let rank_delimiter = wcf_user.username.find('.');
-    let mut first_username_char_pos = 0;
 
-    if rank_delimiter.is_some() {
-        first_username_char_pos = rank_delimiter.unwrap() + 1;
-    }
+    let first_username_char_pos = if let Some(rank_delimiter) = rank_delimiter {
+        rank_delimiter + 1
+    } else {
+        0
+    };
 
     let clan_tag_suffix = wcf_user.username.rfind("=US=");
-    let mut clan_tag_suffix_pos = wcf_user.username.len();
 
-    if clan_tag_suffix.is_some() {
-        clan_tag_suffix_pos = clan_tag_suffix.unwrap()
-    }
+    let clan_tag_suffix_pos = if let Some(clan_tag_suffix) = clan_tag_suffix {
+        clan_tag_suffix
+    } else {
+        wcf_user.username.len()
+    };
 
     let new_user = models::NewUser {
         wcf_id: wcf_user.user_id,
@@ -125,9 +127,9 @@ pub fn wcf_find_by_user_id(
     wcf_user_id: i32,
     wcf_db: &MysqlConnection
 ) -> QueryResult<models::WcfUser> {
-    return schema::wcf1_user::table
+    schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq(wcf_user_id))
-        .first::<models::WcfUser>(wcf_db);
+        .first::<models::WcfUser>(wcf_db)
 }
 
 pub fn wcf_find_user_avatar(
@@ -153,11 +155,11 @@ pub fn wcf_find_all_user_profiles_by_id(
     let mut wcf_user_profiles: Vec<models::WcfUserProfile> = vec!();
     for wcf_user in user {
         let avatar_res = wcf_find_user_avatar(wcf_user.user_id, wcf_db);
-        let avatar_url = if avatar_res.is_ok() {
+        let avatar_url = if let Ok(avatar_res) = avatar_res {
             Some(format!(
                 "{}/{}",
                 app_config.avatar_base_url,
-                avatar_res.unwrap().get_avatar_url()
+                avatar_res.get_avatar_url()
             ))
         } else {
             None
@@ -204,11 +206,11 @@ pub fn wcf_find_user_profile_by_id(
 /// Given a list of users, returns a list of objects containing the
 /// titan and WCF profile for each user.
 pub fn map_users_to_profile(
-    users: &Vec<models::User>,
+    users: &[models::User],
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> Result<Vec<models::UserProfile>, diesel::result::Error> {
-    users.into_iter().map(|user| {
+    users.iter().map(|user| {
         map_user_to_profile(&user, &wcf_db, &app_config)
     }).collect()
 }
@@ -234,7 +236,7 @@ pub fn map_user_to_profile(
             avatar_url: None,
             username: user.username.clone(),
             user_title: "".to_string(),
-            last_activity_time: match user.last_activity.clone() {
+            last_activity_time: match user.last_activity {
                 Some(date) => date.timestamp(),
                 _ => chrono::Utc::now().naive_utc().timestamp()
             }
@@ -255,7 +257,7 @@ pub fn map_user_to_profile(
         loa: user.loa,
         a15: user.a15,
         date_joined: user.date_joined,
-        last_activity:user.last_activity.unwrap_or(
+        last_activity:user.last_activity.unwrap_or_else(||
             chrono::Utc::now().naive_utc()),
         wcf: wcf_profile
     })

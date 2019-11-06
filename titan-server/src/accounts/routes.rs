@@ -9,7 +9,7 @@ use crate::accounts::users;
 use crate::accounts::file_entries;
 use crate::accounts::file_entry_types;
 use crate::accounts::excuses;
-use crate::organizations;
+use crate::teams;
 use crate::config;
 use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::woltlab_auth_helper;
@@ -85,11 +85,11 @@ pub fn woltlab_login(
 
     let avatar_res = users::wcf_find_user_avatar(wcf_user.user_id, wcf_db);
     let mut avatar_url = "".to_string();
-    if !avatar_res.is_err() {
-        avatar_url = format!("{}/{}", app_config.avatar_base_url, avatar_res.unwrap().get_avatar_url());
+    if let Ok(avatar_res) = avatar_res {
+        avatar_url = format!("{}/{}", app_config.avatar_base_url, avatar_res.get_avatar_url());
     }
 
-    return Ok(Json(WoltlabLoginResponse {
+    Ok(Json(WoltlabLoginResponse {
         token: token.unwrap(),
         user: models::UserProfile {
             id: user.id,
@@ -105,7 +105,7 @@ pub fn woltlab_login(
             loa: user.loa,
             a15: user.a15,
             date_joined: user.date_joined,
-            last_activity: user.last_activity.unwrap_or(chrono::Utc::now().naive_utc()),
+            last_activity: user.last_activity.unwrap_or_else(|| chrono::Utc::now().naive_utc()),
             wcf: models::WcfUserProfile {
                 user_title: wcf_user.user_title.clone(),
                 username: wcf_user.username.clone(),
@@ -116,10 +116,10 @@ pub fn woltlab_login(
         wcf_username: wcf_user.username,
         wcf_user_title: wcf_user.user_title,
         acl: acl::get_user_acl(
-            wcf_user.user_id, wcf_db).unwrap_or(vec!()),
-        roles: organizations::roles::find_ranked_by_user_id(
-            user.id, titan_db).unwrap_or(vec!())
-    }));
+            wcf_user.user_id, wcf_db).unwrap_or_else(|_| vec![]),
+        roles: teams::roles::find_ranked_by_user_id(
+            user.id, titan_db).unwrap_or_else(|_| vec![])
+    }))
 }
 
 /** **************************************************
@@ -199,8 +199,7 @@ pub fn list_user_file_entries(
     let file_entries_res = file_entries::find_by_user(
         user_id, &*titan_db, &*wcf_db, &app_config);
 
-    if file_entries_res.is_ok() {
-        let mut file_entries = file_entries_res.unwrap();
+    if let Ok(mut file_entries) = file_entries_res {
         for entry in file_entries.iter_mut() {
             if entry.file_entry_type.name == "LOA" && (auth_user.user.id != user_id &&
                 !acl::has_acl_option(auth_user.user.wcf_id, "canViewLoa", &*wcf_db)) {
@@ -355,12 +354,12 @@ pub fn get_user_organizations(
 
     if include_members {
         let mut member_orgs =
-            organizations::organizations::find_all_by_user(id, titan_db_ref).unwrap();
+            teams::organizations::find_all_by_user(id, titan_db_ref).unwrap();
         org_memberships.append(&mut member_orgs);
     }
 
     if include_roles {
-        let mut role_orgs = organizations::roles::find_all_by_user(id, titan_db_ref).unwrap();
+        let mut role_orgs = teams::roles::find_all_by_user(id, titan_db_ref).unwrap();
         org_memberships.append(&mut role_orgs);
     }
 

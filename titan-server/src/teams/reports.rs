@@ -3,7 +3,7 @@ use rocket::State;
 use crate::models;
 use crate::schema;
 use crate::accounts;
-use crate::organizations;
+use crate::teams;
 use crate::config;
 
 /// Queries a report with the given ID.
@@ -90,7 +90,7 @@ pub fn ack_report(
 }
 
 pub fn find_unacknowledged_by_role_ids(
-    role_ids: &Vec<i32>,
+    role_ids: &[i32],
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
@@ -120,7 +120,7 @@ pub fn map_report_to_assoc(
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> Result<models::ReportWithAssoc, diesel::result::Error> {
-    let role = organizations::roles::find_by_id(
+    let role = teams::roles::find_by_id(
         report.role_id, titan_db)?;
 
     let ack_user_profile = match report.ack_user_id {
@@ -132,9 +132,9 @@ pub fn map_report_to_assoc(
         None => None
     };
 
-    return Ok(models::ReportWithAssoc {
+    Ok(models::ReportWithAssoc {
         id: report.id,
-        role: organizations::roles::map_role_assoc(
+        role: teams::roles::map_role_assoc(
             &role, titan_db, wcf_db, app_config)?,
         term_start_date: report.term_start_date,
         submission_date: report.submission_date,
