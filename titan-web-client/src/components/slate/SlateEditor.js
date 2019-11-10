@@ -93,7 +93,7 @@ export function SlateEditor (props) {
     <React.Fragment>
       <StyledToolbar>
         {props.marks.map((mark, i) => renderMarkButton(mark.type, mark.icon, i))}
-        {props.inline.map((inline, i) => renderControl(inline, index))}
+        {props.inline.map((inline, i) => renderControl(inline, i))}
       </StyledToolbar>
       <Editor
         onChange={res => setValue(res.value)}

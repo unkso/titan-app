@@ -1,17 +1,19 @@
 import React from 'react';
 
 export const BOLD_MARK = {
-  type: 'bold',
+  action: 'bold',
+  type: 'mark',
   hotKey: 'mod+b',
-  icon: <span className="fas fa-bold" />,
+  icon: () => <span className="fas fa-bold" />,
   render: (attributes, children) => (
     <strong {...attributes}>{children}</strong>)
 };
 
 export const ITALIC_MARK = {
-  type: 'italic',
+  action: 'italic',
+  type: 'mark',
   hotKey: 'mod+i',
-  icon: <span className="fas fa-italic" />,
+  icon: () => <span className="fas fa-italic" />,
   render: (attributes, children) => (
     <em {...attributes}>{children}</em>)
 };
