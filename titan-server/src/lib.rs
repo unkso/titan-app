@@ -1,4 +1,4 @@
-#![feature(plugin, decl_macro, custom_attribute, proc_macro_hygiene)]
+#![feature(plugin, decl_macro, proc_macro_hygiene)]
 #![recursion_limit="256"]
 
 #[macro_use] extern crate rocket_contrib;
@@ -7,6 +7,7 @@
 
 pub mod api;
 pub mod accounts;
+pub mod catchers;
 pub mod config;
 pub mod db;
 pub mod guards;

@@ -24,6 +24,10 @@ export const StyledListItem = styled(ListItem)`
     background: ${props => props.hoverbg};
   }
   
+  .assignee-placeholder {
+    font-style: italic;
+  }
+  
   .report-to-indicator {
     border-radius: 3px;
     color: ${props => props.indicatortextcolor};
@@ -133,12 +137,16 @@ export function Roles (props) {
                             <span className="fal fa-grip-lines-vertical" />
                           </span>
                           <div className="role-details">
-                            <MemberNameTag
-                              avatarUrl={role.user_profile.wcf.avatar_url}
-                              avatarPosition="left"
-                              size="small"
-                              username={role.user_profile.username}
-                            />
+                            {role.user_profile ? (
+                              <MemberNameTag
+                                avatarUrl={role.user_profile.wcf.avatar_url}
+                                avatarPosition="left"
+                                size="small"
+                                username={role.user_profile.username}
+                              />
+                            ) : (
+                              <div className="assignee-placeholder">Unassigned</div>
+                            )}
                             <div className="report-to-indicator">
                               Reports to <span className="far fa-level-up" />
                             </div>

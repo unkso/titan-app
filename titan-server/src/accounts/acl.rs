@@ -2,8 +2,12 @@ use diesel::{prelude::*, MysqlConnection};
 
 use crate::models;
 use crate::schema;
+use crate::db;
 
-pub fn get_user_acl(wcf_user_id: i32, wcf_db: &MysqlConnection) -> QueryResult<Vec<models::WcfUserGroupOption>> {
+pub fn get_user_acl(
+    wcf_user_id: i32,
+    wcf_db: &MysqlConnection
+) -> db::TitanQueryResult<Vec<models::WcfUserGroupOption>> {
     schema::wcf1_user_group_option::table
         .select((
             schema::wcf1_user_group_option::option_id,
@@ -22,6 +26,7 @@ pub fn get_user_acl(wcf_user_id: i32, wcf_db: &MysqlConnection) -> QueryResult<V
         .group_by(schema::wcf1_user_group_option::option_id)
         .order_by(schema::wcf1_user_group_option::option_id)
         .load::<models::WcfUserGroupOption>(wcf_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Returns true a user has permission for the given ACL option.

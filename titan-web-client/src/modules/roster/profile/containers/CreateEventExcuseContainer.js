@@ -53,7 +53,7 @@ class CreateEventExcuseContainer extends React.Component {
       .then((res) => {
         this.props.actions.profile.addExcuse(res.data);
         this.setState({ open: false });
-        this.props.enqueueSnackbar(`'Excuse added', { variant: 'success' }`);
+        this.props.enqueueSnackbar('Excuse added', { variant: 'success' });
       })
       .catch(() => {
         this.props.enqueueSnackbar('Unable to add excuse', {

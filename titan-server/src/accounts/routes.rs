@@ -1,5 +1,5 @@
 use crate::accounts::acl;
-use frank_jwt::{Algorithm, encode};
+use frank_jwt::{Algorithm, encode, Error as JwtError};
 use rocket::request::Form;
 use rocket::{get, post, State, response::status};
 use rocket_contrib::json::Json;
@@ -15,6 +15,8 @@ use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::woltlab_auth_helper;
 use crate::models;
 use crate::guards::auth_guard;
+use crate::api::{ApiResponse, ApiError};
+use crate::config::AppConfig;
 
 /** **************************************************
  *  Auth
@@ -41,33 +43,47 @@ pub fn woltlab_login(
     titan_primary: TitanPrimary,
     login_creds: Json<WoltlabLoginRequest>,
     app_config: State<config::AppConfig>,
-) -> Result<Json<WoltlabLoginResponse>, status::NotFound<String>> {
+) -> ApiResponse<WoltlabLoginResponse> {
     let wcf_db = &*unkso_main;
     let titan_db = &*titan_primary;
+    let res = users::wcf_find_by_user_id(login_creds.user_id, wcf_db)
+        .map_err(ApiError::from)
+        .and_then(|wcf_user| {
+            let is_valid = woltlab_auth_helper::check_password(
+                &wcf_user.password, &login_creds.cookie_password);
+            if is_valid {
+                Ok(wcf_user)
+            } else {
+                Err(ApiError::AuthenticationError)
+            }
+        })
+        .and_then(|wcf_user|
+            users::create_if_not_exists(&wcf_user, &*titan_db)
+                .and_then(|user| users::map_user_to_profile(&user, wcf_db, &app_config))
+                .map_err(ApiError::from)
+                .map(|profile| (wcf_user, profile)))
+        .and_then(|(wcf_user, profile)| {
+            create_jwt(&profile, &app_config)
+                .map(|token| {
+                    let user_id = profile.id;
+                    WoltlabLoginResponse {
+                        token,
+                        user: profile,
+                        wcf_username: wcf_user.username,
+                        wcf_user_title: wcf_user.user_title,
+                        acl: acl::get_user_acl(
+                            wcf_user.user_id, wcf_db).unwrap_or_else(|_| vec![]),
+                        roles: teams::roles::find_ranked_by_user_id(
+                            user_id, titan_db).unwrap_or_else(|_| vec![])
+                    }
+                })
+                .map_err(|_| ApiError::AuthenticationError)
+        });
 
-    // @Todo Handle error state
-    let wcf_user: models::WcfUser = users::wcf_find_by_user_id(
-        login_creds.user_id,
-        wcf_db,
-    ).unwrap();
+    ApiResponse::from(res)
+}
 
-    let is_valid = woltlab_auth_helper::check_password(
-        &wcf_user.password,
-        &login_creds.cookie_password,
-    );
-
-    if !is_valid {
-        return Err(status::NotFound("Invalid credentials".to_string()));
-    }
-
-    let user_res = users::create_if_not_exists(&wcf_user, &*titan_db);
-
-    if user_res.is_err() {
-        return Err(status::NotFound("".to_string()));
-    }
-
-    let user = user_res.unwrap();
-
+fn create_jwt(user: &models::UserProfile, app_config: &AppConfig) -> Result<String, JwtError> {
     let header = json!({});
     let payload = json!({
         "user": {
@@ -75,51 +91,12 @@ pub fn woltlab_login(
             "wcf_id": user.wcf_id
         }
     });
-
-    let token = encode(
+    encode(
         header.into(),
         &app_config.secret_key,
         &payload,
         Algorithm::HS256,
-    );
-
-    let avatar_res = users::wcf_find_user_avatar(wcf_user.user_id, wcf_db);
-    let mut avatar_url = "".to_string();
-    if let Ok(avatar_res) = avatar_res {
-        avatar_url = format!("{}/{}", app_config.avatar_base_url, avatar_res.get_avatar_url());
-    }
-
-    Ok(Json(WoltlabLoginResponse {
-        token: token.unwrap(),
-        user: models::UserProfile {
-            id: user.id,
-            wcf_id: user.wcf_id,
-            legacy_player_id: user.legacy_player_id,
-            rank_id: user.rank_id,
-            username: user.username,
-            orientation: user.orientation,
-            bct_e0: user.bct_e0,
-            bct_e1: user.bct_e1,
-            bct_e2: user.bct_e2,
-            bct_e3: user.bct_e3,
-            loa: user.loa,
-            a15: user.a15,
-            date_joined: user.date_joined,
-            last_activity: user.last_activity.unwrap_or_else(|| chrono::Utc::now().naive_utc()),
-            wcf: models::WcfUserProfile {
-                user_title: wcf_user.user_title.clone(),
-                username: wcf_user.username.clone(),
-                last_activity_time: wcf_user.last_activity_time,
-                avatar_url: Some(avatar_url),
-            },
-        },
-        wcf_username: wcf_user.username,
-        wcf_user_title: wcf_user.user_title,
-        acl: acl::get_user_acl(
-            wcf_user.user_id, wcf_db).unwrap_or_else(|_| vec![]),
-        roles: teams::roles::find_ranked_by_user_id(
-            user.id, titan_db).unwrap_or_else(|_| vec![])
-    }))
+    )
 }
 
 /** **************************************************
@@ -141,14 +118,20 @@ pub fn list_users(
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>
-) -> Json<Vec<models::UserProfile>> {
-    let users_res = users::search(
-        fields.username.clone(), fields.limit, &*titan_db).unwrap();
-
+) -> ApiResponse<Vec<models::UserProfile>> {
+    let users_res: Result<Vec<models::UserProfile>, ApiError> = users::search(
+        fields.username.clone(), fields.limit, &*titan_db)
+        .and_then(|res| {
+            match res {
+                Some(users) => users::map_users_to_profile(
+                    &users, &*wcf_db, &app_config),
+                None => Ok(vec![]),
+            }
+        })
+        .map_err(ApiError::from);
     match users_res {
-        Some(users) => Json(users::map_users_to_profile(
-            &users, &*wcf_db, &app_config).unwrap()),
-        None => Json(vec![])
+        Ok(res) => ApiResponse::from(res),
+        Err(err) => ApiResponse::from(Err(err)),
     }
 }
 
@@ -159,12 +142,9 @@ pub fn get_user(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_guard: auth_guard::AuthenticatedUser,
-) -> Result<Json<models::UserProfile>, status::NotFound<String>> {
-    let user_res = users::find_by_id(user_id, &*titan_db);
-    match user_res {
-        Ok(user) => Ok(Json(users::map_user_to_profile(&user, &*wcf_db, &app_config).unwrap())),
-        _ => Err(status::NotFound("WCF user not found".to_string()))
-    }
+) -> ApiResponse<models::UserProfile> {
+    ApiResponse::from(users::find_by_id(user_id, &*titan_db)
+        .and_then(|user| users::map_user_to_profile(&user, &*wcf_db, &app_config)))
 }
 
 /** ******************************************************************
@@ -173,14 +153,8 @@ pub fn get_user(
 #[get("/file-entry-types")]
 pub fn list_user_file_entry_types(
     titan_db: TitanPrimary
-) -> Result<Json<Vec<models::UserFileEntryType>>, status::BadRequest<String>> {
-    let file_entries_res = file_entry_types::find_file_entry_types(&*titan_db);
-
-    if file_entries_res.is_err() {
-        return Err(status::BadRequest(Some("Failed to load file entries.".to_string())));
-    }
-
-    Ok(Json(file_entries_res.unwrap()))
+) -> ApiResponse<Vec<models::UserFileEntryType>> {
+    ApiResponse::from(file_entry_types::find_file_entry_types(&*titan_db))
 }
 
 #[derive(Serialize)]
@@ -238,7 +212,7 @@ pub fn save_user_file_entry(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser,
-) -> Result<Json<CreateUserFileEntryResponse>, status::BadRequest<String>> {
+) -> ApiResponse<CreateUserFileEntryResponse> {
     let new_file_entry = models::NewUserFileEntry {
         user_id,
         user_file_entry_type_id: file_entry_form.file_entry_type_id,
@@ -248,17 +222,15 @@ pub fn save_user_file_entry(
         modified_by: auth_user.user.id,
         date_modified: chrono::Utc::now().naive_utc(),
     };
-
     let created_file_entry_res = file_entries::create_file_entry(
         &new_file_entry, &*titan_db, &*wcf_db, &app_config);
 
-    if created_file_entry_res.is_err() {
-        return Err(status::BadRequest(Some("Failed to save file entry.".to_string())));
+    match created_file_entry_res {
+        Ok(file_entry) => ApiResponse::from(CreateUserFileEntryResponse {
+            file_entry
+        }),
+        Err(err) => ApiResponse::from(Err(err))
     }
-
-    Ok(Json(CreateUserFileEntryResponse {
-        file_entry: created_file_entry_res.unwrap()
-    }))
 }
 
 /** **************************************************
@@ -270,9 +242,9 @@ pub fn list_unacknowledged_excuses(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
-) -> Json<Vec<models::UserEventExcuseWithAssoc>> {
-    Json(excuses::find_all_unacknowledged(
-        &*titan_db, &*wcf_db, &app_config).unwrap())
+) -> ApiResponse<Vec<models::UserEventExcuseWithAssoc>> {
+    ApiResponse::from(excuses::find_all_unacknowledged(
+        &*titan_db, &*wcf_db, &app_config))
 }
 #[get("/<user_id>/excuses")]
 pub fn list_user_event_excuses(
@@ -281,9 +253,9 @@ pub fn list_user_event_excuses(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
-) -> Json<Vec<models::UserEventExcuseWithAssoc>> {
-    Json(excuses::get_user_excuses(
-        user_id, &*titan_db, &*wcf_db, &app_config).unwrap())
+) -> ApiResponse<Vec<models::UserEventExcuseWithAssoc>> {
+    ApiResponse::from(excuses::get_user_excuses(
+        user_id, &*titan_db, &*wcf_db, &app_config))
 }
 
 #[derive(Deserialize)]
@@ -301,7 +273,7 @@ pub fn save_user_event_excuse(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
-) -> Result<Json<models::UserEventExcuseWithAssoc>, status::BadRequest<String>> {
+) -> ApiResponse<models::UserEventExcuseWithAssoc> {
     let new_excuse = models::NewUserEventExcuse {
         user_id,
         event_type_id: excuse_form.event_type_id,
@@ -313,15 +285,12 @@ pub fn save_user_event_excuse(
         date_modified: chrono::Utc::now().naive_utc(),
         date_created: chrono::Utc::now().naive_utc()
     };
-
     let created_excuse = excuses::create_event_excuse(
         &new_excuse, &*titan_db, &*wcf_db, &app_config);
-
-    if created_excuse.is_err() {
-        return Err(status::BadRequest(Some("Failed to save event excuse.".to_string())));
+    match created_excuse {
+        Ok(excuse) => ApiResponse::from(excuse),
+        Err(err) => ApiResponse::from(Err(err))
     }
-
-    Ok(Json(created_excuse.unwrap()))
 }
 
 #[post("/excuses/<excuse_id>/ack", rank = 1)]
@@ -331,9 +300,9 @@ pub fn ack_user_event_excuse(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser
-) -> Json<models::UserEventExcuseWithAssoc> {
-    Json(excuses::ack_event_excuse(
-        excuse_id, &auth_user.user, &*titan_db, &*wcf_db, &app_config).unwrap())
+) -> ApiResponse<models::UserEventExcuseWithAssoc> {
+    ApiResponse::from(excuses::ack_event_excuse(
+        excuse_id, &auth_user.user, &*titan_db, &*wcf_db, &app_config))
 }
 
 /** **************************************************
@@ -346,22 +315,37 @@ pub fn get_user_organizations(
     role: Option<bool>,
     titan_db: TitanPrimary,
     _auth_user: auth_guard::AuthenticatedUser
-) -> Json<Vec<models::UserOrganizationMembership>> {
+) -> ApiResponse<Vec<models::UserOrganizationMembership>> {
     let titan_db_ref = &*titan_db;
     let include_members = member.is_some() && member.unwrap();
     let include_roles = role.is_some() && role.unwrap();
     let mut org_memberships: Vec<models::UserOrganizationMembership> = vec!();
 
     if include_members {
-        let mut member_orgs =
-            teams::organizations::find_all_by_user(id, titan_db_ref).unwrap();
-        org_memberships.append(&mut member_orgs);
+        let member_orgs =
+            teams::organizations::find_all_by_user(id, titan_db_ref);
+
+        match member_orgs {
+            Ok(mut orgs) => {
+                org_memberships.append(&mut orgs)
+            },
+            Err(err) => {
+                return ApiResponse::from(Err(err))
+            }
+        }
     }
 
     if include_roles {
-        let mut role_orgs = teams::roles::find_all_by_user(id, titan_db_ref).unwrap();
-        org_memberships.append(&mut role_orgs);
+        let role_orgs = teams::roles::find_all_by_user(id, titan_db_ref);
+        match role_orgs {
+            Ok(mut orgs) => {
+                org_memberships.append(&mut orgs)
+            },
+            Err(err) => {
+                return ApiResponse::from(Err(err))
+            }
+        }
     }
 
-    Json(org_memberships)
+    ApiResponse::from(org_memberships)
 }

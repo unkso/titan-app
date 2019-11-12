@@ -11,6 +11,8 @@ impl From<diesel::result::Error> for TitanDatabaseError {
     }
 }
 
+pub type TitanQueryResult<T> = Result<T, TitanDatabaseError>;
+
 #[database("unkso_main_forums")]
 pub struct UnksoMainForums(diesel::MysqlConnection);
 
