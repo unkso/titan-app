@@ -5,6 +5,7 @@ use crate::models;
 use crate::schema;
 use crate::accounts;
 use crate::config;
+use crate::db;
 
 /// Queries all of a user's excuses.
 pub fn get_user_excuses(
@@ -12,7 +13,7 @@ pub fn get_user_excuses(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<Vec<models::UserEventExcuseWithAssoc>, diesel::result::Error> {
+) -> db::TitanQueryResult<Vec<models::UserEventExcuseWithAssoc>> {
     let excuses = schema::user_event_excuses::table
             .filter(schema::user_event_excuses::user_id.eq(user_id))
         .order_by(schema::user_event_excuses::event_date.desc())
@@ -25,17 +26,21 @@ pub fn get_user_excuses(
 pub fn find_by_id(
     excuse_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<models::UserEventExcuse> {
-    schema::user_event_excuses::table.find(excuse_id).first(titan_db)
+) -> db::TitanQueryResult<models::UserEventExcuse> {
+    schema::user_event_excuses::table
+        .find(excuse_id)
+        .first(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Queries the last inserted event excuse.
 pub fn find_last_inserted(
     titan_db: &MysqlConnection
-) -> Result<models::UserEventExcuse, diesel::result::Error> {
+) -> db::TitanQueryResult<models::UserEventExcuse> {
     let excuse = schema::user_event_excuses::table
         .order_by(schema::user_event_excuses::id.desc())
-        .first(titan_db)?;
+        .first(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     Ok(excuse)
 }
@@ -44,11 +49,12 @@ pub fn find_all_unacknowledged(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> QueryResult<Vec<models::UserEventExcuseWithAssoc>> {
+) -> db::TitanQueryResult<Vec<models::UserEventExcuseWithAssoc>> {
     let excuses = schema::user_event_excuses::table
         .filter(schema::user_event_excuses::ack_date.is_null())
         .order_by(schema::user_event_excuses::event_date.desc())
-        .get_results(titan_db)?;
+        .get_results(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     map_excuses_assoc(excuses, titan_db, wcf_db, app_config)
 }
@@ -59,10 +65,11 @@ pub fn create_event_excuse(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<models::UserEventExcuseWithAssoc, diesel::result::Error> {
+) -> db::TitanQueryResult<models::UserEventExcuseWithAssoc> {
     diesel::insert_into(schema::user_event_excuses::table)
         .values(new_event_excuse)
-        .execute(titan_db)?;
+        .execute(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     let excuse = find_last_inserted(titan_db)?;
     map_excuse_assoc(excuse, titan_db, wcf_db, app_config)
@@ -74,7 +81,7 @@ pub fn ack_event_excuse(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> QueryResult<models::UserEventExcuseWithAssoc> {
+) -> db::TitanQueryResult<models::UserEventExcuseWithAssoc> {
     let mut excuse = find_by_id(excuse_id, titan_db)?;
 
     excuse.ack_user_id = Some(ack_user.id);
@@ -95,7 +102,7 @@ pub fn map_excuses_assoc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> QueryResult<Vec<models::UserEventExcuseWithAssoc>> {
+) -> db::TitanQueryResult<Vec<models::UserEventExcuseWithAssoc>> {
     let mut excuses_with_assoc: Vec<models::UserEventExcuseWithAssoc> = vec!();
     for excuse in excuses.drain(..) {
         excuses_with_assoc.push(map_excuse_assoc(
@@ -110,10 +117,11 @@ fn map_excuse_assoc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> QueryResult<models::UserEventExcuseWithAssoc> {
+) -> db::TitanQueryResult<models::UserEventExcuseWithAssoc> {
     let event_type = schema::event_types::table
         .find(excuse.event_type_id)
-        .first(titan_db)?;
+        .first(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
     let excuse_user = accounts::users::map_user_to_profile(
         &accounts::users::find_by_id(excuse.user_id, titan_db)?,
         wcf_db, app_config)?;

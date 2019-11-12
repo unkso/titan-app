@@ -5,12 +5,13 @@ use rocket::State;
 use crate::models;
 use crate::schema;
 use crate::config;
+use crate::db;
 
 pub fn search(
     username: Option<String>,
     limit: Option<u16>,
     titan_db: &MysqlConnection
-) -> QueryResult<Option<Vec<models::User>>> {
+) -> db::TitanQueryResult<Option<Vec<models::User>>> {
     let max = limit.unwrap_or(25);
     let mut query = schema::users::table
         .limit(max as i64)
@@ -27,45 +28,52 @@ pub fn search(
     query
         .get_results::<models::User>(titan_db)
         .optional()
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Finds a single user by ID.
 pub fn find_by_id(
     user_id: i32,
     titan_db: &MysqlConnection
-) -> Result<models::User, diesel::result::Error> {
-    schema::users::table.find(user_id).first(titan_db)
+) -> db::TitanQueryResult<models::User> {
+    schema::users::table
+        .find(user_id)
+        .first(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Finds a user with the given WCF id.
 pub fn find_by_wcf_id(
     wcf_id: i32,
     titan_primary: &MysqlConnection
-) -> QueryResult<models::User> {
+) -> db::TitanQueryResult<models::User> {
     schema::users::table
         .filter(schema::users::wcf_id.eq(wcf_id))
         .first::<models::User>(titan_primary)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Finds titan users with any of the WCF IDs.
 pub fn find_all_by_wcf_id(
     wcf_ids: Vec<i32>,
     titan_primary: &MysqlConnection
-) -> QueryResult<Vec<models::User>> {
+) -> db::TitanQueryResult<Vec<models::User>> {
     schema::users::table
         .filter(schema::users::wcf_id.eq_any(wcf_ids))
         .order_by(schema::users::username.asc())
         .load::<models::User>(titan_primary)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Create a user account from a WCF user if one doesn't already exist.
 pub fn create_if_not_exists(
     wcf_user: &models::WcfUser,
     titan_primary: &MysqlConnection
-) -> QueryResult<models::User> {
+) -> db::TitanQueryResult<models::User> {
     let user = schema::users::table
         .filter(schema::users::wcf_id.eq(wcf_user.user_id))
-        .first::<models::User>(titan_primary);
+        .first::<models::User>(titan_primary)
+        .map_err(db::TitanDatabaseError::from);
 
     if let Ok(user) = user {
         return Ok(user);
@@ -110,35 +118,42 @@ pub fn create_if_not_exists(
 
     diesel::insert_into(schema::users::table)
         .values(&new_user)
-        .execute(titan_primary)?;
+        .execute(titan_primary)
+        .map_err(db::TitanDatabaseError::from)?;
 
     find_by_wcf_id(wcf_user.user_id, titan_primary)
 }
 
-pub fn wcf_find_all_by_user_id(wcf_user_ids: Vec<i32>, wcf_db: &MysqlConnection) -> QueryResult<Vec<models::WcfUser>> {
+pub fn wcf_find_all_by_user_id(
+    wcf_user_ids: Vec<i32>,
+    wcf_db: &MysqlConnection
+) -> db::TitanQueryResult<Vec<models::WcfUser>> {
     schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq_any(wcf_user_ids))
         .order_by(schema::wcf1_user::username.desc())
         .load::<models::WcfUser>(wcf_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Queries a single WCF user with the given id.
 pub fn wcf_find_by_user_id(
     wcf_user_id: i32,
     wcf_db: &MysqlConnection
-) -> QueryResult<models::WcfUser> {
+) -> db::TitanQueryResult<models::WcfUser> {
     schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq(wcf_user_id))
         .first::<models::WcfUser>(wcf_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 pub fn wcf_find_user_avatar(
     wcf_id: i32,
     wcf_db: &MysqlConnection
-) -> Result<models::WcfUserAvatar, diesel::result::Error> {
+) -> db::TitanQueryResult<models::WcfUserAvatar> {
     schema::wcf1_user_avatar::table
         .filter(schema::wcf1_user_avatar::user_id.eq(wcf_id))
         .first(wcf_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Lists the profiles for the WCF users with one of the given user
@@ -147,7 +162,7 @@ pub fn wcf_find_all_user_profiles_by_id(
     wcf_user_ids: Vec<i32>,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<Vec<models::WcfUserProfile>, diesel::result::Error> {
+) -> db::TitanQueryResult<Vec<models::WcfUserProfile>> {
     let user = schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq_any(wcf_user_ids))
         .get_results::<models::WcfUser>(wcf_db)?;
@@ -181,7 +196,7 @@ pub fn wcf_find_user_profile_by_id(
     wcf_user_id: i32,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<models::WcfUserProfile, diesel::result::Error> {
+) -> db::TitanQueryResult<models::WcfUserProfile> {
     let profile = schema::wcf1_user::table
         .filter(schema::wcf1_user::user_id.eq(wcf_user_id))
         .first::<models::WcfUser>(wcf_db)?;
@@ -209,9 +224,10 @@ pub fn map_users_to_profile(
     users: &[models::User],
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<Vec<models::UserProfile>, diesel::result::Error> {
+) -> db::TitanQueryResult<Vec<models::UserProfile>> {
     users.iter().map(|user| {
         map_user_to_profile(&user, &wcf_db, &app_config)
+            .map_err(db::TitanDatabaseError::from)
     }).collect()
 }
 
@@ -221,7 +237,7 @@ pub fn map_user_to_profile(
     user: &models::User,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) ->  Result<models::UserProfile, diesel::result::Error> {
+) -> db::TitanQueryResult<models::UserProfile> {
     let wcf_profile_res = wcf_find_user_profile_by_id(
         user.wcf_id, wcf_db, app_config);
 

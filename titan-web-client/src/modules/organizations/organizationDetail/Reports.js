@@ -34,7 +34,7 @@ export function Reports (props) {
 
   function addReport (report) {
     const updatedReports = [...reports, report];
-    reports.sort((x, y) =>
+    updatedReports.sort((x, y) =>
       x.term_start_date < y.term_start_date ? 1 : -1);
     dispatch(orgActions.setReports(updatedReports));
   }

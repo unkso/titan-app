@@ -5,22 +5,24 @@ use crate::db::{UnksoMainForums, TitanPrimary};
 use crate::models;
 use crate::schema::{self, wcf1_user, wcf1_user_avatar, wcf1_user_to_group};
 use crate::models::OrganizationUser;
+use crate::db;
 
 /// Queries a single organization with the given id.
 pub fn find_by_id(
     id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<models::Organization> {
+) -> db::TitanQueryResult<models::Organization> {
     schema::organizations::table
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations::id.eq(id))
         .first::<models::Organization>(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 pub fn find_parent(
     child_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<Option<models::Organization>> {
+) -> db::TitanQueryResult<Option<models::Organization>> {
     let child_org = find_by_id(child_id, titan_db);
     match child_org {
         Ok(org) => {
@@ -28,6 +30,7 @@ pub fn find_parent(
                 schema::organizations::parent_id.eq(org.parent_id))
                 .first::<models::Organization>(titan_db)
                 .optional()
+                .map_err(db::TitanDatabaseError::from)
         },
         _ => Ok(None)
     }
@@ -37,11 +40,12 @@ pub fn find_parent(
 pub fn find_by_slug(
     slug: &str,
     unkso_titan: &TitanPrimary
-) -> QueryResult<models::Organization> {
+) -> db::TitanQueryResult<models::Organization> {
     schema::organizations::table
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations::slug.eq(slug))
         .first::<models::Organization>(&**unkso_titan)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Queries all the WCF users associated with an organization.
@@ -49,7 +53,7 @@ pub fn find_by_slug(
 pub fn find_users_old(
     organization: &models::Organization,
     unkso_main: &UnksoMainForums
-) -> QueryResult<Vec<(models::WcfUser, models::WcfUserAvatar)>> {
+) -> db::TitanQueryResult<Vec<(models::WcfUser, models::WcfUserAvatar)>> {
     let users_query = wcf1_user_to_group::table
         .inner_join(
             wcf1_user::table.inner_join(wcf1_user_avatar::table)
@@ -58,6 +62,7 @@ pub fn find_users_old(
         .filter(schema::wcf1_user_to_group::group_id.eq(organization.wcf_user_group_id));
 
     users_query.load::<(models::WcfUser, models::WcfUserAvatar)>(&**unkso_main)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 pub fn is_user_org_member(
@@ -75,41 +80,45 @@ pub fn is_user_org_member(
 pub fn add_user(
     org_user: &models::OrganizationUser,
     titan_db: &MysqlConnection
-) -> QueryResult<usize> {
+) -> db::TitanQueryResult<usize> {
     diesel::insert_into(schema::organizations_users::table)
         .values(org_user)
         .execute(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 pub fn remove_user(
     org_user: &models::OrganizationUser,
     titan_db: &MysqlConnection
-) -> QueryResult<usize> {
+) -> db::TitanQueryResult<usize> {
     let query = schema::organizations_users::table
         .filter(schema::organizations_users::organization_id.eq(org_user.organization_id))
         .filter(schema::organizations_users::user_id.eq(org_user.user_id));
 
     diesel::delete(query)
         .execute(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Returns all organizations.
-pub fn find_all(titan_primary: TitanPrimary) -> QueryResult<Vec<models::Organization>> {
+pub fn find_all(titan_primary: TitanPrimary) -> db::TitanQueryResult<Vec<models::Organization>> {
     schema::organizations::table.load::<models::Organization>(&*titan_primary)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 pub fn find_children(
     org_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<Vec<models::Organization>> {
+) -> db::TitanQueryResult<Vec<models::Organization>> {
     schema::organizations::table
         .filter(schema::organizations::parent_id.eq(org_id))
         .load::<models::Organization>(&*titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Returns the users belonging to an organization.
 pub fn find_users(
-    id: i32, children: bool, titan_db: &MysqlConnection)-> QueryResult<Vec<models::User>> {
+    id: i32, children: bool, titan_db: &MysqlConnection)-> db::TitanQueryResult<Vec<models::User>> {
     let child_ids =
         if children { find_children_ids(id, false, titan_db) } else { vec![id] };
 
@@ -118,6 +127,7 @@ pub fn find_users(
         .filter(schema::organizations_users::organization_id.eq_any(child_ids))
         .order_by(schema::users::username.asc())
         .load::<models::User>(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Returns true if a user is a non-leadership member of an
@@ -141,13 +151,14 @@ pub fn is_user_organization_member(org_id: i32, user_id: i32, titan_db: &MysqlCo
 pub fn find_all_by_user(
     user_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<Vec<models::UserOrganizationMembership>> {
+) -> db::TitanQueryResult<Vec<models::UserOrganizationMembership>> {
     let mut orgs = schema::organizations_users::table
         .inner_join(schema::organizations::table)
         .select(schema::organizations::all_columns)
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organizations_users::user_id.eq(user_id))
-        .get_results::<models::Organization>(titan_db)?;
+        .get_results::<models::Organization>(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     let mut memberships: Vec<models::UserOrganizationMembership> = vec!();
     for org in orgs.drain(..) {
@@ -192,7 +203,8 @@ pub fn find_children_ids(id: i32, recursive: bool, titan_db: &MysqlConnection) -
         let grandchild_orgs = schema::organizations::table
             .filter(schema::organizations::parent_id
                 .eq_any(vec![child_to_visit.pop_front().unwrap()]))
-            .get_results::<models::Organization>(titan_db);
+            .get_results::<models::Organization>(titan_db)
+            .map_err(db::TitanDatabaseError::from);
 
         if let Ok(grandchild_orgs) = grandchild_orgs {
             for grandchild in grandchild_orgs.iter() {

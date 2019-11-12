@@ -46,10 +46,11 @@ impl<'v> FromFormValue<'v> for RoleRankScope {
 pub fn find_by_id(
     role_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<models::OrganizationRole> {
+) -> db::TitanQueryResult<models::OrganizationRole> {
     schema::organization_roles::table
         .find(role_id)
         .first(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Queries all the roles belonging to an organization.
@@ -58,10 +59,11 @@ pub fn find_by_id(
 pub fn find_all_by_organization(
     organization_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<Vec<models::OrganizationRole>> {
+) -> db::TitanQueryResult<Vec<models::OrganizationRole>> {
     schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(organization_id))
         .get_results::<models::OrganizationRole>(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Finds the next user with ranking authority over the given rank.
@@ -73,7 +75,7 @@ pub fn find_next_local_org_coc(
     rank: i32,
     include_unfilled_role: bool,
     titan_db: &MysqlConnection
-) -> QueryResult<Option<models::OrganizationRole>> {
+) -> db::TitanQueryResult<Option<models::OrganizationRole>> {
     let mut query = schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(org_id))
         .filter(schema::organization_roles::rank.lt(rank))
@@ -88,6 +90,7 @@ pub fn find_next_local_org_coc(
         .order_by(schema::organization_roles::rank.desc())
         .first::<models::OrganizationRole>(titan_db)
         .optional()
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Finds the next role that reports directly to the current role.
@@ -97,7 +100,7 @@ pub fn find_direct_reports(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> QueryResult<Vec<models::OrganizationRoleWithAssoc>> {
+) -> db::TitanQueryResult<Vec<models::OrganizationRoleWithAssoc>> {
     let mut rank = starting_rank;
     let mut roles: Vec<models::OrganizationRoleWithAssoc> = vec!();
     let mut orgs_to_visit: VecDeque<i32> = VecDeque::new();
@@ -130,13 +133,14 @@ pub fn find_local_direct_report(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> QueryResult<models::OrganizationRoleWithAssoc> {
+) -> db::TitanQueryResult<models::OrganizationRoleWithAssoc> {
     let role = schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(org_id))
         .filter(schema::organization_roles::user_id.is_not_null())
         .filter(schema::organization_roles::rank.gt(rank))
         .filter(schema::organization_roles::rank.is_not_null())
-        .first::<models::OrganizationRole>(titan_db)?;
+        .first::<models::OrganizationRole>(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     map_role_assoc(&role, titan_db, wcf_db, app_config)
 }
@@ -149,13 +153,14 @@ pub fn find_local_direct_report(
 pub fn find_all_by_user(
     user_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<Vec<models::UserOrganizationMembership>> {
+) -> db::TitanQueryResult<Vec<models::UserOrganizationMembership>> {
     let mut results = schema::organization_roles::table
         .inner_join(schema::organizations::table)
         .select((schema::organizations::all_columns, schema::organization_roles::all_columns))
         .filter(schema::organizations::is_enabled.eq(true))
         .filter(schema::organization_roles::user_id.eq(user_id))
-        .get_results::<(models::Organization, models::OrganizationRole)>(titan_db)?;
+        .get_results::<(models::Organization, models::OrganizationRole)>(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     let mut memberships: Vec<models::UserOrganizationMembership> = vec!();
     for result in results.drain(..) {
@@ -171,10 +176,11 @@ pub fn find_all_by_user(
 pub fn find_ranked_by_user_id(
     user_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<Vec<models::OrganizationRole>> {
+) -> db::TitanQueryResult<Vec<models::OrganizationRole>> {
     schema::organization_roles::table
         .filter(schema::organization_roles::user_id.eq(user_id))
         .get_results(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Finds a user's role within a specific organization.
@@ -185,11 +191,12 @@ pub fn find_org_role_by_user_id(
     org_id: i32,
     user_id: i32,
     titan_db: &MysqlConnection
-) -> QueryResult<models::OrganizationRole> {
+) -> db::TitanQueryResult<models::OrganizationRole> {
     schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(org_id))
         .filter(schema::organization_roles::user_id.eq(user_id))
         .first(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// Queries a user's complete chain of a command for a given
@@ -208,7 +215,7 @@ pub fn find_user_coc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: State<config::AppConfig>
-) -> Result<models::ChainOfCommand, diesel::result::Error> {
+) -> db::TitanQueryResult<models::ChainOfCommand> {
     let role_res = find_org_role_by_user_id(org_id, user_id, titan_db);
     let rank: i32;
 
@@ -242,7 +249,7 @@ pub fn find_org_coc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<models::ChainOfCommand, diesel::result::Error> {
+) -> db::TitanQueryResult<models::ChainOfCommand> {
     let mut extended_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
     let mut local_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
     let mut curr_org_id = org_id;
@@ -284,7 +291,7 @@ pub fn find_parent_role(
     role_id: i32,
     include_unfilled_role: bool,
     titan_db: &MysqlConnection,
-) -> QueryResult<Option<models::OrganizationRole>> {
+) -> db::TitanQueryResult<Option<models::OrganizationRole>> {
     let role = find_by_id(role_id, titan_db)?;
 
     // Unranked roles do not have a parent.
@@ -300,7 +307,7 @@ pub fn find_parent_role_by_org(
     rank: i32,
     include_unfilled_role: bool,
     titan_db: &MysqlConnection,
-) -> QueryResult<Option<models::OrganizationRole>> {
+) -> db::TitanQueryResult<Option<models::OrganizationRole>> {
     let local_parent = find_next_local_org_coc(
         org_id, rank, include_unfilled_role, titan_db)?;
 
@@ -325,9 +332,10 @@ pub fn find_org_roles(
     org_id: i32,
     rank_scope: RoleRankScope,
     titan_db: &MysqlConnection,
-) -> QueryResult<Vec<models::OrganizationRole>> {
+) -> db::TitanQueryResult<Vec<models::OrganizationRole>> {
     let mut query = schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(org_id))
+        .order_by(schema::organization_roles::rank.asc())
         .into_boxed();
     query = match rank_scope {
         RoleRankScope::ChainOfCommand => query.filter(
@@ -338,6 +346,7 @@ pub fn find_org_roles(
     };
 
     query.get_results::<models::OrganizationRole>(titan_db)
+        .map_err(db::TitanDatabaseError::from)
 }
 
 /// [deprecated(note = "Use find_org_roles instead.")]
@@ -346,11 +355,12 @@ pub fn find_unranked_roles(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<Vec<models::OrganizationRoleWithAssoc>, diesel::result::Error>{
+) -> db::TitanQueryResult<Vec<models::OrganizationRoleWithAssoc>> {
     let roles = schema::organization_roles::table
         .filter(schema::organization_roles::organization_id.eq(org_id))
         .filter(schema::organization_roles::rank.is_null())
-        .get_results::<models::OrganizationRole>(titan_db)?;
+        .get_results::<models::OrganizationRole>(titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     map_roles_assoc(roles, titan_db, wcf_db, app_config)
 }
@@ -367,7 +377,7 @@ pub fn reorder_roles(
     org_id: i32,
     role_ids: &[i32],
     titan_db: &MysqlConnection
-) -> Result<(), db::TitanDatabaseError> {
+) -> db::TitanQueryResult<()> {
     titan_db.transaction::<_, db::TitanDatabaseError, _>(|| {
         let changes = models::OrganizationRoleRankChangeSet {
             rank: None
@@ -425,12 +435,39 @@ pub fn is_user_in_parent_coc(
     }
 }
 
+pub fn find_role_in_coc(
+    user_id: i32,
+    org_id: i32,
+    titan_db: &MysqlConnection,
+    wcf_db: &MysqlConnection,
+    app_config: &State<config::AppConfig>
+) -> Option<models::OrganizationRoleWithAssoc> {
+    let org_coc_res = find_org_coc(org_id, std::i32::MAX, titan_db, wcf_db, app_config);
+    match org_coc_res {
+        Ok(mut coc) => {
+            let mut flattened_coc = coc.extended_coc;
+            flattened_coc.append(&mut coc.local_coc);
+            flattened_coc.into_iter().find_map(|role| {
+                match role.user_profile.as_ref() {
+                    Some(profile) => if profile.id == user_id {
+                        Some(role)
+                    } else {
+                        None
+                    },
+                    _ => None
+                }
+            })
+        },
+        _ => None
+    }
+}
+
 pub fn map_roles_assoc(
     roles: Vec<models::OrganizationRole>,
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<Vec<models::OrganizationRoleWithAssoc>, diesel::result::Error> {
+) -> db::TitanQueryResult<Vec<models::OrganizationRoleWithAssoc>> {
     roles.into_iter().map(|role| {
         map_role_assoc(&role, titan_db, wcf_db, app_config)
     }).collect()
@@ -441,9 +478,10 @@ pub fn map_role_assoc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> Result<models::OrganizationRoleWithAssoc, diesel::result::Error> {
+) -> db::TitanQueryResult<models::OrganizationRoleWithAssoc> {
     let organization = teams::organizations::find_by_id(
-        role.organization_id, titan_db)?;
+        role.organization_id, titan_db)
+        .map_err(db::TitanDatabaseError::from)?;
 
     let user_profile = match role.user_id {
         Some(user_id) => {
