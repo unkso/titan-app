@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import WoltlabLoginContainer
+import { WoltlabLoginContainer }
   from 'titan/modules/auth/login/containers/WoltlabLoginContainer';
 
 const LoginSceneStyle = styled.div`

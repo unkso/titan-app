@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import WithConfig from 'titan/components/core/WithConfig';
 import WoltlabLoginForm from './../components/WoltlabLoginForm';
 import * as authActions from 'titan/actions/authActions';
-import { useCookie } from 'titan/hooks/cookies';
+import { useCookies } from 'titan/hooks/cookies';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeTitanApiRequest, WoltlabLoginRequest } from 'titan/http/ApiClient';
+import { useConfig } from 'titan/hooks/config';
 
-export function WoltlabLoginContainer (props) {
-  const wcfUserIdCookie = useCookie('wcf21_userID', {
-    domain: props.config.get('woltlab.cookie.domain')
-  });
-  const wcfPasswordTokenCookie = useCookie('wcf21_password', {
-    domain: props.config.get('woltlab.cookie.domain')
-  });
+export function WoltlabLoginContainer () {
+  const config = useConfig();
+  const cookies = useCookies();
   const [loading, setLoading] = useState(true);
   const session = useSelector(state => state.auth.session);
   const dispatch = useDispatch();
@@ -22,6 +18,13 @@ export function WoltlabLoginContainer (props) {
       window.location = '/organizations';
       return;
     }
+
+    const wcfUserIdCookie = cookies.get('wcf21_userID', {
+      domain: config.get('woltlab.cookie.domain')
+    });
+    const wcfPasswordTokenCookie = cookies.get('wcf21_password', {
+      domain: config.get('woltlab.cookie.domain')
+    });
 
     if (wcfPasswordTokenCookie && wcfUserIdCookie) {
       makeTitanApiRequest(WoltlabLoginRequest,
@@ -39,14 +42,12 @@ export function WoltlabLoginContainer (props) {
     } else {
       setLoading(false);
     }
-  }, [wcfUserIdCookie, wcfPasswordTokenCookie]);
+  }, [config]);
 
   return (
     <WoltlabLoginForm
       loading={loading}
-      loginLink={props.config.get('woltlab.authUrl')}
+      loginLink={config.get('woltlab.authUrl')}
     />
   );
 }
-
-export default WithConfig(WoltlabLoginContainer);

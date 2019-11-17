@@ -2,7 +2,7 @@ import { createStateReducer } from 'titan/lib/redux/stateReducer';
 import authReducer from 'titan/reducers/authReducer';
 import { EmptyDarkLayout } from 'titan/layouts';
 import LoginScene from './login';
-import LogoutScene from './logout';
+import { LogoutScene } from './logout';
 import {
   ROUTE_TYPE_AUTHENTICATED,
   ROUTE_TYPE_UNAUTHENTICATED
@@ -10,13 +10,6 @@ import {
 
 export default function () {
   return {
-    config: {
-      login_path: '/auth/login',
-      logout_path: '/auth/logout',
-      woltlab: {
-        login_url: 'https://clanunknownsoldiers.com/login'
-      }
-    },
     name: 'auth',
     reducer: createStateReducer({
       session: authReducer

@@ -59,16 +59,3 @@ export const mountReducer = (reducersMap, name, reducer) => {
 
   reducersMap[name] = reducer;
 };
-
-/**
- * @param rootConfig
- * @param name
- * @param moduleConfig
- */
-export const mountConfig = (rootConfig, name, moduleConfig) => {
-  if (rootConfig[name]) {
-    throw new Error(`Duplicate module name for config: ${name}.`);
-  }
-
-  rootConfig[name] = moduleConfig;
-};

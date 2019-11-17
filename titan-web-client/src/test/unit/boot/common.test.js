@@ -50,18 +50,4 @@ describe('Common', () => {
       );
     });
   });
-
-  describe('mountConfig', () => {
-    it('throws error when duplicate config is found', () => {
-      const configKey = 'config_key';
-      const map = {};
-      common.mountConfig(map, configKey, () => {});
-
-      assert.throws(
-        () => { common.mountConfig(map, configKey, () => {}); },
-        Error,
-        'Duplicate module name for config: config_key.'
-      );
-    });
-  });
 });
