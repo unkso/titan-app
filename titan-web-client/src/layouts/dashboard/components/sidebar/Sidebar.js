@@ -79,6 +79,14 @@ class Sidebar extends React.Component {
           )
           }
 
+          <SidebarHeading>Links</SidebarHeading>
+          <SidebarMenuItem
+            isExternal
+            url="https://clanunknownsoldiers.com"
+            label="Forums"
+            leftIcon={<span className="fal fa-external-link-square" />}
+          />
+
           <SidebarHeading>Account</SidebarHeading>
           <ProfileLinkContainer />
           <SidebarMenuItem
