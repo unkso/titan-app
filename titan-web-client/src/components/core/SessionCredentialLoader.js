@@ -6,7 +6,7 @@ import {
   AuthWoltlabLoginRequest,
   makeTitanApiRequest
 } from 'titan/http/ApiClient';
-import { getAppContext } from 'titan/titan';
+import titanConfig from 'titan/config';
 import * as authActions from 'titan/actions/authActions';
 import { useCookie } from 'titan/hooks/cookies';
 
@@ -19,14 +19,12 @@ const StyledLoaderContainer = styled.div`
     top: calc(50% - 20px);
 `;
 
-const appContext = getAppContext();
-
 export function SessionCredentialLoader (props) {
   const wcfUserIdCookie = useCookie('wcf21_userID', {
-    domain: appContext.getConfig().get('woltlab.cookie.domain')
+    domain: titanConfig.get('woltlab.cookie.domain')
   });
   const wcfPasswordTokenCookie = useCookie('wcf21_password', {
-    domain: appContext.getConfig().get('woltlab.cookie.domain')
+    domain: titanConfig.get('woltlab.cookie.domain')
   });
   const dispatch = useDispatch();
   const authUser = useSelector(

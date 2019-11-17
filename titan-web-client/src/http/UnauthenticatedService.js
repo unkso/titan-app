@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { getAppContext } from 'titan/titan';
+import titanConfig from 'titan/config';
 
 class UnauthenticatedService {
   constructor () {
-    this.appContext = getAppContext();
     this.httpClient = axios.create({
-      baseURL: this.appContext.getConfig().get('api.baseUrl'),
+      baseURL: titanConfig.get('api.baseUrl'),
       headers: {
         'content-type': 'application/json'
       }

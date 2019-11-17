@@ -5,6 +5,7 @@ import { getAppContext } from 'titan/titan';
 import devConfig from 'titan/config/config.dev';
 import prodConfig from 'titan/config/config.prod';
 import TitanApp from 'titan/components/core/TitanApp';
+import titanConfig from 'titan/config';
 
 let config;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -14,7 +15,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 }
 
 const app = getAppContext();
-app.mergeConfigSettings(config);
+titanConfig.merge(config);
 
 ReactDOM.render(<TitanApp context={app} />, document.getElementById('root'));
 registerServiceWorker();

@@ -1,13 +1,14 @@
 import axios from 'axios';
 import * as authActions from 'titan/actions/authActions';
 import { getAppContext } from 'titan/titan';
+import titanConfig from 'titan/config';
 import _ from 'lodash';
 
 class AuthenticatedService {
   constructor () {
     this.appContext = getAppContext();
     this.httpClient = axios.create({
-      baseURL: this.appContext.getConfig().get('api.baseUrl'),
+      baseURL: titanConfig.get('api.baseUrl'),
       headers: {
         'content-type': 'application/json'
       }

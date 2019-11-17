@@ -7,6 +7,10 @@ class Config {
     this.config = config;
   }
 
+  merge (config) {
+    this.config = { ...this.config, ...config };
+  }
+
   get (path = '') {
     if (path === '') {
       return this.config;
