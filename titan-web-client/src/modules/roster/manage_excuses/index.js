@@ -1,12 +1,12 @@
 import React from 'react';
 import { EventExcuseList }
-  from '@titan/modules/roster/components/Excuse/EventExcuseList';
+  from '@titan/modules/roster/components/excuse/event_excuse_list';
 import UsersService from '@titan/http/UsersService';
-import { ContentBlock } from '@titan/components/block/ContentBlock';
+import { ContentBlock } from '@titan/components/block/content_block';
 import PageHeader
-  from '@titan/layouts/dashboard/components/PageHeader/PageHeader';
-import PageHeaderTitle from '@titan/layouts/dashboard/components/PageHeader/PageHeaderTitle';
-import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
+  from '@titan/layouts/dashboard/components/page_header/page_header';
+import PageHeaderTitle from '@titan/layouts/dashboard/components/page_header/page_header_title';
+import { Icon_empty_state } from '@titan/components/empty_state/icon_empty_state';
 
 export class ExcusesScene extends React.Component {
   constructor (props) {
@@ -44,7 +44,7 @@ export class ExcusesScene extends React.Component {
           {this.state.excuses.length > 0 ? (
             <EventExcuseList items={this.state.excuses} />
           ) : (
-            <IconEmptyState
+            <Icon_empty_state
               icon="clipboard-list"
               primaryText="All caught up!"
               secondaryText="There are no new event excuses to review"

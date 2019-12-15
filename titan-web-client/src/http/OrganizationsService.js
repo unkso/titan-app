@@ -26,13 +26,13 @@ class OrganizationsService {
     return this.httpClient.get(`/organizations/${slug}`);
   }
 
-  /** List an organization's chan of command. */
+  /** list an organization's chan of command. */
   findChainOfCommand (id) {
     return this.httpClient.get(`/organizations/${id}/coc`);
   }
 
   /**
-   * List an organization's leadership roles that do not affect the
+   * list an organization's leadership roles that do not affect the
    * chain of command.
    */
   findUnrankedRoles (id) {
@@ -47,24 +47,24 @@ class OrganizationsService {
     return this.httpClient.get(`/organizations/roles/${roleId}/parent`);
   }
 
-  /** List the non-leadership users of an organization. */
+  /** list the non-leadership users of an organization. */
   findUsers (id) {
     return this.httpClient.get(`/organizations/${id}/users`);
   }
 
-  /** List the child organizations of a parent organization. */
+  /** list the child organizations of a parent organization. */
   findChildren (id) {
     return this.httpClient.get(`/organizations/${id}/children`);
   }
 
-  /** List the child organizations of a parent organization. */
+  /** list the child organizations of a parent organization. */
   findChildrenIds (id, recursive = false) {
     return this.httpClient.get(
       `/organizations/${id}/children`, qs.stringify({ recursive }));
   }
 
   /**
-   * List an organization's reports. The result will only return
+   * list an organization's reports. The result will only return
    * reports that the current authenticated user has permission to
    * access.
    */
@@ -99,7 +99,7 @@ class OrganizationsService {
   }
 
   /**
-   * List file entries owned by one of the given organizations.
+   * list file entries owned by one of the given organizations.
    *
    * @parm {string} params.organizations
    * @param {string} params.from_start_date

@@ -3,22 +3,22 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PageHeader
-  from '@titan/layouts/dashboard/components/PageHeader/PageHeader';
-import { ContentBlock } from '@titan/components/block/ContentBlock';
+  from '@titan/layouts/dashboard/components/page_header/page_header';
+import { ContentBlock } from '@titan/components/block/content_block';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
 import CardHeader from '@material-ui/core/CardHeader/CardHeader';
 import UsersService from '@titan/http/UsersService';
 import * as profileActions from '@titan/actions/profile_actions';
 import FileEntryListContainer
-  from '@titan/modules/roster/profile/containers/FileEntryListContainer';
+  from '@titan/modules/roster/profile/containers/file_entry_list_container';
 import { CreateFileEntryContainer }
-  from '@titan/modules/roster/profile/containers/CreateFileEntryContainer';
+  from '@titan/modules/roster/profile/containers/create_file_entry_container';
 import Typography from '@material-ui/core/Typography/Typography';
 import CreateEventExcuseContainer
-  from '@titan/modules/roster/profile/containers/CreateEventExcuseContainer';
+  from '@titan/modules/roster/profile/containers/create_event_excuse_container';
 import EventExcuseListContainer
-  from '@titan/modules/roster/profile/containers/EventExcuseListContainer';
+  from '@titan/modules/roster/profile/containers/event_excuse_list_container';
 import { createAclInstanceFromSession } from '@titan/lib/acl';
 
 class Profile extends React.Component {

@@ -8,7 +8,7 @@ class UsersService {
   }
 
   /**
-   * List all users.
+   * list all users.
    *
    * @param {string} username - A username or prefix of a
    *  username. If present, only results with the given username

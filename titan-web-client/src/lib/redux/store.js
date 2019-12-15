@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
-import localStorage from '../storage/localStorage';
+import localStorage from '../storage/local_storage';
 
 let titanStore = null;
 

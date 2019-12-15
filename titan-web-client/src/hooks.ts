@@ -42,6 +42,7 @@ export function useDebounce (initialValue, duration) {
  * @returns {[*, Function]}
  */
 export function useThrottle (initialValue, duration) {
+  // tslint:disable-next-line:no-any
   const timeout: MutableRefObject<any> = useRef();
   const nextValue = useRef();
   const hasNextValue = useRef(false);

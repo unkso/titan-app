@@ -1,6 +1,7 @@
 # Titan Web Client
 The browser client for Titan. Built with ReactJS, Redux, and React Router.
 
+[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
 
 ## Getting Started
 Before you can work on the web client, you'll need the following software installed.
