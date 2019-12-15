@@ -4,9 +4,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { UserRow } from 'titan/components/members/table/UserRow';
+import { UserRow } from '@titan/components/members/table/UserRow';
 import Table from '@material-ui/core/Table';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
+import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
 
 /**
  * @param {{

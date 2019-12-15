@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { ChronologicalItemList } from 'titan/components/List/ChronologicalItemList';
-import { ReportsListItem } from 'titan/components/Reports/ReportsListItem';
-import { ReportProtoType } from 'titan/models';
-import OrganizationsService from 'titan/http/OrganizationsService';
-import { useForceUpdate } from 'titan/hooks';
+import { ChronologicalItemList } from '@titan/components/List/ChronologicalItemList';
+import { ReportsListItem } from '@titan/components/Reports/ReportsListItem';
+import { ReportProtoType } from '@titan/models';
+import OrganizationsService from '@titan/http/OrganizationsService';
+import { useForceUpdate } from '@titan/hooks';
 import { useSelector } from 'react-redux';
 
 /**

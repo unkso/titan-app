@@ -8,7 +8,7 @@ import {
   ORGANIZATION_SET_REPORTS,
   ORGANIZATION_SET_MEMBERS,
   ORGANIZATION_SET_ROLES
-} from './actionTypes';
+} from './action_types';
 
 export function addMember (member) {
   return { type: ORGANIZATION_ADD_MEMBER, data: member };

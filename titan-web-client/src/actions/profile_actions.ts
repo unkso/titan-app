@@ -5,7 +5,7 @@ import {
   PROFILE_SET_EXCUSES,
   PROFILE_ADD_EXCUSE,
   PROFILE_CLEAR_USER
-} from './actionTypes';
+} from './action_types';
 
 export function setUser (user) {
   return { type: PROFILE_SET_USER, data: user };

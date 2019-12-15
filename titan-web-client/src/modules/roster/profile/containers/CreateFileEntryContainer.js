@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import * as profileActions from 'titan/actions/profileActions';
+import * as profileActions from '@titan/actions/profile_actions';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
-import { MULTI_DATE_FILE_ENTRY_TYPES } from 'titan/components/FileEntry/constants';
-import { WithAcl } from 'titan/components/Acl/WithAcl';
-import CreateForm from 'titan/components/FileEntry/CreateForm';
+import { MULTI_DATE_FILE_ENTRY_TYPES } from '@titan/components/FileEntry/constants';
+import { WithAcl } from '@titan/components/Acl/WithAcl';
+import CreateForm from '@titan/components/FileEntry/CreateForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { ListFileEntryTypes, makeTitanApiRequest } from 'titan/http/ApiClient';
-import * as fileEntryActions from 'titan/actions/fileEntries';
+import { ListFileEntryTypes, makeTitanApiRequest } from '@titan/http/ApiClient';
+import * as fileEntryActions from '@titan/actions/file_entry_actions';
 
 export function CreateFileEntryContainer () {
   const dispatch = useDispatch();

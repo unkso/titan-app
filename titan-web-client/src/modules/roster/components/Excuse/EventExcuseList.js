@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { EventExcuseListItem } from './EventExcuseListItem';
-import { ChronologicalItemList } from 'titan/components/List/ChronologicalItemList';
+import { ChronologicalItemList } from '@titan/components/List/ChronologicalItemList';
 
 /**
  * Renders a list of excuses grouped by month.

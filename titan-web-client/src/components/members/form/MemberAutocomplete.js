@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {
   ListUsersRequest,
   makeTitanApiRequest
-} from 'titan/http/ApiClient';
-import { Autocomplete } from 'titan/components/autocomplete/Autocomplete';
+} from '@titan/http/ApiClient';
+import { Autocomplete } from '@titan/components/autocomplete/Autocomplete';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 

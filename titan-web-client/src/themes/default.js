@@ -1,4 +1,4 @@
-import { createTypography } from 'titan/lib/styles/typography';
+import { createTypography } from '@titan/lib/styles/typography';
 
 export default {
   typography: {

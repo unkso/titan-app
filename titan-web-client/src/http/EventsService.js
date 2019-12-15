@@ -1,4 +1,4 @@
-import AuthenticatedService from 'titan/http/AuthenticatedService';
+import AuthenticatedService from '@titan/http/AuthenticatedService';
 
 class EventsService {
   constructor () {

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { format as formatDate } from 'date-fns';
 import Typography from '@material-ui/core/Typography';
-import Column from 'titan/components/Grid/Column';
-import Row from 'titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
+import Row from '@titan/components/Grid/Row';
 
 /**
  * Renders a list of items grouped by some duration of time. The most

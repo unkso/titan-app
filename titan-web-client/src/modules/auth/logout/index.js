@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useCookies } from 'titan/hooks/cookies';
-import * as authActions from 'titan/actions/authActions';
+import { useCookies } from '@titan/hooks/cookies';
+import * as authActions from '@titan/actions/auth_actions';
 import { useDispatch } from 'react-redux';
-import { useConfig } from 'titan/hooks/config';
+import { useConfig } from '@titan/hooks/config';
 
 /**
  * @return {null}

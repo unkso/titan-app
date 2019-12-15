@@ -1,11 +1,11 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import * as profileActions from 'titan/actions/profileActions';
+import * as profileActions from '@titan/actions/profile_actions';
 import connect from 'react-redux/es/connect/connect';
-import UsersService from 'titan/http/UsersService';
+import UsersService from '@titan/http/UsersService';
 import CircularProgress
   from '@material-ui/core/CircularProgress/CircularProgress';
-import { List } from 'titan/components/FileEntry/List';
+import { List } from '@titan/components/FileEntry/List';
 
 class FileEntryListContainer extends React.Component {
   constructor (props) {

@@ -1,6 +1,6 @@
-import { createStateReducer } from 'titan/lib/redux/stateReducer';
-import authReducer from 'titan/reducers/authReducer';
-import { EmptyDarkLayout } from 'titan/layouts';
+import { createStateReducer } from '@titan/lib/redux/stateReducer';
+import authReducer from '@titan/reducers/authReducer';
+import { EmptyDarkLayout } from '@titan/layouts';
 import LoginScene from './login';
 import { LogoutScene } from './logout';
 import {

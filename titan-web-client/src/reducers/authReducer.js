@@ -1,7 +1,7 @@
 import {
   AUTH_SESSION_LOGIN,
   AUTH_SESSION_LOGOUT
-} from 'titan/actions/actionTypes';
+} from '@titan/actions/action_types';
 
 /**
  * Convert a list of ACL options into a map, where in the keys is in the format

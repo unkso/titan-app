@@ -1,4 +1,4 @@
-import { FILE_ENTRIES_SET_TYPES } from 'titan/actions/actionTypes';
+import { FILE_ENTRIES_SET_TYPES } from '@titan/actions/action_types';
 
 const DEFAULT_STATE = {
   types: null

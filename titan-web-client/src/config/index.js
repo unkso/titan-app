@@ -1,5 +1,5 @@
-import Config from 'titan/lib/config';
-import defaultConfig from 'titan/config/config.default';
+import Config from '@titan/lib/config';
+import defaultConfig from '@titan/config/config.default';
 
 const config = new Config();
 config.load(defaultConfig);

@@ -1,4 +1,4 @@
-import { getCookieManager } from 'titan/lib/storage/cookies';
+import { getCookieManager } from '@titan/lib/storage/cookies';
 import { useEffect, useState } from 'react';
 
 const cookieManager = getCookieManager();

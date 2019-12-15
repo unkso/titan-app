@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import UsersService from 'titan/http/UsersService';
+import UsersService from '@titan/http/UsersService';
 import { withSnackbar } from 'notistack';
 
 class AckEventExcuseButtonComponent extends React.Component {

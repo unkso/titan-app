@@ -1,13 +1,13 @@
-import { DashboardLayout } from 'titan/layouts';
-import { ROUTE_TYPE_AUTHENTICATED } from 'titan/lib/routing';
+import { DashboardLayout } from '@titan/layouts';
+import { ROUTE_TYPE_AUTHENTICATED } from '@titan/lib/routing';
 import { OrganizationDetailScene } from './organizationDetailScene';
 import OrganizationsListScene from './organizationsListScene';
 import ManageUnacknowledgedReportsScene from './manageUnacknowledgedReportsScene';
 import {
   ORGANIZATION_DETAILS_ROUTE,
   ORGANIZATIONS_LIST_ROUTE
-} from 'titan/routes';
-import organizationReducer from 'titan/reducers/organizationReducer';
+} from '@titan/routes';
+import organizationReducer from '@titan/reducers/organizationReducer';
 
 export default function () {
   return {

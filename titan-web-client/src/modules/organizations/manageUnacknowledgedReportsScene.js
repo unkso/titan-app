@@ -1,12 +1,12 @@
 import React from 'react';
-import { ContentBlock } from 'titan/components/block/ContentBlock';
+import { ContentBlock } from '@titan/components/block/ContentBlock';
 import PageHeader
-  from 'titan/layouts/dashboard/components/PageHeader/PageHeader';
-import PageHeaderTitle from 'titan/layouts/dashboard/components/PageHeader/PageHeaderTitle';
-import OrganizationsService from 'titan/http/OrganizationsService';
-import { ReportsList } from 'titan/components/Reports/ReportsList';
+  from '@titan/layouts/dashboard/components/PageHeader/PageHeader';
+import PageHeaderTitle from '@titan/layouts/dashboard/components/PageHeader/PageHeaderTitle';
+import OrganizationsService from '@titan/http/OrganizationsService';
+import { ReportsList } from '@titan/components/Reports/ReportsList';
 import { withSnackbar } from 'notistack';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
+import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
 
 export class ManageUnacknowledgedReportsScene extends React.Component {
   constructor (props) {

@@ -1,6 +1,6 @@
 import React from 'OrganizationFileEntryDetailList';
 import PropTypes from 'prop-types';
-import OrganizationsService from 'titan/http/OrganizationsService';
+import OrganizationsService from '@titan/http/OrganizationsService';
 
 export class OrganizationFileEntryDetailList extends React.Component {
   constructor (props) {
@@ -14,7 +14,7 @@ export class OrganizationFileEntryDetailList extends React.Component {
   }
 
   render () {
-    return ();
+    return null;
   }
 }
 

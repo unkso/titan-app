@@ -1,5 +1,5 @@
 import qs from 'query-string';
-import AuthenticatedService from 'titan/http/AuthenticatedService';
+import AuthenticatedService from '@titan/http/AuthenticatedService';
 
 class UsersService {
   constructor () {

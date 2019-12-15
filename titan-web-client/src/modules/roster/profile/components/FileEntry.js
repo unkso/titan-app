@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import Typography from '@material-ui/core/Typography/Typography';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
-import BorderedCard from 'titan/components/Card/BorderedCard';
+import BorderedCard from '@titan/components/Card/BorderedCard';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogContentText
@@ -24,9 +24,9 @@ import {
   FILE_ENTRY_PASS_JCS_INTERVIEW,
   FILE_ENTRY_PROMOTION,
   FILE_ENTRY_TRANSFER
-} from 'titan/modules/roster/constants';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
+} from '@titan/modules/roster/constants';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 

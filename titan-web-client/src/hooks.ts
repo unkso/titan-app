@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 
 /** A react hook that forces the component to re-render. */
 export function useForceUpdate () {
@@ -36,7 +42,7 @@ export function useDebounce (initialValue, duration) {
  * @returns {[*, Function]}
  */
 export function useThrottle (initialValue, duration) {
-  const timeout = useRef();
+  const timeout: MutableRefObject<any> = useRef();
   const nextValue = useRef();
   const hasNextValue = useRef(false);
   const [value, setValue] = useState(initialValue);

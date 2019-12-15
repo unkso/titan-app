@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ContentBlock } from 'titan/components/block/ContentBlock';
+import { ContentBlock } from '@titan/components/block/ContentBlock';
 import { CardContent, CardHeader } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import { OrganizationChainOfCommand } from 'titan/modules/organizations/components/OrganizationChainOfCommand';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
-import { ListSupportLeadership } from 'titan/modules/organizations/components/ListSupportLeadership';
+import { OrganizationChainOfCommand } from '@titan/modules/organizations/components/OrganizationChainOfCommand';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
+import { ListSupportLeadership } from '@titan/modules/organizations/components/ListSupportLeadership';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
-import { RouteButton } from 'titan/components/Routes/RouteLink';
+import { RouteButton } from '@titan/components/Routes/RouteLink';
 import { useDispatch, useSelector } from 'react-redux';
-import * as orgActions from 'titan/actions/organizationActions';
+import * as orgActions from '@titan/actions/organization_actions';
 import {
   ListOrganizationChildrenRequest,
   makeTitanApiRequest
-} from 'titan/http/ApiClient';
+} from '@titan/http/ApiClient';
 
 const CoCActions = styled.div`
   font-size: 12px;

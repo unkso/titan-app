@@ -5,18 +5,18 @@ import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import { CreateReportForm } from 'titan/modules/organizations/components/CreateReportForm';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
-import { List } from 'titan/components/FileEntry/List';
+import { CreateReportForm } from '@titan/modules/organizations/components/CreateReportForm';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
+import { List } from '@titan/components/FileEntry/List';
 import styled from 'styled-components';
-import OrganizationsService from 'titan/http/OrganizationsService';
+import OrganizationsService from '@titan/http/OrganizationsService';
 import { format as formatDate, startOfWeek, endOfWeek } from 'date-fns';
 import { withSnackbar } from 'notistack';
 import {
   EmptyStateWrapper,
   IconEmptyState
-} from 'titan/components/EmptyStates/IconEmptyState';
+} from '@titan/components/EmptyStates/IconEmptyState';
 
 const EntryListColumn = styled.div`
   height: 380px;

@@ -1,12 +1,12 @@
-import { createStateReducer } from 'titan/lib/redux/stateReducer';
-import { DashboardLayout } from 'titan/layouts';
-import { ROUTE_TYPE_AUTHENTICATED } from 'titan/lib/routing';
-import ProfileScene from 'titan/modules/roster/profile';
-import { ExcusesScene } from 'titan/modules/roster/manage_excuses';
-import profileReducer from 'titan/reducers/profileReducer';
-import { ListAllUsersScene } from 'titan/modules/roster/ListAllUsersScene';
-import { USER_PROFILE_ROUTE } from 'titan/routes';
-import fileEntriesReducer from 'titan/reducers/fileEntriesReducer';
+import { createStateReducer } from '@titan/lib/redux/stateReducer';
+import { DashboardLayout } from '@titan/layouts';
+import { ROUTE_TYPE_AUTHENTICATED } from '@titan/lib/routing';
+import ProfileScene from '@titan/modules/roster/profile';
+import { ExcusesScene } from '@titan/modules/roster/manage_excuses';
+import profileReducer from '@titan/reducers/profileReducer';
+import { ListAllUsersScene } from '@titan/modules/roster/ListAllUsersScene';
+import { USER_PROFILE_ROUTE } from '@titan/routes';
+import fileEntriesReducer from '@titan/reducers/fileEntriesReducer';
 
 export default function () {
   return {

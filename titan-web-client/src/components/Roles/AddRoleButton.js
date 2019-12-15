@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ManageRoleDialog } from 'titan/components/organizations/roles/ManageRoleDialog';
+import { ManageRoleDialog } from '@titan/components/organizations/roles/ManageRoleDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   makeTitanApiRequest,
   SaveOrganizationRoleRequest
-} from 'titan/http/ApiClient';
-import * as orgActions from 'titan/actions/organizationActions';
+} from '@titan/http/ApiClient';
+import * as orgActions from '@titan/actions/organization_actions';
 import { useSnackbar } from 'notistack';
 import Button from '@material-ui/core/Button';
-import { getUserMessageFromError } from 'titan/lib/response';
+import { getUserMessageFromError } from '@titan/lib/response';
 import IconButton from '@material-ui/core/IconButton';
 
 export function AddRoleButton (props) {

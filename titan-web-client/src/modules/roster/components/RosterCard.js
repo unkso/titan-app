@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import CardContent from '@material-ui/core/CardContent/CardContent';
 import Avatar from '@material-ui/core/Avatar/Avatar';
 import Typography from '@material-ui/core/Typography/Typography';
-import BorderedCard from 'titan/components/Card/BorderedCard';
+import BorderedCard from '@titan/components/Card/BorderedCard';
 import TimestampActivityBadge
-  from 'titan/components/ActivityBadge/TimestampActivityBadge';
+  from '@titan/components/ActivityBadge/TimestampActivityBadge';
 import { CardActionArea } from '@material-ui/core';
 
 /**

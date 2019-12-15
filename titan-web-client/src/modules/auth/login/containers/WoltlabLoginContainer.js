@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import WoltlabLoginForm from './../components/WoltlabLoginForm';
-import * as authActions from 'titan/actions/authActions';
-import { useCookies } from 'titan/hooks/cookies';
+import * as authActions from '@titan/actions/auth_actions';
+import { useCookies } from '@titan/hooks/cookies';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeTitanApiRequest, WoltlabLoginRequest } from 'titan/http/ApiClient';
-import { useConfig } from 'titan/hooks/config';
+import { makeTitanApiRequest, WoltlabLoginRequest } from '@titan/http/ApiClient';
+import { useConfig } from '@titan/hooks/config';
 
 export function WoltlabLoginContainer () {
   const config = useConfig();

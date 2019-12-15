@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ChainOfCommand } from 'titan/modules/organizations/components/ChainOfCommand';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
+import { ChainOfCommand } from '@titan/modules/organizations/components/ChainOfCommand';
+import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
 
 export function OrganizationChainOfCommand (props) {
   const [extendedCoc, setExtendedCoc] = useState([]);

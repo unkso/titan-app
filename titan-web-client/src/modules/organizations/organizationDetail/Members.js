@@ -3,16 +3,16 @@ import {
   ListOrganizationMembersRequest,
   makeTitanApiRequest,
   RemoveUserFromOrganizationRequest
-} from 'titan/http/ApiClient';
-import { ContentBlock } from 'titan/components/block/ContentBlock';
-import { UsersTable } from 'titan/components/members/table/UsersTable';
+} from '@titan/http/ApiClient';
+import { ContentBlock } from '@titan/components/block/ContentBlock';
+import { UsersTable } from '@titan/components/members/table/UsersTable';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import { AddMembersDialog } from 'titan/components/members/dialog/AddMembersDialog';
+import { AddMembersDialog } from '@titan/components/members/dialog/AddMembersDialog';
 import { CardContent } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
-import * as orgActions from 'titan/actions/organizationActions';
+import * as orgActions from '@titan/actions/organization_actions';
 
 /**
  * @param {{

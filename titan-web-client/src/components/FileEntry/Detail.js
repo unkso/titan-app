@@ -4,8 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import BorderedCard from '../Card/BorderedCard';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { FileEntryPropType } from 'titan/models';
-import { getFileEntryTheme } from 'titan/components/FileEntry/index';
+import { FileEntryPropType } from '@titan/models';
+import { getFileEntryTheme } from '@titan/components/FileEntry/index';
 
 export class DetailComponent extends React.Component {
   render () {

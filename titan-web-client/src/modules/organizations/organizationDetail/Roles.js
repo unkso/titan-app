@@ -9,17 +9,17 @@ import {
   makeTitanApiRequest,
   ReorderOrganizationRolesRequest,
   ROLE_SCOPES
-} from 'titan/http/ApiClient';
-import { ContentBlock } from 'titan/components/block/ContentBlock';
+} from '@titan/http/ApiClient';
+import { ContentBlock } from '@titan/components/block/ContentBlock';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
-import { MemberNameTag } from 'titan/components/members/MemberNameTag';
+import { MemberNameTag } from '@titan/components/members/MemberNameTag';
 import ListItem from '@material-ui/core/ListItem';
 import { useDispatch, useSelector } from 'react-redux';
-import * as orgActions from 'titan/actions/organizationActions';
+import * as orgActions from '@titan/actions/organization_actions';
 import { useSnackbar } from 'notistack';
 import useTheme from '@material-ui/core/styles/useTheme';
-import { AddRoleButton } from 'titan/components/Roles/AddRoleButton';
-import { getUserMessageFromError } from 'titan/lib/response';
+import { AddRoleButton } from '@titan/components/Roles/AddRoleButton';
+import { getUserMessageFromError } from '@titan/lib/response';
 
 export const StyledListItem = styled(ListItem)`
   &:hover {
