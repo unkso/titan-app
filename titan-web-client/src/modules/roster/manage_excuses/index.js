@@ -1,12 +1,12 @@
 import React from 'react';
 import { EventExcuseList }
-  from 'titan/modules/roster/components/Excuse/EventExcuseList';
-import UsersService from 'titan/http/UsersService';
-import { ContentBlock } from 'titan/components/block/ContentBlock';
+  from '@titan/modules/roster/components/Excuse/EventExcuseList';
+import UsersService from '@titan/http/UsersService';
+import { ContentBlock } from '@titan/components/block/ContentBlock';
 import PageHeader
-  from 'titan/layouts/dashboard/components/PageHeader/PageHeader';
-import PageHeaderTitle from 'titan/layouts/dashboard/components/PageHeader/PageHeaderTitle';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
+  from '@titan/layouts/dashboard/components/PageHeader/PageHeader';
+import PageHeaderTitle from '@titan/layouts/dashboard/components/PageHeader/PageHeaderTitle';
+import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
 
 export class ExcusesScene extends React.Component {
   constructor (props) {

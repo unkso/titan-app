@@ -11,7 +11,7 @@ import {
   FILE_ENTRY_PASS_JCS_INTERVIEW,
   FILE_ENTRY_PROMOTION,
   FILE_ENTRY_TRANSFER
-} from 'titan/components/FileEntry/constants';
+} from '@titan/components/FileEntry/constants';
 
 /**
  * Returns the appropriate color and icon for the given type of file

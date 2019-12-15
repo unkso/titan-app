@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import Typography from '@material-ui/core/Typography/Typography';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
-import BorderedCard from 'titan/components/Card/BorderedCard';
+import BorderedCard from '@titan/components/Card/BorderedCard';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogContentText
@@ -23,10 +23,10 @@ import { AckEventExcuseButton }
   from './AckEventExcuseButton';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
 import Tooltip from '@material-ui/core/Tooltip';
-import { WithAcl } from 'titan/components/Acl/WithAcl';
+import { WithAcl } from '@titan/components/Acl/WithAcl';
 import Chip from '@material-ui/core/Chip';
 import styled from 'styled-components';
 

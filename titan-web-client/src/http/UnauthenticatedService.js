@@ -1,5 +1,5 @@
 import axios from 'axios';
-import titanConfig from 'titan/config';
+import titanConfig from '@titan/config';
 
 class UnauthenticatedService {
   constructor () {

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import OrganizationsService from 'titan/http/OrganizationsService';
+import OrganizationsService from '@titan/http/OrganizationsService';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
-import { MemberNameTag } from 'titan/components/members/MemberNameTag';
+import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
+import { MemberNameTag } from '@titan/components/members/MemberNameTag';
 
 export class ListSupportLeadership extends React.Component {
   constructor (props) {

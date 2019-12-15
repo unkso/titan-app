@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useThrottle } from 'titan/hooks';
+import { useThrottle } from '@titan/hooks';
 import {
   AddUserToOrganizationRequest,
   ListUsersRequest,
   makeTitanApiRequest,
   useTitanApiClient
-} from 'titan/http/ApiClient';
+} from '@titan/http/ApiClient';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Column from 'titan/components/Grid/Column';
+import Column from '@titan/components/Grid/Column';
 import Avatar from '@material-ui/core/Avatar';
-import Row from 'titan/components/Grid/Row';
+import Row from '@titan/components/Grid/Row';
 import { Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
-import * as orgActions from 'titan/actions/organizationActions';
+import * as orgActions from '@titan/actions/organization_actions';
 
 export function AddMembersForm () {
   const dispatch = useDispatch();

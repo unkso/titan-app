@@ -1,4 +1,4 @@
-import UnauthenticatedService from 'titan/http/UnauthenticatedService';
+import UnauthenticatedService from '@titan/http/UnauthenticatedService';
 
 class AuthService {
   constructor () {

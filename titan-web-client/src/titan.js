@@ -1,4 +1,4 @@
-import boot from 'titan/boot';
+import boot from '@titan/boot';
 
 /**
  * @param routes

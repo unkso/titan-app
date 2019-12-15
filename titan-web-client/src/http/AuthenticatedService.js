@@ -1,7 +1,7 @@
 import axios from 'axios';
-import * as authActions from 'titan/actions/authActions';
-import { getAppContext } from 'titan/titan';
-import titanConfig from 'titan/config';
+import * as authActions from '@titan/actions/auth_actions';
+import { getAppContext } from '@titan/titan';
+import titanConfig from '@titan/config';
 import _ from 'lodash';
 
 class AuthenticatedService {

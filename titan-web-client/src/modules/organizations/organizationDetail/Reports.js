@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ReportsList } from 'titan/components/Reports/ReportsList';
-import { ContentBlock } from 'titan/components/block/ContentBlock';
+import { ReportsList } from '@titan/components/Reports/ReportsList';
+import { ContentBlock } from '@titan/components/block/ContentBlock';
 import Typography from '@material-ui/core/Typography';
-import { CreateReportButton } from 'titan/modules/organizations/components/CreateReportButton';
+import { CreateReportButton } from '@titan/modules/organizations/components/CreateReportButton';
 import {
   ListOrganizationReportsRequest,
   makeTitanApiRequest
-} from 'titan/http/ApiClient';
+} from '@titan/http/ApiClient';
 import { useSnackbar } from 'notistack';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
+import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
 import { useDispatch, useSelector } from 'react-redux';
-import * as orgActions from 'titan/actions/organizationActions';
+import * as orgActions from '@titan/actions/organization_actions';
 
 export function Reports (props) {
   const dispatch = useDispatch();

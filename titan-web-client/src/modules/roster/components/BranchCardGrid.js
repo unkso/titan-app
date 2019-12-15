@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Column from 'titan/components/Grid/Column';
-import Row from 'titan/components/Grid/Row';
-import BranchCard from 'titan/modules/roster/components/BranchCard';
+import Column from '@titan/components/Grid/Column';
+import Row from '@titan/components/Grid/Row';
+import BranchCard from '@titan/modules/roster/components/BranchCard';
 
 /**
  * Lists roster member cards in a grid.

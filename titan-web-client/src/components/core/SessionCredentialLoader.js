@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import {
   AuthWoltlabLoginRequest,
   makeTitanApiRequest
-} from 'titan/http/ApiClient';
-import titanConfig from 'titan/config';
-import * as authActions from 'titan/actions/authActions';
-import { useCookie } from 'titan/hooks/cookies';
+} from '@titan/http/ApiClient';
+import titanConfig from '@titan/config';
+import * as authActions from '@titan/actions/auth_actions';
+import { useCookie } from '@titan/hooks/cookies';
 
 const StyledLoaderContainer = styled.div`
   position: absolute;

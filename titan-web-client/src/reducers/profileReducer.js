@@ -6,7 +6,7 @@ import {
   PROFILE_SET_EXCUSES,
   PROFILE_ADD_EXCUSE,
   PROFILE_CLEAR_USER
-} from 'titan/actions/actionTypes';
+} from '@titan/actions/action_types';
 
 const DEFAULT_STATE = {
   user: null,

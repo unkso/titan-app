@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { DatePicker } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
 
 export class CreateEventExcuseForm extends React.Component {
   render () {

@@ -15,8 +15,8 @@ import Row from '../Grid/Row';
 import Column from '../Grid/Column';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
-import { getFileEntryTheme } from 'titan/components/FileEntry/index';
-import { FileEntryPropType } from 'titan/models';
+import { getFileEntryTheme } from '@titan/components/FileEntry/index';
+import { FileEntryPropType } from '@titan/models';
 
 class ListItemComponent extends React.Component {
   constructor (props) {

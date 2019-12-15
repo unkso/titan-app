@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { useSnackbar } from 'notistack';
-import OrganizationsService from 'titan/http/OrganizationsService';
+import OrganizationsService from '@titan/http/OrganizationsService';
 
 export function AckReportButton (props) {
   const snackbar = useSnackbar();

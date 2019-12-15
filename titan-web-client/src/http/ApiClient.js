@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import AuthenticatedService from 'titan/http/AuthenticatedService';
-import UnauthenticatedService from 'titan/http/UnauthenticatedService';
+import AuthenticatedService from '@titan/http/AuthenticatedService';
+import UnauthenticatedService from '@titan/http/UnauthenticatedService';
 
 /**
  * Login a user with woltlab credentials.

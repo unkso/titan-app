@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FileEntry from 'titan/modules/roster/profile/components/FileEntry';
-import { ChronologicalItemList } from 'titan/components/List/ChronologicalItemList';
+import FileEntry from '@titan/modules/roster/profile/components/FileEntry';
+import { ChronologicalItemList } from '@titan/components/List/ChronologicalItemList';
 
 /**
  * A list of file entries grouped by month.

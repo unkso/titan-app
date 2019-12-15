@@ -4,17 +4,17 @@ import PageHeader from '../../layouts/dashboard/components/PageHeader/PageHeader
 import PageHeaderTitle from '../../layouts/dashboard/components/PageHeader/PageHeaderTitle';
 import { Tab, Tabs } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { TabPanel } from 'titan/components/tabs/TabPanel';
-import { Overview } from 'titan/modules/organizations/organizationDetail/Overview';
-import { Reports } from 'titan/modules/organizations/organizationDetail/Reports';
-import { Members } from 'titan/modules/organizations/organizationDetail/Members';
-import * as orgActions from 'titan/actions/organizationActions';
+import { TabPanel } from '@titan/components/tabs/TabPanel';
+import { Overview } from '@titan/modules/organizations/organizationDetail/Overview';
+import { Reports } from '@titan/modules/organizations/organizationDetail/Reports';
+import { Members } from '@titan/modules/organizations/organizationDetail/Members';
+import * as orgActions from '@titan/actions/organization_actions';
 import {
   GetOrganizationBySlugRequest,
   ListOrganizationChainOfCommandRequest,
   makeTitanApiRequest
-} from 'titan/http/ApiClient';
-import { Roles } from 'titan/modules/organizations/organizationDetail/Roles';
+} from '@titan/http/ApiClient';
+import { Roles } from '@titan/modules/organizations/organizationDetail/Roles';
 
 const TABS_INDEXES = {
   overview: 0,

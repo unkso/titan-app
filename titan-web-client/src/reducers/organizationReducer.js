@@ -8,7 +8,7 @@ import {
   ORGANIZATION_SET_REPORTS,
   ORGANIZATION_SET_MEMBERS,
   ORGANIZATION_SET_ROLES
-} from 'titan/actions/actionTypes';
+} from '@titan/actions/action_types';
 
 const DEFAULT_STATE = {
   children: null,

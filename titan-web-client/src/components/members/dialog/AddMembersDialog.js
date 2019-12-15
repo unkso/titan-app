@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { Dialog, DialogContent } from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { AddMembersForm } from 'titan/components/members/form/AddMembersForm';
+import { AddMembersForm } from '@titan/components/members/form/AddMembersForm';
 import DialogActions from '@material-ui/core/DialogActions';
 
 /**

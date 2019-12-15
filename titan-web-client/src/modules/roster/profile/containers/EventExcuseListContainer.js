@@ -1,13 +1,13 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import * as profileActions from 'titan/actions/profileActions';
+import * as profileActions from '@titan/actions/profile_actions';
 import connect from 'react-redux/es/connect/connect';
-import UsersService from 'titan/http/UsersService';
+import UsersService from '@titan/http/UsersService';
 import CircularProgress
   from '@material-ui/core/CircularProgress/CircularProgress';
 import { EventExcuseList }
-  from 'titan/modules/roster/components/Excuse/EventExcuseList';
-import { IconEmptyState } from 'titan/components/EmptyStates/IconEmptyState';
+  from '@titan/modules/roster/components/Excuse/EventExcuseList';
+import { IconEmptyState } from '@titan/components/EmptyStates/IconEmptyState';
 
 class EventExcuseListContainer extends React.Component {
   constructor (props) {

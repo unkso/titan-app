@@ -1,9 +1,9 @@
-import modules from 'titan/modules';
-import extensions from 'titan/extensions';
-import { setupStore } from 'titan/lib/redux/store';
-import titanConfig from 'titan/config';
-import { mountReducer, mountRoutes } from 'titan/boot/common';
-import { createStateReducer } from 'titan/lib/redux/stateReducer';
+import modules from '@titan/modules';
+import extensions from '@titan/extensions';
+import { setupStore } from '@titan/lib/redux/store';
+import titanConfig from '@titan/config';
+import { mountReducer, mountRoutes } from '@titan/boot/common';
+import { createStateReducer } from '@titan/lib/redux/stateReducer';
 
 const routes = {};
 const reducers = {};

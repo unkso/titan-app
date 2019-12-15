@@ -4,7 +4,7 @@ import { format as formatDate } from 'date-fns';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import Typography from '@material-ui/core/Typography/Typography';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
-import BorderedCard from 'titan/components/Card/BorderedCard';
+import BorderedCard from '@titan/components/Card/BorderedCard';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import Dialog from '@material-ui/core/Dialog/Dialog';
@@ -15,9 +15,9 @@ import List from '@material-ui/core/List';
 import { Avatar } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
-import { AckReportButton } from 'titan/components/Reports/AckReportButton';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
+import { AckReportButton } from '@titan/components/Reports/AckReportButton';
 
 /**
  * List item for an organization's weekly report. Includes a dialog

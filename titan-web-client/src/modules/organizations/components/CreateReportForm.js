@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DatePicker } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
 import { withSnackbar } from 'notistack';
 import { format } from 'date-fns';
 

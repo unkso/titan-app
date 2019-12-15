@@ -1,9 +1,9 @@
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import Row from 'titan/components/Grid/Row';
-import Column from 'titan/components/Grid/Column';
+import Row from '@titan/components/Grid/Row';
+import Column from '@titan/components/Grid/Column';
 import TextField from '@material-ui/core/TextField';
-import { MemberAutocomplete } from 'titan/components/members/form/MemberAutocomplete';
+import { MemberAutocomplete } from '@titan/components/members/form/MemberAutocomplete';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';

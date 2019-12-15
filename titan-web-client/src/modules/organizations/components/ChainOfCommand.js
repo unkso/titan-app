@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { RouteLink } from 'titan/components/Routes/RouteLink';
-import { ORGANIZATION_DETAILS_ROUTE, routeBuilder } from 'titan/routes';
+import { RouteLink } from '@titan/components/Routes/RouteLink';
+import { ORGANIZATION_DETAILS_ROUTE, routeBuilder } from '@titan/routes';
 import {
   MemberNameTag,
   StyledMemberNameTag
-} from 'titan/components/members/MemberNameTag';
+} from '@titan/components/members/MemberNameTag';
 
 const Tree = styled.div`
   padding-bottom: 16px;

@@ -5,9 +5,9 @@ import SidebarHeading from './SidebarHeading';
 import SidebarContentGroup from './SidebarContentGroup';
 import SidebarProfileBadge from './SidebarProfileBadge';
 import { ProfileLinkContainer } from './ProfileLinkContainer';
-import { createAclInstanceFromSession } from 'titan/lib/acl';
+import { createAclInstanceFromSession } from '@titan/lib/acl';
 import { connect } from 'react-redux';
-import { LIST_USERS_ROUTE } from 'titan/routes';
+import { LIST_USERS_ROUTE } from '@titan/routes';
 
 const SidebarWrapper = styled.nav`
   margin-top: 25px;

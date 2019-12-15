@@ -1,18 +1,18 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import * as profileActions from 'titan/actions/profileActions';
+import * as profileActions from '@titan/actions/profile_actions';
 import connect from 'react-redux/es/connect/connect';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import UsersService from 'titan/http/UsersService';
+import UsersService from '@titan/http/UsersService';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
-import { WithAcl } from 'titan/components/Acl/WithAcl';
+import { WithAcl } from '@titan/components/Acl/WithAcl';
 import { CreateEventExcuseForm }
-  from 'titan/modules/roster/components/Excuse/CreateEventExcuseForm';
-import EventsService from 'titan/http/EventsService';
+  from '@titan/modules/roster/components/Excuse/CreateEventExcuseForm';
+import EventsService from '@titan/http/EventsService';
 import { withSnackbar } from 'notistack';
 
 class CreateEventExcuseContainer extends React.Component {

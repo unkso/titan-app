@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import defaultTheme from 'titan/themes/default';
+import defaultTheme from '@titan/themes/default';
 import AuthenticatedRoute from './routes/AuthenticatedRoute';
 import UnauthenticatedRoute from './routes/UnauthenticatedRoute';
 import {
   ROUTE_TYPE_AUTHENTICATED,
   ROUTE_TYPE_UNAUTHENTICATED
-} from 'titan/lib/routing';
+} from '@titan/lib/routing';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { SnackbarProvider } from 'notistack';
-import { MatPickerDateUtils } from 'titan/lib/matPickerDateUtils';
-import { SessionCredentialLoader } from 'titan/components/core/SessionCredentialLoader';
+import { MatPickerDateUtils } from '@titan/lib/matPickerDateUtils';
+import { SessionCredentialLoader } from '@titan/components/core/SessionCredentialLoader';
 
 const defaultMuiTheme = createMuiTheme(defaultTheme);
 
