@@ -3,7 +3,7 @@ import extensions from '@titan/extensions';
 import { setupStore } from '@titan/lib/redux/store';
 import titanConfig from '@titan/config';
 import { mountReducer, mountRoutes } from '@titan/boot/common';
-import { createStateReducer } from '@titan/lib/redux/stateReducer';
+import { createStateReducer } from '@titan/lib/redux/state_reducer';
 
 const routes = {};
 const reducers = {};

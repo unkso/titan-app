@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { WoltlabLoginContainer }
-  from '@titan/modules/auth/login/containers/WoltlabLoginContainer';
+import { Woltlab_login_container }
+  from '@titan/modules/auth/login/containers/woltlab_login_container';
 
 const LoginSceneStyle = styled.div`
   width: 100%;
@@ -29,7 +29,7 @@ class LoginScene extends React.Component {
       <LoginSceneStyle>
         <ArtworkWrapper image="/images/battlefield_1_tank.jpg" />
         <LoginFormWrapper>
-          <WoltlabLoginContainer />
+          <Woltlab_login_container />
         </LoginFormWrapper>
       </LoginSceneStyle>
     );
