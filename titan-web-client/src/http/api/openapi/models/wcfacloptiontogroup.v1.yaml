@@ -1,0 +1,9 @@
+title: WcfAclOptionToGroup
+type: object
+properties:
+  option_id:
+    type: integer
+  group_id:
+    type: integer
+  option_value:
+    type: boolean

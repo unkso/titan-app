@@ -1,0 +1,11 @@
+title: WcfUserGroupOption
+type: object
+properties:
+  option_id:
+    type: integer
+  option_name:
+    type: integer
+  category_name:
+    type: string
+x-tags:
+  - wcf

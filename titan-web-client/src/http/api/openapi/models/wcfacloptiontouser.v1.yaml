@@ -1,0 +1,11 @@
+title: WcfAclOptionToUser
+type: object
+x-tags:
+  - wcf
+properties:
+  option_id:
+    type: integer
+  user_id:
+    type: integer
+  option_value:
+    type: boolean

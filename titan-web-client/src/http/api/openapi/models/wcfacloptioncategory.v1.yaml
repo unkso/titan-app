@@ -1,0 +1,9 @@
+title: WcfAclOptionCategory
+type: object
+properties:
+  id:
+    type: integer
+  category_name:
+    type: string
+x-tags:
+  - wcf

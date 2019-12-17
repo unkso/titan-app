@@ -1,0 +1,17 @@
+title: NewUserFileEntry
+type: object
+properties:
+  user_file_entry_type_id:
+    type: integer
+  user_id:
+    type: integer
+  start_date:
+    type: integer
+  end_date:
+    type: integer
+  comments:
+    type: string
+  date_modified:
+    type: integer
+  modified_by:
+    type: integer

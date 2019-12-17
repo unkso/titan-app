@@ -1,0 +1,7 @@
+title: WcfUserOptionValue
+type: object
+properties:
+  user_id:
+    type: integer
+  user_avatar_id:
+    type: integer

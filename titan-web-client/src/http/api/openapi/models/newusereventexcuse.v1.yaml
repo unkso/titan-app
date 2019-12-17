@@ -1,0 +1,28 @@
+title: NewUserEventExcuse
+type: object
+properties:
+  user_id:
+    type: string
+  event_type_id:
+    type: string
+  event_date:
+    type: integer
+  comments:
+    type: string
+  ack_user_id:
+    type: string
+  ack_date:
+    type: string
+  ack_comments:
+    type: string
+  date_created:
+    type: string
+  date_modified:
+    type: string
+required:
+  - user_id
+  - event_type_id
+  - comments
+  - date_created
+  - date_modified
+  - event_date

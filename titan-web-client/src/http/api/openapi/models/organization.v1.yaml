@@ -1,0 +1,29 @@
+title: Organization
+type: object
+properties:
+  id:
+    type:
+      - string
+      - integer
+  name:
+    type: string
+  slug:
+    type: string
+  avatar_url:
+    type: string
+  group_type:
+    type: string
+  wcf_user_group_id:
+    type: integer
+  is_enabled:
+    type: boolean
+  parent_id:
+    type: integer
+required:
+  - id
+  - name
+  - slug
+  - avatar_url
+  - group_type
+  - wcf_user_group_id
+  - is_enabled

@@ -1,0 +1,13 @@
+title: WcfUserAvatar
+type: object
+x-tags:
+  - wcf
+properties:
+  avatar_id:
+    type: integer
+  user_id:
+    type: integer
+  avatar_name:
+    type: string
+  file_hash:
+    type: string

@@ -1,0 +1,21 @@
+title: Report
+type: object
+properties:
+  id:
+    type: integer
+  role_id:
+    type: integer
+  term_start_date:
+    type: integer
+  submission_date:
+    type: integer
+  comments:
+    type: string
+  ack_user_id:
+    type: integer
+  ack_date:
+    type: integer
+  date_created:
+    type: integer
+  date_modified:
+    type: integer
