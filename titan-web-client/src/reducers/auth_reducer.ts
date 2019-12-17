@@ -1,7 +1,13 @@
-import {
-  AUTH_SESSION_LOGIN,
-  AUTH_SESSION_LOGOUT
-} from '@titan/actions/action_types';
+import {ActionType} from '@titan/actions/action_types';
+
+interface SessionState {
+  acl: string[];
+  user: {};
+  wcf_username: string;
+  wcf_user_title: string;
+  roles: string[];
+  token: string;
+}
 
 /**
  * Convert a list of ACL options into a map, where in the keys is in the format
@@ -20,14 +26,14 @@ function buildAclMap (acl) {
   }, {});
 }
 
-export default function (state = null, action) {
+export const authReducer = (state: SessionState|null = null, action) => {
   switch (action.type) {
-    case AUTH_SESSION_LOGIN:
+    case ActionType.AUTH_SESSION_LOGIN:
       const { acl, ...rest } = action.data;
       return { ...rest, acl: buildAclMap(acl) };
-    case AUTH_SESSION_LOGOUT:
+    case ActionType.AUTH_SESSION_LOGOUT:
       return null;
     default:
       return state;
   }
-}
+};

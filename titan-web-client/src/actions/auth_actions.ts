@@ -1,9 +1,9 @@
-import { AUTH_SESSION_LOGIN, AUTH_SESSION_LOGOUT } from './action_types';
+import {ActionType} from './action_types';
 
 export function login (session) {
-  return { type: AUTH_SESSION_LOGIN, data: session };
+  return { type: ActionType.AUTH_SESSION_LOGIN, data: session };
 }
 
 export function logout () {
-  return { type: AUTH_SESSION_LOGOUT };
+  return { type: ActionType.AUTH_SESSION_LOGOUT };
 }

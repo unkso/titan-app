@@ -9,7 +9,6 @@ import Organizations from './organizations';
  * {
  *    config: {...},
  *    name: "...",
- *    reducer: createStateReducer([...]),
  *    routes: [...]
  * }
  */

@@ -191,16 +191,13 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
     "@babel/node": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.5.0",
     "@babel/preset-env": "^7.0.0",
-    "@types/node": "^10.0.3",
     "gts": "^1.1.2",
     "mocha": "^5.2.0",
     "sinon": "^7.1.1",
-    "standard": "^12.0.1",
-    "typescript": "~3.7.0"
+    "standard": "^12.0.1"
   },
   "proxy": "http://0.0.0.0:8000"
 }

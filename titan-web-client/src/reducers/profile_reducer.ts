@@ -1,12 +1,5 @@
 import _ from 'lodash';
-import {
-  PROFILE_SET_USER,
-  PROFILE_SET_FILE_ENTRIES,
-  PROFILE_ADD_FILE_ENTRY,
-  PROFILE_SET_EXCUSES,
-  PROFILE_ADD_EXCUSE,
-  PROFILE_CLEAR_USER
-} from '@titan/actions/action_types';
+import {ActionType} from '@titan/actions/action_types';
 
 const DEFAULT_STATE = {
   user: null,
@@ -33,13 +26,15 @@ function addExcuse (excuse, excusesList) {
   return excusesList;
 }
 
-export default function (state = DEFAULT_STATE, action) {
+// TODO Replace with interface once API codgen is complete.
+// tslint:disable-next-line:no-any
+export const profileReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
-    case PROFILE_SET_USER:
+    case ActionType.PROFILE_SET_USER:
       return { ...state, user: action.data };
-    case PROFILE_SET_FILE_ENTRIES:
+    case ActionType.PROFILE_SET_FILE_ENTRIES:
       return { ...state, file_entries: action.data };
-    case PROFILE_ADD_FILE_ENTRY:
+    case ActionType.PROFILE_ADD_FILE_ENTRY:
       return {
         ...state,
         file_entries: addFileEntry(
@@ -47,16 +42,16 @@ export default function (state = DEFAULT_STATE, action) {
           _.map(state.file_entries, _.clone)
         )
       };
-    case PROFILE_SET_EXCUSES:
+    case ActionType.PROFILE_SET_EXCUSES:
       return { ...state, excuses: action.data };
-    case PROFILE_ADD_EXCUSE:
+    case ActionType.PROFILE_ADD_EXCUSE:
       return {
         ...state,
         excuses: addExcuse(action.data, _.map(state.excuses, _.clone))
       };
-    case PROFILE_CLEAR_USER:
+    case ActionType.PROFILE_CLEAR_USER:
       return DEFAULT_STATE;
     default:
       return state;
   }
-}
+};

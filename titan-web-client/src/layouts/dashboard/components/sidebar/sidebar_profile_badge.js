@@ -36,7 +36,7 @@ export const ProfileBadge = styled.div`
   flex-direction: row;
 `;
 
-class Sidebar_profile_badge extends React.Component {
+class SidebarProfileBadge extends React.Component {
   constructor (props) {
     super(props);
 
@@ -58,4 +58,4 @@ class Sidebar_profile_badge extends React.Component {
   }
 }
 
-export default Sidebar_profile_badge;
+export default SidebarProfileBadge;

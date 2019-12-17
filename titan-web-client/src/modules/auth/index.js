@@ -1,5 +1,3 @@
-import { createStateReducer } from '@titan/lib/redux/state_reducer';
-import authReducer from '@titan/reducers/auth_reducer';
 import { EmptyDarkLayout } from '@titan/layouts';
 import LoginScene from './login';
 import { LogoutScene } from './logout';
@@ -11,9 +9,6 @@ import {
 export default function () {
   return {
     name: 'auth',
-    reducer: createStateReducer({
-      session: authReducer
-    }),
     routes: [
       {
         layout: EmptyDarkLayout,
