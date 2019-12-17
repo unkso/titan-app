@@ -1,0 +1,9 @@
+title: UserOrganizationMembership
+type: object
+properties:
+  organization:
+    $ref: ./organization.v1.yaml
+  role:
+    $ref: ./organizationrole.v1.yaml
+required:
+  - organization

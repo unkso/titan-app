@@ -1,0 +1,9 @@
+title: WcfAclOption
+type: object
+properties:
+  id:
+    type: integer
+  option_name:
+    type: string
+  category_name:
+    type: string

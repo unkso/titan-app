@@ -1,0 +1,31 @@
+title: UserEventExcuseWithAssoc
+type: object
+properties:
+  id:
+    type: integer
+  date_modified:
+    type: integer
+  date_created:
+    type: integer
+  ack_comments:
+    type: string
+  ack_date:
+    type: integer
+  ack_user_id:
+    type: integer
+  comments:
+    type: string
+  event_date:
+    type: integer
+  event_type:
+    $ref: ./eventtype.v1.yaml
+  user_profile:
+    $ref: ./userprofile.v1.yaml
+required:
+  - id
+  - date_modified
+  - date_created
+  - comments
+  - event_date
+  - event_type
+  - user_profile

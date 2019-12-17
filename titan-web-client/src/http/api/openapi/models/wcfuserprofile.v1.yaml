@@ -1,0 +1,15 @@
+title: WcfUserProfile
+type: object
+properties:
+  avatar_url:
+    type: string
+  last_activity_time:
+    type: integer
+  user_title:
+    type: string
+  username:
+    type: string
+required:
+  - last_activity_time
+  - user_title
+  - username

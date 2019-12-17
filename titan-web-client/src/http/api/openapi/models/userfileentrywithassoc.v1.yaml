@@ -1,0 +1,19 @@
+title: UserFileEntryWithAssoc
+type: object
+properties:
+  id:
+    type: integer
+  modified_by:
+    $ref: ./userprofile.v1.yaml
+  date_modified:
+    type: integer
+  comments:
+    type: string
+  end_date:
+    type: integer
+  start_date:
+    type: integer
+  user_profile:
+    $ref: ./userprofile.v1.yaml
+  file_entry_type:
+    $ref: ./userfileentrytype.v1.yaml

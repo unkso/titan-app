@@ -1,0 +1,10 @@
+title: OrganizationUser
+type: object
+properties:
+  organization_id:
+    type: integer
+  user_id:
+    type: integer
+required:
+  - organization_id
+  - user_id

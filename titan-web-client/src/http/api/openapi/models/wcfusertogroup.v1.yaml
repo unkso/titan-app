@@ -1,0 +1,9 @@
+title: WcfUserToGroup
+type: object
+properties:
+  group_id:
+    type: integer
+  user_id:
+    type: integer
+x-tags:
+  - wcf

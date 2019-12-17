@@ -1,0 +1,11 @@
+title: ChainOfCommand
+type: object
+properties:
+  local_coc:
+    type: array
+    items:
+      $ref: ./organizationrolewithassoc.v1.yaml
+  extended_coc:
+    type: array
+    items:
+      $ref: ./organizationrolewithassoc.v1.yaml

@@ -1,0 +1,24 @@
+title: NewReport
+type: object
+properties:
+  date_modified:
+    type: integer
+  date_created:
+    type: integer
+  ack_date:
+    type: integer
+  ack_user_id:
+    type: integer
+  comments:
+    type: string
+  submission_date:
+    type: integer
+  term_start_date:
+    type: integer
+  role_id:
+    type: integer
+required:
+  - date_modified
+  - date_created
+  - term_start_date
+  - role_id

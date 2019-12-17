@@ -1,0 +1,19 @@
+title: WcfUser
+type: object
+x-tags:
+  - wcf
+properties:
+  user_id:
+    type: number
+  username:
+    type: string
+  banned:
+    type: string
+  ban_reason:
+    type: string
+  ban_expires:
+    type: string
+  last_activity_time:
+    type: number
+  user_title:
+    type: string

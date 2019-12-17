@@ -1,0 +1,7 @@
+title: UserAclEntry
+type: object
+properties:
+  group_id:
+    type: integer
+  option_id:
+    type: integer

@@ -1,0 +1,11 @@
+title: WcfUserActivityEvent
+type: object
+properties:
+  event_id:
+    type: integer
+  user_id:
+    type: integer
+  time:
+    type: integer
+x-tags:
+  - wcf
