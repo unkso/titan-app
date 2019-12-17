@@ -1,0 +1,12 @@
+title: UpdateOrganizationRole
+type: object
+properties:
+  user_id:
+    type: integer
+  role:
+    type: string
+  rank:
+    type: string
+required:
+  - user_id
+  - rank

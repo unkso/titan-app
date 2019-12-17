@@ -1,0 +1,26 @@
+title: ReportWithAssoc
+type: object
+properties:
+  id:
+    type: string
+  role:
+    $ref: ./organizationrole.v1.yaml
+  term_start_date:
+    type: integer
+  submission_date:
+    type: integer
+  comments:
+    type: string
+  ack_user:
+    $ref: ./userprofile.v1.yaml
+  ack_date:
+    type: integer
+  date_created:
+    type: integer
+  date_modified:
+    type: integer
+required:
+  - id
+  - term_start_date
+  - date_created
+  - date_modified

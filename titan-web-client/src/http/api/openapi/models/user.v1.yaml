@@ -1,0 +1,40 @@
+title: User
+type: object
+properties:
+  is_active:
+    type: boolean
+  last_activity:
+    type: integer
+  modified_by:
+    type: integer
+  date_modified:
+    type: integer
+  date_created:
+    type: integer
+  date_joined:
+    type: integer
+  a15:
+    type: integer
+  loa:
+    type: integer
+  bct_e3:
+    type: integer
+  bct_e2:
+    type: integer
+  bct_e1:
+    type: integer
+  bct_e0:
+    type: integer
+  orientation:
+    type: integer
+  username:
+    type: string
+  rank_id:
+    type: integer
+  legacy_player_id:
+    type: integer
+  wcf_id:
+    type: integer
+  id:
+    type: integer
+description: ''

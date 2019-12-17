@@ -1,0 +1,37 @@
+title: NewUser
+type: object
+properties:
+  wcf_id:
+    type: integer
+  legacy_player_id:
+    type: integer
+  rank_id:
+    type: integer
+  username:
+    type: string
+  orientation:
+    type: integer
+  bct_e0:
+    type: integer
+  bct_e1:
+    type: integer
+  bct_e2:
+    type: integer
+  bct_e3:
+    type: integer
+  loa:
+    type: integer
+  a15:
+    type: integer
+  date_joined:
+    type: integer
+  date_created:
+    type: integer
+  date_modified:
+    type: integer
+  modified_by:
+    type: integer
+  last_activity:
+    type: integer
+  is_active:
+    type: boolean

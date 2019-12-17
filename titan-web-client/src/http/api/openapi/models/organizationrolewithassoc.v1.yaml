@@ -1,0 +1,16 @@
+title: OrganizationRoleWithAssoc
+type: object
+properties:
+  id:
+    type: string
+  organization:
+    $ref: ./organization.v1.yaml
+  user_profile:
+    $ref: ./userprofile.v1.yaml
+  role:
+    type: string
+  rank:
+    type: integer
+required:
+  - id
+  - organization

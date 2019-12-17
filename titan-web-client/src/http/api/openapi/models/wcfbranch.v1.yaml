@@ -1,0 +1,13 @@
+title: WcfBranch
+type: object
+properties:
+  branch_id:
+    type: integer
+  name:
+    type: string
+  image:
+    type: string
+  rank_unavailable_image:
+    type: string
+  is_disabled:
+    type: boolean
