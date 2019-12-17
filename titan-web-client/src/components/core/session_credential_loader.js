@@ -19,7 +19,7 @@ const StyledLoaderContainer = styled.div`
     top: calc(50% - 20px);
 `;
 
-export function Session_credential_loader (props) {
+export function SessionCredentialLoader (props) {
   const wcfUserIdCookie = useCookie('wcf21_userID', {
     domain: titanConfig.get('woltlab.cookie.domain')
   });

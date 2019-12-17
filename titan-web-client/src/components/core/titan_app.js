@@ -13,7 +13,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { SnackbarProvider } from 'notistack';
 import { Mat_picker_date_utils } from '@titan/lib/mat_picker_date_utils';
-import { Session_credential_loader } from '@titan/components/core/session_credential_loader';
+import { SessionCredentialLoader } from '@titan/components/core/session_credential_loader';
 
 const defaultMuiTheme = createMuiTheme(defaultTheme);
 
@@ -85,14 +85,14 @@ class Titan_app extends React.Component {
           <MuiPickersUtilsProvider utils={Mat_picker_date_utils}>
             <div id="app-root">
               <Provider store={this.props.context.getStore()}>
-                <Session_credential_loader>
+                <SessionCredentialLoader>
                   <BrowserRouter>
                     <Switch>
                       {this.renderRoutes(this.props.context.getRoutes())}
                       <Redirect from="/" to="/organizations" />
                     </Switch>
                   </BrowserRouter>
-                </Session_credential_loader>
+                </SessionCredentialLoader>
               </Provider>
             </div>
           </MuiPickersUtilsProvider>

@@ -5,7 +5,6 @@
  * {
  *    config: {...},
  *    name: "...",
- *    reducer: createStateReducer([...]),
  *    routes: [...]
  * }
  */

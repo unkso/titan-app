@@ -1,14 +1,4 @@
-import {
-  ORGANIZATION_ADD_MEMBER,
-  ORGANIZATION_CLEAR,
-  ORGANIZATION_REMOVE_MEMBER,
-  ORGANIZATION_SET_CHILDREN,
-  ORGANIZATION_SET_COC,
-  ORGANIZATION_SET_DETAILS,
-  ORGANIZATION_SET_REPORTS,
-  ORGANIZATION_SET_MEMBERS,
-  ORGANIZATION_SET_ROLES
-} from '@titan/actions/action_types';
+import {ActionType} from '@titan/actions/action_types';
 
 const DEFAULT_STATE = {
   children: null,
@@ -19,31 +9,33 @@ const DEFAULT_STATE = {
   chainOfCommand: null
 };
 
-export default function (state = DEFAULT_STATE, action) {
+// TODO Replace with interface once API codgen is complete.
+// tslint:disable-next-line:no-any
+export const organizationReducer = (state: any = DEFAULT_STATE, action) => {
   switch (action.type) {
-    case ORGANIZATION_ADD_MEMBER:
+    case ActionType.ORGANIZATION_ADD_MEMBER:
       return { ...state, members: [...state.members, action.data] };
-    case ORGANIZATION_REMOVE_MEMBER:
+    case ActionType.ORGANIZATION_REMOVE_MEMBER:
       return {
         ...state,
         members: state.members.filter(
           member => member !== action.data)
       };
-    case ORGANIZATION_SET_CHILDREN:
+    case ActionType.ORGANIZATION_SET_CHILDREN:
       return { ...state, children: action.data };
-    case ORGANIZATION_SET_COC:
+    case ActionType.ORGANIZATION_SET_COC:
       return { ...state, chainOfCommand: action.data };
-    case ORGANIZATION_SET_DETAILS:
+    case ActionType.ORGANIZATION_SET_DETAILS:
       return { ...state, details: action.data };
-    case ORGANIZATION_SET_MEMBERS:
+    case ActionType.ORGANIZATION_SET_MEMBERS:
       return { ...state, members: action.data };
-    case ORGANIZATION_SET_REPORTS:
+    case ActionType.ORGANIZATION_SET_REPORTS:
       return { ...state, reports: action.data };
-    case ORGANIZATION_SET_ROLES:
+    case ActionType.ORGANIZATION_SET_ROLES:
       return { ...state, roles: action.data };
-    case ORGANIZATION_CLEAR:
+    case ActionType.ORGANIZATION_CLEAR:
       return DEFAULT_STATE;
     default:
       return state;
   }
-}
+};

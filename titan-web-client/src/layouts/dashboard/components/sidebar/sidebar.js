@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Sidebar_menu_item } from './sidebar_menu_item';
 import Sidebar_heading from './sidebar_heading';
 import SidebarContentGroup from './sidebar_content_group';
-import Sidebar_profile_badge from './sidebar_profile_badge';
+import SidebarProfileBadge from './sidebar_profile_badge';
 import { Profile_link_container } from './profile_link_container';
 import { createAclInstanceFromSession } from '@titan/lib/acl';
 import { connect } from 'react-redux';
@@ -42,7 +42,7 @@ class Sidebar extends React.Component {
     return (
       <SidebarWrapper>
         <SidebarContentGroup>
-          <Sidebar_profile_badge />
+          <SidebarProfileBadge />
         </SidebarContentGroup>
 
         <SidebarContentGroup>
