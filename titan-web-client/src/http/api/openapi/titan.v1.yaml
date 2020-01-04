@@ -127,7 +127,7 @@ paths:
         in: path
         required: true
     post:
-      summary: SaveUserFileEntry
+      summary: saveUserFileEntry
       tags: []
       responses:
         '200':
