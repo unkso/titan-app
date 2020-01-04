@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  title: Titan
+  version: '1.0'
+  license:
+    name: MIT
+    url: 'https://github.com/unkso/titan-app/blob/master/LICENSE'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /api/auth/woltlab:
+    post:
+      summary: woltlab
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: ./models/userprofile.v1.yaml
+                  wcf_username:
+                    type: string
+                  wcf_user_title:
+                    type: string
+                  acl:
+                    type: array
+                    items:
+                      $ref: ''
+                  roles:
+                    type: array
+                    items:
+                      $ref: ./models/organizationrole.v1.yaml
+      operationId: post-api-auth-woltlab
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                cookie_password:
+                  type: string
+      parameters: []
+      description: ''
+  /api/users/:
+    get:
+      summary: list_users
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./models/userprofile.v1.yaml
+      operationId: get-api-users
+      description: ''
+      requestBody: {}
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: username
+        - schema:
+            type: integer
+          in: query
+          name: limit
+      security:
+        - x-api-key: []
+    parameters: []
+  /api/users:
+    parameters:
+      - required: true
+components:
+  schemas: {}
+  securitySchemes:
+    x-api-key:
+      name: API Key
+      type: apiKey
+      in: header
