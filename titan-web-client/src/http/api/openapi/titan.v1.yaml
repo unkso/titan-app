@@ -80,6 +80,83 @@ paths:
   /api/users:
     parameters:
       - required: true
+  '/api/users/excuses/{excuseId}/ack':
+    parameters:
+      - type: string
+        name: excuseId
+        in: path
+        required: true
+    post:
+      summary: acknowledgeUserEventExcuse
+      tags: []
+      operationId: post-api-users-excuses-excuseId-ack
+      security:
+        - x-api-key: []
+      description: ''
+      requestBody: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/usereventexcusewithassoc.v1.yaml
+  '/api/users/{user_id}':
+    parameters:
+      - type: string
+        name: user_id
+        in: path
+        required: true
+    get:
+      summary: getUser
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/userprofile.v1.yaml
+      operationId: get-api-users-user_id
+      security:
+        - x-api-key: []
+  '/api/users/{user_id}/file-entries':
+    parameters:
+      - type: string
+        name: user_id
+        in: path
+        required: true
+    post:
+      summary: SaveUserFileEntry
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file_entry:
+                    $ref: ./models/userfileentrywithassoc.v1.yaml
+      operationId: post-api-users-user_id-file-entries
+      security:
+        - x-api-key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_entry_type_id:
+                  type: integer
+                start_date:
+                  type: integer
+                end_date:
+                  type: integer
+                comments:
+                  type: string
+      description: ''
 components:
   schemas: {}
   securitySchemes:
