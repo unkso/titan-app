@@ -70,7 +70,7 @@ export function RemoveUserFromOrganizationRequest (fields = {}) {
 export function ListUsersRequest (fields = {}) {
   const { username, limit } = fields;
   return {
-    auth: false,
+    auth: true,
     config: {
       url: '/users',
       params: { username, limit },

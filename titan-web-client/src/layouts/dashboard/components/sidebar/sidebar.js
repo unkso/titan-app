@@ -8,6 +8,10 @@ import { Profile_link_container } from './profile_link_container';
 import { createAclInstanceFromSession } from '@titan/lib/acl';
 import { connect } from 'react-redux';
 import { LIST_USERS_ROUTE } from '@titan/routes';
+import {
+  hasAckEventExcusePermission,
+  PERMISSION_CAN_ACK_EVENT_EXCUSE
+} from '@titan/acl_rules';
 
 const SidebarWrapper = styled.nav`
   margin-top: 25px;
@@ -18,22 +22,21 @@ class Sidebar extends React.Component {
     super(props);
     this.state = {
       canCreateEvents: false,
-      canAckReports: false
+      hasLeadershipRole: false
     };
   }
 
   componentDidMount () {
-    const canCreateEvents = createAclInstanceFromSession(this.props.auth.session)
-      .canAccess(['mod.titan:canAckEventExcuse'], {
-        userId: this.props.auth.session.user.id
-      });
-    const canAckReports = this.props.auth.session.roles &&
+    const hasLeadershipRole = this.props.auth.session.roles &&
       this.props.auth.session.roles.length > 0;
+    const canAckEventExcuse = hasLeadershipRole ||
+      createAclInstanceFromSession(this.props.auth.session)
+        .hasAclPermission(PERMISSION_CAN_ACK_EVENT_EXCUSE);
 
     this.setState({
-      canCreateEvents,
-      canAckReports,
-      showLeadershipTools: [canCreateEvents, canAckReports].some(
+      canCreateEvents: canAckEventExcuse,
+      hasLeadershipRole,
+      showLeadershipTools: [canAckEventExcuse, hasLeadershipRole].some(
         hasPermission => hasPermission)
     });
   }
@@ -68,7 +71,7 @@ class Sidebar extends React.Component {
                 leftIcon={<span className="fas fa-clipboard-list" />}
               />
               }
-              {this.state.canAckReports &&
+              {this.state.hasLeadershipRole &&
               <Sidebar_menu_item
                 url={'/organizations/unacknowledged-reports'}
                 label="Manage Reports"

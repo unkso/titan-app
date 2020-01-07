@@ -9,11 +9,15 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import UsersService from '@titan/http/UsersService';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
-import { WithAcl } from '@titan/components/acl/with_acl';
 import { CreateEventExcuseForm }
   from '@titan/modules/roster/components/excuse/create_event_excuse_form';
 import EventsService from '@titan/http/EventsService';
 import { withSnackbar } from 'notistack';
+import { createAclInstanceFromSession } from '@titan/lib/acl';
+import {
+  PERMISSION_CAN_ACK_EVENT_EXCUSE,
+  PERMISSION_CAN_CREATE_EVENT_EXCUSE
+} from '@titan/acl_rules';
 
 class CreateEventExcuseContainer extends React.Component {
   constructor (props) {
@@ -73,23 +77,19 @@ class CreateEventExcuseContainer extends React.Component {
   }
 
   render () {
+    const acl = createAclInstanceFromSession(this.props.session);
+    const canCreateEventExcuse = acl.newBuilder()
+      .hasAclPermissions([PERMISSION_CAN_ACK_EVENT_EXCUSE, PERMISSION_CAN_CREATE_EVENT_EXCUSE])
+      .or(acl.isAuthenticatedUser(this.props.profile.user.id));
+
     return (
       <React.Fragment>
-        <WithAcl
-          options={[
-            'mod.titan:canAckEventExcuse',
-            'mod.titan:canCreateEventExcuse'
-          ]}
-          authUserOptions={{
-            userId: this.props.profile.user.id,
-            mustHaveOptions: false
-          }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.openDialogHandler}>Add Excuse</Button>
-        </WithAcl>
-
+        {canCreateEventExcuse &&
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.openDialogHandler}>Add Excuse</Button>
+        }
         <Dialog open={this.state.open} fullWidth>
           <DialogTitle>Add Event Excuse</DialogTitle>
           <DialogContent>
@@ -114,6 +114,7 @@ class CreateEventExcuseContainer extends React.Component {
 
 function mapStateToProps (state) {
   return {
+    session: state.auth.session,
     profile: state.roster.profile
   };
 }

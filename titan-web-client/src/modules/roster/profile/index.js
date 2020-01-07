@@ -20,6 +20,7 @@ import CreateEventExcuseContainer
 import EventExcuseListContainer
   from '@titan/modules/roster/profile/containers/event_excuse_list_container';
 import { createAclInstanceFromSession } from '@titan/lib/acl';
+import { PERMISSION_CAN_CREATE_EVENT_EXCUSE } from '@titan/acl_rules';
 
 class Profile extends React.Component {
   constructor (props) {
@@ -65,12 +66,11 @@ class Profile extends React.Component {
       return null;
     }
 
-    const canAccessExcuses =
-      createAclInstanceFromSession(this.props.auth.session)
-        .canAccess(['mod.titan:canCreateEventExcuse'], {
-          userId: this.props.profile.user.id,
-          mustHaveOptions: false
-        });
+    const acl = createAclInstanceFromSession(this.props.auth.session);
+    const canAccessExcuses = acl.newBuilder()
+      .hasAclPermission(PERMISSION_CAN_CREATE_EVENT_EXCUSE)
+      .or(acl.isAuthenticatedUser(this.props.profile.user.id))
+      .build();
 
     const headerTabs = [<Tab key={0} label="History" />];
 

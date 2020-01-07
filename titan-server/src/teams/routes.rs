@@ -23,7 +23,8 @@ pub fn get_all(titan_primary: TitanPrimary) -> ApiResponse<Vec<models::Organizat
 #[get("/<id>", rank = 1)]
 pub fn get_organization_by_id(
     id: i32,
-    titan_db: TitanPrimary
+    titan_db: TitanPrimary,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<models::Organization> {
     ApiResponse::from(teams::organizations::find_by_id(id, &*titan_db))
 }
@@ -31,7 +32,8 @@ pub fn get_organization_by_id(
 #[get("/<slug>", rank = 2)]
 pub fn get_organization_by_slug(
     slug: &RawStr,
-    unkso_titan: TitanPrimary
+    unkso_titan: TitanPrimary,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<models::Organization> {
     ApiResponse::from(teams::organizations::find_by_slug(slug.as_str(), &unkso_titan))
 }
@@ -39,7 +41,8 @@ pub fn get_organization_by_slug(
 #[get("/<org_id>/children")]
 pub fn get_child_organizations(
     org_id: i32,
-    titan_db: TitanPrimary
+    titan_db: TitanPrimary,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<Vec<models::Organization>> {
     ApiResponse::from(teams::organizations::find_children(org_id, &*titan_db))
 }
@@ -53,7 +56,8 @@ pub fn get_organization_users(
     children: Option<bool>,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<Vec<models::UserProfile>> {
     let include_children = children.unwrap_or(false);
     let users = teams::organizations::find_users(id, include_children, &*titan_db)
@@ -67,26 +71,36 @@ pub struct AddUserRequest {
     user_id: i32,
 }
 
-/// TODO Verify CoC permissions.
 #[post("/<org_id>/users", format = "application/json", data = "<user_fields>")]
 pub fn add_user(
     org_id: i32,
     user_fields: Json<AddUserRequest>,
     titan_db: TitanPrimary,
-) -> Json<bool> {
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
+) -> ApiResponse<bool> {
     let titan_db_ref = &*titan_db;
+    let wcf_db_ref = &*wcf_db;
+    let is_in_coc = teams::roles::is_user_in_coc(
+        auth_user.user.id, org_id, titan_db_ref, wcf_db_ref, &app_config);
+
+    if !is_in_coc {
+        return ApiResponse::from(ApiError::AuthenticationError);
+    }
+
     let org_user = &models::OrganizationUser {
         organization_id: org_id,
         user_id: user_fields.user_id,
     };
 
     if teams::organizations::is_user_org_member(org_user, titan_db_ref) {
-        return Json(true);
+        return ApiResponse::from(true);
     }
 
     let res = teams::organizations::add_user(
         &org_user, titan_db_ref);
-    Json(res.is_ok())
+    ApiResponse::from(res.is_ok())
 }
 
 #[derive(Deserialize)]
@@ -101,11 +115,23 @@ pub fn remove_user(
     org_id: i32,
     user_fields: Json<RemoveUserRequest>,
     titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<bool> {
+    let titan_db_ref = &*titan_db;
+    let wcf_db_ref = &*wcf_db;
+    let is_in_coc = teams::roles::is_user_in_coc(
+        auth_user.user.id, org_id, titan_db_ref, wcf_db_ref, &app_config);
+
+    if !is_in_coc {
+        return ApiResponse::from(ApiError::AuthenticationError);
+    }
+
     let res = teams::organizations::remove_user(&models::OrganizationUser {
         organization_id: org_id,
         user_id: user_fields.user_id,
-    }, &*titan_db);
+    }, titan_db_ref);
     ApiResponse::from(res.is_ok())
 }
 
@@ -115,7 +141,8 @@ pub fn get_organization_user_coc(
     user_id: i32,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<models::ChainOfCommand> {
     ApiResponse::from(teams::roles::find_user_coc(
         org_id, user_id, &*titan_db, &*wcf_db, app_config))
@@ -126,7 +153,8 @@ pub fn get_organization_coc(
     org_id: i32,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<models::ChainOfCommand> {
     ApiResponse::from(teams::roles::find_org_coc(
         org_id, std::i32::MAX, &*titan_db, &*wcf_db, &app_config))
@@ -152,7 +180,8 @@ pub fn get_organization_unranked_roles(
     org_id: i32,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<Vec<models::OrganizationRoleWithAssoc>> {
     ApiResponse::from(teams::roles::find_unranked_roles(
         org_id, &*titan_db, &*wcf_db, &app_config))
@@ -163,7 +192,8 @@ pub fn get_parent_role(
     role_id: i32,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<Option<models::OrganizationRoleWithAssoc>> {
     let titan_db_ref = &*titan_db;
     let res = teams::roles::find_parent_role(role_id, false, titan_db_ref)
@@ -172,6 +202,7 @@ pub fn get_parent_role(
                 Some(role) =>  teams::roles::map_role_assoc(
                     &role, titan_db_ref, &*wcf_db, &app_config)
                     .map(Some),
+                // TODO return 404 instead. Ensure it is gracefully handled on the client side.
                 None => Ok(None),
             }
         });
@@ -246,7 +277,8 @@ pub fn update_organization_role(
     fields: Json<models::UpdateOrganizationRole>,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
+    app_config: State<config::AppConfig>,
+    _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<models::OrganizationRoleWithAssoc> {
     let titan_db_ref = &*titan_db;
     let wcf_db_ref = &*wcf_db;
