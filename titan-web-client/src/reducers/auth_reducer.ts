@@ -1,7 +1,8 @@
 import {ActionType} from '@titan/actions/action_types';
+import {AclMap} from "@titan/lib/acl";
 
 interface SessionState {
-  acl: string[];
+  acl: AclMap;
   user: {};
   wcf_username: string;
   wcf_user_title: string;
@@ -16,7 +17,7 @@ interface SessionState {
  * @param {{id, option_name, category_name}} acl - A list of ACL options.
  * @returns {Map<string, {id, option_name, category_name}>}
  */
-function buildAclMap (acl) {
+function buildAclMap (acl): AclMap {
   // Reduce the list of ACL options into key/value pairs. Use a vanilla object
   // to construct the map because the es6 Map object loses its values when
   // serialized to JSON.

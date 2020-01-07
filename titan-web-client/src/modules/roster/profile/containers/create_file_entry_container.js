@@ -7,11 +7,12 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
 import { MULTI_DATE_FILE_ENTRY_TYPES } from '@titan/components/file_entry/constants';
-import { WithAcl } from '@titan/components/acl/with_acl';
 import CreateForm from '@titan/components/file_entry/create_form';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListFileEntryTypes, makeTitanApiRequest } from '@titan/http/api_client';
 import * as fileEntryActions from '@titan/actions/file_entry_actions';
+import { PERMISSION_CAN_CREATE_FILE_ENTRIES } from '@titan/acl_rules';
+import { useAcl } from '@titan/hooks/acl';
 
 export function CreateFileEntryContainer () {
   const dispatch = useDispatch();
@@ -19,6 +20,8 @@ export function CreateFileEntryContainer () {
     state => state.roster.fileEntries.types);
   const profileUserId = useSelector(
     state => state.roster.profile.user.id);
+  const canCreateFileEntries = useAcl(acl =>
+    acl.hasAclPermission(PERMISSION_CAN_CREATE_FILE_ENTRIES));
   const [open, setOpen] = useState(false);
   const [formFields, setFormFields] = useState({
     fileEntryTypeIndex: -1
@@ -79,19 +82,18 @@ export function CreateFileEntryContainer () {
 
   return (
     <React.Fragment>
-      <WithAcl options={['mod.titan:canCreateFileEntries']}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setOpen(true)}>Add Entry</Button>
-      </WithAcl>
-
+      {canCreateFileEntries &&
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setOpen(true)}>Add Entry</Button>
+      }
       <Dialog open={open} fullWidth>
         <DialogTitle>Add File Entry</DialogTitle>
         <DialogContent>
           <CreateForm
             multiDate={isSelectedFileTypeMultiDate()}
-            entryTypes={fileEntryTypes}
+            entryTypes={fileEntryTypes || []}
             fields={formFields}
             onFieldChange={(field, value) => updateField(field, value)}
           />

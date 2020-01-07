@@ -117,7 +117,8 @@ pub fn list_users(
     fields: Form<ListUsersRequest>,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>
+    app_config: State<config::AppConfig>,
+    _auth_guard: auth_guard::AuthenticatedUser,
 ) -> ApiResponse<Vec<models::UserProfile>> {
     let users_res: Result<Vec<models::UserProfile>, ApiError> = users::search(
         fields.username.clone(), fields.limit, &*titan_db)
@@ -152,7 +153,8 @@ pub fn get_user(
  ** *****************************************************************/
 #[get("/file-entry-types")]
 pub fn list_user_file_entry_types(
-    titan_db: TitanPrimary
+    titan_db: TitanPrimary,
+    _auth_guard: auth_guard::AuthenticatedUser,
 ) -> ApiResponse<Vec<models::UserFileEntryType>> {
     ApiResponse::from(file_entry_types::find_file_entry_types(&*titan_db))
 }

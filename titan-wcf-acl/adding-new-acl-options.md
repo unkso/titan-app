@@ -93,18 +93,20 @@ following format:
 
 `category_name:option_name`
 
-For the above end-to-end example, you would validate `withACl` against
+For the above end-to-end example, you would validate `useAcl` against
 `admin.titan:canReadAllReports`.
 
 Example:
 ```jsx harmony
-render () {
+function MyComponent () {
+  const canReadAllReports = useAcl(
+    acl => acl.hasAclPermission('admin.titan:canReadAllReports'));
   return (
-    <React.Fragment>
-      <WithAcl options={['admin.titan:canReadAllReports']}>
-        ...
-      </WithAcl>
-    </React.Fragment>
+    <div>
+      {canReadAllReports &&
+        <p>protected content here</p>
+      }
+    </div>
   );
 }
 ```
