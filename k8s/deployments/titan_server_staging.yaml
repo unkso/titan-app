@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: titan-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: titan
+  template:
+    metadata:
+      labels:
+        app: titan
+    spec:
+      containers:
+        - name: titan-server
+          image: us.gcr.io/unsko-262505/titan-server:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: ROCKET_ENV
+              value: staging
+            - name: ROCKET_ADDRESS
+              value: 0.0.0.0
+            - name: ROCKET_DATABASES
+              valueFrom:
+                secretKeyRef:
+                  name: rocket-databases
+                  key: value

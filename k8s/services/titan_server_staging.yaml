@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: titan-staging
+  labels:
+    app: titan
+spec:
+  type: LoadBalancer
+  selector:
+    app: titan
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8000
