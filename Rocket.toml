@@ -8,3 +8,13 @@ url = "mysql://root:root@localhost/unkso_main_forums"
 
 [development.databases.titan_primary]
 url = "mysql://root:root@localhost/titan_primary"
+
+[staging]
+address = "0.0.0.0"
+auth_key = "dummy_key"
+avatar_base_url = "https://clanunknownsoldiers.com/wcf/images/avatars"
+
+[production.cors]
+allowed_origins = [
+    "https://titan.clanunknownsoldiers.com"
+]

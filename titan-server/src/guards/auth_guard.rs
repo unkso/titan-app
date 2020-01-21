@@ -1,5 +1,5 @@
 use diesel::prelude::*;
-use frank_jwt::{decode, Algorithm};
+use frank_jwt::{decode, Algorithm, ValidationOptions};
 use rocket::{State, http::Status, request::{FromRequest, Request}};
 use rocket_contrib::json::JsonValue;
 use serde::{Serialize, Deserialize};
@@ -47,7 +47,14 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
         let parsed_token = decode(
             &auth_headers[0].to_string(),
             &key.secret_key,
-            Algorithm::HS256
+            Algorithm::HS256,
+            // FIXME These JWTs never expire. We should restrict each
+            //  token to a specific IP and/or device. Then refresh the
+            //  token when that device sends a new request so old
+            //  tokens are unusable by unauthorized users. Once this
+            //  has been implemented, change this code to:
+            //  ValidationOptions::default().
+            &ValidationOptions::dangerous()
         );
 
         match parsed_token {
