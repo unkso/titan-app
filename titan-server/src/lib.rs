@@ -10,6 +10,7 @@ pub mod api;
 pub mod accounts;
 pub mod catchers;
 pub mod config;
+pub mod cors;
 pub mod db;
 pub mod guards;
 pub mod models;

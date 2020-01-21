@@ -1,11 +1,13 @@
 #![feature(plugin, decl_macro, proc_macro_hygiene)]
 
 #[macro_use] extern crate rocket;
-use rocket::routes;
+extern crate rocket_cors;
 
+use rocket::routes;
 use libtitan::accounts;
 use libtitan::catchers;
 use libtitan::config;
+use libtitan::cors;
 use libtitan::db;
 use libtitan::teams;
 use libtitan::events;
@@ -16,6 +18,7 @@ fn main() {
         .attach(db::TitanPrimary::fairing())
         .attach(db::UnksoMainForums::fairing())
         .attach(config::AppConfig::fairing())
+        .attach(cors::fairing())
         .mount("/api/auth/pulse", routes![routes::health_check])
         .mount("/api/auth", accounts::get_auth_routes())
         .mount("/api/users", accounts::get_user_routes())
