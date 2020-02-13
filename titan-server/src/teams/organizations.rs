@@ -47,23 +47,6 @@ pub fn find_by_slug(
         .map_err(db::TitanDatabaseError::from)
 }
 
-/// Queries all the WCF users associated with an organization.
-/// @deprecated
-pub fn find_users_old(
-    organization: &models::Organization,
-    unkso_main: &UnksoMainForums
-) -> db::TitanQueryResult<Vec<(models::WcfUser, models::WcfUserAvatar)>> {
-    let users_query = wcf1_user_to_group::table
-        .inner_join(
-            wcf1_user::table.inner_join(wcf1_user_avatar::table)
-        )
-        .select((wcf1_user::all_columns, wcf1_user_avatar::all_columns))
-        .filter(schema::wcf1_user_to_group::group_id.eq(organization.wcf_user_group_id));
-
-    users_query.load::<(models::WcfUser, models::WcfUserAvatar)>(&**unkso_main)
-        .map_err(db::TitanDatabaseError::from)
-}
-
 pub fn is_user_org_member(
     org_user: &models::OrganizationUser,
     titan_db: &MysqlConnection
