@@ -37,7 +37,7 @@ export const SidebarMenuItemLink = styled.div`
   }
 `;
 
-export function Sidebar_menu_item (props) {
+export function SidebarMenuItem (props) {
   const theme = useTheme();
   let iconColor, textColor, borderColor;
   if (props.isActive) {
@@ -80,7 +80,7 @@ export function Sidebar_menu_item (props) {
   );
 }
 
-Sidebar_menu_item.propTypes = {
+SidebarMenuItem.propTypes = {
   url: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   leftIcon: PropTypes.object,
@@ -89,7 +89,7 @@ Sidebar_menu_item.propTypes = {
   isExternal: PropTypes.bool
 };
 
-Sidebar_menu_item.defaultProps = {
+SidebarMenuItem.defaultProps = {
   isActive: false,
   isExternal: false
 };

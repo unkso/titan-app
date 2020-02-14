@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import OrganizationsService from '@titan/http/OrganizationsService';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import { Icon_empty_state } from '@titan/components/empty_state/icon_empty_state';
+import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 import { MemberNameTag } from '@titan/components/members/member_name_tag';
 
 export class List_support_leadership extends React.Component {
@@ -48,7 +48,7 @@ export class List_support_leadership extends React.Component {
             ))}
           </List>
         ) : (
-          <Icon_empty_state
+          <IconEmptyState
             icon="life-ring"
             primaryText="No active support roles" />
         )}

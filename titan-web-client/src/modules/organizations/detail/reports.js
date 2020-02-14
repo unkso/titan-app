@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Reports_list } from '@titan/components/reports/reports_list';
+import { ReportsList } from '@titan/components/reports/reports_list';
 import { ContentBlock } from '@titan/components/block/content_block';
 import Typography from '@material-ui/core/Typography';
 import { CreateReportButton } from '@titan/modules/organizations/components/create_report_button';
@@ -9,7 +9,7 @@ import {
   makeTitanApiRequest
 } from '@titan/http/api_client';
 import { useSnackbar } from 'notistack';
-import { Icon_empty_state } from '@titan/components/empty_state/icon_empty_state';
+import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 import { useDispatch, useSelector } from 'react-redux';
 import * as orgActions from '@titan/actions/organization_actions';
 
@@ -54,9 +54,9 @@ export function Reports (props) {
         }
       </Typography>
       {reports.length > 0 ? (
-        <Reports_list items={reports} />
+        <ReportsList items={reports} />
       ) : (
-        <Icon_empty_state
+        <IconEmptyState
           icon="file-alt"
           primaryText="No reports have been created"
           verticalMargin={64}

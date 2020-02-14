@@ -1,14 +1,14 @@
 import axios from 'axios';
 import * as authActions from '@titan/actions/auth_actions';
-import { getAppContext } from '@titan/titan';
-import titanConfig from '@titan/config';
+import {config} from '@titan/lib/config';
 import _ from 'lodash';
+import { getStoreInstance } from '@titan/lib/redux';
 
 class AuthenticatedService {
   constructor () {
-    this.appContext = getAppContext();
+    this.store = getStoreInstance().getStore();
     this.httpClient = axios.create({
-      baseURL: titanConfig.get('api.baseUrl'),
+      baseURL: config.get('api.baseUrl'),
       headers: {
         'content-type': 'application/json'
       }
@@ -29,10 +29,10 @@ class AuthenticatedService {
   }
 
   authHeadersInterceptor (config) {
-    const state = this.appContext.getStore().getState();
+    const state = this.store.getState();
 
     if (_.isEmpty(state.auth.session.token)) {
-      this.appContext.getStore().dispatch(authActions.logout());
+      this.store.dispatch(authActions.logout());
       return false;
     }
 
@@ -45,7 +45,7 @@ class AuthenticatedService {
 
   responseErrorInterceptor (err) {
     if (err.response && err.response.status === 401) {
-      this.appContext.getStore().dispatch(authActions.logout());
+      this.store.dispatch(authActions.logout());
     }
 
     return Promise.reject(err);

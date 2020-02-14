@@ -7,7 +7,7 @@ export const SidebarHeadingWrapper = styled.div`
   padding: 10px 15px;
 `;
 
-class Sidebar_heading extends React.Component {
+class SidebarHeading extends React.Component {
   render () {
     return (
       <SidebarHeadingWrapper>{this.props.children}</SidebarHeadingWrapper>
@@ -15,4 +15,4 @@ class Sidebar_heading extends React.Component {
   }
 }
 
-export default Sidebar_heading;
+export default SidebarHeading;

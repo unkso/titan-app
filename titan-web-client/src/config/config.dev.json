@@ -1,4 +1,7 @@
 {
+  "api": {
+    "baseUrl": "http://localhost:8000/api"
+  },
   "woltlab": {
     "authUrl": "https://clanunknownsoldiers.com/login",
     "cookie": {

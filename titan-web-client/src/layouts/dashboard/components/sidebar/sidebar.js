@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Sidebar_menu_item } from './sidebar_menu_item';
-import Sidebar_heading from './sidebar_heading';
+import { SidebarMenuItem } from './sidebar_menu_item';
+import SidebarHeading from './sidebar_heading';
 import SidebarContentGroup from './sidebar_content_group';
 import SidebarProfileBadge from './sidebar_profile_badge';
-import { Profile_link_container } from './profile_link_container';
+import { ProfileLinkContainer } from './profile_link_container';
 import { createAclInstanceFromSession } from '@titan/lib/acl';
 import { connect } from 'react-redux';
-import { LIST_USERS_ROUTE } from '@titan/routes';
+import { Permission } from '@titan/lib/acl';
 import {
-  hasAckEventExcusePermission,
-  PERMISSION_CAN_ACK_EVENT_EXCUSE
-} from '@titan/acl_rules';
+  LIST_USERS_ROUTE,
+  USER_EXCUSES_ROUTE
+} from '@titan/modules/roster/routes';
 
 const SidebarWrapper = styled.nav`
   margin-top: 25px;
@@ -31,7 +31,7 @@ class Sidebar extends React.Component {
       this.props.auth.session.roles.length > 0;
     const canAckEventExcuse = hasLeadershipRole ||
       createAclInstanceFromSession(this.props.auth.session)
-        .hasAclPermission(PERMISSION_CAN_ACK_EVENT_EXCUSE);
+        .hasAclPermission(Permission.CAN_ACK_EVENT_EXCUSE);
 
     this.setState({
       canCreateEvents: canAckEventExcuse,
@@ -49,13 +49,13 @@ class Sidebar extends React.Component {
         </SidebarContentGroup>
 
         <SidebarContentGroup>
-          <Sidebar_heading>Community</Sidebar_heading>
-          <Sidebar_menu_item
+          <SidebarHeading>Community</SidebarHeading>
+          <SidebarMenuItem
             url={LIST_USERS_ROUTE}
             label="Members"
             leftIcon={<span className="fas fa-users" />}
           />
-          <Sidebar_menu_item
+          <SidebarMenuItem
             url={'/organizations'}
             label="Organizations"
             leftIcon={<span className="fas fa-flag" />}
@@ -63,17 +63,17 @@ class Sidebar extends React.Component {
 
           {this.state.showLeadershipTools && (
             <React.Fragment>
-              <Sidebar_heading>Leadership Tools</Sidebar_heading>
+              <SidebarHeading>Leadership Tools</SidebarHeading>
               {this.state.canCreateEvents &&
-              <Sidebar_menu_item
-                url={'/roster/excuses'}
+              <SidebarMenuItem
+                url={USER_EXCUSES_ROUTE}
                 label="Manage Excuses"
                 leftIcon={<span className="fas fa-clipboard-list" />}
               />
               }
               {this.state.hasLeadershipRole &&
-              <Sidebar_menu_item
-                url={'/organizations/unacknowledged-reports'}
+              <SidebarMenuItem
+                url={'/organizations/reports/unacknowledged'}
                 label="Manage Reports"
                 leftIcon={<span className="fas fa-file-alt" />}
               />
@@ -82,17 +82,17 @@ class Sidebar extends React.Component {
           )
           }
 
-          <Sidebar_heading>Links</Sidebar_heading>
-          <Sidebar_menu_item
+          <SidebarHeading>Links</SidebarHeading>
+          <SidebarMenuItem
             isExternal
             url="https://clanunknownsoldiers.com"
             label="Forums"
             leftIcon={<span className="fal fa-external-link-square" />}
           />
 
-          <Sidebar_heading>Account</Sidebar_heading>
-          <Profile_link_container />
-          <Sidebar_menu_item
+          <SidebarHeading>Account</SidebarHeading>
+          <ProfileLinkContainer />
+          <SidebarMenuItem
             url={'/auth/logout'}
             label="Sign Out"
             leftIcon={<span className="fas fa-power-off" />}

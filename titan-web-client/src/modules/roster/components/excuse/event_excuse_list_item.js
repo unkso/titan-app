@@ -27,8 +27,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import styled from 'styled-components';
 import useTheme from '@material-ui/core/styles/useTheme';
-import { useAcl } from '@titan/hooks/acl';
-import { PERMISSION_CAN_ACK_EVENT_EXCUSE } from '@titan/acl_rules';
+import { Permission, useAcl } from '@titan/lib/acl';
 
 /** TODO Move to a dedicated component with theme variants. */
 const Callout = styled.div`
@@ -42,7 +41,7 @@ export function EventExcuseListItem (props) {
   const [ackUser, setAckUser] = useState(null);
   const [ackDate, setAckDate] = useState(null);
   const canAckExcuse = useAcl(acl => acl.newBuilder()
-      .hasAclPermission(PERMISSION_CAN_ACK_EVENT_EXCUSE)
+      .hasAclPermission(Permission.CAN_ACK_EVENT_EXCUSE)
       .and(acl.hasLeadershipRole())
       .build());
 

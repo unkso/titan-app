@@ -8,7 +8,7 @@ import { format as formatDate } from 'date-fns';
  *
  * https://github.com/mui-org/material-ui-pickers/issues/864
  */
-export class Mat_picker_date_utils extends DateFnsUtils {
+export class MatPickerDateUtils extends DateFnsUtils {
   startOfMonth (date) {
     return this.getStartOfMonth(date);
   }

@@ -3,10 +3,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import { UserRow } from '@titan/components/members/table/user_row';
 import Table from '@material-ui/core/Table';
-import { Icon_empty_state } from '@titan/components/empty_state/icon_empty_state';
+import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 
 /**
  * @param {{
@@ -32,7 +31,7 @@ export function UsersTable (props) {
           {props.error ? (
             <TableRow>
               <TableCell colSpan={4}>
-                <Icon_empty_state
+                <IconEmptyState
                   icon="exclamation-circle"
                   primaryText="Unable to load users"
                   secondaryText="An unexpected error occurred."
@@ -43,7 +42,7 @@ export function UsersTable (props) {
           ) : !props.loading && props.data.length === 0 ? (
             <TableRow>
               <TableCell colSpan={4}>
-                <Icon_empty_state
+                <IconEmptyState
                   icon="users"
                   primaryText="No users found"
                   verticalMargin={48}

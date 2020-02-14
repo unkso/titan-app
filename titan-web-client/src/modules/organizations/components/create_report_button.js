@@ -15,7 +15,7 @@ import { format as formatDate, startOfWeek, endOfWeek } from 'date-fns';
 import { withSnackbar } from 'notistack';
 import {
   EmptyStateWrapper,
-  Icon_empty_state
+  IconEmptyState
 } from '@titan/components/empty_state/icon_empty_state';
 
 const EntryListColumn = styled.div`
@@ -122,7 +122,7 @@ class CreateReportButtonComponent extends React.Component {
                 <EntryListColumn>
                   {this.state.fileEntries.length > 0
                     ? <List items={this.state.fileEntries} />
-                    : <Icon_empty_state icon="file-alt" primaryText="No related file entries" />
+                    : <IconEmptyState icon="file-alt" primaryText="No related file entries" />
                   }
                 </EntryListColumn>
               </Column>

@@ -23,7 +23,7 @@ const LoginFormWrapper = styled.div`
   box-shadow: -8px 0 25px 10px rgba(0,0,0,1);
 `;
 
-class LoginScene extends React.Component {
+export class LoginScene extends React.Component {
   render () {
     return (
       <LoginSceneStyle>
@@ -35,5 +35,3 @@ class LoginScene extends React.Component {
     );
   }
 }
-
-export default LoginScene;

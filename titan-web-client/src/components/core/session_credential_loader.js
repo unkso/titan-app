@@ -6,9 +6,9 @@ import {
   AuthWoltlabLoginRequest,
   makeTitanApiRequest
 } from '@titan/http/api_client';
-import titanConfig from '@titan/config';
+import {config} from '@titan/lib/config';
 import * as authActions from '@titan/actions/auth_actions';
-import { useCookie } from '@titan/hooks/cookies';
+import { useCookie } from '@titan/lib/storage/hooks';
 
 const StyledLoaderContainer = styled.div`
   position: absolute;
@@ -21,10 +21,10 @@ const StyledLoaderContainer = styled.div`
 
 export function SessionCredentialLoader (props) {
   const wcfUserIdCookie = useCookie('wcf21_userID', {
-    domain: titanConfig.get('woltlab.cookie.domain')
+    domain: config.get('woltlab.cookie.domain')
   });
   const wcfPasswordTokenCookie = useCookie('wcf21_password', {
-    domain: titanConfig.get('woltlab.cookie.domain')
+    domain: config.get('woltlab.cookie.domain')
   });
   const dispatch = useDispatch();
   const authUser = useSelector(

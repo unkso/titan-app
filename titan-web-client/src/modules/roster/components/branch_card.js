@@ -4,12 +4,10 @@ import CardContent from '@material-ui/core/CardContent/CardContent';
 import Typography from '@material-ui/core/Typography/Typography';
 import BorderedCard from '@titan/components/card/bordered_card';
 import { Avatar } from '@material-ui/core';
-import {
-  ORGANIZATION_DETAILS_ROUTE,
-  routeBuilder
-} from '@titan/routes';
 import Button from '@material-ui/core/Button';
 import { RouteButton } from '@titan/components/routes/route_link';
+import { routeBuilder } from '@titan/lib/routes';
+import { ORGANIZATIONS_DETAIL_ROUTE } from '@titan/modules/organizations/routes';
 
 class RosterCard extends React.Component {
   render () {
@@ -31,7 +29,7 @@ class RosterCard extends React.Component {
             <Button
               color="primary"
               component={RouteButton}
-              to={routeBuilder(ORGANIZATION_DETAILS_ROUTE, [this.props.branch.slug])}>View</Button>
+              to={routeBuilder(ORGANIZATIONS_DETAIL_ROUTE, [this.props.branch.slug])}>View</Button>
           </Typography>
         </CardContent>
       </BorderedCard>

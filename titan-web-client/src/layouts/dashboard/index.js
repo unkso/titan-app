@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
 import Sidebar from '@titan/layouts/dashboard/components/sidebar/sidebar';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 export const DashboardWrapper = styled.div`
   width: 100%;
@@ -47,27 +46,19 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-class DashboardLayout extends React.Component {
-  render () {
-    const sidebarBg = this.props.theme.palette.backgroundInversePrimary;
-    const contentBg = this.props.theme.palette.backgroundPrimary;
-    return (
-      <DashboardWrapper>
-        <GlobalStyles />
-        <SidebarWrapper backgroundColor={sidebarBg}>
-          <Sidebar />
-        </SidebarWrapper>
-        <ContentWrapper backgroundColor={contentBg}>
-          {this.props.children}
-        </ContentWrapper>
-      </DashboardWrapper>
-    );
-  }
+export function DashboardLayout(props) {
+  const theme = useTheme();
+  const sidebarBg = theme.palette.backgroundInversePrimary;
+  const contentBg = theme.palette.backgroundPrimary;
+  return (
+    <DashboardWrapper>
+      <GlobalStyles />
+      <SidebarWrapper backgroundColor={sidebarBg}>
+        <Sidebar />
+      </SidebarWrapper>
+      <ContentWrapper backgroundColor={contentBg}>
+        {props.children}
+      </ContentWrapper>
+    </DashboardWrapper>
+  );
 }
-
-DashboardLayout.propTypes = {
-  theme: PropTypes.object,
-  children: PropTypes.object
-};
-
-export default withTheme(DashboardLayout);

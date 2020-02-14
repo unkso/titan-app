@@ -1,9 +1,6 @@
 import { useSelector } from 'react-redux';
-import {useEffect, useState} from "react";
-import {
-    Acl,
-    createAclInstanceFromSession
-} from "@titan/lib/acl";
+import {useEffect, useState} from 'react';
+import {Acl, createAclInstanceFromSession} from '@titan/lib/acl';
 
 /**
  * A factory function that returns a boolean value indicating

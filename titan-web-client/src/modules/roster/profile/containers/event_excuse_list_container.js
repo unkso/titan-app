@@ -7,7 +7,7 @@ import CircularProgress
   from '@material-ui/core/CircularProgress/CircularProgress';
 import { EventExcuseList }
   from '@titan/modules/roster/components/excuse/event_excuse_list';
-import { Icon_empty_state } from '@titan/components/empty_state/icon_empty_state';
+import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 
 class EventExcuseListContainer extends React.Component {
   constructor (props) {
@@ -41,7 +41,7 @@ class EventExcuseListContainer extends React.Component {
 
     if (this.props.profile.excuses.length === 0) {
       return (
-        <Icon_empty_state
+        <IconEmptyState
           icon="clipboard-list"
           primaryText="This member hasn't submitted any excuses"
           verticalMargin={64}

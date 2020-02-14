@@ -6,7 +6,7 @@ import { ContentBlock } from '../../components/block/content_block';
 import BranchCardGrid from '../roster/components/branch_card_grid';
 import OrganizationsService from '../../http/OrganizationsService';
 
-class Organization_list_scene extends React.Component {
+class OrganizationsListScene extends React.Component {
   constructor (props) {
     super(props);
 
@@ -47,4 +47,4 @@ class Organization_list_scene extends React.Component {
   }
 }
 
-export default withRouter(Organization_list_scene);
+export default withRouter(OrganizationsListScene);

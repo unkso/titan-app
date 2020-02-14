@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Route_link } from '@titan/components/routes/route_link';
-import { ORGANIZATION_DETAILS_ROUTE, routeBuilder } from '@titan/routes';
 import {
   MemberNameTag,
   StyledMemberNameTag
 } from '@titan/components/members/member_name_tag';
+import { routeBuilder } from '@titan/lib/routes';
+import { ORGANIZATIONS_DETAIL_ROUTE } from '@titan/modules/organizations/routes';
 
 const Tree = styled.div`
   padding-bottom: 16px;
@@ -149,7 +150,7 @@ class ChainOfCommandComponent extends React.Component {
       leafPosition = 'right';
     }
     const orgRoute = routeBuilder(
-      ORGANIZATION_DETAILS_ROUTE, [coc.organization.slug]);
+      ORGANIZATIONS_DETAIL_ROUTE, [coc.organization.slug]);
     return (
       <Leaf
         key={index}

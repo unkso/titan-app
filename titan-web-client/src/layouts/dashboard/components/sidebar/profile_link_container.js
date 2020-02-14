@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Sidebar_menu_item } from './sidebar_menu_item';
+import { SidebarMenuItem } from './sidebar_menu_item';
 
 function mapStateToProps (state) {
   return {
@@ -8,9 +8,9 @@ function mapStateToProps (state) {
   };
 }
 
-export const Profile_link_container = connect(mapStateToProps)((props) => {
+export const ProfileLinkContainer = connect(mapStateToProps)((props) => {
   return (
-    <Sidebar_menu_item
+    <SidebarMenuItem
       url={`/roster/${props.auth.session.user.id}`}
       label="My Player"
       leftIcon={<span className="fas fa-user" />}

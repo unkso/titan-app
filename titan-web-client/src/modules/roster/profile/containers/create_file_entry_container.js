@@ -11,8 +11,7 @@ import CreateForm from '@titan/components/file_entry/create_form';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListFileEntryTypes, makeTitanApiRequest } from '@titan/http/api_client';
 import * as fileEntryActions from '@titan/actions/file_entry_actions';
-import { PERMISSION_CAN_CREATE_FILE_ENTRIES } from '@titan/acl_rules';
-import { useAcl } from '@titan/hooks/acl';
+import { Permission, useAcl} from '@titan/lib/acl';
 
 export function CreateFileEntryContainer () {
   const dispatch = useDispatch();
@@ -21,7 +20,7 @@ export function CreateFileEntryContainer () {
   const profileUserId = useSelector(
     state => state.roster.profile.user.id);
   const canCreateFileEntries = useAcl(acl =>
-    acl.hasAclPermission(PERMISSION_CAN_CREATE_FILE_ENTRIES));
+    acl.hasAclPermission(Permission.CAN_CREATE_FILE_ENTRIES));
   const [open, setOpen] = useState(false);
   const [formFields, setFormFields] = useState({
     fileEntryTypeIndex: -1

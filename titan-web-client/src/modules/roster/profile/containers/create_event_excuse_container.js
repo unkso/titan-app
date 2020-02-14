@@ -14,10 +14,7 @@ import { CreateEventExcuseForm }
 import EventsService from '@titan/http/EventsService';
 import { withSnackbar } from 'notistack';
 import { createAclInstanceFromSession } from '@titan/lib/acl';
-import {
-  PERMISSION_CAN_ACK_EVENT_EXCUSE,
-  PERMISSION_CAN_CREATE_EVENT_EXCUSE
-} from '@titan/acl_rules';
+import {Permission} from '@titan/lib/acl/permissions';
 
 class CreateEventExcuseContainer extends React.Component {
   constructor (props) {
@@ -79,7 +76,7 @@ class CreateEventExcuseContainer extends React.Component {
   render () {
     const acl = createAclInstanceFromSession(this.props.session);
     const canCreateEventExcuse = acl.newBuilder()
-      .hasAclPermissions([PERMISSION_CAN_ACK_EVENT_EXCUSE, PERMISSION_CAN_CREATE_EVENT_EXCUSE])
+      .hasAclPermissions([Permission.CAN_ACK_EVENT_EXCUSE, Permission.CAN_CREATE_EVENT_EXCUSE])
       .or(acl.isAuthenticatedUser(this.props.profile.user.id));
 
     return (

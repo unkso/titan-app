@@ -23,7 +23,7 @@ const TABS_INDEXES = {
   roles: 3
 };
 
-export function Oragnization_detail_scene () {
+export function OrganizationDetailScene () {
   const dispatch = useDispatch();
   const { slug } = useParams();
   const [tabIndex, setTabIndex] = useState(0);
@@ -60,7 +60,7 @@ export function Oragnization_detail_scene () {
     return () => {
       dispatch(orgActions.clear());
     };
-  }, [slug]);
+  }, [slug, authSessionUserId, dispatch]);
 
   if (!organization || !chainOfCommand) {
     return null;

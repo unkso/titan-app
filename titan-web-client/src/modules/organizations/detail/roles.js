@@ -92,7 +92,7 @@ export function Roles (props) {
       .then(res => {
         dispatch(orgActions.setRoles(res.data));
       });
-  }, [props.orgId]);
+  }, [props.orgId, dispatch]);
 
   function updateRoleOrder (dropResult) {
     const previousRoles = [...roles];

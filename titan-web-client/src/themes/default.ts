@@ -1,6 +1,6 @@
 import { createTypography } from '@titan/lib/styles/typography';
 
-export default {
+export const defaultTheme = {
   typography: {
     fontSize: 14,
     useNextVariants: true,

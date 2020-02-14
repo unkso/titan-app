@@ -4,9 +4,9 @@ import PageHeader
   from '@titan/layouts/dashboard/components/page_header/page_header';
 import PageHeaderTitle from '@titan/layouts/dashboard/components/page_header/page_header_title';
 import OrganizationsService from '@titan/http/OrganizationsService';
-import { Reports_list } from '@titan/components/reports/reports_list';
+import { ReportsList } from '@titan/components/reports/reports_list';
 import { withSnackbar } from 'notistack';
-import { Icon_empty_state } from '@titan/components/empty_state/icon_empty_state';
+import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 
 export class Manage_unacknowledged_reports extends React.Component {
   constructor (props) {
@@ -45,9 +45,9 @@ export class Manage_unacknowledged_reports extends React.Component {
         </PageHeader>
         <ContentBlock>
           {this.state.reports.length > 0 ? (
-            <Reports_list items={this.state.reports} />
+            <ReportsList items={this.state.reports} />
           ) : (
-            <Icon_empty_state
+            <IconEmptyState
               icon="file-alt"
               primaryText="All caught up!"
               secondaryText="There are no new reports to review"

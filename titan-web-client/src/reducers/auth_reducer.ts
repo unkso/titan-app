@@ -1,14 +1,6 @@
 import {ActionType} from '@titan/actions/action_types';
-import {AclMap} from "@titan/lib/acl";
-
-interface SessionState {
-  acl: AclMap;
-  user: {};
-  wcf_username: string;
-  wcf_user_title: string;
-  roles: string[];
-  token: string;
-}
+import {AclMap} from "@titan/lib/acl/types";
+import {AuthSessionState} from "@titan/reducers/types";
 
 /**
  * Convert a list of ACL options into a map, where in the keys is in the format
@@ -27,7 +19,7 @@ function buildAclMap (acl): AclMap {
   }, {});
 }
 
-export const authReducer = (state: SessionState|null = null, action) => {
+export const authReducer = (state: AuthSessionState|null = null, action) => {
   switch (action.type) {
     case ActionType.AUTH_SESSION_LOGIN:
       const { acl, ...rest } = action.data;

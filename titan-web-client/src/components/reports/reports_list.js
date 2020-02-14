@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ChronologicalItemList } from '@titan/components/list/chronological_item_list';
-import { Reports_list_item } from '@titan/components/reports/reports_list_item';
+import { ReportsListItem } from '@titan/components/reports/reports_list_item';
 import { ReportProtoType } from '@titan/models';
 import OrganizationsService from '@titan/http/OrganizationsService';
 import { useForceUpdate } from '@titan/hooks';
@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 /**
  * Renders a list of reports grouped by month.
  */
-export function Reports_list (props) {
+export function ReportsList (props) {
   const organizationsService = new OrganizationsService();
   const parentRoleMap = useRef(new Map());
   const authUserRoles = useSelector(
@@ -40,15 +40,15 @@ export function Reports_list (props) {
       dateField="term_start_date"
       items={props.items}
       renderer={item => (
-        <Reports_list_item canAck={canAckReport(item)} report={item}>
+        <ReportsListItem canAck={canAckReport(item)} report={item}>
           {item.comments}
-        </Reports_list_item>
+        </ReportsListItem>
       )}
     />
   );
 }
 
-Reports_list.propTypes = {
+ReportsList.propTypes = {
   /** A list of reports. */
   items: PropTypes.arrayOf(ReportProtoType)
 };

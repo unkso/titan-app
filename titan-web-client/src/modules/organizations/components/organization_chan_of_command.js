@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Chain_of_command } from '@titan/modules/organizations/components/chain_of_command';
-import { Icon_empty_state } from '@titan/components/empty_state/icon_empty_state';
+import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 
 export function Organization_chan_of_command (props) {
   const [extendedCoc, setExtendedCoc] = useState([]);
@@ -19,7 +19,7 @@ export function Organization_chan_of_command (props) {
           localCoc={localCoc}
         />
       ) : (
-        <Icon_empty_state
+        <IconEmptyState
           icon="users"
           primaryText="There are no members in this organization's Chain of Command."
         />

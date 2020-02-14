@@ -1,6 +1,6 @@
 import TableCell from '@material-ui/core/TableCell';
 import { Route_link } from '@titan/components/routes/route_link';
-import { routeBuilder, USER_PROFILE_ROUTE } from '@titan/routes';
+import { USER_PROFILE_ROUTE } from '@titan/modules/roster/routes';
 import { format as formatDate } from 'date-fns';
 import TableRow from '@material-ui/core/TableRow';
 import React from 'react';
@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { MemberNameTag } from '@titan/components/members/member_name_tag';
+import { routeBuilder } from '@titan/lib/routes';
 
 /**
  * @param {{user: {}, onRemove: Function}} props

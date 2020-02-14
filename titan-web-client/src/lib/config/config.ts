@@ -1,17 +1,10 @@
-class Config {
-  constructor () {
-    this.config = {};
+type ConfigValue = number|string|{};
+
+export class Config {
+  constructor (private config = {}) {
   }
 
-  load (config) {
-    this.config = config;
-  }
-
-  merge (config) {
-    this.config = { ...this.config, ...config };
-  }
-
-  get (path = '') {
+  get (path = ''): ConfigValue|undefined {
     if (path === '') {
       return this.config;
     }
@@ -21,7 +14,7 @@ class Config {
 
     for (const part of parts) {
       if (!value[part]) {
-        return null;
+        return undefined;
       }
 
       value = value[part];
@@ -30,5 +23,3 @@ class Config {
     return value;
   }
 }
-
-export default Config;

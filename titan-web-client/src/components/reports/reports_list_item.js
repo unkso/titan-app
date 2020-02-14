@@ -171,4 +171,4 @@ ReportsListItemComponent.propTypes = {
   })
 };
 
-export const Reports_list_item = withTheme(ReportsListItemComponent);
+export const ReportsListItem = withTheme(ReportsListItemComponent);

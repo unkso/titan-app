@@ -43,4 +43,4 @@ IconEmptyStateComponent.defaultProps = {
   verticalMargin: 8
 };
 
-export const Icon_empty_state = withTheme(IconEmptyStateComponent);
+export const IconEmptyState = withTheme(IconEmptyStateComponent);
