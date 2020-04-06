@@ -13,17 +13,12 @@
 
 /**
  * @export
- * @interface InlineObject
+ * @interface AddOrganizationUserFields
  */
-export interface InlineObject {
+export interface AddOrganizationUserFields {
     /**
      * @type {number}
-     * @memberof InlineObject
+     * @memberof AddOrganizationUserFields
      */
     userId: number;
-    /**
-     * @type {string}
-     * @memberof InlineObject
-     */
-    cookiePassword: string;
 }

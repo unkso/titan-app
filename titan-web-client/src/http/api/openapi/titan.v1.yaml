@@ -45,9 +45,11 @@ paths:
                   - roles
       operationId: post-auth-woltlab
       requestBody:
+        required: true
         content:
           application/json:
             schema:
+              title: auth_woltlab_fields
               type: object
               properties:
                 user_id:
@@ -57,7 +59,6 @@ paths:
               required:
                 - user_id
                 - cookie_password
-      parameters: []
       description: ''
   /api/users:
     get:
@@ -121,6 +122,8 @@ paths:
       - name: user_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: list_user_file_entries
       tags: []
@@ -141,6 +144,8 @@ paths:
       - name: user_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: list_user_event_excuses
       tags: []
@@ -173,9 +178,11 @@ paths:
       security:
         - x-api-key: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
+              title: add_user_excuse_fields
               type: object
               properties:
                 event_date:
@@ -188,12 +195,13 @@ paths:
                 - event_date
                 - event_type_id
                 - comments
-        description: ''
   '/api/users/{id}/organizations':
     parameters:
       - name: id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_user_organizations
       tags: []
@@ -223,6 +231,8 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
     post:
       summary: add_user
       tags: []
@@ -235,9 +245,11 @@ paths:
                 type: boolean
       operationId: post-organizations-org_id-users
       requestBody:
+        required: true
         content:
           application/json:
             schema:
+              title: add_organization_user_fields
               type: object
               properties:
                 user_id:
@@ -252,32 +264,33 @@ paths:
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
-      operationId: delete-organizations-org_id-users
+      operationId: delete-organization-user
       security:
         - x-api-key: []
       requestBody:
         content:
           application/json:
             schema:
+              title: delete_organization_user_fields
               type: object
               properties:
                 user_id:
                   type: integer
               required:
                 - user_id
-      description: ''
+        required: true
   '/api/organizations/{org_id}/reports/{report_id}/ack':
     parameters:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
       - name: report_id
         in: path
         required: true
+        schema:
+          type: integer
     post:
       summary: ack_organization_report
       tags: []
@@ -296,6 +309,8 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
     post:
       summary: create_organization_report
       tags: []
@@ -309,11 +324,12 @@ paths:
       operationId: post-organizations-org_id-reports
       security:
         - x-api-key: []
-      parameters: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
+              title: create_organization_fields
               type: object
               properties:
                 comments:
@@ -343,6 +359,8 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
     post:
       summary: create_organization_role
       tags: []
@@ -356,7 +374,6 @@ paths:
       operationId: post-organizations-org_id-roles
       security:
         - x-api-key: []
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -400,7 +417,6 @@ paths:
       security:
         - x-api-key: []
       description: ''
-    parameters: []
   /api/organizations/reports/unacknowledged:
     get:
       summary: get_all_unacknowledged_reports
@@ -422,6 +438,8 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_organization_by_id
       tags: []
@@ -440,6 +458,8 @@ paths:
       - name: slug
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_organization_by_slug
       tags: []
@@ -458,6 +478,8 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_organization_users
       tags: []
@@ -483,6 +505,8 @@ paths:
       - name: role_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_parent_role
       tags: []
@@ -501,9 +525,13 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
       - name: user_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_organization_user_coc
       tags: []
@@ -522,6 +550,8 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_organization_coc
       tags: []
@@ -540,6 +570,8 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_organization_unranked_roles
       tags: []
@@ -560,6 +592,8 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_child_organizations
       tags: []
@@ -612,6 +646,8 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
     post:
       summary: reorder_roles
       tags: []
@@ -622,9 +658,11 @@ paths:
       security:
         - x-api-key: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
+              title: reorder_organization_roles_fields
               type: object
               properties:
                 role_ids:
@@ -636,11 +674,15 @@ paths:
       - name: org_id
         in: path
         required: true
+        schema:
+          type: integer
       - name: role_id
         in: path
         required: true
+        schema:
+          type: integer
     post:
-      summary: update_organization_role
+      summary: update_organization_role_fields
       tags: []
       responses:
         '200':
@@ -652,7 +694,6 @@ paths:
       operationId: post-organizations-org_id-roles-role_id
       security:
         - x-api-key: []
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -663,6 +704,8 @@ paths:
       - name: event_type_id
         in: path
         required: true
+        schema:
+          type: integer
     get:
       summary: get_event_type_by_id
       tags: []

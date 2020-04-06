@@ -13,12 +13,17 @@
 
 /**
  * @export
- * @interface InlineObject3
+ * @interface AuthWoltlabFields
  */
-export interface InlineObject3 {
+export interface AuthWoltlabFields {
     /**
      * @type {number}
-     * @memberof InlineObject3
+     * @memberof AuthWoltlabFields
      */
     userId: number;
+    /**
+     * @type {string}
+     * @memberof AuthWoltlabFields
+     */
+    cookiePassword: string;
 }
