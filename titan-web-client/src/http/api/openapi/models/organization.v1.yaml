@@ -2,9 +2,7 @@ title: Organization
 type: object
 properties:
   id:
-    type:
-      - string
-      - integer
+    type: string
   name:
     type: string
   slug:
