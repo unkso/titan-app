@@ -6,7 +6,7 @@ properties:
   organization:
     $ref: ./organization.v1.yaml
   user_profile:
-    $ref: ./userprofile.v1.yaml
+    $ref: ./user_profile.v1.yaml
   role:
     type: string
   rank:

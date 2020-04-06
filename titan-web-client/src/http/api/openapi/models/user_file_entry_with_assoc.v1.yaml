@@ -4,7 +4,7 @@ properties:
   id:
     type: integer
   modified_by:
-    $ref: ./userprofile.v1.yaml
+    $ref: ./user_profile.v1.yaml
   date_modified:
     type: integer
   comments:
@@ -14,6 +14,6 @@ properties:
   start_date:
     type: integer
   user_profile:
-    $ref: ./userprofile.v1.yaml
+    $ref: ./user_profile.v1.yaml
   file_entry_type:
-    $ref: ./userfileentrytype.v1.yaml
+    $ref: ./user_file_entry_type.v1.yaml

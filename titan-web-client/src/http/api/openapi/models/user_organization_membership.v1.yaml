@@ -4,6 +4,6 @@ properties:
   organization:
     $ref: ./organization.v1.yaml
   role:
-    $ref: ./organizationrole.v1.yaml
+    $ref: ./organization_role.v1.yaml
 required:
   - organization

@@ -1,4 +1,4 @@
-title: WcfUserGroupOption
+title: wcf_user_group_option
 type: object
 properties:
   option_id:

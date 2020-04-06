@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.2
 info:
   title: Titan
   version: '1.0'
@@ -23,7 +23,7 @@ paths:
                   token:
                     type: string
                   user:
-                    $ref: ./models/userprofile.v1.yaml
+                    $ref: ./models/user_profile.v1.yaml
                   wcf_username:
                     type: string
                   wcf_user_title:
@@ -31,11 +31,11 @@ paths:
                   acl:
                     type: array
                     items:
-                      $ref: ''
+                      $ref: ./models/wcf_user_group_option.v1.yaml
                   roles:
                     type: array
                     items:
-                      $ref: ./models/organizationrole.v1.yaml
+                      $ref: ./models/organization_role.v1.yaml
                 required:
                   - token
                   - user
@@ -43,7 +43,7 @@ paths:
                   - wcf_user_title
                   - acl
                   - roles
-      operationId: post-api-auth-woltlab
+      operationId: post-auth-woltlab
       requestBody:
         content:
           application/json:
@@ -60,8 +60,6 @@ paths:
       parameters: []
       description: ''
   /api/users:
-    parameters:
-      - required: true
     get:
       summary: list_users
       tags: []
@@ -73,8 +71,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/userprofile.v1.yaml
-      operationId: get-api-users
+                  $ref: ./models/user_profile.v1.yaml
+      operationId: get-users
       parameters:
         - schema:
             type: string
@@ -98,8 +96,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/usereventexcusewithassoc.v1.yaml
-      operationId: get-api-users-excuses-unacknowledged
+                  $ref: ./models/user_event_excuse_with_assoc.v1.yaml
+      operationId: get-users-excuses-unacknowledged
       security:
         - x-api-key: []
   /api/users/file-entry-types:
@@ -114,14 +112,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/userfileentrytype.v1.yaml
-      operationId: get-api-users-file-entry-types
+                  $ref: ./models/user_file_entry_type.v1.yaml
+      operationId: get-users-file-entry-types
       security:
         - x-api-key: []
   '/api/users/{user_id}/file-entries':
     parameters:
-      - type: string
-        name: user_id
+      - name: user_id
         in: path
         required: true
     get:
@@ -135,26 +132,19 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/userfileentrywithassoc.v1.yaml
-      operationId: get-api-users-user_id-file-entries
+                  $ref: ./models/user_file_entry_with_assoc.v1.yaml
+      operationId: get-users-user_id-file-entries
       security:
         - x-api-key: []
   '/api/users/{user_id}/excuses':
     parameters:
-      - type: string
-        name: user_id
-        in: path
-        required: true
-      - type: string
-        name: user_id
+      - name: user_id
         in: path
         required: true
     get:
       summary: list_user_event_excuses
       tags: []
-      operationId: get-api-users-user_id-excuses
-      requestBody:
-        description: ''
+      operationId: get-users-user_id-excuses
       security:
         - x-api-key: []
       responses:
@@ -165,7 +155,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/usereventexcusewithassoc.v1.yaml
+                  $ref: ./models/user_event_excuse_with_assoc.v1.yaml
     post:
       summary: save_user_event_excuse
       tags: []
@@ -178,8 +168,8 @@ paths:
                 type: object
                 properties:
                   user_id:
-                    $ref: ./models/usereventexcusewithassoc.v1.yaml
-      operationId: post-api-users-user_id-excuses
+                    $ref: ./models/user_event_excuse_with_assoc.v1.yaml
+      operationId: post-users-user_id-excuses
       security:
         - x-api-key: []
       requestBody:
@@ -201,8 +191,7 @@ paths:
         description: ''
   '/api/users/{id}/organizations':
     parameters:
-      - type: string
-        name: id
+      - name: id
         in: path
         required: true
     get:
@@ -216,8 +205,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/userorganizationmembership.v1.yaml
-      operationId: get-api-users-id-organizations
+                  $ref: ./models/user_organization_membership.v1.yaml
+      operationId: get-users-id-organizations
       parameters:
         - schema:
             type: boolean
@@ -231,12 +220,7 @@ paths:
         - x-api-key: []
   '/api/organizations/{org_id}/users':
     parameters:
-      - type: string
-        name: org_id
-        in: path
-        required: true
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
     post:
@@ -249,7 +233,7 @@ paths:
             application/json:
               schema:
                 type: boolean
-      operationId: post-api-organizations-org_id-users
+      operationId: post-organizations-org_id-users
       requestBody:
         content:
           application/json:
@@ -272,7 +256,7 @@ paths:
             application/json:
               schema:
                 type: boolean
-      operationId: delete-api-organizations-org_id-users
+      operationId: delete-organizations-org_id-users
       security:
         - x-api-key: []
       requestBody:
@@ -288,12 +272,10 @@ paths:
       description: ''
   '/api/organizations/{org_id}/reports/{report_id}/ack':
     parameters:
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
-      - type: string
-        name: report_id
+      - name: report_id
         in: path
         required: true
     post:
@@ -305,18 +287,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/reportwithassoc.v1.yaml
-      operationId: post-api-organizations-org_id-reports-report_id-ack
+                $ref: ./models/report_with_assoc.v1.yaml
+      operationId: post-organizations-org_id-reports-report_id-ack
       security:
         - x-api-key: []
   '/api/organizations/{org_id}/reports':
     parameters:
-      - type: string
-        name: org_id
-        in: path
-        required: true
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
     post:
@@ -328,8 +305,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/reportwithassoc.v1.yaml
-      operationId: post-api-organizations-org_id-reports
+                $ref: ./models/report_with_assoc.v1.yaml
+      operationId: post-organizations-org_id-reports
       security:
         - x-api-key: []
       parameters: []
@@ -357,18 +334,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/reportwithassoc.v1.yaml
-      operationId: get-api-organizations-org_id-reports
+                  $ref: ./models/report_with_assoc.v1.yaml
+      operationId: get-organizations-org_id-reports
       security:
         - x-api-key: []
   '/api/organizations/{org_id}/roles':
     parameters:
-      - type: string
-        name: org_id
-        in: path
-        required: true
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
     post:
@@ -380,8 +352,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/organizationrolewithassoc.v1.yaml
-      operationId: post-api-organizations-org_id-roles
+                $ref: ./models/organization_role_with_assoc.v1.yaml
+      operationId: post-organizations-org_id-roles
       security:
         - x-api-key: []
       parameters: []
@@ -389,7 +361,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/updateorganizationrole.v1.yaml
+              $ref: ./models/update_organization_role.v1.yaml
     get:
       summary: list_organization_roles
       tags: []
@@ -401,8 +373,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/organizationrolewithassoc.v1.yaml
-      operationId: get-api-organizations-org_id-roles
+                  $ref: ./models/organization_role_with_assoc.v1.yaml
+      operationId: get-organizations-org_id-roles
       parameters:
         - schema:
             type: integer
@@ -424,7 +396,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/organization.v1.yaml
-      operationId: get-api-organizations
+      operationId: get-organizations
       security:
         - x-api-key: []
       description: ''
@@ -441,14 +413,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/reportwithassoc.v1.yaml
-      operationId: get-api-organizations-reports-unacknowledged
+                  $ref: ./models/report_with_assoc.v1.yaml
+      operationId: get-organizations-reports-unacknowledged
       security:
         - x-api-key: []
   '/api/organizations/{id}':
     parameters:
-      - type: string
-        name: id
+      - name: id
         in: path
         required: true
     get:
@@ -461,13 +432,12 @@ paths:
             application/json:
               schema:
                 $ref: ./models/organization.v1.yaml
-      operationId: get-api-organizations-id
+      operationId: get-organizations-id
       security:
         - x-api-key: []
   '/api/organizations/{slug}':
     parameters:
-      - type: string
-        name: slug
+      - name: slug
         in: path
         required: true
     get:
@@ -480,13 +450,12 @@ paths:
             application/json:
               schema:
                 $ref: ./models/organization.v1.yaml
-      operationId: get-api-organizations-slug
+      operationId: get-organizations-slug
       security:
         - x-api-key: []
   '/api/organizations/{id}/users':
     parameters:
-      - type: string
-        name: id
+      - name: id
         in: path
         required: true
     get:
@@ -500,8 +469,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/userprofile.v1.yaml
-      operationId: get-api-organizations-id-users
+                  $ref: ./models/user_profile.v1.yaml
+      operationId: get-organizations-id-users
       security:
         - x-api-key: []
       parameters:
@@ -511,8 +480,7 @@ paths:
           name: children
   '/api/organizations/roles/{role_id}/parent':
     parameters:
-      - type: string
-        name: role_id
+      - name: role_id
         in: path
         required: true
     get:
@@ -524,18 +492,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/organizationrolewithassoc.v1.yaml
-      operationId: get-api-organizations-roles-role_id-parent
+                $ref: ./models/organization_role_with_assoc.v1.yaml
+      operationId: get-organizations-roles-role_id-parent
       security:
         - x-api-key: []
   '/api/organizations/{org_id}/users/{user_id}/coc':
     parameters:
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
-      - type: string
-        name: user_id
+      - name: user_id
         in: path
         required: true
     get:
@@ -547,14 +513,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/chainofcommand.v1.yaml
-      operationId: get-api-organizations-org_id-users-user_id-coc
+                $ref: ./models/chain_of_command.v1.yaml
+      operationId: get-organizations-org_id-users-user_id-coc
       security:
         - x-api-key: []
   '/api/organizations/{org_id}/coc':
     parameters:
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
     get:
@@ -566,14 +531,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/chainofcommand.v1.yaml
-      operationId: get-api-organizations-org_id-coc
+                $ref: ./models/chain_of_command.v1.yaml
+      operationId: get-organizations-org_id-coc
       security:
         - x-api-key: []
   '/api/organizations/{org_id}/roles/unranked':
     parameters:
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
     get:
@@ -587,14 +551,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/organizationrolewithassoc.v1.yaml
-      operationId: get-api-organizations-org_id-roles-unranked
+                  $ref: ./models/organization_role_with_assoc.v1.yaml
+      operationId: get-organizations-org_id-roles-unranked
       security:
         - x-api-key: []
   '/api/organizations/{org_id}/children':
     parameters:
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
     get:
@@ -609,7 +572,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/organization.v1.yaml
-      operationId: get-api-organizations-org_id-children
+      operationId: get-organizations-org_id-children
       security:
         - x-api-key: []
   /api/organizations/file-entries:
@@ -624,8 +587,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/userfileentrywithassoc.v1.yaml
-      operationId: get-api-organizations-file-entries
+                  $ref: ./models/user_file_entry_with_assoc.v1.yaml
+      operationId: get-organizations-file-entries
       security:
         - x-api-key: []
       parameters:
@@ -646,8 +609,7 @@ paths:
           required: true
   '/api/organizations/{org_id}/roles:reorder':
     parameters:
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
     post:
@@ -656,7 +618,7 @@ paths:
       responses:
         '200':
           description: OK
-      operationId: 'post-api-organizations-org_id-roles:reorder'
+      operationId: 'post-organizations-org_id-roles:reorder'
       security:
         - x-api-key: []
       requestBody:
@@ -671,12 +633,10 @@ paths:
                     type: integer
   '/api/organizations/{org_id}/roles/{role_id}':
     parameters:
-      - type: string
-        name: org_id
+      - name: org_id
         in: path
         required: true
-      - type: string
-        name: role_id
+      - name: role_id
         in: path
         required: true
     post:
@@ -688,8 +648,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/organizationrolewithassoc.v1.yaml
-      operationId: post-api-organizations-org_id-roles-role_id
+                $ref: ./models/organization_role_with_assoc.v1.yaml
+      operationId: post-organizations-org_id-roles-role_id
       security:
         - x-api-key: []
       parameters: []
@@ -697,11 +657,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/updateorganizationrole.v1.yaml
+              $ref: ./models/update_organization_role.v1.yaml
   '/api/events/event-types/{event_type_id}':
     parameters:
-      - type: string
-        name: event_type_id
+      - name: event_type_id
         in: path
         required: true
     get:
@@ -713,8 +672,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/eventtype.v1.yaml
-      operationId: get-api-events-event-types-event_type_id
+                $ref: ./models/event_type.v1.yaml
+      operationId: get-events-event-types-event_type_id
       security:
         - x-api-key: []
   /api/events/event-types:
@@ -729,8 +688,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./models/eventtype.v1.yaml
-      operationId: get-api-events-event-types
+                  $ref: ./models/event_type.v1.yaml
+      operationId: get-events-event-types
       security:
         - x-api-key: []
 components:

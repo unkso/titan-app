@@ -1,4 +1,4 @@
-title: UserEventExcuseWithAssoc
+title: user_event_excuse_with_assoc
 type: object
 properties:
   id:
@@ -18,9 +18,9 @@ properties:
   event_date:
     type: integer
   event_type:
-    $ref: ./eventtype.v1.yaml
+    $ref: ./event_type.v1.yaml
   user_profile:
-    $ref: ./userprofile.v1.yaml
+    $ref: ./user_profile.v1.yaml
 required:
   - id
   - date_modified
