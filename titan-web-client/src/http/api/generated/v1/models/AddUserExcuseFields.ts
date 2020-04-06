@@ -13,22 +13,22 @@
 
 /**
  * @export
- * @interface InlineObject1
+ * @interface AddUserExcuseFields
  */
-export interface InlineObject1 {
+export interface AddUserExcuseFields {
     /**
      * @type {number}
-     * @memberof InlineObject1
+     * @memberof AddUserExcuseFields
      */
     eventDate: number;
     /**
      * @type {number}
-     * @memberof InlineObject1
+     * @memberof AddUserExcuseFields
      */
     eventTypeId: number;
     /**
      * @type {string}
-     * @memberof InlineObject1
+     * @memberof AddUserExcuseFields
      */
     comments: string;
 }

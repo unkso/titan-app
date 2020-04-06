@@ -14,18 +14,18 @@
 import { Observable } from 'rxjs';
 import { BaseAPI, HttpHeaders, HttpQuery, throwIfRequired, encodeURI } from '../runtime';
 import {
+    AddOrganizationUserFields,
+    AddUserExcuseFields,
+    AuthWoltlabFields,
     ChainOfCommand,
+    CreateOrganizationFields,
+    DeleteOrganizationUserFields,
     EventType,
-    InlineObject,
-    InlineObject1,
-    InlineObject2,
-    InlineObject3,
-    InlineObject4,
-    InlineObject5,
     InlineResponse200,
     InlineResponse2001,
     Organization,
     OrganizationRoleWithAssoc,
+    ReorderOrganizationRolesFields,
     ReportWithAssoc,
     UpdateOrganizationRole,
     UserEventExcuseWithAssoc,
@@ -35,13 +35,13 @@ import {
     UserProfile,
 } from '../models';
 
-export interface DeleteOrganizationsOrgIdUsersRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    inlineObject3?: InlineObject3;
+export interface DeleteOrganizationUserRequest {
+    orgId: number;
+    deleteOrganizationUserFields: DeleteOrganizationUserFields;
 }
 
 export interface GetEventsEventTypesEventTypeIdRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    eventTypeId: number;
 }
 
 export interface GetOrganizationsFileEntriesRequest {
@@ -51,46 +51,46 @@ export interface GetOrganizationsFileEntriesRequest {
 }
 
 export interface GetOrganizationsIdRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    id: number;
 }
 
 export interface GetOrganizationsIdUsersRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    id: number;
     children?: boolean;
 }
 
 export interface GetOrganizationsOrgIdChildrenRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    orgId: number;
 }
 
 export interface GetOrganizationsOrgIdCocRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    orgId: number;
 }
 
 export interface GetOrganizationsOrgIdReportsRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    orgId: number;
 }
 
 export interface GetOrganizationsOrgIdRolesRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    orgId: number;
     scope: number;
 }
 
 export interface GetOrganizationsOrgIdRolesUnrankedRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    orgId: number;
 }
 
 export interface GetOrganizationsOrgIdUsersUserIdCocRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    UNKNOWN_PARAMETER_NAME2: ;
+    orgId: number;
+    userId: number;
 }
 
 export interface GetOrganizationsRolesRoleIdParentRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    roleId: number;
 }
 
 export interface GetOrganizationsSlugRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    slug: number;
 }
 
 export interface GetUsersRequest {
@@ -99,57 +99,57 @@ export interface GetUsersRequest {
 }
 
 export interface GetUsersIdOrganizationsRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    id: number;
     member?: boolean;
     role?: boolean;
 }
 
 export interface GetUsersUserIdExcusesRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    userId: number;
 }
 
 export interface GetUsersUserIdFileEntriesRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    userId: number;
 }
 
 export interface PostAuthWoltlabRequest {
-    inlineObject?: InlineObject;
+    authWoltlabFields: AuthWoltlabFields;
 }
 
 export interface PostOrganizationsOrgIdReportsRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    inlineObject4?: InlineObject4;
+    orgId: number;
+    createOrganizationFields: CreateOrganizationFields;
 }
 
 export interface PostOrganizationsOrgIdReportsReportIdAckRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    UNKNOWN_PARAMETER_NAME2: ;
+    orgId: number;
+    reportId: number;
 }
 
 export interface PostOrganizationsOrgIdRolesRequest {
-    UNKNOWN_PARAMETER_NAME: ;
+    orgId: number;
     updateOrganizationRole?: UpdateOrganizationRole;
 }
 
 export interface PostOrganizationsOrgIdRolesReorderRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    inlineObject5?: InlineObject5;
+    orgId: number;
+    reorderOrganizationRolesFields: ReorderOrganizationRolesFields;
 }
 
 export interface PostOrganizationsOrgIdRolesRoleIdRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    UNKNOWN_PARAMETER_NAME2: ;
+    orgId: number;
+    roleId: number;
     updateOrganizationRole?: UpdateOrganizationRole;
 }
 
 export interface PostOrganizationsOrgIdUsersRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    inlineObject2?: InlineObject2;
+    orgId: number;
+    addOrganizationUserFields: AddOrganizationUserFields;
 }
 
 export interface PostUsersUserIdExcusesRequest {
-    UNKNOWN_PARAMETER_NAME: ;
-    inlineObject1?: InlineObject1;
+    userId: number;
+    addUserExcuseFields: AddUserExcuseFields;
 }
 
 /**
@@ -160,19 +160,20 @@ export class DefaultApi extends BaseAPI {
     /**
      * remove_user
      */
-    deleteOrganizationsOrgIdUsers = (requestParameters: DeleteOrganizationsOrgIdUsersRequest): Observable<boolean> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'deleteOrganizationsOrgIdUsers');
+    deleteOrganizationUser = (requestParameters: DeleteOrganizationUserRequest): Observable<void> => {
+        throwIfRequired(requestParameters, 'orgId', 'deleteOrganizationUser');
+        throwIfRequired(requestParameters, 'deleteOrganizationUserFields', 'deleteOrganizationUser');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
-        return this.request<boolean>({
-            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+        return this.request<void>({
+            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'DELETE',
             headers,
-            body: requestParameters.inlineObject3,
+            body: requestParameters.deleteOrganizationUserFields,
         });
     };
 
@@ -195,14 +196,14 @@ export class DefaultApi extends BaseAPI {
      * get_event_type_by_id
      */
     getEventsEventTypesEventTypeId = (requestParameters: GetEventsEventTypesEventTypeIdRequest): Observable<EventType> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getEventsEventTypesEventTypeId');
+        throwIfRequired(requestParameters, 'eventTypeId', 'getEventsEventTypesEventTypeId');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<EventType>({
-            path: '/api/events/event-types/{event_type_id}'.replace('{event_type_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/events/event-types/{event_type_id}'.replace('{event_type_id}', encodeURI(requestParameters.eventTypeId)),
             method: 'GET',
             headers,
         });
@@ -253,14 +254,14 @@ export class DefaultApi extends BaseAPI {
      * get_organization_by_id
      */
     getOrganizationsId = (requestParameters: GetOrganizationsIdRequest): Observable<Organization> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsId');
+        throwIfRequired(requestParameters, 'id', 'getOrganizationsId');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<Organization>({
-            path: '/api/organizations/{id}'.replace('{id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{id}'.replace('{id}', encodeURI(requestParameters.id)),
             method: 'GET',
             headers,
         });
@@ -270,7 +271,7 @@ export class DefaultApi extends BaseAPI {
      * get_organization_users
      */
     getOrganizationsIdUsers = (requestParameters: GetOrganizationsIdUsersRequest): Observable<Array<UserProfile>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsIdUsers');
+        throwIfRequired(requestParameters, 'id', 'getOrganizationsIdUsers');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
@@ -281,7 +282,7 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<Array<UserProfile>>({
-            path: '/api/organizations/{id}/users'.replace('{id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{id}/users'.replace('{id}', encodeURI(requestParameters.id)),
             method: 'GET',
             headers,
             query,
@@ -292,14 +293,14 @@ export class DefaultApi extends BaseAPI {
      * get_child_organizations
      */
     getOrganizationsOrgIdChildren = (requestParameters: GetOrganizationsOrgIdChildrenRequest): Observable<Array<Organization>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsOrgIdChildren');
+        throwIfRequired(requestParameters, 'orgId', 'getOrganizationsOrgIdChildren');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<Array<Organization>>({
-            path: '/api/organizations/{org_id}/children'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/children'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'GET',
             headers,
         });
@@ -309,14 +310,14 @@ export class DefaultApi extends BaseAPI {
      * get_organization_coc
      */
     getOrganizationsOrgIdCoc = (requestParameters: GetOrganizationsOrgIdCocRequest): Observable<ChainOfCommand> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsOrgIdCoc');
+        throwIfRequired(requestParameters, 'orgId', 'getOrganizationsOrgIdCoc');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<ChainOfCommand>({
-            path: '/api/organizations/{org_id}/coc'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/coc'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'GET',
             headers,
         });
@@ -326,14 +327,14 @@ export class DefaultApi extends BaseAPI {
      * list_organization_reports
      */
     getOrganizationsOrgIdReports = (requestParameters: GetOrganizationsOrgIdReportsRequest): Observable<Array<ReportWithAssoc>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsOrgIdReports');
+        throwIfRequired(requestParameters, 'orgId', 'getOrganizationsOrgIdReports');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<Array<ReportWithAssoc>>({
-            path: '/api/organizations/{org_id}/reports'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/reports'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'GET',
             headers,
         });
@@ -343,7 +344,7 @@ export class DefaultApi extends BaseAPI {
      * list_organization_roles
      */
     getOrganizationsOrgIdRoles = (requestParameters: GetOrganizationsOrgIdRolesRequest): Observable<Array<OrganizationRoleWithAssoc>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsOrgIdRoles');
+        throwIfRequired(requestParameters, 'orgId', 'getOrganizationsOrgIdRoles');
         throwIfRequired(requestParameters, 'scope', 'getOrganizationsOrgIdRoles');
 
         const headers: HttpHeaders = {
@@ -355,7 +356,7 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<Array<OrganizationRoleWithAssoc>>({
-            path: '/api/organizations/{org_id}/roles'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/roles'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'GET',
             headers,
             query,
@@ -366,14 +367,14 @@ export class DefaultApi extends BaseAPI {
      * get_organization_unranked_roles
      */
     getOrganizationsOrgIdRolesUnranked = (requestParameters: GetOrganizationsOrgIdRolesUnrankedRequest): Observable<Array<OrganizationRoleWithAssoc>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsOrgIdRolesUnranked');
+        throwIfRequired(requestParameters, 'orgId', 'getOrganizationsOrgIdRolesUnranked');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<Array<OrganizationRoleWithAssoc>>({
-            path: '/api/organizations/{org_id}/roles/unranked'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/roles/unranked'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'GET',
             headers,
         });
@@ -383,15 +384,15 @@ export class DefaultApi extends BaseAPI {
      * get_organization_user_coc
      */
     getOrganizationsOrgIdUsersUserIdCoc = (requestParameters: GetOrganizationsOrgIdUsersUserIdCocRequest): Observable<ChainOfCommand> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsOrgIdUsersUserIdCoc');
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME2', 'getOrganizationsOrgIdUsersUserIdCoc');
+        throwIfRequired(requestParameters, 'orgId', 'getOrganizationsOrgIdUsersUserIdCoc');
+        throwIfRequired(requestParameters, 'userId', 'getOrganizationsOrgIdUsersUserIdCoc');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<ChainOfCommand>({
-            path: '/api/organizations/{org_id}/users/{user_id}/coc'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)).replace('{user_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME2)),
+            path: '/api/organizations/{org_id}/users/{user_id}/coc'.replace('{org_id}', encodeURI(requestParameters.orgId)).replace('{user_id}', encodeURI(requestParameters.userId)),
             method: 'GET',
             headers,
         });
@@ -416,14 +417,14 @@ export class DefaultApi extends BaseAPI {
      * get_parent_role
      */
     getOrganizationsRolesRoleIdParent = (requestParameters: GetOrganizationsRolesRoleIdParentRequest): Observable<OrganizationRoleWithAssoc> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsRolesRoleIdParent');
+        throwIfRequired(requestParameters, 'roleId', 'getOrganizationsRolesRoleIdParent');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<OrganizationRoleWithAssoc>({
-            path: '/api/organizations/roles/{role_id}/parent'.replace('{role_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/roles/{role_id}/parent'.replace('{role_id}', encodeURI(requestParameters.roleId)),
             method: 'GET',
             headers,
         });
@@ -433,14 +434,14 @@ export class DefaultApi extends BaseAPI {
      * get_organization_by_slug
      */
     getOrganizationsSlug = (requestParameters: GetOrganizationsSlugRequest): Observable<Organization> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getOrganizationsSlug');
+        throwIfRequired(requestParameters, 'slug', 'getOrganizationsSlug');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<Organization>({
-            path: '/api/organizations/{slug}'.replace('{slug}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{slug}'.replace('{slug}', encodeURI(requestParameters.slug)),
             method: 'GET',
             headers,
         });
@@ -502,7 +503,7 @@ export class DefaultApi extends BaseAPI {
      * get_user_organizations
      */
     getUsersIdOrganizations = (requestParameters: GetUsersIdOrganizationsRequest): Observable<Array<UserOrganizationMembership>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getUsersIdOrganizations');
+        throwIfRequired(requestParameters, 'id', 'getUsersIdOrganizations');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
@@ -514,7 +515,7 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<Array<UserOrganizationMembership>>({
-            path: '/api/users/{id}/organizations'.replace('{id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/users/{id}/organizations'.replace('{id}', encodeURI(requestParameters.id)),
             method: 'GET',
             headers,
             query,
@@ -525,14 +526,14 @@ export class DefaultApi extends BaseAPI {
      * list_user_event_excuses
      */
     getUsersUserIdExcuses = (requestParameters: GetUsersUserIdExcusesRequest): Observable<Array<UserEventExcuseWithAssoc>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getUsersUserIdExcuses');
+        throwIfRequired(requestParameters, 'userId', 'getUsersUserIdExcuses');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<Array<UserEventExcuseWithAssoc>>({
-            path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(requestParameters.userId)),
             method: 'GET',
             headers,
         });
@@ -542,14 +543,14 @@ export class DefaultApi extends BaseAPI {
      * list_user_file_entries
      */
     getUsersUserIdFileEntries = (requestParameters: GetUsersUserIdFileEntriesRequest): Observable<Array<UserFileEntryWithAssoc>> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'getUsersUserIdFileEntries');
+        throwIfRequired(requestParameters, 'userId', 'getUsersUserIdFileEntries');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<Array<UserFileEntryWithAssoc>>({
-            path: '/api/users/{user_id}/file-entries'.replace('{user_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/users/{user_id}/file-entries'.replace('{user_id}', encodeURI(requestParameters.userId)),
             method: 'GET',
             headers,
         });
@@ -559,6 +560,7 @@ export class DefaultApi extends BaseAPI {
      * woltlab
      */
     postAuthWoltlab = (requestParameters: PostAuthWoltlabRequest): Observable<InlineResponse200> => {
+        throwIfRequired(requestParameters, 'authWoltlabFields', 'postAuthWoltlab');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -568,7 +570,7 @@ export class DefaultApi extends BaseAPI {
             path: '/api/auth/woltlab',
             method: 'POST',
             headers,
-            body: requestParameters.inlineObject,
+            body: requestParameters.authWoltlabFields,
         });
     };
 
@@ -576,7 +578,8 @@ export class DefaultApi extends BaseAPI {
      * create_organization_report
      */
     postOrganizationsOrgIdReports = (requestParameters: PostOrganizationsOrgIdReportsRequest): Observable<ReportWithAssoc> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'postOrganizationsOrgIdReports');
+        throwIfRequired(requestParameters, 'orgId', 'postOrganizationsOrgIdReports');
+        throwIfRequired(requestParameters, 'createOrganizationFields', 'postOrganizationsOrgIdReports');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -584,10 +587,10 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<ReportWithAssoc>({
-            path: '/api/organizations/{org_id}/reports'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/reports'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'POST',
             headers,
-            body: requestParameters.inlineObject4,
+            body: requestParameters.createOrganizationFields,
         });
     };
 
@@ -595,15 +598,15 @@ export class DefaultApi extends BaseAPI {
      * ack_organization_report
      */
     postOrganizationsOrgIdReportsReportIdAck = (requestParameters: PostOrganizationsOrgIdReportsReportIdAckRequest): Observable<ReportWithAssoc> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'postOrganizationsOrgIdReportsReportIdAck');
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME2', 'postOrganizationsOrgIdReportsReportIdAck');
+        throwIfRequired(requestParameters, 'orgId', 'postOrganizationsOrgIdReportsReportIdAck');
+        throwIfRequired(requestParameters, 'reportId', 'postOrganizationsOrgIdReportsReportIdAck');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
         };
 
         return this.request<ReportWithAssoc>({
-            path: '/api/organizations/{org_id}/reports/{report_id}/ack'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)).replace('{report_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME2)),
+            path: '/api/organizations/{org_id}/reports/{report_id}/ack'.replace('{org_id}', encodeURI(requestParameters.orgId)).replace('{report_id}', encodeURI(requestParameters.reportId)),
             method: 'POST',
             headers,
         });
@@ -613,7 +616,7 @@ export class DefaultApi extends BaseAPI {
      * create_organization_role
      */
     postOrganizationsOrgIdRoles = (requestParameters: PostOrganizationsOrgIdRolesRequest): Observable<OrganizationRoleWithAssoc> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'postOrganizationsOrgIdRoles');
+        throwIfRequired(requestParameters, 'orgId', 'postOrganizationsOrgIdRoles');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -621,7 +624,7 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<OrganizationRoleWithAssoc>({
-            path: '/api/organizations/{org_id}/roles'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/roles'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'POST',
             headers,
             body: requestParameters.updateOrganizationRole,
@@ -632,7 +635,8 @@ export class DefaultApi extends BaseAPI {
      * reorder_roles
      */
     postOrganizationsOrgIdRolesReorder = (requestParameters: PostOrganizationsOrgIdRolesReorderRequest): Observable<void> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'postOrganizationsOrgIdRolesReorder');
+        throwIfRequired(requestParameters, 'orgId', 'postOrganizationsOrgIdRolesReorder');
+        throwIfRequired(requestParameters, 'reorderOrganizationRolesFields', 'postOrganizationsOrgIdRolesReorder');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -640,19 +644,19 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<void>({
-            path: '/api/organizations/{org_id}/roles:reorder'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/roles:reorder'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'POST',
             headers,
-            body: requestParameters.inlineObject5,
+            body: requestParameters.reorderOrganizationRolesFields,
         });
     };
 
     /**
-     * update_organization_role
+     * update_organization_role_fields
      */
     postOrganizationsOrgIdRolesRoleId = (requestParameters: PostOrganizationsOrgIdRolesRoleIdRequest): Observable<OrganizationRoleWithAssoc> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'postOrganizationsOrgIdRolesRoleId');
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME2', 'postOrganizationsOrgIdRolesRoleId');
+        throwIfRequired(requestParameters, 'orgId', 'postOrganizationsOrgIdRolesRoleId');
+        throwIfRequired(requestParameters, 'roleId', 'postOrganizationsOrgIdRolesRoleId');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -660,7 +664,7 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<OrganizationRoleWithAssoc>({
-            path: '/api/organizations/{org_id}/roles/{role_id}'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)).replace('{role_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME2)),
+            path: '/api/organizations/{org_id}/roles/{role_id}'.replace('{org_id}', encodeURI(requestParameters.orgId)).replace('{role_id}', encodeURI(requestParameters.roleId)),
             method: 'POST',
             headers,
             body: requestParameters.updateOrganizationRole,
@@ -671,7 +675,8 @@ export class DefaultApi extends BaseAPI {
      * add_user
      */
     postOrganizationsOrgIdUsers = (requestParameters: PostOrganizationsOrgIdUsersRequest): Observable<boolean> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'postOrganizationsOrgIdUsers');
+        throwIfRequired(requestParameters, 'orgId', 'postOrganizationsOrgIdUsers');
+        throwIfRequired(requestParameters, 'addOrganizationUserFields', 'postOrganizationsOrgIdUsers');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -679,10 +684,10 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<boolean>({
-            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(requestParameters.orgId)),
             method: 'POST',
             headers,
-            body: requestParameters.inlineObject2,
+            body: requestParameters.addOrganizationUserFields,
         });
     };
 
@@ -690,7 +695,8 @@ export class DefaultApi extends BaseAPI {
      * save_user_event_excuse
      */
     postUsersUserIdExcuses = (requestParameters: PostUsersUserIdExcusesRequest): Observable<InlineResponse2001> => {
-        throwIfRequired(requestParameters, 'UNKNOWN_PARAMETER_NAME', 'postUsersUserIdExcuses');
+        throwIfRequired(requestParameters, 'userId', 'postUsersUserIdExcuses');
+        throwIfRequired(requestParameters, 'addUserExcuseFields', 'postUsersUserIdExcuses');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -698,10 +704,10 @@ export class DefaultApi extends BaseAPI {
         };
 
         return this.request<InlineResponse2001>({
-            path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(requestParameters.UNKNOWN_PARAMETER_NAME)),
+            path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(requestParameters.userId)),
             method: 'POST',
             headers,
-            body: requestParameters.inlineObject1,
+            body: requestParameters.addUserExcuseFields,
         });
     };
 

@@ -13,12 +13,12 @@
 
 /**
  * @export
- * @interface InlineObject2
+ * @interface ReorderOrganizationRolesFields
  */
-export interface InlineObject2 {
+export interface ReorderOrganizationRolesFields {
     /**
-     * @type {number}
-     * @memberof InlineObject2
+     * @type {Array<number>}
+     * @memberof ReorderOrganizationRolesFields
      */
-    userId: number;
+    roleIds?: Array<number>;
 }

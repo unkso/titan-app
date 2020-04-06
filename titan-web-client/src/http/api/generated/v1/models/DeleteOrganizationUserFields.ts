@@ -13,12 +13,12 @@
 
 /**
  * @export
- * @interface InlineObject5
+ * @interface DeleteOrganizationUserFields
  */
-export interface InlineObject5 {
+export interface DeleteOrganizationUserFields {
     /**
-     * @type {Array<number>}
-     * @memberof InlineObject5
+     * @type {number}
+     * @memberof DeleteOrganizationUserFields
      */
-    roleIds?: Array<number>;
+    userId: number;
 }

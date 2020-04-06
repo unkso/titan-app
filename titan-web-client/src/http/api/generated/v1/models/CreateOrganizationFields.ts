@@ -13,17 +13,17 @@
 
 /**
  * @export
- * @interface InlineObject4
+ * @interface CreateOrganizationFields
  */
-export interface InlineObject4 {
+export interface CreateOrganizationFields {
     /**
      * @type {string}
-     * @memberof InlineObject4
+     * @memberof CreateOrganizationFields
      */
     comments: string;
     /**
      * @type {number}
-     * @memberof InlineObject4
+     * @memberof CreateOrganizationFields
      */
     termStartDate: number;
 }

@@ -1,4 +1,4 @@
-title: ReportWithAssoc
+title: report_with_assoc
 type: object
 properties:
   id:
