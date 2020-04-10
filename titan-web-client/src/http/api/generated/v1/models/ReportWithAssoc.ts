@@ -35,12 +35,12 @@ export interface ReportWithAssoc {
      * @type {number}
      * @memberof ReportWithAssoc
      */
-    termStartDate: number;
+    term_start_date: number;
     /**
      * @type {number}
      * @memberof ReportWithAssoc
      */
-    submissionDate?: number;
+    submission_date?: number;
     /**
      * @type {string}
      * @memberof ReportWithAssoc
@@ -50,20 +50,20 @@ export interface ReportWithAssoc {
      * @type {UserProfile}
      * @memberof ReportWithAssoc
      */
-    ackUser?: UserProfile;
+    ack_user?: UserProfile;
     /**
      * @type {number}
      * @memberof ReportWithAssoc
      */
-    ackDate?: number;
+    ack_date?: number;
     /**
      * @type {number}
      * @memberof ReportWithAssoc
      */
-    dateCreated: number;
+    date_created: number;
     /**
      * @type {number}
      * @memberof ReportWithAssoc
      */
-    dateModified: number;
+    date_modified: number;
 }

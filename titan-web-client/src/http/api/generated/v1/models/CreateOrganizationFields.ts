@@ -25,5 +25,5 @@ export interface CreateOrganizationFields {
      * @type {number}
      * @memberof CreateOrganizationFields
      */
-    termStartDate: number;
+    term_start_date: number;
 }

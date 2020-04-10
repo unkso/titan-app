@@ -31,19 +31,18 @@ export const routes =(
             </EmptyDarkLayout>
         </Route>
 
-        <Route path="/organizations">
+        <Route path="/dashboard">
             <DashboardLayout>
-                <Route exact path={ORGANIZATIONS_LIST_ROUTE} component={OrganizationsListScene} />
-                <Route exact path={ORGANIZATIONS_DETAIL_ROUTE} component={OrganizationDetailScene} />
-                <Route exact path="/organizations/reports/unacknowledged" component={ManageUnacknowledgedReportsScene} />
-            </DashboardLayout>
-        </Route>
-
-        <Route path="/roster">
-            <DashboardLayout>
-                <Route exact path={USER_EXCUSES_ROUTE} component={ExcusesScene} />
-                <Route exact path={USER_PROFILE_ROUTE} component={ProfileScene} />
-                <Route exact path="/roster" component={ListAllUsersScene} />
+                <Route path="/organizations">
+                    <Route exact path={ORGANIZATIONS_LIST_ROUTE} component={OrganizationsListScene} />
+                    <Route exact path={ORGANIZATIONS_DETAIL_ROUTE} component={OrganizationDetailScene} />
+                    <Route exact path="/organizations/reports/unacknowledged" component={ManageUnacknowledgedReportsScene} />
+                </Route>
+                <Route path="/roster">
+                    <Route exact path={USER_EXCUSES_ROUTE} component={ExcusesScene} />
+                    <Route exact path={USER_PROFILE_ROUTE} component={ProfileScene} />
+                    <Route exact path="/roster" component={ListAllUsersScene} />
+                </Route>
             </DashboardLayout>
         </Route>
     </Switch>

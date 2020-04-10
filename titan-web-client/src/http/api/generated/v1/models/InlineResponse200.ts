@@ -36,12 +36,12 @@ export interface InlineResponse200 {
      * @type {string}
      * @memberof InlineResponse200
      */
-    wcfUsername: string;
+    wcf_username: string;
     /**
      * @type {string}
      * @memberof InlineResponse200
      */
-    wcfUserTitle: string;
+    wcf_user_title: string;
     /**
      * @type {Array<WcfUserGroupOption>}
      * @memberof InlineResponse200

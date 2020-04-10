@@ -35,25 +35,25 @@ export interface Organization {
      * @type {string}
      * @memberof Organization
      */
-    avatarUrl: string;
+    avatar_url: string;
     /**
      * @type {string}
      * @memberof Organization
      */
-    groupType: string;
+    group_type: string;
     /**
      * @type {number}
      * @memberof Organization
      */
-    wcfUserGroupId: number;
+    wcf_user_group_id: number;
     /**
      * @type {boolean}
      * @memberof Organization
      */
-    isEnabled: boolean;
+    is_enabled: boolean;
     /**
      * @type {number}
      * @memberof Organization
      */
-    parentId?: number;
+    parent_id?: number;
 }

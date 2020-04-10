@@ -20,5 +20,5 @@ export interface ReorderOrganizationRolesFields {
      * @type {Array<number>}
      * @memberof ReorderOrganizationRolesFields
      */
-    roleIds?: Array<number>;
+    role_ids?: Array<number>;
 }

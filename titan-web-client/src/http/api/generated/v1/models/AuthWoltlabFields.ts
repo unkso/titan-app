@@ -20,10 +20,10 @@ export interface AuthWoltlabFields {
      * @type {number}
      * @memberof AuthWoltlabFields
      */
-    userId: number;
+    user_id: number;
     /**
      * @type {string}
      * @memberof AuthWoltlabFields
      */
-    cookiePassword: string;
+    cookie_password: string;
 }

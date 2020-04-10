@@ -25,12 +25,12 @@ export interface OrganizationRole {
      * @type {number}
      * @memberof OrganizationRole
      */
-    organizationId?: number;
+    organization_id?: number;
     /**
      * @type {number}
      * @memberof OrganizationRole
      */
-    userId?: number;
+    user_id?: number;
     /**
      * @type {string}
      * @memberof OrganizationRole

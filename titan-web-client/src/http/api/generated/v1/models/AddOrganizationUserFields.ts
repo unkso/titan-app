@@ -20,5 +20,5 @@ export interface AddOrganizationUserFields {
      * @type {number}
      * @memberof AddOrganizationUserFields
      */
-    userId: number;
+    user_id: number;
 }

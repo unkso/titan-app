@@ -20,5 +20,5 @@ export interface DeleteOrganizationUserFields {
      * @type {number}
      * @memberof DeleteOrganizationUserFields
      */
-    userId: number;
+    user_id: number;
 }

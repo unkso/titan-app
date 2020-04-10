@@ -25,17 +25,17 @@ export interface UserProfile {
      * @type {number}
      * @memberof UserProfile
      */
-    wcfId: number;
+    wcf_id: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    legacyPlayerId?: number;
+    legacy_player_id?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    rankId: number;
+    rank_id: number;
     /**
      * @type {string}
      * @memberof UserProfile
@@ -50,22 +50,22 @@ export interface UserProfile {
      * @type {number}
      * @memberof UserProfile
      */
-    bctE0?: number;
+    bct_e0?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    bctE1?: number;
+    bct_e1?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    bctE2?: number;
+    bct_e2?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    bctE3?: number;
+    bct_e3?: number;
     /**
      * @type {number}
      * @memberof UserProfile
@@ -75,12 +75,12 @@ export interface UserProfile {
      * @type {number}
      * @memberof UserProfile
      */
-    dateJoined?: number;
+    date_joined?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    lastActivity: number;
+    last_activity: number;
     /**
      * @type {UserProfile}
      * @memberof UserProfile

@@ -30,12 +30,12 @@ export interface UserFileEntryWithAssoc {
      * @type {UserProfile}
      * @memberof UserFileEntryWithAssoc
      */
-    modifiedBy?: UserProfile;
+    modified_by?: UserProfile;
     /**
      * @type {number}
      * @memberof UserFileEntryWithAssoc
      */
-    dateModified?: number;
+    date_modified?: number;
     /**
      * @type {string}
      * @memberof UserFileEntryWithAssoc
@@ -45,20 +45,20 @@ export interface UserFileEntryWithAssoc {
      * @type {number}
      * @memberof UserFileEntryWithAssoc
      */
-    endDate?: number;
+    end_date?: number;
     /**
      * @type {number}
      * @memberof UserFileEntryWithAssoc
      */
-    startDate?: number;
+    start_date?: number;
     /**
      * @type {UserProfile}
      * @memberof UserFileEntryWithAssoc
      */
-    userProfile?: UserProfile;
+    user_profile?: UserProfile;
     /**
      * @type {UserFileEntryType}
      * @memberof UserFileEntryWithAssoc
      */
-    fileEntryType?: UserFileEntryType;
+    file_entry_type?: UserFileEntryType;
 }

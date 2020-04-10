@@ -35,7 +35,7 @@ export interface OrganizationRoleWithAssoc {
      * @type {UserProfile}
      * @memberof OrganizationRoleWithAssoc
      */
-    userProfile?: UserProfile;
+    user_profile?: UserProfile;
     /**
      * @type {string}
      * @memberof OrganizationRoleWithAssoc

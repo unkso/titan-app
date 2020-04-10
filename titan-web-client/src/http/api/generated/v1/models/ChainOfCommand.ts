@@ -24,10 +24,10 @@ export interface ChainOfCommand {
      * @type {Array<OrganizationRoleWithAssoc>}
      * @memberof ChainOfCommand
      */
-    localCoc?: Array<OrganizationRoleWithAssoc>;
+    local_coc?: Array<OrganizationRoleWithAssoc>;
     /**
      * @type {Array<OrganizationRoleWithAssoc>}
      * @memberof ChainOfCommand
      */
-    extendedCoc?: Array<OrganizationRoleWithAssoc>;
+    extended_coc?: Array<OrganizationRoleWithAssoc>;
 }
