@@ -1,8 +1,8 @@
 import React from 'react';
 import { ContentBlock } from '@titan/components/block/content_block';
 import PageHeader
-  from '@titan/layouts/dashboard/components/page_header/page_header';
-import PageHeaderTitle from '@titan/layouts/dashboard/components/page_header/page_header_title';
+  from '@titan/layouts/dashboard_old/components/page_header/page_header';
+import PageHeaderTitle from '@titan/layouts/dashboard_old/components/page_header/page_header_title';
 import OrganizationsService from '@titan/http/OrganizationsService';
 import { ReportsList } from '@titan/components/reports/reports_list';
 import { withSnackbar } from 'notistack';

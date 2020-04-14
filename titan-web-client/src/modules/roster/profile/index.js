@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PageHeader
-  from '@titan/layouts/dashboard/components/page_header/page_header';
+  from '@titan/layouts/dashboard_old/components/page_header/page_header';
 import { ContentBlock } from '@titan/components/block/content_block';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';

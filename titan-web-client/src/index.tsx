@@ -16,7 +16,11 @@ import {
 import { Provider as ReduxProvider } from 'react-redux';
 import {ThemeOptions} from "@material-ui/core/styles/createMuiTheme";
 
-const defaultMuiTheme = createMuiTheme(defaultTheme as ThemeOptions);
+const defaultMuiTheme = createMuiTheme(createMuiTheme({
+    palette: {
+        type: 'dark',
+    },
+}));
 const store = getStoreInstance();
 
 // If auth credentials are present in local storage, load them into

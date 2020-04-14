@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import PageHeader from '../../layouts/dashboard/components/page_header/page_header';
-import PageHeaderTitle from '../../layouts/dashboard/components/page_header/page_header_title';
+import PageHeader from '../../layouts/dashboard_old/components/page_header/page_header';
+import PageHeaderTitle from '../../layouts/dashboard_old/components/page_header/page_header_title';
 import { ContentBlock } from '../../components/block/content_block';
 import BranchCardGrid from '../roster/components/branch_card_grid';
 import OrganizationsService from '../../http/OrganizationsService';

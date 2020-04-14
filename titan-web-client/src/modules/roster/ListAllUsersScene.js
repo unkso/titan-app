@@ -1,8 +1,8 @@
 import React from 'react';
 import PageHeader
-  from '@titan/layouts/dashboard/components/page_header/page_header';
+  from '@titan/layouts/dashboard_old/components/page_header/page_header';
 import PageHeaderTitle
-  from '@titan/layouts/dashboard/components/page_header/page_header_title';
+  from '@titan/layouts/dashboard_old/components/page_header/page_header_title';
 import { ContentBlock } from '@titan/components/block/content_block';
 import Row from '@titan/components/grid/row';
 import { ListUsersRequest, useTitanApiClient } from '@titan/http/api_client';

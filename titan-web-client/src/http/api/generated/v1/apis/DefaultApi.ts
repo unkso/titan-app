@@ -166,7 +166,7 @@ export class DefaultApi extends BaseAPI {
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<void>({
@@ -182,7 +182,7 @@ export class DefaultApi extends BaseAPI {
      */
     getEventsEventTypes = (): Observable<Array<EventType>> => {
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<EventType>>({
@@ -199,7 +199,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(eventTypeId, 'getEventsEventTypesEventTypeId');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<EventType>({
@@ -214,7 +214,7 @@ export class DefaultApi extends BaseAPI {
      */
     getOrganizations = (): Observable<Array<Organization>> => {
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<Organization>>({
@@ -233,7 +233,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(toStartDate, 'getOrganizationsFileEntries');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         const query: HttpQuery = { // required parameters are used directly since they are already checked by throwIfNullOrUndefined
@@ -257,7 +257,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(id, 'getOrganizationsId');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Organization>({
@@ -274,7 +274,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(id, 'getOrganizationsIdUsers');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         const query: HttpQuery = {};
@@ -296,7 +296,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdChildren');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<Organization>>({
@@ -313,7 +313,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdCoc');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<ChainOfCommand>({
@@ -330,7 +330,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdReports');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<ReportWithAssoc>>({
@@ -348,7 +348,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(scope, 'getOrganizationsOrgIdRoles');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         const query: HttpQuery = { // required parameters are used directly since they are already checked by throwIfNullOrUndefined
@@ -370,7 +370,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdRolesUnranked');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<OrganizationRoleWithAssoc>>({
@@ -388,7 +388,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(userId, 'getOrganizationsOrgIdUsersUserIdCoc');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<ChainOfCommand>({
@@ -403,7 +403,7 @@ export class DefaultApi extends BaseAPI {
      */
     getOrganizationsReportsUnacknowledged = (): Observable<Array<ReportWithAssoc>> => {
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<ReportWithAssoc>>({
@@ -420,7 +420,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(roleId, 'getOrganizationsRolesRoleIdParent');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<OrganizationRoleWithAssoc>({
@@ -437,7 +437,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(slug, 'getOrganizationsSlug');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Organization>({
@@ -453,7 +453,7 @@ export class DefaultApi extends BaseAPI {
     getUsers = ({ username, limit }: GetUsersRequest): Observable<Array<UserProfile>> => {
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         const query: HttpQuery = {};
@@ -474,7 +474,7 @@ export class DefaultApi extends BaseAPI {
      */
     getUsersExcusesUnacknowledged = (): Observable<Array<UserEventExcuseWithAssoc>> => {
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<UserEventExcuseWithAssoc>>({
@@ -489,7 +489,7 @@ export class DefaultApi extends BaseAPI {
      */
     getUsersFileEntryTypes = (): Observable<Array<UserFileEntryType>> => {
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<UserFileEntryType>>({
@@ -506,7 +506,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(id, 'getUsersIdOrganizations');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         const query: HttpQuery = {};
@@ -529,7 +529,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(userId, 'getUsersUserIdExcuses');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<UserEventExcuseWithAssoc>>({
@@ -546,7 +546,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(userId, 'getUsersUserIdFileEntries');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<Array<UserFileEntryWithAssoc>>({
@@ -583,7 +583,7 @@ export class DefaultApi extends BaseAPI {
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<ReportWithAssoc>({
@@ -602,7 +602,7 @@ export class DefaultApi extends BaseAPI {
         throwIfNullOrUndefined(reportId, 'postOrganizationsOrgIdReportsReportIdAck');
 
         const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<ReportWithAssoc>({
@@ -620,7 +620,7 @@ export class DefaultApi extends BaseAPI {
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<OrganizationRoleWithAssoc>({
@@ -640,7 +640,7 @@ export class DefaultApi extends BaseAPI {
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<void>({
@@ -660,7 +660,7 @@ export class DefaultApi extends BaseAPI {
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<OrganizationRoleWithAssoc>({
@@ -680,7 +680,7 @@ export class DefaultApi extends BaseAPI {
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<boolean>({
@@ -700,7 +700,7 @@ export class DefaultApi extends BaseAPI {
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'API Key': this.configuration.apiKey('API Key') }), // x-api-key authentication
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
         return this.request<InlineResponse2001>({

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PageHeader from '../../layouts/dashboard/components/page_header/page_header';
-import PageHeaderTitle from '../../layouts/dashboard/components/page_header/page_header_title';
+import PageHeader from '../../layouts/dashboard_old/components/page_header/page_header';
+import PageHeaderTitle from '../../layouts/dashboard_old/components/page_header/page_header_title';
 import { Tab, Tabs } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { TabPanel } from '@titan/components/tabs/tab_panel';

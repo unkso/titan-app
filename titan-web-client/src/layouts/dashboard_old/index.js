@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import Sidebar from '@titan/layouts/dashboard/components/sidebar/sidebar';
+import Sidebar from '@titan/layouts/dashboard_old/components/sidebar/sidebar';
 import useTheme from '@material-ui/core/styles/useTheme';
 
 export const DashboardWrapper = styled.div`
@@ -46,7 +46,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-export function DashboardLayout(props) {
+export function DashboardLayoutOld(props) {
   const theme = useTheme();
   const sidebarBg = theme.palette.backgroundInversePrimary;
   const contentBg = theme.palette.backgroundPrimary;

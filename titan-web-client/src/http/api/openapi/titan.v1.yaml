@@ -84,7 +84,7 @@ paths:
           in: query
           name: limit
       security:
-        - x-api-key: []
+        - api_key: []
   /api/users/excuses/unacknowledged:
     get:
       summary: list_unacknowledged_excuses
@@ -100,7 +100,7 @@ paths:
                   $ref: ./models/user_event_excuse_with_assoc.v1.yaml
       operationId: get-users-excuses-unacknowledged
       security:
-        - x-api-key: []
+        - api_key: []
   /api/users/file-entry-types:
     get:
       summary: list_user_file_entry_types
@@ -116,7 +116,7 @@ paths:
                   $ref: ./models/user_file_entry_type.v1.yaml
       operationId: get-users-file-entry-types
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/users/{user_id}/file-entries':
     parameters:
       - name: user_id
@@ -138,7 +138,7 @@ paths:
                   $ref: ./models/user_file_entry_with_assoc.v1.yaml
       operationId: get-users-user_id-file-entries
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/users/{user_id}/excuses':
     parameters:
       - name: user_id
@@ -151,7 +151,7 @@ paths:
       tags: []
       operationId: get-users-user_id-excuses
       security:
-        - x-api-key: []
+        - api_key: []
       responses:
         '200':
           description: OK
@@ -176,7 +176,7 @@ paths:
                     $ref: ./models/user_event_excuse_with_assoc.v1.yaml
       operationId: post-users-user_id-excuses
       security:
-        - x-api-key: []
+        - api_key: []
       requestBody:
         required: true
         content:
@@ -225,7 +225,7 @@ paths:
           in: query
           name: role
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{org_id}/users':
     parameters:
       - name: org_id
@@ -257,7 +257,7 @@ paths:
               required:
                 - user_id
       security:
-        - x-api-key: []
+        - api_key: []
     delete:
       summary: remove_user
       tags: []
@@ -266,7 +266,7 @@ paths:
           description: OK
       operationId: delete-organization-user
       security:
-        - x-api-key: []
+        - api_key: []
       requestBody:
         content:
           application/json:
@@ -303,7 +303,7 @@ paths:
                 $ref: ./models/report_with_assoc.v1.yaml
       operationId: post-organizations-org_id-reports-report_id-ack
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{org_id}/reports':
     parameters:
       - name: org_id
@@ -323,7 +323,7 @@ paths:
                 $ref: ./models/report_with_assoc.v1.yaml
       operationId: post-organizations-org_id-reports
       security:
-        - x-api-key: []
+        - api_key: []
       requestBody:
         required: true
         content:
@@ -353,7 +353,7 @@ paths:
                   $ref: ./models/report_with_assoc.v1.yaml
       operationId: get-organizations-org_id-reports
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{org_id}/roles':
     parameters:
       - name: org_id
@@ -373,7 +373,7 @@ paths:
                 $ref: ./models/organization_role_with_assoc.v1.yaml
       operationId: post-organizations-org_id-roles
       security:
-        - x-api-key: []
+        - api_key: []
       requestBody:
         content:
           application/json:
@@ -399,7 +399,7 @@ paths:
           name: scope
           required: true
       security:
-        - x-api-key: []
+        - api_key: []
   /api/organizations:
     get:
       summary: list_organizations
@@ -415,7 +415,7 @@ paths:
                   $ref: ./models/organization.v1.yaml
       operationId: get-organizations
       security:
-        - x-api-key: []
+        - api_key: []
       description: ''
   /api/organizations/reports/unacknowledged:
     get:
@@ -432,7 +432,7 @@ paths:
                   $ref: ./models/report_with_assoc.v1.yaml
       operationId: get-organizations-reports-unacknowledged
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{id}':
     parameters:
       - name: id
@@ -452,7 +452,7 @@ paths:
                 $ref: ./models/organization.v1.yaml
       operationId: get-organizations-id
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{slug}':
     parameters:
       - name: slug
@@ -472,7 +472,7 @@ paths:
                 $ref: ./models/organization.v1.yaml
       operationId: get-organizations-slug
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{id}/users':
     parameters:
       - name: id
@@ -494,7 +494,7 @@ paths:
                   $ref: ./models/user_profile.v1.yaml
       operationId: get-organizations-id-users
       security:
-        - x-api-key: []
+        - api_key: []
       parameters:
         - schema:
             type: boolean
@@ -519,7 +519,7 @@ paths:
                 $ref: ./models/organization_role_with_assoc.v1.yaml
       operationId: get-organizations-roles-role_id-parent
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{org_id}/users/{user_id}/coc':
     parameters:
       - name: org_id
@@ -544,7 +544,7 @@ paths:
                 $ref: ./models/chain_of_command.v1.yaml
       operationId: get-organizations-org_id-users-user_id-coc
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{org_id}/coc':
     parameters:
       - name: org_id
@@ -564,7 +564,7 @@ paths:
                 $ref: ./models/chain_of_command.v1.yaml
       operationId: get-organizations-org_id-coc
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{org_id}/roles/unranked':
     parameters:
       - name: org_id
@@ -586,7 +586,7 @@ paths:
                   $ref: ./models/organization_role_with_assoc.v1.yaml
       operationId: get-organizations-org_id-roles-unranked
       security:
-        - x-api-key: []
+        - api_key: []
   '/api/organizations/{org_id}/children':
     parameters:
       - name: org_id
@@ -608,7 +608,7 @@ paths:
                   $ref: ./models/organization.v1.yaml
       operationId: get-organizations-org_id-children
       security:
-        - x-api-key: []
+        - api_key: []
   /api/organizations/file-entries:
     get:
       summary: list_organization_user_file_entries
@@ -624,7 +624,7 @@ paths:
                   $ref: ./models/user_file_entry_with_assoc.v1.yaml
       operationId: get-organizations-file-entries
       security:
-        - x-api-key: []
+        - api_key: []
       parameters:
         - schema:
             type: string
@@ -656,7 +656,7 @@ paths:
           description: OK
       operationId: 'post-organizations-org_id-roles:reorder'
       security:
-        - x-api-key: []
+        - api_key: []
       requestBody:
         required: true
         content:
@@ -693,7 +693,7 @@ paths:
                 $ref: ./models/organization_role_with_assoc.v1.yaml
       operationId: post-organizations-org_id-roles-role_id
       security:
-        - x-api-key: []
+        - api_key: []
       requestBody:
         content:
           application/json:
@@ -718,7 +718,7 @@ paths:
                 $ref: ./models/event_type.v1.yaml
       operationId: get-events-event-types-event_type_id
       security:
-        - x-api-key: []
+        - api_key: []
   /api/events/event-types:
     get:
       summary: list_event_types
@@ -734,11 +734,11 @@ paths:
                   $ref: ./models/event_type.v1.yaml
       operationId: get-events-event-types
       security:
-        - x-api-key: []
+        - api_key: []
 components:
   schemas: {}
   securitySchemes:
-    x-api-key:
-      name: API Key
+    api_key:
       type: apiKey
+      name: x-api-key
       in: header

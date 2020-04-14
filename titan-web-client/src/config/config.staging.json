@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "http://35.238.185.139/api"
+    "baseUrl": "http://35.238.185.139"
   },
   "woltlab": {
     "authUrl": "https://clanunknownsoldiers.com/login",

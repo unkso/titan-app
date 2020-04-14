@@ -4,8 +4,8 @@ import { EventExcuseList }
 import UsersService from '@titan/http/UsersService';
 import { ContentBlock } from '@titan/components/block/content_block';
 import PageHeader
-  from '@titan/layouts/dashboard/components/page_header/page_header';
-import PageHeaderTitle from '@titan/layouts/dashboard/components/page_header/page_header_title';
+  from '@titan/layouts/dashboard_old/components/page_header/page_header';
+import PageHeaderTitle from '@titan/layouts/dashboard_old/components/page_header/page_header_title';
 import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 
 export class ExcusesScene extends React.Component {

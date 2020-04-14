@@ -1,6 +1,6 @@
 import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom'
-import {DashboardLayout} from "@titan/layouts/dashboard";
+import {DashboardLayoutOld} from "@titan/layouts/dashboard_old";
 import {
     ORGANIZATIONS_DETAIL_ROUTE,
     ORGANIZATIONS_LIST_ROUTE
@@ -17,22 +17,26 @@ import {
     USER_EXCUSES_ROUTE,
     USER_PROFILE_ROUTE
 } from "@titan/modules/roster/routes";
+import {DashboardLayout} from "@titan/layouts/dashboard";
 
 export const routes =(
     <Switch>
         <Route exact path="/">
-            <Redirect to={ORGANIZATIONS_LIST_ROUTE} />
+            <Redirect to="/dashboard" />
         </Route>
 
-        <Route path="/auth">
+        {/*<Route path="/auth">
             <EmptyDarkLayout>
                 <Route exact path="/auth/login" component={LoginScene} />
                 <Route exact path="/auth/logout" component={LoginScene} />
             </EmptyDarkLayout>
-        </Route>
+        </Route>*/}
 
         <Route path="/dashboard">
             <DashboardLayout>
+                <p>dashboard page</p>
+            </DashboardLayout>
+            {/*<DashboardLayoutOld>
                 <Route path="/organizations">
                     <Route exact path={ORGANIZATIONS_LIST_ROUTE} component={OrganizationsListScene} />
                     <Route exact path={ORGANIZATIONS_DETAIL_ROUTE} component={OrganizationDetailScene} />
@@ -43,7 +47,7 @@ export const routes =(
                     <Route exact path={USER_PROFILE_ROUTE} component={ProfileScene} />
                     <Route exact path="/roster" component={ListAllUsersScene} />
                 </Route>
-            </DashboardLayout>
+            </DashboardLayoutOld>*/}
         </Route>
     </Switch>
 );

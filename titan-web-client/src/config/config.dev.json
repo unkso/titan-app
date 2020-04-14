@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8000/api"
+    "baseUrl": "http://localhost:8000"
   },
   "woltlab": {
     "authUrl": "https://clanunknownsoldiers.com/login",
