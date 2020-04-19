@@ -33,7 +33,7 @@ A special tool was developed to make debugging ReactJS apps in Google Chrome eas
 [Install extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
 
 #### Redux browser extension (for Google Chrome)
-Use this extension to view the contents of the app's redux data store.
+Use this extension to view the contents of the app's redux data AppStore.
 
 [Install Extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)    
 
@@ -74,5 +74,9 @@ You'll need to be familiar with the following technologies to work on this appli
 - [Mocha](https://mochajs.org) - Framework for writing unit tests.
 - [Sinon](http://sinonjs.org) - Framework for creating mocks and stubs for unit tests.
 
-### Generating Documentation
-- [React Styleguidist](https://github.com/styleguidist/react-styleguidist) - A tool for generating documentation from our code.
+## API Codegen
+
+```
+$ cd titan-web-client/src/http/api
+$ openapi-generator generate -g typescript-rxjs -i openapi/titan.v1.yaml -o ./generated/v1 --additional-properties="modelPropertyNaming=camelCase"
+```

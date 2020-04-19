@@ -86,7 +86,7 @@ pub fn add_user(
         auth_user.user.id, org_id, titan_db_ref, wcf_db_ref, &app_config);
 
     if !is_in_coc {
-        return ApiResponse::from(ApiError::AuthenticationError);
+        return ApiResponse::from(ApiError::AuthorizationError);
     }
 
     let org_user = &models::OrganizationUser {
@@ -125,7 +125,7 @@ pub fn remove_user(
         auth_user.user.id, org_id, titan_db_ref, wcf_db_ref, &app_config);
 
     if !is_in_coc {
-        return ApiResponse::from(ApiError::AuthenticationError);
+        return ApiResponse::from(ApiError::AuthorizationError);
     }
 
     let res = teams::organizations::remove_user(&models::OrganizationUser {
@@ -337,7 +337,7 @@ pub fn list_organization_reports(
                     .map_err(ApiError::from)
             }
         }
-        None => Err(ApiError::AuthenticationError)
+        None => Err(ApiError::AuthorizationError)
     };
     ApiResponse::from(res)
 }
@@ -426,11 +426,11 @@ pub fn ack_organization_report(
         .and_then(|role_option| role_option
             .map(|role| {
                 if role.user_id.is_none() || role.user_id.unwrap() != auth_user.user.id {
-                    return Err(ApiError::AuthenticationError)
+                    return Err(ApiError::AuthorizationError)
                 }
                 Ok(role)
             })
-            .unwrap_or_else(|| Err(ApiError::AuthenticationError)))
+            .unwrap_or_else(|| Err(ApiError::AuthorizationError)))
         // Acknowledge and return the report
         .and_then(|_| teams::reports::ack_report(
             report_id, auth_user.user.id, titan_db_ref).map_err(ApiError::from))

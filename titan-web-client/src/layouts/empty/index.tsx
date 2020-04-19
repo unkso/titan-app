@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
+import {useTheme} from '@material-ui/core/styles';
 import React from 'react';
 
 const EmptyDarkLayoutStyle = styled.div`
@@ -18,16 +18,13 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-class EmptyDarkLayout extends React.Component {
-  render () {
+export function EmptyLayout(props) {
+    const theme = useTheme();
     return (
-      <React.Fragment>
-        <GlobalStyles />
-        <EmptyDarkLayoutStyle
-          bgColor={this.props.theme.palette.backgroundInversePrimary}>{this.props.children}</EmptyDarkLayoutStyle>
-      </React.Fragment>
-    );
-  }
+        <React.Fragment>
+            <GlobalStyles />
+            <EmptyDarkLayoutStyle
+                bgColor="#f60">{props.children}</EmptyDarkLayoutStyle>
+        </React.Fragment>
+    )
 }
-
-export default withTheme(EmptyDarkLayout);

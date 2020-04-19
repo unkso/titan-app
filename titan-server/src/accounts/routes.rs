@@ -23,80 +23,80 @@ use crate::config::AppConfig;
  ** **************************************************/
 #[derive(Deserialize)]
 pub struct WoltlabLoginRequest {
-    pub user_id: i32,
+    #[serde(rename(deserialize = "wcfUserId"))]
+    pub wcf_user_id: i32,
+    #[serde(rename(deserialize = "cookiePassword"))]
     pub cookie_password: String,
 }
 
 #[derive(Serialize)]
 pub struct WoltlabLoginResponse {
     pub token: String,
-    pub user: models::UserProfile,
-    pub wcf_username: String,
-    pub wcf_user_title: String,
-    pub acl: Vec<models::WcfUserGroupOption>,
-    pub roles: Vec<models::OrganizationRole>,
 }
 
-#[post("/woltlab", format = "application/json", data = "<login_creds>")]
+#[post("/woltlab", format = "application/json", data = "<credentials>")]
 pub fn woltlab_login(
-    unkso_main: UnksoMainForums,
-    titan_primary: TitanPrimary,
-    login_creds: Json<WoltlabLoginRequest>,
+    wcf_db: UnksoMainForums,
+    credentials: Json<WoltlabLoginRequest>,
     app_config: State<config::AppConfig>,
 ) -> ApiResponse<WoltlabLoginResponse> {
-    let wcf_db = &*unkso_main;
-    let titan_db = &*titan_primary;
-    let res = users::wcf_find_by_user_id(login_creds.user_id, wcf_db)
+    let wcf_db_ref = &*wcf_db;
+    let res = users::find_by_wcf_id(credentials.wcf_user_id, wcf_db_ref)
         .map_err(ApiError::from)
+        .and_then(|user| {
+            users::wcf_find_by_user_id(credentials.wcf_user_id, wcf_db_ref)
+                .map_err(ApiError::from)
+        })
         .and_then(|wcf_user| {
             let is_valid = woltlab_auth_helper::check_password(
-                &wcf_user.password, &login_creds.cookie_password);
+                &wcf_user.password, &credentials.cookie_password);
             if is_valid {
                 Ok(wcf_user)
             } else {
-                Err(ApiError::AuthenticationError)
+                Err(ApiError::AuthorizationError)
             }
         })
-        .and_then(|wcf_user|
-            users::create_if_not_exists(&wcf_user, &*titan_db)
-                .and_then(|user| users::map_user_to_profile(&user, wcf_db, &app_config))
-                .map_err(ApiError::from)
-                .map(|profile| (wcf_user, profile)))
-        .and_then(|(wcf_user, profile)| {
-            create_jwt(&profile, &app_config)
+        .and_then(|wcf_user| {
+            create_jwt(credentials.wcf_user_id, wcf_user.user_id, &app_config.secret_key)
                 .map(|token| {
-                    let user_id = profile.id;
                     WoltlabLoginResponse {
                         token,
-                        user: profile,
-                        wcf_username: wcf_user.username,
-                        wcf_user_title: wcf_user.user_title,
-                        acl: acl::get_user_acl(
-                            wcf_user.user_id, wcf_db).unwrap_or_else(|_| vec![]),
-                        roles: teams::roles::find_ranked_by_user_id(
-                            user_id, titan_db).unwrap_or_else(|_| vec![])
                     }
                 })
-                .map_err(|_| ApiError::AuthenticationError)
+                .map_err(|_| ApiError::AuthorizationError)
         });
 
     ApiResponse::from(res)
 }
 
-fn create_jwt(user: &models::UserProfile, app_config: &AppConfig) -> Result<String, JwtError> {
+fn create_jwt(user_id: i32, wcf_id: i32, secret_key: &String) -> Result<String, JwtError> {
     let header = json!({});
     let payload = json!({
         "user": {
-            "id": user.id,
-            "wcf_id": user.wcf_id
+            "id": user_id,
+            "wcf_id": wcf_id
         }
     });
     encode(
         header.into(),
-        &app_config.secret_key,
+        secret_key,
         &payload,
         Algorithm::HS256,
     )
+}
+
+#[get("/<user_id>/acl")]
+pub fn get_user_acl(
+    user_id: i32,
+    wcf_db: UnksoMainForums,
+    auth_guard: auth_guard::AuthenticatedUser,
+) -> ApiResponse<Vec<models::WcfUserGroupOption>> {
+    if user_id != auth_guard.user.id {
+        return ApiResponse::from(ApiError::AuthorizationError);
+    }
+
+    ApiResponse::from(acl::get_user_acl(
+        auth_guard.user.wcf_id, &*wcf_db))
 }
 
 /** **************************************************

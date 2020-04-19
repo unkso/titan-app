@@ -11,6 +11,10 @@
  * Do not edit the class manually.
  */
 
+import {
+    WcfUserProfile,
+} from './';
+
 /**
  * @export
  * @interface UserProfile
@@ -25,17 +29,17 @@ export interface UserProfile {
      * @type {number}
      * @memberof UserProfile
      */
-    wcf_id: number;
+    wcfId: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    legacy_player_id?: number;
+    legacyPlayerId?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    rank_id: number;
+    rankId: number;
     /**
      * @type {string}
      * @memberof UserProfile
@@ -50,22 +54,22 @@ export interface UserProfile {
      * @type {number}
      * @memberof UserProfile
      */
-    bct_e0?: number;
+    bctE0?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    bct_e1?: number;
+    bctE1?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    bct_e2?: number;
+    bctE2?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    bct_e3?: number;
+    bctE3?: number;
     /**
      * @type {number}
      * @memberof UserProfile
@@ -75,15 +79,15 @@ export interface UserProfile {
      * @type {number}
      * @memberof UserProfile
      */
-    date_joined?: number;
+    dateJoined?: number;
     /**
      * @type {number}
      * @memberof UserProfile
      */
-    last_activity: number;
+    lastActivity: number;
     /**
-     * @type {UserProfile}
+     * @type {WcfUserProfile}
      * @memberof UserProfile
      */
-    wcf: UserProfile;
+    wcf: WcfUserProfile;
 }

@@ -20,15 +20,15 @@ export interface WcfUserGroupOption {
      * @type {number}
      * @memberof WcfUserGroupOption
      */
-    option_id?: number;
+    optionId?: number;
     /**
      * @type {number}
      * @memberof WcfUserGroupOption
      */
-    option_name?: number;
+    optionName?: number;
     /**
      * @type {string}
      * @memberof WcfUserGroupOption
      */
-    category_name?: string;
+    categoryName?: string;
 }

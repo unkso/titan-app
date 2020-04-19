@@ -1,16 +1,15 @@
-import {AclMap} from '@titan/lib/acl/types';
+import {AclOptionMap} from '@titan/lib/acl/types';
 import {AclRuleBuilder} from '@titan/lib/acl';
+import {OrganizationRole} from "@titan/http/api";
 
 /**
  * A utility for checking the authenticated user's access to arbitrary
  * resources.
  */
 export class Acl {
-  // TODO replace 'any' type with OrganizationRole entity struct
-  //  once API codegen is complete.
   constructor (private readonly authUserId: number,
-               private readonly aclMap: AclMap,
-               private readonly leadershipRoles: any[] = []) {
+               private readonly aclMap: AclOptionMap,
+               private readonly leadershipRoles: OrganizationRole[] = []) {
   }
 
   /** Returns a new ACL rule builder. */

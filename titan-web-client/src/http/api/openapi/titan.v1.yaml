@@ -85,6 +85,44 @@ paths:
           name: limit
       security:
         - api_key: []
+  /api/users/{user_id}:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: get_user
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/user_profile.v1.yaml
+      operationId: get-user
+      security:
+        - api_key: []
+  /api/users/{user_id}/acl:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: user_acl
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./models/wcf_user_group_option.v1.yaml
   /api/users/excuses/unacknowledged:
     get:
       summary: list_unacknowledged_excuses
@@ -195,15 +233,15 @@ paths:
                 - event_date
                 - event_type_id
                 - comments
-  '/api/users/{id}/organizations':
+  '/api/users/{user_id}/organizations':
     parameters:
-      - name: id
+      - name: user_id
         in: path
         required: true
         schema:
           type: integer
     get:
-      summary: get_user_organizations
+      summary: list_user_organizations
       tags: []
       responses:
         '200':
@@ -214,7 +252,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/user_organization_membership.v1.yaml
-      operationId: get-users-id-organizations
+      operationId: get-user-organizations
       parameters:
         - schema:
             type: boolean

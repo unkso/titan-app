@@ -30,27 +30,27 @@ export interface UserEventExcuseWithAssoc {
      * @type {number}
      * @memberof UserEventExcuseWithAssoc
      */
-    date_modified: number;
+    dateModified: number;
     /**
      * @type {number}
      * @memberof UserEventExcuseWithAssoc
      */
-    date_created: number;
+    dateCreated: number;
     /**
      * @type {string}
      * @memberof UserEventExcuseWithAssoc
      */
-    ack_comments?: string;
+    ackComments?: string;
     /**
      * @type {number}
      * @memberof UserEventExcuseWithAssoc
      */
-    ack_date?: number;
+    ackDate?: number;
     /**
      * @type {number}
      * @memberof UserEventExcuseWithAssoc
      */
-    ack_user_id?: number;
+    ackUserId?: number;
     /**
      * @type {string}
      * @memberof UserEventExcuseWithAssoc
@@ -60,15 +60,15 @@ export interface UserEventExcuseWithAssoc {
      * @type {number}
      * @memberof UserEventExcuseWithAssoc
      */
-    event_date: number;
+    eventDate: number;
     /**
      * @type {EventType}
      * @memberof UserEventExcuseWithAssoc
      */
-    event_type: EventType;
+    eventType: EventType;
     /**
      * @type {UserProfile}
      * @memberof UserEventExcuseWithAssoc
      */
-    user_profile: UserProfile;
+    userProfile: UserProfile;
 }

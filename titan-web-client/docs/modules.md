@@ -23,14 +23,14 @@ Titan is divided into isolated groups of code, known as *modules*, which provide
 ├─── scenes/
 ├─── services/
 ├─── test/
-├─── index.js
+├─── index.tsx
 ```
 
 ### actions/
 <a id="structure-actions"></a>
 Contains a module's redux actions.
 
-An action always updates the redux data store. They can fetch information from [API services](#structure-services), sort data, or perform any other business logic.
+An action always updates the redux data AppStore. They can fetch information from [API services](#structure-services), sort data, or perform any other business logic.
 
 ### components/
 <a id="structure-components"></a>
@@ -40,7 +40,7 @@ Components may only contain state and business logic specific to rendering a vie
 
 ### containers/
 <a id="structure-containers"></a>
-Containers fetch data from the redux store, execute redux actions, and manage callbacks for interactive events (click, change, hover, submit, etc).
+Containers fetch data from the redux AppStore, execute redux actions, and manage callbacks for interactive events (click, change, hover, submit, etc).
 
 A container should render a very minimal template, passing callbacks and redux information as properties into the components it renders.
 
@@ -58,13 +58,13 @@ Contains a module's top level components.
 
 Scenes are essentially top-level components that build the structure of a page. They construct row/column grids, and place containers or other child components within the grid structure.
 
-They should not contain business logic, API calls, or interact with the redux store.
+They should not contain business logic, API calls, or interact with the redux AppStore.
 
 ### services/
 <a id="structure-services"></a>
 Contains wrappers for API services.
 
-These service classes send requests to external systems. These requests may fetch, create, update, or delete data from another API. They may **not** perform sorting, filtering, or update the redux store. Such logic should exist in a redux action.
+These service classes send requests to external systems. These requests may fetch, create, update, or delete data from another API. They may **not** perform sorting, filtering, or update the redux AppStore. Such logic should exist in a redux action.
 
 ### test/
 <a id="structure-test"></a>
@@ -82,12 +82,12 @@ titan-core
 |         ├─── lib/
 |              ├─── utils
 |                   ├─── helperFunctions.test.js
-├─── index.js
+├─── index.tsx
 ```
 
-### index.js
+### index.tsx
 <a id="structure-index"></a>
-Every module will contain an `index.js` file, which defines important information titan must know about the module. See the [configuration section](#configuration) for additional information.
+Every module will contain an `index.tsx` file, which defines important information titan must know about the module. See the [configuration section](#configuration) for additional information.
 
 ## Configuration
 <a id="configuration"></a>
@@ -136,7 +136,7 @@ Routes define which url paths are accessible from the application. They also det
 You can define a route as so:
 
 ```javascript
-// titan-core/index.js
+// titan-core/index.tsx
 import HomeScene from './scenes/HomeScene'
 export default {
     // ...
@@ -165,7 +165,7 @@ export default {
 <a id="rendering"></a>
 Url paths are not module specific. In other words, any module can append content to a page. For example, a notifications module might want to add a few alerts to the dashboard page. Additionally, the events module might want to show a list of upcoming activities on the same page.
 
-**events-module/index.js**
+**events-module/index.tsx**
 ```javascript
 import UpcomingEventsScene from './scenes/UpcomingEventsScene'
 export default {
@@ -182,7 +182,7 @@ export default {
 }
 ```
 
-**notifications-module/index.js**
+**notifications-module/index.tsx**
 ```javascript
 import DashboardAlertsScene from './scenes/DashboardAlertsScene'
 export default {

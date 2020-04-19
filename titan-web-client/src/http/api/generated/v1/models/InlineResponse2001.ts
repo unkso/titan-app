@@ -24,5 +24,5 @@ export interface InlineResponse2001 {
      * @type {UserEventExcuseWithAssoc}
      * @memberof InlineResponse2001
      */
-    user_id?: UserEventExcuseWithAssoc;
+    userId?: UserEventExcuseWithAssoc;
 }

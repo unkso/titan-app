@@ -19,3 +19,4 @@ export * from './UserFileEntryWithAssoc';
 export * from './UserOrganizationMembership';
 export * from './UserProfile';
 export * from './WcfUserGroupOption';
+export * from './WcfUserProfile';

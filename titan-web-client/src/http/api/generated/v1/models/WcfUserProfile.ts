@@ -13,17 +13,27 @@
 
 /**
  * @export
- * @interface CreateOrganizationFields
+ * @interface WcfUserProfile
  */
-export interface CreateOrganizationFields {
+export interface WcfUserProfile {
     /**
      * @type {string}
-     * @memberof CreateOrganizationFields
+     * @memberof WcfUserProfile
      */
-    comments: string;
+    avatarUrl?: string;
     /**
      * @type {number}
-     * @memberof CreateOrganizationFields
+     * @memberof WcfUserProfile
      */
-    termStartDate: number;
+    lastActivityTime: number;
+    /**
+     * @type {string}
+     * @memberof WcfUserProfile
+     */
+    userTitle: string;
+    /**
+     * @type {string}
+     * @memberof WcfUserProfile
+     */
+    username: string;
 }

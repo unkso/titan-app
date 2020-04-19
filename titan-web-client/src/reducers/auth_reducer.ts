@@ -1,5 +1,5 @@
 import {ActionType} from '@titan/actions/action_types';
-import {AclMap} from "@titan/lib/acl/types";
+import {AclOptionMap} from "@titan/lib/acl/types";
 import {AuthSessionState} from "@titan/reducers/types";
 
 /**
@@ -9,7 +9,7 @@ import {AuthSessionState} from "@titan/reducers/types";
  * @param {{id, option_name, category_name}} acl - A list of ACL options.
  * @returns {Map<string, {id, option_name, category_name}>}
  */
-function buildAclMap (acl): AclMap {
+function buildAclMap (acl): AclOptionMap {
   // Reduce the list of ACL options into key/value pairs. Use a vanilla object
   // to construct the map because the es6 Map object loses its values when
   // serialized to JSON.

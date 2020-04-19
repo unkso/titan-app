@@ -20,12 +20,12 @@ export interface AddUserExcuseFields {
      * @type {number}
      * @memberof AddUserExcuseFields
      */
-    event_date: number;
+    eventDate: number;
     /**
      * @type {number}
      * @memberof AddUserExcuseFields
      */
-    event_type_id: number;
+    eventTypeId: number;
     /**
      * @type {string}
      * @memberof AddUserExcuseFields

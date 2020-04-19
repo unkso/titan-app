@@ -9,15 +9,15 @@ There are certain features that *must* exist for Titan to function properly. Exa
  └── auth/
      ├── forgot-password
      │   ├── components/
-     │   └── index.js
+     │   └── index.tsx
      ├── login
      │   ├── components/
-     │   └── index.js
+     │   └── index.tsx
      └── logout
      │   ├── components/
-     │   └── index.js
+     │   └── index.tsx
      ├── components/
-     └── index.js
+     └── index.tsx
 ```
 
 ## State

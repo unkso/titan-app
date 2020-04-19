@@ -1,3 +1,4 @@
+/** @deprecated */
 export interface AclOption {
     /** Unique numeric Id. */
     optionId: number;
@@ -12,7 +13,16 @@ export interface AclOption {
  * a representation of the value in the form:
  *
  *    mod.{OPTION_CATEGORY_NAME}:{OPTION_NAME}
+ *
+ * @deprecated
  */
-export interface AclMap {
+export interface AclOptionMap {
     [key: string]: AclOption;
 }
+
+/**
+ * A string representation of an ACL option in the form:
+ *
+ * mod.{OPTION_CATEGORY_NAME}:{OPTION_NAME}
+ */
+export type AclOptionToken = string;

@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import {useEffect, useState} from 'react';
 import {Acl, createAclInstanceFromSession} from '@titan/lib/acl';
+import {AppState} from "@titan/store/root_reducer";
 
 /**
  * A factory function that returns a boolean value indicating
@@ -18,7 +19,7 @@ type AclResultFactory = (acl: Acl) => boolean;
  *      acl.hasAclPermission(PERMISSION_CAN_CREATE_FILE_ENTRIES));
  */
 export function useAcl (factory: AclResultFactory) {
-    const session = useSelector(state => state.auth.session);
+    const session = useSelector<AppState>(state => state.authUser);
     const [canAccess, setCanAccess] = useState(false);
 
     useEffect(() => {

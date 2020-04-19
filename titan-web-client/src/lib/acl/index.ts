@@ -1,5 +1,6 @@
-import {AclMap} from "@titan/lib/acl/types";
+import {AclOptionMap} from "@titan/lib/acl/types";
 import {Acl} from "@titan/lib/acl/acl";
+import {AuthUserState} from "@titan/store/auth_user";
 
 export {Acl} from '@titan/lib/acl/acl';
 export {AclRuleBuilder} from '@titan/lib/acl/acl_rule_builder';
@@ -7,7 +8,7 @@ export {Permission} from '@titan/lib/acl/permissions';
 export {useAcl} from '@titan/lib/acl/hooks';
 
 export const createAclInstance =
-    (authUserId, aclMap: AclMap, roles = []) => {
+    (authUserId, aclMap: AclOptionMap, roles = []) => {
         return new Acl(authUserId, aclMap, roles);
     };
 
@@ -17,7 +18,7 @@ export const createAclInstance =
  * @param {{user: {id}, acl: {}}} authSession
  * @returns {Acl}
  */
-export const createAclInstanceFromSession = (authSession) => {
+export const createAclInstanceFromSession = (authSession: AuthUserState) => {
     return createAclInstance(
-        authSession.user.id, authSession.acl, authSession.roles);
+        authSession.user.id, authSession.aclOptions, authSession.organizations);
 };

@@ -100,9 +100,11 @@ pub struct WcfUserToGroup {
 #[table_name = "wcf1_user_group_option"]
 #[primary_key(option_id)]
 pub struct WcfUserGroupOption {
-    pub option_id: i32,
-    pub option_name: String,
     pub category_name: String,
+    #[serde(rename(serialize = "optionId"))]
+    pub option_id: i32,
+    #[serde(rename(serialize = "optionName"))]
+    pub option_name: String,
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
@@ -149,48 +151,6 @@ impl WcfUserAvatar {
             &self.file_hash
         );
     }
-}
-
-#[derive(Serialize, Deserialize, Queryable)]
-pub struct WcfAclOptionCategory {
-    id: i32,
-    category_name: String
-}
-
-#[derive(Serialize, Deserialize, Queryable)]
-pub struct WcfAclOption {
-    pub id: i32,
-    pub option_name: String,
-    pub category_name: String
-}
-
-#[derive(Serialize, Deserialize, Queryable)]
-pub struct WcfAclOptionToGroup {
-    option_id: i32,
-    group_id: i32,
-    option_value: bool
-}
-
-#[derive(Serialize, Deserialize, Queryable)]
-pub struct WcfAclOptionToUser {
-    option_id: i32,
-    user_id: i32,
-    option_value: bool
-}
-
-#[derive(Serialize, Queryable)]
-pub struct UserAclEntry {
-    group_id: i32,
-    option_id: i32
-}
-
-#[derive(Serialize, Deserialize, Queryable)]
-pub struct WcfBranch {
-    pub branch_id: i32,
-    pub name: String,
-    pub image: String,
-    pub rank_unavailable_image: String,
-    pub is_disabled: bool
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]

@@ -1,22 +1,5 @@
 import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom'
-import {DashboardLayoutOld} from "@titan/layouts/dashboard_old";
-import {
-    ORGANIZATIONS_DETAIL_ROUTE,
-    ORGANIZATIONS_LIST_ROUTE
-} from "@titan/modules/organizations/routes";
-import OrganizationsListScene from '@titan/modules/organizations/organization_list_scene';
-import ManageUnacknowledgedReportsScene from '@titan/modules/organizations/manage_unacknowledged_reports';
-import {OrganizationDetailScene} from "@titan/modules/organizations/organization_detail_scene";
-import EmptyDarkLayout from "@titan/layouts/empty";
-import {LoginScene} from "@titan/modules/auth/login";
-import {ListAllUsersScene} from "@titan/modules/roster/ListAllUsersScene";
-import ProfileScene from '@titan/modules/roster/profile';
-import { ExcusesScene } from '@titan/modules/roster/manage_excuses';
-import {
-    USER_EXCUSES_ROUTE,
-    USER_PROFILE_ROUTE
-} from "@titan/modules/roster/routes";
 import {DashboardLayout} from "@titan/layouts/dashboard";
 
 export const routes =(

@@ -33,7 +33,12 @@ import {
     UserFileEntryWithAssoc,
     UserOrganizationMembership,
     UserProfile,
+    WcfUserGroupOption,
 } from '../models';
+
+export interface ApiUsersUserIdAclGetRequest {
+    userId: number;
+}
 
 export interface DeleteOrganizationUserRequest {
     orgId: number;
@@ -93,15 +98,19 @@ export interface GetOrganizationsSlugRequest {
     slug: number;
 }
 
+export interface GetUserRequest {
+    userId: number;
+}
+
+export interface GetUserOrganizationsRequest {
+    userId: number;
+    member?: boolean;
+    role?: boolean;
+}
+
 export interface GetUsersRequest {
     username?: string;
     limit?: number;
-}
-
-export interface GetUsersIdOrganizationsRequest {
-    id: number;
-    member?: boolean;
-    role?: boolean;
 }
 
 export interface GetUsersUserIdExcusesRequest {
@@ -156,6 +165,18 @@ export interface PostUsersUserIdExcusesRequest {
  * no description
  */
 export class DefaultApi extends BaseAPI {
+
+    /**
+     * user_acl
+     */
+    apiUsersUserIdAclGet = ({ userId }: ApiUsersUserIdAclGetRequest): Observable<Array<WcfUserGroupOption>> => {
+        throwIfNullOrUndefined(userId, 'apiUsersUserIdAclGet');
+
+        return this.request<Array<WcfUserGroupOption>>({
+            path: '/api/users/{user_id}/acl'.replace('{user_id}', encodeURI(userId)),
+            method: 'GET',
+        });
+    };
 
     /**
      * remove_user
@@ -448,6 +469,46 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
+     * get_user
+     */
+    getUser = ({ userId }: GetUserRequest): Observable<UserProfile> => {
+        throwIfNullOrUndefined(userId, 'getUser');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<UserProfile>({
+            path: '/api/users/{user_id}'.replace('{user_id}', encodeURI(userId)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
+     * list_user_organizations
+     */
+    getUserOrganizations = ({ userId, member, role }: GetUserOrganizationsRequest): Observable<Array<UserOrganizationMembership>> => {
+        throwIfNullOrUndefined(userId, 'getUserOrganizations');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        const query: HttpQuery = {};
+
+        if (member != null) { query['member'] = member; }
+        if (role != null) { query['role'] = role; }
+
+        return this.request<Array<UserOrganizationMembership>>({
+            path: '/api/users/{user_id}/organizations'.replace('{user_id}', encodeURI(userId)),
+            method: 'GET',
+            headers,
+            query,
+        });
+    };
+
+    /**
      * list_users
      */
     getUsers = ({ username, limit }: GetUsersRequest): Observable<Array<UserProfile>> => {
@@ -496,29 +557,6 @@ export class DefaultApi extends BaseAPI {
             path: '/api/users/file-entry-types',
             method: 'GET',
             headers,
-        });
-    };
-
-    /**
-     * get_user_organizations
-     */
-    getUsersIdOrganizations = ({ id, member, role }: GetUsersIdOrganizationsRequest): Observable<Array<UserOrganizationMembership>> => {
-        throwIfNullOrUndefined(id, 'getUsersIdOrganizations');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        const query: HttpQuery = {};
-
-        if (member != null) { query['member'] = member; }
-        if (role != null) { query['role'] = role; }
-
-        return this.request<Array<UserOrganizationMembership>>({
-            path: '/api/users/{id}/organizations'.replace('{id}', encodeURI(id)),
-            method: 'GET',
-            headers,
-            query,
         });
     };
 

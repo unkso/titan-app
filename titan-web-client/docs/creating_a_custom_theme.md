@@ -30,7 +30,7 @@ export default {
 
 ## Overriding the base theme
 <a id="overriding-base-theme"></a>
-You can customize the default theme when you initialize the titan app inside of `~/src/index.js`. For example, if you would like to override the application's primary color, you can use the following:
+You can customize the default theme when you initialize the titan app inside of `~/src/index.tsx`. For example, if you would like to override the application's primary color, you can use the following:
 
 ```javascript
 import { getTitanInstance } from 'titan-core'

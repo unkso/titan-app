@@ -20,7 +20,7 @@ export interface UpdateOrganizationRole {
      * @type {number}
      * @memberof UpdateOrganizationRole
      */
-    user_id: number;
+    userId: number;
     /**
      * @type {string}
      * @memberof UpdateOrganizationRole

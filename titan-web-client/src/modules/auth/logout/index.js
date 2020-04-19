@@ -3,6 +3,7 @@ import { useCookies } from '@titan/lib/storage/hooks';
 import * as authActions from '@titan/actions/auth_actions';
 import { useDispatch } from 'react-redux';
 import { useConfig } from '@titan/lib/config/hooks';
+import { AuthUserActions } from '@titan/store/auth_user';
 
 /**
  * @return {null}
@@ -26,7 +27,7 @@ export function LogoutScene () {
       domain: config.get('woltlab.cookie.domain')
     });
 
-    dispatch(authActions.logout());
+    dispatch(AuthUserActions.logout());
     window.location = '/auth/login';
   }, []);
 

@@ -114,6 +114,7 @@ pub struct ApiErrorResponseBody {
 /// to client apps.
 pub enum ApiError {
     AuthenticationError,
+    AuthorizationError,
     TitanDatabaseError(TitanDatabaseError),
     ValidationError(&'static str),
 }
@@ -124,6 +125,7 @@ impl<'r> Responder<'r> for ApiError {
     fn respond_to(self, _: &Request) -> Result<Response<'r>, Status> {
         let result = match self {
             ApiError::AuthenticationError => Err(Status::Unauthorized),
+            ApiError::AuthorizationError => Err(Status::Forbidden),
             ApiError::TitanDatabaseError(err) =>
                 ApiErrorResponseResult::from(err),
             ApiError::ValidationError(err) => Ok(ApiErrorResponse {

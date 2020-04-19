@@ -1,12 +1,11 @@
 import axios from 'axios';
 import * as authActions from '@titan/actions/auth_actions';
 import {config} from '@titan/lib/config';
-import _ from 'lodash';
-import { getStoreInstance } from '@titan/lib/redux';
+import {AppStore} from '@titan/store';
+import { AuthUserActions } from '@titan/store/auth_user';
 
 class AuthenticatedService {
   constructor () {
-    this.store = getStoreInstance().getStore();
     this.httpClient = axios.create({
       baseURL: config.get('api.baseUrl'),
       headers: {
@@ -29,10 +28,8 @@ class AuthenticatedService {
   }
 
   authHeadersInterceptor (config) {
-    const state = this.store.getState();
-
-    if (_.isEmpty(state.auth.session.token)) {
-      this.store.dispatch(authActions.logout());
+    if (AppStore.getState().authUser.credentials) {
+      AppStore.dispatch(AuthUserActions.logout());
       return false;
     }
 
@@ -45,7 +42,7 @@ class AuthenticatedService {
 
   responseErrorInterceptor (err) {
     if (err.response && err.response.status === 401) {
-      this.store.dispatch(authActions.logout());
+      AppStore.dispatch(authActions.logout());
     }
 
     return Promise.reject(err);
