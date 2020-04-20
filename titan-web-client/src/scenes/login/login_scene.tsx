@@ -39,7 +39,7 @@ export function LoginScene() {
                 localStorage.setItem('titan_credentials', JSON.stringify(loginRes));
                 dispatch(AuthUserActions.login(loginRes));
                 window.location.href = '/dashboard';
-            })
+            });
         } else {
             setLoading(false);
         }

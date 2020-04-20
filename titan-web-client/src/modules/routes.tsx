@@ -6,7 +6,7 @@ import {LoginScene} from "@titan/scenes/login/login_scene";
 export const routes =(
     <Switch>
         <Route exact path="/">
-            <Redirect to="/dashboard" />
+            <Redirect to="/login" />
         </Route>
 
         <Route path="/login">
