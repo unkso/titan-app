@@ -1,4 +1,4 @@
-import {AclOptionMap} from '@titan/lib/acl/types';
+import {AclOptionToken} from '@titan/lib/acl/types';
 import {AclRuleBuilder} from '@titan/lib/acl';
 import {OrganizationRole} from "@titan/http/api";
 
@@ -8,7 +8,7 @@ import {OrganizationRole} from "@titan/http/api";
  */
 export class Acl {
   constructor (private readonly authUserId: number,
-               private readonly aclMap: AclOptionMap,
+               private readonly actionOptionsSet: Set<AclOptionToken>,
                private readonly leadershipRoles: OrganizationRole[] = []) {
   }
 
@@ -29,7 +29,7 @@ export class Acl {
    * the given resource.
    */
   hasAclPermission (optionKey: string): boolean {
-    return !!this.aclMap[optionKey];
+    return this.actionOptionsSet.has(optionKey);
   }
 
   /**

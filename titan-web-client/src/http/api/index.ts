@@ -26,35 +26,3 @@ export const TitanApiClient = new TitanApi(new TitanApiConfig({
         }
     ]
 }));
-
-/** Returns a cached instance of {@link TitanApi} */
-/*export function getApiClient(): TitanApiClient {
-    let apiClient: TitanApiClient|undefined = undefined;
-    return (() => {
-        if (!apiClient) {
-            apiClient = createApiClient();
-        }
-        return apiClient;
-    })();
-}*/
-
-/** Initializes a new instance of {@link TitanApi}. */
-/*function createApiClient(): TitanApiClient {
-    return new TitanApiClient(new TitanApiConfig({
-        apiKey: () => AppStore.getState().authUser.credentials!.token,
-        basePath: config.get('api.baseUrl'),
-        middleware: [
-            {
-                pre: (request: RequestArgs) => {
-                    return request;
-                },
-                post: (response: ResponseArgs) => {
-                    if (response.status) {
-                        AppStore.dispatch(AuthActions.logout());
-                    }
-                    return response;
-                }
-            }
-        ]
-    }));
-}*/

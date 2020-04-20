@@ -22,7 +22,6 @@ import {
     DeleteOrganizationUserFields,
     EventType,
     InlineResponse200,
-    InlineResponse2001,
     Organization,
     OrganizationRoleWithAssoc,
     ReorderOrganizationRolesFields,
@@ -34,11 +33,8 @@ import {
     UserOrganizationMembership,
     UserProfile,
     WcfUserGroupOption,
+    WoltlabLoginResponse,
 } from '../models';
-
-export interface ApiUsersUserIdAclGetRequest {
-    userId: number;
-}
 
 export interface DeleteOrganizationUserRequest {
     orgId: number;
@@ -99,6 +95,10 @@ export interface GetOrganizationsSlugRequest {
 }
 
 export interface GetUserRequest {
+    userId: number;
+}
+
+export interface GetUserAclRequest {
     userId: number;
 }
 
@@ -167,18 +167,6 @@ export interface PostUsersUserIdExcusesRequest {
 export class DefaultApi extends BaseAPI {
 
     /**
-     * user_acl
-     */
-    apiUsersUserIdAclGet = ({ userId }: ApiUsersUserIdAclGetRequest): Observable<Array<WcfUserGroupOption>> => {
-        throwIfNullOrUndefined(userId, 'apiUsersUserIdAclGet');
-
-        return this.request<Array<WcfUserGroupOption>>({
-            path: '/api/users/{user_id}/acl'.replace('{user_id}', encodeURI(userId)),
-            method: 'GET',
-        });
-    };
-
-    /**
      * remove_user
      */
     deleteOrganizationUser = ({ orgId, deleteOrganizationUserFields }: DeleteOrganizationUserRequest): Observable<void> => {
@@ -195,6 +183,21 @@ export class DefaultApi extends BaseAPI {
             method: 'DELETE',
             headers,
             body: deleteOrganizationUserFields,
+        });
+    };
+
+    /**
+     * get_authenticated_user
+     */
+    getAuthenticatedUser = (): Observable<UserProfile> => {
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<UserProfile>({
+            path: '/api/users/me',
+            method: 'GET',
+            headers,
         });
     };
 
@@ -486,6 +489,22 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
+     */
+    getUserAcl = ({ userId }: GetUserAclRequest): Observable<Array<WcfUserGroupOption>> => {
+        throwIfNullOrUndefined(userId, 'getUserAcl');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<Array<WcfUserGroupOption>>({
+            path: '/api/users/{user_id}/acl'.replace('{user_id}', encodeURI(userId)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
      * list_user_organizations
      */
     getUserOrganizations = ({ userId, member, role }: GetUserOrganizationsRequest): Observable<Array<UserOrganizationMembership>> => {
@@ -597,14 +616,14 @@ export class DefaultApi extends BaseAPI {
     /**
      * woltlab
      */
-    postAuthWoltlab = ({ authWoltlabFields }: PostAuthWoltlabRequest): Observable<InlineResponse200> => {
+    postAuthWoltlab = ({ authWoltlabFields }: PostAuthWoltlabRequest): Observable<WoltlabLoginResponse> => {
         throwIfNullOrUndefined(authWoltlabFields, 'postAuthWoltlab');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
         };
 
-        return this.request<InlineResponse200>({
+        return this.request<WoltlabLoginResponse>({
             path: '/api/auth/woltlab',
             method: 'POST',
             headers,
@@ -732,7 +751,7 @@ export class DefaultApi extends BaseAPI {
     /**
      * save_user_event_excuse
      */
-    postUsersUserIdExcuses = ({ userId, addUserExcuseFields }: PostUsersUserIdExcusesRequest): Observable<InlineResponse2001> => {
+    postUsersUserIdExcuses = ({ userId, addUserExcuseFields }: PostUsersUserIdExcusesRequest): Observable<InlineResponse200> => {
         throwIfNullOrUndefined(userId, 'postUsersUserIdExcuses');
         throwIfNullOrUndefined(addUserExcuseFields, 'postUsersUserIdExcuses');
 
@@ -741,7 +760,7 @@ export class DefaultApi extends BaseAPI {
             ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
-        return this.request<InlineResponse2001>({
+        return this.request<InlineResponse200>({
             path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(userId)),
             method: 'POST',
             headers,

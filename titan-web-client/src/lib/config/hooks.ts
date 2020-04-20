@@ -1,6 +1,6 @@
-import {config} from '@titan/lib/config';
+import {Config, config} from '@titan/lib/config';
 
 /** Returns global config context */
-export function useConfig () {
+export function useConfig (): Config {
   return config;
 }

@@ -13,17 +13,22 @@
 
 /**
  * @export
- * @interface AuthWoltlabFields
+ * @interface GenericError
  */
-export interface AuthWoltlabFields {
+export interface GenericError {
     /**
      * @type {number}
-     * @memberof AuthWoltlabFields
+     * @memberof GenericError
      */
-    wcfUserId: number;
+    code: number;
     /**
      * @type {string}
-     * @memberof AuthWoltlabFields
+     * @memberof GenericError
      */
-    cookiePassword: string;
+    description: string;
+    /**
+     * @type {string}
+     * @memberof GenericError
+     */
+    message: string;
 }

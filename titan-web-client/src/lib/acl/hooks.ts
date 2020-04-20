@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import {useEffect, useState} from 'react';
 import {Acl, createAclInstanceFromSession} from '@titan/lib/acl';
 import {AppState} from "@titan/store/root_reducer";
+import {AuthUserState} from "@titan/store/auth_user";
 
 /**
  * A factory function that returns a boolean value indicating
@@ -19,7 +20,7 @@ type AclResultFactory = (acl: Acl) => boolean;
  *      acl.hasAclPermission(PERMISSION_CAN_CREATE_FILE_ENTRIES));
  */
 export function useAcl (factory: AclResultFactory) {
-    const session = useSelector<AppState>(state => state.authUser);
+    const session = useSelector<AppState, AuthUserState>(state => state.authUser);
     const [canAccess, setCanAccess] = useState(false);
 
     useEffect(() => {

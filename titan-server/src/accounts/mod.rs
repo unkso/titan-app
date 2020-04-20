@@ -17,6 +17,7 @@ pub fn get_auth_routes() -> Vec<Route> {
 pub fn get_user_routes() -> Vec<Route> {
     routes![
         routes::ack_user_event_excuse,
+        routes::get_authenticated_user,
         routes::get_user,
         routes::get_user_acl,
         routes::save_user_file_entry,

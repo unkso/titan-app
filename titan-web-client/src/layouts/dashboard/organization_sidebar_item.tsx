@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Organization} from "@titan/http/api";
 import {Avatar} from "@material-ui/core";
 
-interface OrganizationSidebarItemProps {
-    organization: Organization;
+export interface OrganizationSidebarItemProps {
+    name: string;
+    path: string;
 }
 
 export function OrganizationSidebarItem(props: OrganizationSidebarItemProps) {
@@ -11,14 +12,14 @@ export function OrganizationSidebarItem(props: OrganizationSidebarItemProps) {
     useEffect(() => {
         // Get the first letter of the first two words in the
         // organization name.
-        const letters = props.organization.slug.split(' ', 1)
+        const letters = props.name.split(' ', 1)
             .map(word => word[0])
             .join();
         setAbbr(letters);
-    }, [props.organization.slug]);
+    }, [props.name]);
 
     return (
-        <a href={props.organization.slug}>
+        <a href={props.path}>
             <Avatar>{abbr}</Avatar>
         </a>
     );

@@ -13,7 +13,7 @@ const LoginFormStyle = styled.div`
   top: -15%;
 `;
 
-class Woltlab_login_form extends React.Component {
+class WoltlabLoginForm extends React.Component {
   render () {
     return (
       <LoginFormStyle>
@@ -35,9 +35,9 @@ class Woltlab_login_form extends React.Component {
   }
 }
 
-Woltlab_login_form.propTypes = {
+WoltlabLoginForm.propTypes = {
   loading: PropTypes.bool,
   loginLink: PropTypes.string
 };
 
-export default Woltlab_login_form;
+export default WoltlabLoginForm;

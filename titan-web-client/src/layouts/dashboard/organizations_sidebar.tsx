@@ -1,16 +1,22 @@
 import React from 'react';
-import {Organization} from "@titan/http/api";
-import {OrganizationSidebarItem} from "@titan/layouts/dashboard/organization_sidebar_item";
+import {
+    OrganizationSidebarItem,
+    OrganizationSidebarItemProps
+} from "@titan/layouts/dashboard/organization_sidebar_item";
 
-interface OrganizationsSidebarProps {
-    organizations: ReadonlyArray<Organization>;
+export interface OrganizationsSidebarProps {
+    items: ReadonlyArray<OrganizationSidebarItemProps>;
 }
 
 export function OrganizationsSidebar(props: OrganizationsSidebarProps) {
     return (
         <div>
-            {props.organizations.map((org, index) =>
-                <OrganizationSidebarItem organization={org} key={index} />
+            {props.items.map((item, index) =>
+                <OrganizationSidebarItem
+                    name={item.name}
+                    path={item.path}
+                    key={index}
+                />
             )}
         </div>
     );

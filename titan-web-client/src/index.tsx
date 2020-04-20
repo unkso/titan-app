@@ -13,9 +13,15 @@ import {
 import { Provider as ReduxProvider } from 'react-redux';
 import {CssBaseline} from "@material-ui/core";
 import {AppStore} from "@titan/store";
+import {Palette} from "@titan/themes/default";
 
 const defaultMuiTheme = createMuiTheme(createMuiTheme({
     palette: {
+        primary: Palette.primary,
+        background: {
+            default: Palette.background[500],
+            paper: Palette.background[300],
+        },
         type: 'dark',
     },
 }));

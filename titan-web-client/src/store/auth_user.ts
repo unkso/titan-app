@@ -1,15 +1,18 @@
 import {AclOptionToken} from "@titan/lib/acl/types";
 import {
+    OrganizationRole,
     UserOrganizationMembership,
     UserProfile
 } from "@titan/http/api";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AppState} from "@titan/store/root_reducer";
 
 /**
  * Credentials used to authenticate the user when sending requests
  * the the server.
  */
 export interface AuthUserCredentials {
+    userId: number;
     token: string;
 }
 
@@ -33,8 +36,23 @@ export interface AuthUserState {
     user?: UserProfile;
 }
 
+function getStoredAuthUserCredentials(): AuthUserCredentials|undefined {
+    const serializedCredentials: string|null =
+        localStorage.getItem('titan_credentials');
+
+    if (serializedCredentials) {
+        const parsedCredentials: AuthUserCredentials = JSON.parse(serializedCredentials);
+        if (parsedCredentials.token && parsedCredentials.userId) {
+            return parsedCredentials;
+        }
+    }
+
+    return undefined;
+}
+
 const DEFAULT_STATE: AuthUserState = {
     aclOptions: [],
+    credentials: getStoredAuthUserCredentials(),
     organizations: [],
 };
 
@@ -55,16 +73,21 @@ const AuthUserSlice = createSlice({
         setOrganizations(state, action: PayloadAction<UserOrganizationMembership[]>) {
             state.organizations = action.payload;
         },
-        setProfile(state, action: PayloadAction<UserProfile>) {
+        setUser(state, action: PayloadAction<UserProfile>) {
             state.user = action.payload;
         },
     }
 });
 
+export const authOrganizationRolesSelector = state =>
+    state.authUser.organizations
+        .filter(org => !!org.role)
+        .map(org => org.role);
 export const authUserSelector = state => state.authUser.user;
-export const authOrganizationsSelector = state => state.authUser.organizations;
-export const authTokenSelector =
-        state => state.authUser.credentials?.token;
+export const authOrganizationsSelector =
+        state => state.authUser.organizations;
+export const authCredentialsSelector =
+        state => state.authUser.credentials;
 
 export const AuthUserActions = AuthUserSlice.actions;
 export const AuthUserReducer = AuthUserSlice.reducer;

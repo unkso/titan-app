@@ -13,17 +13,17 @@
 
 /**
  * @export
- * @interface AuthWoltlabFields
+ * @interface WoltlabLoginResponse
  */
-export interface AuthWoltlabFields {
+export interface WoltlabLoginResponse {
     /**
      * @type {number}
-     * @memberof AuthWoltlabFields
+     * @memberof WoltlabLoginResponse
      */
-    wcfUserId: number;
+    userId: number;
     /**
      * @type {string}
-     * @memberof AuthWoltlabFields
+     * @memberof WoltlabLoginResponse
      */
-    cookiePassword: string;
+    token: string;
 }

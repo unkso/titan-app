@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Woltlab_login_form from '../components/woltlab_login_form';
+import WoltlabLoginForm from '../components/woltlab_login_form';
 import * as authActions from '@titan/actions/auth_actions';
 import { useCookies } from '@titan/lib/storage/hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeTitanApiRequest, WoltlabLoginRequest } from '@titan/http/api_client';
 import { useConfig } from '@titan/lib/config/hooks';
 
-export function Woltlab_login_container () {
+export function WoltlabLoginContainer () {
   const config = useConfig();
   const cookies = useCookies();
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export function Woltlab_login_container () {
   }, [config]);
 
   return (
-    <Woltlab_login_form
+    <WoltlabLoginForm
       loading={loading}
       loginLink={config.get('woltlab.authUrl')}
     />

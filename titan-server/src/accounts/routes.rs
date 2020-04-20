@@ -31,35 +31,39 @@ pub struct WoltlabLoginRequest {
 
 #[derive(Serialize)]
 pub struct WoltlabLoginResponse {
+    #[serde(rename(serialize = "userId"))]
+    pub user_id: i32,
     pub token: String,
 }
 
 #[post("/woltlab", format = "application/json", data = "<credentials>")]
 pub fn woltlab_login(
+    titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
     credentials: Json<WoltlabLoginRequest>,
     app_config: State<config::AppConfig>,
 ) -> ApiResponse<WoltlabLoginResponse> {
-    let wcf_db_ref = &*wcf_db;
-    let res = users::find_by_wcf_id(credentials.wcf_user_id, wcf_db_ref)
+    let res = users::find_by_wcf_id(credentials.wcf_user_id, &*titan_db)
         .map_err(ApiError::from)
         .and_then(|user| {
-            users::wcf_find_by_user_id(credentials.wcf_user_id, wcf_db_ref)
+            users::wcf_find_by_user_id(credentials.wcf_user_id, &*wcf_db)
                 .map_err(ApiError::from)
+                .map(|wcf_user| (user.id, wcf_user))
         })
-        .and_then(|wcf_user| {
+        .and_then(|(user_id, wcf_user)| {
             let is_valid = woltlab_auth_helper::check_password(
                 &wcf_user.password, &credentials.cookie_password);
             if is_valid {
-                Ok(wcf_user)
+                Ok((user_id, wcf_user))
             } else {
                 Err(ApiError::AuthorizationError)
             }
         })
-        .and_then(|wcf_user| {
-            create_jwt(credentials.wcf_user_id, wcf_user.user_id, &app_config.secret_key)
+        .and_then(|(user_id, wcf_user)| {
+            create_jwt(user_id, wcf_user.user_id, &app_config.secret_key)
                 .map(|token| {
                     WoltlabLoginResponse {
+                        user_id,
                         token,
                     }
                 })
@@ -145,6 +149,17 @@ pub fn get_user(
     _auth_guard: auth_guard::AuthenticatedUser,
 ) -> ApiResponse<models::UserProfile> {
     ApiResponse::from(users::find_by_id(user_id, &*titan_db)
+        .and_then(|user| users::map_user_to_profile(&user, &*wcf_db, &app_config)))
+}
+
+#[get("/me")]
+pub fn get_authenticated_user(
+    titan_db: TitanPrimary,
+    wcf_db: UnksoMainForums,
+    app_config: State<config::AppConfig>,
+    auth_guard: auth_guard::AuthenticatedUser,
+) -> ApiResponse<models::UserProfile> {
+    ApiResponse::from(users::find_by_id(auth_guard.user.id, &*titan_db)
         .and_then(|user| users::map_user_to_profile(&user, &*wcf_db, &app_config)))
 }
 

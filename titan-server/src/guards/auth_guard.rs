@@ -80,7 +80,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
                 })
             }
             _ => {
-                rocket::Outcome::Failure((Status::BadRequest, AuthTokenError::InvalidToken))
+                rocket::Outcome::Failure((Status::Unauthorized, AuthTokenError::InvalidToken))
             }
         }
     }

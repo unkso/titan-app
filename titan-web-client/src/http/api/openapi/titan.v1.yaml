@@ -18,31 +18,16 @@ paths:
           content:
             application/json:
               schema:
+                title: woltlab_login_response
                 type: object
                 properties:
+                  user_id:
+                    type: integer
                   token:
                     type: string
-                  user:
-                    $ref: ./models/user_profile.v1.yaml
-                  wcf_username:
-                    type: string
-                  wcf_user_title:
-                    type: string
-                  acl:
-                    type: array
-                    items:
-                      $ref: ./models/wcf_user_group_option.v1.yaml
-                  roles:
-                    type: array
-                    items:
-                      $ref: ./models/organization_role.v1.yaml
                 required:
+                  - user_id
                   - token
-                  - user
-                  - wcf_username
-                  - wcf_user_title
-                  - acl
-                  - roles
       operationId: post-auth-woltlab
       requestBody:
         required: true
@@ -52,14 +37,13 @@ paths:
               title: auth_woltlab_fields
               type: object
               properties:
-                user_id:
+                wcf_user_id:
                   type: integer
                 cookie_password:
                   type: string
               required:
-                - user_id
+                - wcf_user_id
                 - cookie_password
-      description: ''
   /api/users:
     get:
       summary: list_users
@@ -83,6 +67,20 @@ paths:
             type: integer
           in: query
           name: limit
+      security:
+        - api_key: []
+  /api/users/me:
+    get:
+      summary: get_authenticated_user
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/user_profile.v1.yaml
+      operationId: get-authenticated-user
       security:
         - api_key: []
   /api/users/{user_id}:
@@ -113,7 +111,7 @@ paths:
         schema:
           type: integer
     get:
-      summary: user_acl
+      operationId: get_user_acl
       responses:
         200:
           description: OK
@@ -123,6 +121,8 @@ paths:
                 type: array
                 items:
                   $ref: ./models/wcf_user_group_option.v1.yaml
+      security:
+        - api_key: []
   /api/users/excuses/unacknowledged:
     get:
       summary: list_unacknowledged_excuses
@@ -774,7 +774,27 @@ paths:
       security:
         - api_key: []
 components:
-  schemas: {}
+  responses:
+    GenericError:
+      description: Error returned from the server. Alll errors(401, 404, etc) will have this shape.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+  schemas:
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: integer
+        description:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - description
+        - message
   securitySchemes:
     api_key:
       type: apiKey

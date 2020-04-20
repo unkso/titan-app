@@ -1,49 +1,68 @@
 import React, {useEffect} from 'react';
-import {Drawer} from "@material-ui/core";
+import {CircularProgress, Drawer} from "@material-ui/core";
 import {OrganizationsSidebar} from "@titan/layouts/dashboard/organizations_sidebar";
+import {TitanApiClient} from "@titan/http/api";
+import {useDispatch, useSelector} from "react-redux";
 import {
-    TitanApiClient,
-} from "@titan/http/api";
-import {useSelector} from "react-redux";
-import {
+    authCredentialsSelector,
     authOrganizationsSelector,
-    AuthUserActions,
+    AuthUserActions, AuthUserCredentials,
     authUserSelector
 } from "@titan/store/auth_user";
 import {combineLatest} from "rxjs";
+import {AppState} from "@titan/store/root_reducer";
 
 
 export function DashboardLayout(props) {
-    const user = useSelector(authUserSelector);
+    const userProfile = useSelector(authUserSelector);
     const organizations = useSelector(authOrganizationsSelector);
+    const credentials = useSelector<AppState, AuthUserCredentials>(authCredentialsSelector);
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        if (!credentials) {
+            window.location.href = '/login';
+            return;
+        }
+
         combineLatest([
-            // Fetch authenticated user's profile.
-            TitanApiClient.getUser({userId: user.id}),
-            // Fetch organizations where the authenticated user is a
-            // leader or a member.
+            TitanApiClient.getAuthenticatedUser(),
+            TitanApiClient.getUserAcl({userId: credentials.userId}),
             TitanApiClient.getUserOrganizations({
-                userId: user.id,
+                userId: credentials.userId,
                 member: true,
-                role: true
+                role: true,
             })
-        ]).subscribe(([user, orgs]) => {
-            AuthUserActions.setProfile(user);
-            AuthUserActions.setOrganizations(orgs);
+        ]).subscribe(([userProfile, acl, orgs]) => {
+            dispatch(AuthUserActions.setUser(userProfile));
+            dispatch(AuthUserActions.setAclOptions(
+                acl.map(option =>
+                    `mod.${option.categoryName}.${option.optionName}`
+                )));
+            dispatch(AuthUserActions.setOrganizations(orgs));
         });
-    }, [user]);
+    }, [credentials]);
+
     return (
         <div>
-            <Drawer variant="permanent">
-                <OrganizationsSidebar organizations={organizations}></OrganizationsSidebar>
-            </Drawer>
-            <main>
-                <section>
+            {userProfile ? (
+                <div>
+                    <Drawer variant="permanent">
+                        <OrganizationsSidebar items={organizations.map(org => ({
+                            name: org.organization.name,
+                            path: `/dashboard/organizations/${org.organization.id}`,
+                        }))} />
+                    </Drawer>
+                    <main>
+                        <section>
 
-                </section>
-                {props.children}
-            </main>
+                        </section>
+                        {props.children}
+                    </main>
+                </div>
+            ) : (
+                <CircularProgress />
+            )}
         </div>
     );
 }

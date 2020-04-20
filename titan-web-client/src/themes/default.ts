@@ -1,6 +1,46 @@
 import { createTypography } from '@titan/lib/styles/typography';
 
-export const defaultTheme = {
+export const Palette = {
+  primary: {
+    50: '#fcf2e2',
+    100: '#f8dfb6',
+    200: '#f4c985',
+    300: '#f0b354',
+    400: '#eca330',
+    500: '#e9930b',
+    600: '#e68b0a',
+    700: '#e38008',
+    800: '#df7606',
+    900: '#d96403',
+    A100: '#ffffff',
+    A200: '#ffe1ce',
+    A400: '#ffc29b',
+    A700: '#ffb381',
+    'contrastDefaultColor': 'dark',
+  },
+  background: {
+    50: '#5f6980',
+    100: '#495163',
+    200: '#3e4554',
+    300: '#333945',
+    400: '#282d36',
+    500: '#1d2127',
+    600: '#1a1d23',
+    700: '#15181d',
+    800: '#111417',
+    900: '#0a0b0e',
+    A100: '#53a9ff',
+    A200: '#2090ff',
+    A400: '#0076ec',
+    A700: '#0069d3',
+    'contrastDefaultColor': 'light',
+  }
+};
+
+/**
+ * @deprecated
+ */
+export const oldDefaultTheme = {
   typography: {
     fontSize: 14,
     useNextVariants: true,

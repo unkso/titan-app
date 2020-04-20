@@ -100,11 +100,11 @@ pub struct WcfUserToGroup {
 #[table_name = "wcf1_user_group_option"]
 #[primary_key(option_id)]
 pub struct WcfUserGroupOption {
-    pub category_name: String,
     #[serde(rename(serialize = "optionId"))]
     pub option_id: i32,
     #[serde(rename(serialize = "optionName"))]
     pub option_name: String,
+    pub category_name: String,
 }
 
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]

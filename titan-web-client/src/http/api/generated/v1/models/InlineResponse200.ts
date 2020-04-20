@@ -12,9 +12,7 @@
  */
 
 import {
-    OrganizationRole,
-    UserProfile,
-    WcfUserGroupOption,
+    UserEventExcuseWithAssoc,
 } from './';
 
 /**
@@ -23,33 +21,8 @@ import {
  */
 export interface InlineResponse200 {
     /**
-     * @type {string}
+     * @type {UserEventExcuseWithAssoc}
      * @memberof InlineResponse200
      */
-    token: string;
-    /**
-     * @type {UserProfile}
-     * @memberof InlineResponse200
-     */
-    user: UserProfile;
-    /**
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    wcfUsername: string;
-    /**
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    wcfUserTitle: string;
-    /**
-     * @type {Array<WcfUserGroupOption>}
-     * @memberof InlineResponse200
-     */
-    acl: Array<WcfUserGroupOption>;
-    /**
-     * @type {Array<OrganizationRole>}
-     * @memberof InlineResponse200
-     */
-    roles: Array<OrganizationRole>;
+    userId?: UserEventExcuseWithAssoc;
 }
