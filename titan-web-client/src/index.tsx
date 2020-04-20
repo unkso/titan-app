@@ -6,6 +6,7 @@ import {routes} from '@titan/modules/routes';
 import {SnackbarProvider} from "notistack";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {MatPickerDateUtils} from "@titan/lib/mat_picker_date_utils";
+import { StylesProvider } from '@material-ui/core/styles';
 import {
     createMuiTheme,
     MuiThemeProvider
@@ -27,21 +28,23 @@ const defaultMuiTheme = createMuiTheme(createMuiTheme({
 }));
 
 ReactDOM.render(
-  <MuiThemeProvider theme={defaultMuiTheme}>
-      <CssBaseline />
-    <SnackbarProvider
-      maxSnack={1}
-      anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'}}>
-      <MuiPickersUtilsProvider utils={MatPickerDateUtils}>
-          <ReduxProvider store={AppStore}>
-              <BrowserRouter>
-                  {routes}
-              </BrowserRouter>
-          </ReduxProvider>
-      </MuiPickersUtilsProvider>
-    </SnackbarProvider>
-  </MuiThemeProvider>
+    <StylesProvider injectFirst>
+        <MuiThemeProvider theme={defaultMuiTheme}>
+            <CssBaseline />
+            <SnackbarProvider
+                maxSnack={1}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center'}}>
+                <MuiPickersUtilsProvider utils={MatPickerDateUtils}>
+                    <ReduxProvider store={AppStore}>
+                        <BrowserRouter>
+                            {routes}
+                        </BrowserRouter>
+                    </ReduxProvider>
+                </MuiPickersUtilsProvider>
+            </SnackbarProvider>
+        </MuiThemeProvider>
+    </StylesProvider>
     , document.getElementById('root'));
 registerServiceWorker();

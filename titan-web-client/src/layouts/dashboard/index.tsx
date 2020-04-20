@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {CircularProgress, Drawer} from "@material-ui/core";
-import {OrganizationsSidebar} from "@titan/layouts/dashboard/organizations_sidebar";
+import {ContextSidebar} from "@titan/layouts/dashboard/context_sidebar";
 import {TitanApiClient} from "@titan/http/api";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -48,7 +48,7 @@ export function DashboardLayout(props) {
             {userProfile ? (
                 <div>
                     <Drawer variant="permanent">
-                        <OrganizationsSidebar items={organizations.map(org => ({
+                        <ContextSidebar items={organizations.map(org => ({
                             name: org.organization.name,
                             path: `/dashboard/organizations/${org.organization.id}`,
                         }))} />
