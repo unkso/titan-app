@@ -36,7 +36,7 @@ export function ContextSidebar(props: ContextSidebarProps) {
                 icon={<i className="fal fa-users" />}
                 key="item-community"
                 name="Community"
-                path="/dashboard/community"
+                path="/dashboard/community/organizations"
             />
             {props.items.map((item, index) =>
                 <ContextSidebarItem

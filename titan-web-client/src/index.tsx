@@ -32,7 +32,7 @@ const defaultMuiTheme = createMuiTheme(createMuiTheme({
         primary: Palette.primary,
         background: {
             default: Palette.background[500],
-            paper: Palette.background[300],
+            paper: Palette.background[400],
         },
         type: 'dark',
     },
