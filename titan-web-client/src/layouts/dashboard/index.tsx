@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {CircularProgress, Drawer} from "@material-ui/core";
+import {CircularProgress, Drawer, useTheme} from "@material-ui/core";
 import styled from 'styled-components';
 import {ContextSidebar} from "@titan/layouts/dashboard/context_sidebar";
 import {TitanApiClient} from "@titan/http/api";
@@ -12,6 +12,7 @@ import {
 } from "@titan/store/auth_user";
 import {combineLatest} from "rxjs";
 import {AppState} from "@titan/store/root_reducer";
+import {PageToolbar} from "@titan/layouts/dashboard/page_toolbar";
 
 const StyledDrawer = styled(Drawer)`
   .context-sidebar-paper {
@@ -19,7 +20,13 @@ const StyledDrawer = styled(Drawer)`
   }
 `;
 
+const StyledContentSection = styled.div`
+  margin-left: 70px;
+  padding: 0 ${props => props.padding}px;
+`;
+
 export function DashboardLayout(props) {
+    const theme = useTheme();
     const userProfile = useSelector(authUserSelector);
     const organizations = useSelector(authOrganizationsSelector);
     const credentials = useSelector<AppState, AuthUserCredentials>(authCredentialsSelector);
@@ -63,12 +70,10 @@ export function DashboardLayout(props) {
                     path: `/dashboard/organizations/${org.organization.id}`,
                 }))} />
             </StyledDrawer>
-            <main>
-                <section>
-
-                </section>
-                {props.children}
-            </main>
+            <StyledContentSection padding={theme.spacing(4)}>
+                <PageToolbar userProfile={userProfile} />
+                <section>{props.children}</section>
+            </StyledContentSection>
         </div>
     );
 }
