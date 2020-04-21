@@ -40,9 +40,10 @@ export function ContextSidebar(props: ContextSidebarProps) {
             />
             {props.items.map((item, index) =>
                 <ContextSidebarItem
+                    imageUrl={item.imageUrl}
+                    key={index}
                     name={item.name}
                     path={item.path}
-                    key={index}
                 />
             )}
         </StyledContextSidebar>

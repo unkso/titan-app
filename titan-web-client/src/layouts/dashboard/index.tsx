@@ -22,7 +22,7 @@ const StyledDrawer = styled(Drawer)`
 
 const StyledContentSection = styled.div`
   margin-left: 70px;
-  padding: 0 ${props => props.padding}px;
+  padding: 0 ${props => props.padding}px ${props => props.padding}px;
 `;
 
 const StyledCircularProgress = styled(CircularProgress)`
@@ -72,9 +72,11 @@ export function DashboardLayout(props) {
                 paper: 'context-sidebar-paper',
             }}>
                 <ContextSidebar items={organizations.map(org => ({
+                    imageUrl: org.organization.avatarUrl,
                     name: org.organization.name,
                     path: `/dashboard/organizations/${org.organization.id}`,
-                }))} />
+                }))}
+                />
             </StyledDrawer>
             <StyledContentSection padding={theme.spacing(4)}>
                 <PageToolbar userProfile={userProfile} />

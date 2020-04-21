@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Avatar, IconButton, useTheme} from "@material-ui/core";
 import {UserProfile} from "@titan/http/api";
+import {Palette} from "@titan/themes/default";
 
 interface PageToolbarProps {
     userProfile: UserProfile;

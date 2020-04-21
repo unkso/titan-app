@@ -6,11 +6,14 @@ export interface ContextSidebarItemProps {
     hasNotification?: boolean;
     name: string;
     icon?: ReactNode;
+    imageUrl?: string;
     path: string;
 }
 
 const StyledAvatar = styled(Avatar)`
   background-color: ${props => props.background};
+  background-image: url(${props => props.image});
+  background-size: cover;
   color: ${props => props.color};
   font-size: x-large;
   height: ${props => props.dimensions}px;
@@ -57,18 +60,27 @@ const StyledContextSidebarItem = styled.div`
 export function ContextSidebarItem(props: ContextSidebarItemProps) {
     const theme = useTheme();
     const [transition, setTransition] = useState();
-    const [abbr, setAbbr] = useState('');
+    const [innerContent, setInnerContent] = useState();
     useEffect(() => {
-        // Get the first letter of the first two words in the
-        // organization name.
-        const letters = props.name.split(' ', 1)
-            .map(word => word[0])
-            .join();
-        setAbbr(letters);
         setTransition(theme.transitions.create(['border-radius', 'height'], {
             duration: theme.transitions.duration.standard,
         }));
-    }, [props.name]);
+    }, []);
+
+    useEffect(() => {
+        if (props.imageUrl) {
+            setInnerContent('');
+        } else if (props.icon) {
+            setInnerContent(props.icon);
+        } else {
+            // Get the first letter of the first two words in the
+            // organization name.
+            const abbr = props.name.split(' ', 1)
+                .map(word => word[0])
+                .join();
+            setInnerContent(abbr);
+        }
+    }, [props.imageUrl, props.icon, props.name]);
 
     return (
         <Tooltip title={props.name} placement="right" arrow>
@@ -82,10 +94,11 @@ export function ContextSidebarItem(props: ContextSidebarItemProps) {
                     <StyledAvatar
                         color={theme.palette.text.secondary}
                         background={theme.palette.background.default}
+                        image={props.imageUrl}
                         dimensions={theme.spacing(7)}
                         margin={theme.spacing(1)}
                         transition={transition}>
-                        {props.icon || abbr}
+                        {innerContent}
                     </StyledAvatar>
                 </StyledAvatarLink>
             </StyledContextSidebarItem>
