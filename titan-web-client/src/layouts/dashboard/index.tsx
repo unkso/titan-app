@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {CircularProgress, Drawer} from "@material-ui/core";
+import styled from 'styled-components';
 import {ContextSidebar} from "@titan/layouts/dashboard/context_sidebar";
 import {TitanApiClient} from "@titan/http/api";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +13,11 @@ import {
 import {combineLatest} from "rxjs";
 import {AppState} from "@titan/store/root_reducer";
 
+const StyledDrawer = styled(Drawer)`
+  .context-sidebar-paper {
+    border-right: none;
+  }
+`;
 
 export function DashboardLayout(props) {
     const userProfile = useSelector(authUserSelector);
@@ -43,26 +49,26 @@ export function DashboardLayout(props) {
         });
     }, [credentials]);
 
+    if (!userProfile) {
+        return <CircularProgress />
+    }
+
     return (
         <div>
-            {userProfile ? (
-                <div>
-                    <Drawer variant="permanent">
-                        <ContextSidebar items={organizations.map(org => ({
-                            name: org.organization.name,
-                            path: `/dashboard/organizations/${org.organization.id}`,
-                        }))} />
-                    </Drawer>
-                    <main>
-                        <section>
+            <StyledDrawer variant="permanent" classes={{
+                paper: 'context-sidebar-paper',
+            }}>
+                <ContextSidebar items={organizations.map(org => ({
+                    name: org.organization.name,
+                    path: `/dashboard/organizations/${org.organization.id}`,
+                }))} />
+            </StyledDrawer>
+            <main>
+                <section>
 
-                        </section>
-                        {props.children}
-                    </main>
-                </div>
-            ) : (
-                <CircularProgress />
-            )}
+                </section>
+                {props.children}
+            </main>
         </div>
     );
 }

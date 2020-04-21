@@ -4,33 +4,33 @@ import {
     ContextSidebarItemProps
 } from "@titan/layouts/dashboard/context_sidebar_item";
 import styled from 'styled-components';
+import {Palette} from "@titan/themes/default";
 
 export interface ContextSidebarProps {
     items: ReadonlyArray<ContextSidebarItemProps>;
 }
 
 const StyledContextSidebar = styled.div`
+  background-color: ${props => props.background};
+  height: 100%;
   width: 70px;
 `;
 
 export function ContextSidebar(props: ContextSidebarProps) {
     return (
-        <StyledContextSidebar>
+        <StyledContextSidebar background={Palette.background[700]}>
             <ContextSidebarItem
-                hasNotification={true}
-                name="Dashboard"
-                path="/dashboard"
-                key="item-dashboard"
-            />
-            <ContextSidebarItem
+                icon={<i className="fal fa-user" />}
+                key="item-profile"
                 name="Profile"
                 path="/dashboard/profile"
-                key="item-profile"
             />
             <ContextSidebarItem
+                hasNotification={true}
+                icon={<i className="fal fa-users" />}
+                key="item-community"
                 name="Community"
                 path="/dashboard/community"
-                key="item-community"
             />
             {props.items.map((item, index) =>
                 <ContextSidebarItem
