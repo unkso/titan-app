@@ -25,6 +25,12 @@ const StyledContentSection = styled.div`
   padding: 0 ${props => props.padding}px;
 `;
 
+const StyledCircularProgress = styled(CircularProgress)`
+  left: calc(50% - 20px);
+  position: absolute;
+  top: calc(50% - 20px);
+`;
+
 export function DashboardLayout(props) {
     const theme = useTheme();
     const userProfile = useSelector(authUserSelector);
@@ -57,7 +63,7 @@ export function DashboardLayout(props) {
     }, [credentials]);
 
     if (!userProfile) {
-        return <CircularProgress />
+        return <StyledCircularProgress />;
     }
 
     return (
