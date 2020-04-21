@@ -4,6 +4,7 @@ import {DashboardLayout} from "@titan/layouts/dashboard";
 import {LoginScene} from "@titan/scenes/login/login_scene";
 import {DashboardScene} from "@titan/scenes/dashboard/dashboard_scene";
 import {CommunityScene} from "@titan/scenes/community_scene";
+import {OrganizationScene} from "@titan/scenes/organization_scene";
 
 export const routes =(
     <Switch>
@@ -22,6 +23,9 @@ export const routes =(
                 </Route>
                 <Route exact path="/dashboard/community">
                     <CommunityScene />
+                </Route>
+                <Route exact path="/dashboard/community/:id">
+                    <OrganizationScene />
                 </Route>
             </DashboardLayout>
             {/*<DashboardLayoutOld>

@@ -479,7 +479,6 @@ paths:
         schema:
           type: integer
     get:
-      summary: get_organization_by_id
       tags: []
       responses:
         '200':
@@ -488,7 +487,7 @@ paths:
             application/json:
               schema:
                 $ref: ./models/organization.v1.yaml
-      operationId: get-organizations-id
+      operationId: get_organization
       security:
         - api_key: []
   '/api/organizations/{slug}':

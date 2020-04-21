@@ -74,7 +74,7 @@ export function DashboardLayout(props) {
                 <ContextSidebar items={organizations.map(org => ({
                     imageUrl: org.organization.avatarUrl,
                     name: org.organization.name,
-                    path: `/dashboard/organizations/${org.organization.id}`,
+                    path: `/dashboard/community/${org.organization.id}`,
                 }))}
                 />
             </StyledDrawer>

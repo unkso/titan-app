@@ -45,14 +45,14 @@ export interface GetEventsEventTypesEventTypeIdRequest {
     eventTypeId: number;
 }
 
+export interface GetOrganizationRequest {
+    id: number;
+}
+
 export interface GetOrganizationsFileEntriesRequest {
     organizations: string;
     fromStartDate: number;
     toStartDate: number;
-}
-
-export interface GetOrganizationsIdRequest {
-    id: number;
 }
 
 export interface GetOrganizationsIdUsersRequest {
@@ -234,6 +234,22 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
+     */
+    getOrganization = ({ id }: GetOrganizationRequest): Observable<Organization> => {
+        throwIfNullOrUndefined(id, 'getOrganization');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<Organization>({
+            path: '/api/organizations/{id}'.replace('{id}', encodeURI(id)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
      * list_organizations
      */
     getOrganizations = (): Observable<Array<Organization>> => {
@@ -271,23 +287,6 @@ export class DefaultApi extends BaseAPI {
             method: 'GET',
             headers,
             query,
-        });
-    };
-
-    /**
-     * get_organization_by_id
-     */
-    getOrganizationsId = ({ id }: GetOrganizationsIdRequest): Observable<Organization> => {
-        throwIfNullOrUndefined(id, 'getOrganizationsId');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        return this.request<Organization>({
-            path: '/api/organizations/{id}'.replace('{id}', encodeURI(id)),
-            method: 'GET',
-            headers,
         });
     };
 

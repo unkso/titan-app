@@ -12,8 +12,8 @@ export const StyledOrganizationCard = styled(Card)`
   background-image: url(${props => props.image});
   background-size: cover;
   display: flex;
-  height: 200px;
-  width: 350px;
+  height: 250px;
+  width: 425px;
 `;
 
 export function OrganizationCard(props: OrganizationCardProps) {
