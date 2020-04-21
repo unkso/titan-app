@@ -6,7 +6,7 @@ import {routes} from '@titan/modules/routes';
 import {SnackbarProvider} from "notistack";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {MatPickerDateUtils} from "@titan/lib/mat_picker_date_utils";
-import { StylesProvider } from '@material-ui/core/styles';
+import { StylesProvider, withStyles } from '@material-ui/core/styles';
 import {
     createMuiTheme,
     MuiThemeProvider
@@ -14,7 +14,18 @@ import {
 import { Provider as ReduxProvider } from 'react-redux';
 import {CssBaseline} from "@material-ui/core";
 import {AppStore} from "@titan/store";
-import {Palette} from "@titan/themes/default";
+import {Palette, Typography} from "@titan/themes/default";
+
+const styles = theme => ({
+    "@global": {
+        // MUI typography elements use REMs, so you can scale the global
+        // font size by setting the font-size on the <html> element.
+        html: {
+            fontSize: 18,
+        },
+        ...Typography,
+    }
+});
 
 const defaultMuiTheme = createMuiTheme(createMuiTheme({
     palette: {
@@ -25,9 +36,10 @@ const defaultMuiTheme = createMuiTheme(createMuiTheme({
         },
         type: 'dark',
     },
+    typography: Typography
 }));
 
-ReactDOM.render(
+const AppWithStyles = withStyles(styles)(() => (
     <StylesProvider injectFirst>
         <MuiThemeProvider theme={defaultMuiTheme}>
             <CssBaseline />
@@ -46,5 +58,9 @@ ReactDOM.render(
             </SnackbarProvider>
         </MuiThemeProvider>
     </StylesProvider>
+));
+
+ReactDOM.render(
+    <AppWithStyles />
     , document.getElementById('root'));
 registerServiceWorker();

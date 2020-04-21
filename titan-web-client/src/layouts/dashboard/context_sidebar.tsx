@@ -20,6 +20,12 @@ export function ContextSidebar(props: ContextSidebarProps) {
     return (
         <StyledContextSidebar background={Palette.background[700]}>
             <ContextSidebarItem
+                icon={<i className="fal fa-home" />}
+                key="item-dashboard"
+                name="Dashboard"
+                path="/dashboard"
+            />
+            <ContextSidebarItem
                 icon={<i className="fal fa-user" />}
                 key="item-profile"
                 name="Profile"

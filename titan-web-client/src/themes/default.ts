@@ -37,6 +37,30 @@ export const Palette = {
   }
 };
 
+export const Typography = {
+  h1: {
+    fontSize: '2.5rem',
+    fontWeight: 600,
+    letterSpacing: 1,
+    lineHeight: '3.5rem',
+    margin: 0,
+  },
+  h2: {
+    fontSize: '2rem',
+    fontWeight: 500,
+    letterSpacing: 1,
+    lineHeight: '3rem',
+    margin: 0,
+  },
+  h3: {
+    fontSize: '1.5rem',
+    fontWeight: 500,
+    letterSpacing: 1,
+    lineHeight: '2.5rem',
+    margin: 0,
+  },
+};
+
 /**
  * @deprecated
  */

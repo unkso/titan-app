@@ -2,6 +2,7 @@ import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {DashboardLayout} from "@titan/layouts/dashboard";
 import {LoginScene} from "@titan/scenes/login/login_scene";
+import {DashboardScene} from "@titan/scenes/dashboard/dashboard_scene";
 
 export const routes =(
     <Switch>
@@ -15,7 +16,9 @@ export const routes =(
 
         <Route path="/dashboard">
             <DashboardLayout>
-                <p>dashboard page</p>
+                <Route exact path="/dashboard">
+                    <DashboardScene />
+                </Route>
             </DashboardLayout>
             {/*<DashboardLayoutOld>
                 <Route path="/organizations">
