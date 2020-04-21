@@ -40,6 +40,16 @@ export interface Organization {
      * @type {string}
      * @memberof Organization
      */
+    bannerImageUrl?: string;
+    /**
+     * @type {string}
+     * @memberof Organization
+     */
+    previewImageUrl?: string;
+    /**
+     * @type {string}
+     * @memberof Organization
+     */
     groupType: string;
     /**
      * @type {number}

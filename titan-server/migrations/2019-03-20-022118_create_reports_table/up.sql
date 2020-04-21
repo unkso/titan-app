@@ -1,4 +1,4 @@
-CREATE TABLE reports (
+CREATE TABLE IF NOT EXISTS reports (
   id INT PRIMARY KEY AUTO_INCREMENT,
   role_id INT NOT NULL,
   term_start_date DATETIME NOT NULL,

@@ -159,10 +159,19 @@ pub struct Organization {
     pub id: i32,
     pub name: String,
     pub slug: String,
+    #[serde(rename(deserialize = "avatarUrl", serialize = "avatarUrl"))]
     pub avatar_url: String,
+    #[serde(rename(deserialize = "bannerImageUrl", serialize = "bannerImageUrl"))]
+    pub banner_image_url: Option<String>,
+    #[serde(rename(deserialize = "previewImageUrl", serialize = "previewImageUrl"))]
+    pub preview_image_url: Option<String>,
+    #[serde(rename(deserialize = "groupType", serialize = "groupType"))]
     pub group_type: String,
+    #[serde(rename(deserialize = "wcfUserGroupId", serialize = "wcfUserGroupId"))]
     pub wcf_user_group_id: i32,
+    #[serde(rename(deserialize = "isEnabled", serialize = "isEnabled"))]
     pub is_enabled: bool,
+    #[serde(rename(deserialize = "parentId", serialize = "parentId"))]
     pub parent_id: Option<i32>,
 }
 
@@ -170,7 +179,9 @@ pub struct Organization {
 #[table_name = "organization_roles"]
 pub struct OrganizationRole {
     pub id: i32,
+    #[serde(rename(deserialize = "organizationId", serialize = "organizationId"))]
     pub organization_id: i32,
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: Option<i32>,
     pub role: String,
     pub rank: Option<i32>

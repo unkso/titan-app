@@ -199,6 +199,8 @@ table! {
         name -> Varchar,
         slug -> Varchar,
         avatar_url -> Text,
+        banner_image_url -> Nullable<Text>,
+        preview_image_url -> Nullable<Text>,
         group_type -> Varchar,
         wcf_user_group_id -> Integer,
         is_enabled -> Bool,

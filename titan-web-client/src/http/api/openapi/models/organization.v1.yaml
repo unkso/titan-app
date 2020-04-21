@@ -9,6 +9,10 @@ properties:
     type: string
   avatar_url:
     type: string
+  banner_image_url:
+    type: string
+  preview_image_url:
+    type: string
   group_type:
     type: string
   wcf_user_group_id:
