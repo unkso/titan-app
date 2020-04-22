@@ -6,6 +6,7 @@ import {DashboardScene} from "@titan/scenes/dashboard/dashboard_scene";
 import {OrganizationsListScene} from "@titan/scenes/organizations_list_scene";
 import {OrganizationScene} from "@titan/scenes/organization_scene";
 import {CommunityScene} from "@titan/scenes/community";
+import {MembersScene} from "@titan/scenes/community/members_scene";
 
 export const routes =(
     <Switch>
@@ -30,10 +31,13 @@ export const routes =(
                         <Route exact path="/dashboard/community/organizations">
                             <OrganizationsListScene />
                         </Route>
-                        <Route exact path="/dashboard/community/organizations/:id">
-                            <OrganizationScene />
+                        <Route exact path="/dashboard/community/members">
+                            <MembersScene />
                         </Route>
                     </CommunityScene>
+                </Route>
+                <Route exact path="/dashboard/community/organizations/:id">
+                    <OrganizationScene />
                 </Route>
             </DashboardLayout>
             {/*<DashboardLayoutOld>
