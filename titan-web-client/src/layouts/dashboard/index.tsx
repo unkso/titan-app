@@ -75,7 +75,7 @@ export function DashboardLayout(props) {
                 )));
             dispatch(AuthUserActions.setOrganizations(orgs));
         });
-    }, [credentials]);
+    }, [credentials, dispatch]);
 
     useEffect(() => {
         setContentOffset((pageMenuState === DashboardLayoutPageMenuState.EXPANDED && !!pageMenu)

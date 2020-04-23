@@ -65,7 +65,7 @@ export function ContextSidebarItem(props: ContextSidebarItemProps) {
         setTransition(theme.transitions.create(['border-radius', 'height'], {
             duration: theme.transitions.duration.standard,
         }));
-    }, []);
+    }, [theme.transitions]);
 
     useEffect(() => {
         if (props.imageUrl) {

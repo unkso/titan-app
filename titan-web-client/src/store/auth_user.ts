@@ -1,11 +1,9 @@
 import {AclOptionToken} from "@titan/lib/acl/types";
 import {
-    OrganizationRole,
     UserOrganizationMembership,
     UserProfile
 } from "@titan/http/api";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AppState} from "@titan/store/root_reducer";
 
 /**
  * Credentials used to authenticate the user when sending requests

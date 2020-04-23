@@ -43,12 +43,13 @@ export function LoginScene() {
         } else {
             setLoading(false);
         }
-    }, []);
+    }, [cookies, dispatch]);
 
     return (
         <LoginSceneWrapper>
             <img
                 src="https://clanunknownsoldiers.com/wcf/images/us-theme/logos/unkso_master_logo.PNG"
+                alt="Unknown soldiers logo"
             />
             <div className="login-status">
                 <Fade in={loading}>

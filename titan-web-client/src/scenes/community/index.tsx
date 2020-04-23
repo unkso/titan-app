@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useEffect} from 'react';
+import {PropsWithChildren, useEffect} from 'react';
 import {useDispatch} from "react-redux";
 import {DashboardLayoutActions} from "@titan/store/dashboard_layout";
 
@@ -19,7 +19,7 @@ export function CommunityScene(props: PropsWithChildren<any>) {
                 }
             ]
         }))
-    }, []);
+    }, [dispatch]);
 
     return props.children;
 }

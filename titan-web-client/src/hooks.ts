@@ -31,7 +31,7 @@ export function useDebounce (initialValue, duration) {
 
   useEffect(() => {
     handler(initialValue);
-  }, []);
+  }, [initialValue]);
 
   return [value, handler];
 }

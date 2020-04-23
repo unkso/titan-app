@@ -25,7 +25,7 @@ export function InlineBadge(props: PropsWithChildren<InlineBadgeProps>) {
         } else {
             setBackground(Palette.background[300]);
         }
-    }, [props.type]);
+    }, [props.type, theme.palette.error.light]);
 
     return (
         <StyledInlineBadge
