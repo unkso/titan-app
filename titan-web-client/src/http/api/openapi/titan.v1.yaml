@@ -174,7 +174,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/user_file_entry_with_assoc.v1.yaml
-      operationId: get-users-user_id-file-entries
+      operationId: get_user_file_entries
       security:
         - api_key: []
   '/api/users/{user_id}/excuses':

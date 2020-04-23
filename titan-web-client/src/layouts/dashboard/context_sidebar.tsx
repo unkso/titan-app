@@ -5,6 +5,10 @@ import {
 } from "@titan/layouts/dashboard/context_sidebar_item";
 import styled from 'styled-components';
 import {Palette} from "@titan/themes/default";
+import {useSelector} from "react-redux";
+import {authUserSelector} from "@titan/store/auth_user";
+import {AppState} from "@titan/store/root_reducer";
+import {UserProfile} from "@titan/http/api";
 
 export interface ContextSidebarProps {
     items: ReadonlyArray<ContextSidebarItemProps>;
@@ -17,6 +21,8 @@ const StyledContextSidebar = styled.div`
 `;
 
 export function ContextSidebar(props: ContextSidebarProps) {
+    const user = useSelector<AppState, UserProfile>(authUserSelector);
+
     return (
         <StyledContextSidebar background={Palette.background[700]}>
             <ContextSidebarItem
@@ -29,7 +35,7 @@ export function ContextSidebar(props: ContextSidebarProps) {
                 icon={<i className="fal fa-user" />}
                 key="item-profile"
                 name="Profile"
-                path="/dashboard/profile"
+                path={`/dashboard/members/${user.id}`}
             />
             <ContextSidebarItem
                 hasNotification={true}

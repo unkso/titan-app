@@ -102,6 +102,10 @@ export interface GetUserAclRequest {
     userId: number;
 }
 
+export interface GetUserFileEntriesRequest {
+    userId: number;
+}
+
 export interface GetUserOrganizationsRequest {
     userId: number;
     member?: boolean;
@@ -114,10 +118,6 @@ export interface GetUsersRequest {
 }
 
 export interface GetUsersUserIdExcusesRequest {
-    userId: number;
-}
-
-export interface GetUsersUserIdFileEntriesRequest {
     userId: number;
 }
 
@@ -504,6 +504,23 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
+     * list_user_file_entries
+     */
+    getUserFileEntries = ({ userId }: GetUserFileEntriesRequest): Observable<Array<UserFileEntryWithAssoc>> => {
+        throwIfNullOrUndefined(userId, 'getUserFileEntries');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<Array<UserFileEntryWithAssoc>>({
+            path: '/api/users/{user_id}/file-entries'.replace('{user_id}', encodeURI(userId)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
      * list_user_organizations
      */
     getUserOrganizations = ({ userId, member, role }: GetUserOrganizationsRequest): Observable<Array<UserOrganizationMembership>> => {
@@ -590,23 +607,6 @@ export class DefaultApi extends BaseAPI {
 
         return this.request<Array<UserEventExcuseWithAssoc>>({
             path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(userId)),
-            method: 'GET',
-            headers,
-        });
-    };
-
-    /**
-     * list_user_file_entries
-     */
-    getUsersUserIdFileEntries = ({ userId }: GetUsersUserIdFileEntriesRequest): Observable<Array<UserFileEntryWithAssoc>> => {
-        throwIfNullOrUndefined(userId, 'getUsersUserIdFileEntries');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        return this.request<Array<UserFileEntryWithAssoc>>({
-            path: '/api/users/{user_id}/file-entries'.replace('{user_id}', encodeURI(userId)),
             method: 'GET',
             headers,
         });

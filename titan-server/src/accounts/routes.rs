@@ -174,11 +174,6 @@ pub fn list_user_file_entry_types(
     ApiResponse::from(file_entry_types::find_file_entry_types(&*titan_db))
 }
 
-#[derive(Serialize)]
-pub struct ListUserFileEntriesResponse {
-    pub items: Vec<models::UserFileEntryWithAssoc>
-}
-
 #[get("/<user_id>/file-entries")]
 pub fn list_user_file_entries(
     user_id: i32,
@@ -186,7 +181,7 @@ pub fn list_user_file_entries(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser,
-) -> Result<Json<ListUserFileEntriesResponse>, status::NotFound<String>> {
+) -> Result<Json<Vec<models::UserFileEntryWithAssoc>>, status::NotFound<String>> {
     let file_entries_res = file_entries::find_by_user(
         user_id, &*titan_db, &*wcf_db, &app_config);
 
@@ -200,9 +195,7 @@ pub fn list_user_file_entries(
             }
         }
 
-        return Ok(Json(ListUserFileEntriesResponse {
-            items: file_entries
-        }));
+        return Ok(Json(file_entries));
     }
 
     Err(status::NotFound("".to_string()))
