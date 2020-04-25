@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
+import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import {
+    Avatar,
     Button,
     Grid,
     List, ListItem, ListItemIcon, ListItemText,
     ListSubheader,
     Paper,
     Tab,
-    Tabs
+    Tabs, Typography
 } from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -26,6 +28,20 @@ import {AppState} from "@titan/store/root_reducer";
 import {TabPanel} from "@titan/components/tabs/tab_panel";
 import {FileEntryExpansionPanelList} from "@titan/components/list/file_entry_expansion_panel_list";
 import {ExcuseExpansionPanelList} from "@titan/components/list/excuse_expansion_panel_list";
+import TimestampActivityBadge
+    from "@titan/components/activity_badge/timestamp_activity_badge";
+import {ActivityIndicator} from "@titan/components/activity/activity_indicator";
+
+const StyledAvatar = styled(Avatar)`
+    height: 56px;
+    margin-right: 8px;
+    width: 56px;
+`;
+
+const StyledHeadline = styled.div`
+  align-items: center;
+  display: flex;
+`;
 
 export function ProfileScene() {
     const params = useParams();
@@ -54,7 +70,14 @@ export function ProfileScene() {
 
     return (
         <div>
-            <h1>{user.username}</h1>
+            <StyledHeadline>
+                <StyledAvatar
+                    src={"https://clanunknownsoldiers.com/wcf/images/avatars/94/1238-949157b51dc4b03f8c95767eab5dcfc4cabd35ee.png"} />
+                <div>
+                    <Typography variant="h1">{user.username}</Typography>
+                    <ActivityIndicator timestamp={user.wcf.lastActivityTime} />
+                </div>
+            </StyledHeadline>
             <Grid container spacing={3}>
                 <Grid item lg={9} md={8} sm={12}>
                     <Tabs value={tabIndex} onChange={handleTabChange}>

@@ -78,7 +78,7 @@ export function ExcuseExpansionPanelGroup(props: ExcuseExpansionPanelGroupProps)
                                 <Typography color="textSecondary" variant="caption">
                                     <span>Created on {dateCreated}. </span>
                                     {excuse.ackUser && (
-                                        <span>Acknowledged by <Link href={`/dashboard/members/${excuse.ackUser.id}`}>{excuse.ackUser.username}</Link></span>
+                                        <span>Acknowledged by <Link href={`/dashboard/members/${excuse.ackUser.id}`}>{excuse.ackUser.username}</Link>.</span>
                                     )}
                                 </Typography>
                             </div>
