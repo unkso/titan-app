@@ -494,20 +494,20 @@ pub struct NewUserEventExcuse {
 pub struct UserEventExcuseWithAssoc {
     pub id: i32,
     pub user: UserProfile,
-    #[serde(rename(deserialize = "eventType"))]
+    #[serde(rename(serialize = "eventType"))]
     pub event_type: EventType,
-    #[serde(rename(deserialize = "eventDate"))]
+    #[serde(rename(serialize = "eventDate"))]
     pub event_date: chrono::NaiveDateTime,
     pub comments: String,
-    #[serde(rename(deserialize = "ackUser"))]
+    #[serde(rename(serialize = "ackUser"))]
     pub ack_user: Option<UserProfile>,
-    #[serde(rename(deserialize = "ackDate"))]
+    #[serde(rename(serialize = "ackDate"))]
     pub ack_date: Option<chrono::NaiveDateTime>,
-    #[serde(rename(deserialize = "ackComments"))]
+    #[serde(rename(serialize = "ackComments"))]
     pub ack_comments: Option<String>,
-    #[serde(rename(deserialize = "dateCreated"))]
+    #[serde(rename(serialize = "dateCreated"))]
     pub date_created: chrono::NaiveDateTime,
-    #[serde(rename(deserialize = "dateModified"))]
+    #[serde(rename(serialize = "dateModified"))]
     pub date_modified: chrono::NaiveDateTime,
 }
 

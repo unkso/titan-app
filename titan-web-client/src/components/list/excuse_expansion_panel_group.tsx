@@ -17,14 +17,24 @@ const StyledExpansionPanelDetails = styled(ExpansionPanelDetails)`
 `;
 
 const StyledSummary = styled.div`
-  background-color: ${props => props.background};
-  
   .panel-icon {
     color: ${props => props.color};
   }
   
   .panel-title {
+    align-items: center;
+    display: inline-flex;
     margin-left: 16px;
+    
+    .spacer {
+      font-size: 4px;
+      margin: 0 8px;
+    }
+    
+    .event-date {
+      position: relative;
+      top: 1px;
+    }
   }
 `;
 
@@ -43,15 +53,20 @@ export function ExcuseExpansionPanelGroup(props: ExcuseExpansionPanelGroupProps)
         <div>
             {props.excuses.map(excuse => {
                 const dateCreated = formatDate(new Date(excuse.dateCreated), 'MMMM dd, yyyy');
+                const eventDate = formatDate(new Date(excuse.eventDate), 'MMM dd');
                 return (
                     <ExpansionPanel
                         key={excuse.id}
                         expanded={expandedPanel === excuse.id}
                         onChange={() => expandPanel(excuse.id)}>
                         <ExpansionPanelSummary expandIcon={<i className="far fa-angle-down" />}>
-                            <StyledSummary>
-                                <i className={`fas fa-info panel-icon`} />
-                                <span className="panel-title">{excuse.eventType.name}</span>
+                            <StyledSummary color={theme.palette.info.light}>
+                                <i className={`fas fa-clipboard-user panel-icon`} />
+                                <span className="panel-title">
+                                    <span>{excuse.eventType.name}</span>
+                                    <i className="fas fa-circle spacer" />
+                                    <Typography variant="caption" color={"textSecondary"} className="event-date">{eventDate}</Typography>
+                                </span>
                             </StyledSummary>
                         </ExpansionPanelSummary>
                         <StyledExpansionPanelDetails background={Palette.background[300]}>
