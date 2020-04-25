@@ -47,10 +47,10 @@ export interface UserEventExcuseWithAssoc {
      */
     ackDate?: number;
     /**
-     * @type {number}
+     * @type {UserProfile}
      * @memberof UserEventExcuseWithAssoc
      */
-    ackUserId?: number;
+    ackUser?: UserProfile;
     /**
      * @type {string}
      * @memberof UserEventExcuseWithAssoc

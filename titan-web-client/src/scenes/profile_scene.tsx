@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import {
+    Button,
     Grid,
     List, ListItem, ListItemIcon, ListItemText,
     ListSubheader,
@@ -92,6 +93,9 @@ export function ProfileScene() {
                             </ListItem>
                         </List>
                     </Paper>
+
+                    <Button color="secondary">Submit event excuse</Button>
+                    <Button color="secondary">Add file entry</Button>
                 </Grid>
             </Grid>
         </div>

@@ -65,7 +65,10 @@ export function ExcuseExpansionPanelGroup(props: ExcuseExpansionPanelGroupProps)
                                 <span className="panel-title">
                                     <span>{excuse.eventType.name}</span>
                                     <i className="fas fa-circle spacer" />
-                                    <Typography variant="caption" color={"textSecondary"} className="event-date">{eventDate}</Typography>
+                                    <Typography
+                                        className="event-date"
+                                        color="textSecondary"
+                                        variant="caption">{eventDate}</Typography>
                                 </span>
                             </StyledSummary>
                         </ExpansionPanelSummary>
@@ -73,7 +76,10 @@ export function ExcuseExpansionPanelGroup(props: ExcuseExpansionPanelGroupProps)
                             <div>
                                 <p>{excuse.comments}</p>
                                 <Typography color="textSecondary" variant="caption">
-                                    Created on {dateCreated}. Acknowledged by <Link href={`/dashboard/members/${excuse.ackUserId}`}>{excuse.ackUserId}</Link>
+                                    <span>Created on {dateCreated}. </span>
+                                    {excuse.ackUser && (
+                                        <span>Acknowledged by <Link href={`/dashboard/members/${excuse.ackUser.id}`}>{excuse.ackUser.username}</Link></span>
+                                    )}
                                 </Typography>
                             </div>
                         </StyledExpansionPanelDetails>
