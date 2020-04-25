@@ -8,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { Create_report_form } from '@titan/modules/organizations/components/create_report_form';
 import Row from '@titan/components/grid/row';
 import Column from '@titan/components/grid/column';
-import { List } from '@titan/components/file_entry/list';
+import { List } from '@titan/components/file_entry/file_entry_list';
 import styled from 'styled-components';
 import OrganizationsService from '@titan/http/OrganizationsService';
 import { format as formatDate, startOfWeek, endOfWeek } from 'date-fns';

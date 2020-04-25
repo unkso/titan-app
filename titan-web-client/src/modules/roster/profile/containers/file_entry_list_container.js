@@ -5,7 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 import UsersService from '@titan/http/UsersService';
 import CircularProgress
   from '@material-ui/core/CircularProgress/CircularProgress';
-import { List } from '@titan/components/file_entry/list';
+import { List } from '@titan/components/file_entry/file_entry_list';
 
 class FileEntryListContainer extends React.Component {
   constructor (props) {

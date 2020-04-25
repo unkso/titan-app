@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import {
     Grid,
@@ -22,13 +22,18 @@ import {
     userProfileUserSelector
 } from "@titan/store/profile";
 import {AppState} from "@titan/store/root_reducer";
+import {TabPanel} from "@titan/components/tabs/tab_panel";
+import {FileEntryList} from "@titan/components/file_entry/file_entry_list";
+import {FileEntryExpansionPanelList} from "@titan/components/list/file_entry_expansion_panel_list";
 
 export function ProfileScene() {
     const params = useParams();
     const dispatch = useDispatch();
     const user = useSelector<AppState, UserProfile>(userProfileUserSelector);
     const excuses = useSelector<AppState, UserEventExcuseWithAssoc>(userProfileEventExcusesSelector);
-    const fileEntries = useSelector<AppState, UserFileEntryWithAssoc>(userProfileFileEntriesSelector);
+    const fileEntries = useSelector<AppState, UserFileEntryWithAssoc[]>(userProfileFileEntriesSelector);
+    const [tabIndex, setTabIndex] = useState(0);
+    const handleTabChange = (event, index) => setTabIndex(index);
 
     useEffect(() => {
         combineLatest([
@@ -47,14 +52,21 @@ export function ProfileScene() {
     return (
         <div>
             <h1>{user.username}</h1>
-            <Grid container>
-                <Grid item lg={9} md={8} xs={12} spacing={3}>
-                    <Tabs value={0}>
-                        <Tab label="File entries" />
+            <Grid container spacing={3}>
+                <Grid item lg={9} md={8} sm={12}>
+                    <Tabs value={tabIndex} onChange={handleTabChange}>
+                        <Tab label="Activity" />
                         <Tab label="Event excuses" />
                     </Tabs>
+                    <TabPanel index={0} value={tabIndex}>
+                        {/*<FileEntryList fileEntries={fileEntries} />*/}
+                        <FileEntryExpansionPanelList fileEntries={fileEntries} />
+                    </TabPanel>
+                    <TabPanel index={1} value={tabIndex}>
+                        <p>Goodbye world</p>
+                    </TabPanel>
                 </Grid>
-                <Grid item lg={3} sm={4} xs={12} spacing={3}>
+                <Grid item lg={3} md={4} xs={12}>
                     <Paper>
                         <List subheader={
                             <ListSubheader component="div">Identities</ListSubheader>

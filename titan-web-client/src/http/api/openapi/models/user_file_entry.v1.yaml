@@ -17,3 +17,10 @@ properties:
     type: integer
   modified_by:
     type: integer
+required:
+  - id
+  - user_file_entry_type_id
+  - user_id
+  - start_date
+  - date_modified
+  - modified_by

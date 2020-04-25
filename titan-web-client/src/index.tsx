@@ -14,7 +14,11 @@ import {
 import { Provider as ReduxProvider } from 'react-redux';
 import {CssBaseline} from "@material-ui/core";
 import {AppStore} from "@titan/store";
-import {Palette, Typography} from "@titan/themes/default";
+import {
+    Palette,
+    MuiVariantTypography,
+    DomElementTypography
+} from "@titan/themes/default";
 
 const styles = theme => ({
     "@global": {
@@ -23,7 +27,7 @@ const styles = theme => ({
         html: {
             fontSize: 18,
         },
-        ...Typography,
+        ...DomElementTypography,
     }
 });
 
@@ -36,7 +40,7 @@ const defaultMuiTheme = createMuiTheme(createMuiTheme({
         },
         type: 'dark',
     },
-    typography: Typography
+    typography: MuiVariantTypography
 }));
 
 const AppWithStyles = withStyles(styles)(() => (

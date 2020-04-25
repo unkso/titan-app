@@ -23,6 +23,7 @@ use crate::schema::{
 #[table_name = "wcf1_user"]
 #[primary_key(user_id)]
 pub struct WcfUser {
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: i32,
     pub username: String,
     #[serde(skip)]
@@ -37,8 +38,11 @@ pub struct WcfUser {
     pub registration_date: i32,
     #[serde(skip)]
     pub style_id: i32,
+    #[serde(skip)]
     pub banned: bool,
+    #[serde(skip)]
     pub ban_reason: Option<String>,
+    #[serde(skip)]
     pub ban_expires: i32,
     #[serde(skip)]
     pub activation_code: i32,
@@ -66,9 +70,11 @@ pub struct WcfUser {
     // pub disableSignature: bool,
     // pub disableSignatureReason: Option<String>,
     // pub disableSignatureExpires: i32,
+    #[serde(rename(deserialize = "lastActivityTime", serialize = "lastActivityTime"))]
     pub last_activity_time: i64,
     // pub profileHits: i32,
     // pub rankID: Option<i32>,
+    #[serde(rename(deserialize = "userTitle", serialize = "userTitle"))]
     pub user_title: String,
     #[serde(skip)]
     pub user_online_group_id: Option<i32>,
@@ -104,6 +110,7 @@ pub struct WcfUserGroupOption {
     pub option_id: i32,
     #[serde(rename(serialize = "optionName"))]
     pub option_name: String,
+    #[serde(rename(serialize = "categoryName"))]
     pub category_name: String,
 }
 
@@ -120,22 +127,30 @@ pub struct WcfUserGroupOptionValue {
 #[table_name = "wcf1_user_activity_event"]
 #[primary_key(event_id)]
 pub struct WcfUserActivityEvent {
+    #[serde(rename(deserialize = "eventId", serialize = "eventId"))]
     pub event_id: i32,
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: i32,
     pub time: i32
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
 pub struct WcfUserOptionValue {
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: i32,
+    #[serde(rename(deserialize = "userAvatarId", serialize = "userAvatarId"))]
     pub user_avatar_id: i32
 }
 
 #[derive(Serialize, Deserialize, Queryable)]
 pub struct WcfUserAvatar {
+    #[serde(rename(deserialize = "avatarId", serialize = "avatarId"))]
     pub avatar_id: i32,
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: i32,
+    #[serde(rename(deserialize = "avatarName", serialize = "avatarName"))]
     pub avatar_name: String,
+    #[serde(rename(deserialize = "fileHash", serialize = "fileHash"))]
     pub file_hash: String
 }
 
@@ -190,7 +205,9 @@ pub struct OrganizationRole {
 #[derive(Deserialize, Insertable)]
 #[table_name = "organization_roles"]
 pub struct NewOrganizationRole {
+    #[serde(rename(deserialize = "organizationId"))]
     pub organization_id: i32,
+    #[serde(rename(deserialize = "userId"))]
     pub user_id: Option<i32>,
     pub role: String,
     pub rank: Option<i32>
@@ -200,7 +217,7 @@ pub struct NewOrganizationRole {
 #[table_name = "organization_roles"]
 #[changeset_options(treat_none_as_null="true")]
 pub struct UpdateOrganizationRole {
-    #[serde(rename(serialize = "userId", deserialize = "userId"))]
+    #[serde(rename(deserialize = "userId"))]
     pub user_id: Option<i32>,
     pub role: String,
     pub rank: Option<i32>
@@ -217,6 +234,7 @@ pub struct OrganizationRoleRankChangeSet {
 pub struct OrganizationRoleWithAssoc {
     pub id: i32,
     pub organization: Organization,
+    #[serde(rename(serialize = "userProfile"))]
     pub user_profile: Option<UserProfile>,
     pub role: String,
     pub rank: Option<i32>
@@ -224,7 +242,9 @@ pub struct OrganizationRoleWithAssoc {
 
 #[derive(Serialize)]
 pub struct ChainOfCommand {
+    #[serde(rename(serialize = "localCoc"))]
     pub local_coc: Vec<OrganizationRoleWithAssoc>,
+    #[serde(rename(serialize = "extendedCoc"))]
     pub extended_coc: Vec<OrganizationRoleWithAssoc>
 }
 
@@ -232,6 +252,7 @@ pub struct ChainOfCommand {
 #[table_name = "organizations_users"]
 pub struct OrganizationUser {
     pub organization_id: i32,
+    #[serde(rename(serialize = "userId"))]
     pub user_id: i32
 }
 
@@ -241,25 +262,38 @@ pub struct UserOrganizationMembership {
     pub role: Option<OrganizationRole>,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Serialize, Deserialize)]
 #[table_name = "users"]
 pub struct NewUser {
+    #[serde(rename(deserialize = "wcfId", serialize = "wcfId"))]
     pub wcf_id: i32,
+    #[serde(rename(deserialize = "legacyPlayerId", serialize = "legacyPlayerId"))]
     pub legacy_player_id: Option<i32>,
+    #[serde(rename(deserialize = "rankId", serialize = "rankId"))]
     pub rank_id: Option<i32>,
     pub username: String,
     pub orientation: Option<i32>,
+    #[serde(rename(deserialize = "bctE0", serialize = "bctE0"))]
     pub bct_e0: Option<i32>,
+    #[serde(rename(deserialize = "bctE1", serialize = "bctE1"))]
     pub bct_e1: Option<i32>,
+    #[serde(rename(deserialize = "bctE2", serialize = "bctE2"))]
     pub bct_e2: Option<i32>,
+    #[serde(rename(deserialize = "bctE3", serialize = "bctE3"))]
     pub bct_e3: Option<i32>,
     pub loa: Option<i32>,
     pub a15: Option<i32>,
+    #[serde(rename(deserialize = "dateJoined", serialize = "dateJoined"))]
     pub date_joined: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "dateCreated", serialize = "dateCreated"))]
     pub date_created: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "dateModified", serialize = "dateModified"))]
     pub date_modified: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "modifiedBy", serialize = "modifiedBy"))]
     pub modified_by: Option<i32>,
+    #[serde(rename(deserialize = "lastActivity", serialize = "lastActivity"))]
     pub last_activity: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "isActive", serialize = "isActive"))]
     pub is_active: bool
 }
 
@@ -267,48 +301,73 @@ pub struct NewUser {
 #[table_name = "users"]
 pub struct User {
     pub id: i32,
+    #[serde(rename(deserialize = "wcfId", serialize = "wcfId"))]
     pub wcf_id: i32,
+    #[serde(rename(deserialize = "legacyPlayerId", serialize = "legacyPlayerId"))]
     pub legacy_player_id: Option<i32>,
+    #[serde(rename(deserialize = "rankId", serialize = "rankId"))]
     pub rank_id: Option<i32>,
     pub username: String,
     pub orientation: Option<i32>,
+    #[serde(rename(deserialize = "bctE0", serialize = "bctE0"))]
     pub bct_e0: Option<i32>,
+    #[serde(rename(deserialize = "bctE1", serialize = "bctE1"))]
     pub bct_e1: Option<i32>,
+    #[serde(rename(deserialize = "bctE2", serialize = "bctE2"))]
     pub bct_e2: Option<i32>,
+    #[serde(rename(deserialize = "bctE3", serialize = "bctE3"))]
     pub bct_e3: Option<i32>,
     pub loa: Option<i32>,
     pub a15: Option<i32>,
+    #[serde(rename(deserialize = "dateJoined", serialize = "dateJoined"))]
     pub date_joined: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "dateCreated", serialize = "dateCreated"))]
     pub date_created: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "dateModified", serialize = "dateModified"))]
     pub date_modified: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "modifiedBy", serialize = "modifiedBy"))]
     pub modified_by: Option<i32>,
+    #[serde(rename(deserialize = "lastActivity", serialize = "lastActivity"))]
     pub last_activity: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "isActive", serialize = "isActive"))]
     pub is_active: bool
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct UserProfile {
     pub id: i32,
+    #[serde(rename(deserialize = "wcfId", serialize = "wcfId"))]
     pub wcf_id: i32,
+    #[serde(rename(deserialize = "legacyPlayerId", serialize = "legacyPlayerId"))]
     pub legacy_player_id: Option<i32>,
+    #[serde(rename(deserialize = "rankId", serialize = "rankId"))]
     pub rank_id: Option<i32>,
     pub username: String,
     pub orientation: Option<i32>,
+    #[serde(rename(deserialize = "bctE0", serialize = "bctE0"))]
     pub bct_e0: Option<i32>,
+    #[serde(rename(deserialize = "bctE1", serialize = "bctE1"))]
     pub bct_e1: Option<i32>,
+    #[serde(rename(deserialize = "bctE2", serialize = "bctE2"))]
     pub bct_e2: Option<i32>,
+    #[serde(rename(deserialize = "bctE3", serialize = "bctE3"))]
     pub bct_e3: Option<i32>,
     pub loa: Option<i32>,
     pub a15: Option<i32>,
+    #[serde(rename(deserialize = "dateJoined", serialize = "dateJoined"))]
     pub date_joined: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "lastActivity", serialize = "lastActivity"))]
     pub last_activity: chrono::NaiveDateTime,
     pub wcf: WcfUserProfile
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct WcfUserProfile {
+    #[serde(rename(deserialize = "avatarUrl", serialize = "avatarUrl"))]
     pub avatar_url: Option<String>,
+    #[serde(rename(deserialize = "lastActivityTime", serialize = "lastActivtyTime"))]
     pub last_activity_time: i64,
+    #[serde(rename(deserialize = "userTitle", serialize = "userTitle"))]
     pub user_title: String,
     pub username: String,
 }
@@ -326,15 +385,21 @@ pub struct UserFileEntryType {
     pub name: String
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Serialize, Deserialize)]
 #[table_name = "user_file_entries"]
 pub struct NewUserFileEntry {
+    #[serde(rename(deserialize = "userFileEntryTypeId", serialize = "userFileEntryTypeId"))]
     pub user_file_entry_type_id: i32,
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: i32,
+    #[serde(rename(deserialize = "startDate", serialize = "startDate"))]
     pub start_date: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "endDate", serialize = "endDate"))]
     pub end_date: Option<chrono::NaiveDateTime>,
     pub comments: Option<String>,
+    #[serde(rename(deserialize = "dateModified", serialize = "dateModified"))]
     pub date_modified: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "modifiedBy", serialize = "modifiedBy"))]
     pub modified_by: i32
 }
 
@@ -342,24 +407,36 @@ pub struct NewUserFileEntry {
 #[table_name = "user_file_entries"]
 pub struct UserFileEntry {
     pub id: i32,
+    #[serde(rename(deserialize = "userFileEntryTypeId", serialize = "userFileEntryTypeId"))]
     pub user_file_entry_type_id: i32,
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: i32,
+    #[serde(rename(deserialize = "startDate", serialize = "startDate"))]
     pub start_date: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "endDate", serialize = "endDate"))]
     pub end_date: Option<chrono::NaiveDateTime>,
     pub comments: Option<String>,
+    #[serde(rename(deserialize = "dateModified", serialize = "dateModified"))]
     pub date_modified: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "modifiedBy", serialize = "modifiedBy"))]
     pub modified_by: i32
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct UserFileEntryWithAssoc {
     pub id: i32,
+    #[serde(rename(deserialize = "fileEntryType", serialize = "fileEntryType"))]
     pub file_entry_type: UserFileEntryType,
+    #[serde(rename(deserialize = "userProfile", serialize = "userProfile"))]
     pub user_profile: UserProfile,
+    #[serde(rename(deserialize = "startDate", serialize = "startDate"))]
     pub start_date: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "endDate", serialize = "endDate"))]
     pub end_date: Option<chrono::NaiveDateTime>,
     pub comments: Option<String>,
+    #[serde(rename(deserialize = "dateModified", serialize = "dateModified"))]
     pub date_modified: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "modifiedBy", serialize = "modifiedBy"))]
     pub modified_by: UserProfile
 }
 

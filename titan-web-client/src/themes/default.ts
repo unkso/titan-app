@@ -37,7 +37,8 @@ export const Palette = {
   }
 };
 
-export const Typography = {
+/** Styles for Material-UI {@link Typography} component variants. */
+export const MuiVariantTypography = {
   h1: {
     fontSize: '2.5rem',
     fontWeight: 600,
@@ -59,6 +60,25 @@ export const Typography = {
     lineHeight: '2.5rem',
     margin: 0,
   },
+};
+
+/**
+ * Styles for DOM elements (h1, h2, h3, etc.). Unlike
+ * {@link MuiVariantTypography}, these styles include vertical margin.
+ */
+export const DomElementTypography = {
+  h1: {
+    ...MuiVariantTypography.h1,
+    marginBottom: 24,
+  },
+  h2: {
+    ...MuiVariantTypography.h2,
+    marginBottom: 16,
+  },
+  h3: {
+    ...MuiVariantTypography.h3,
+    marginBottom: 8,
+  }
 };
 
 /**
