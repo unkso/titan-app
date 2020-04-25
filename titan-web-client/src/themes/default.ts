@@ -70,14 +70,17 @@ export const DomElementTypography = {
   h1: {
     ...MuiVariantTypography.h1,
     marginBottom: 24,
+    marginTop: 8,
   },
   h2: {
     ...MuiVariantTypography.h2,
     marginBottom: 16,
+    marginTop: 8,
   },
   h3: {
     ...MuiVariantTypography.h3,
     marginBottom: 8,
+    marginTop: 8,
   }
 };
 

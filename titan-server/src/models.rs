@@ -449,42 +449,44 @@ pub struct EventType {
 #[derive(Identifiable, Serialize, Deserialize, Queryable)]
 pub struct UserEventExcuse {
     pub id: i32,
+    #[serde(rename(deserialize = "userId", serialize = "userId"))]
     pub user_id: i32,
+    #[serde(rename(deserialize = "eventTypeId", serialize = "eventTypeId"))]
     pub event_type_id: i32,
+    #[serde(rename(deserialize = "eventDate", serialize = "eventDate"))]
     pub event_date: chrono::NaiveDateTime,
     pub comments: String,
+    #[serde(rename(deserialize = "ackUserId", serialize = "ackUserId"))]
     pub ack_user_id: Option<i32>,
+    #[serde(rename(deserialize = "ackDate", serialize = "ackDate"))]
     pub ack_date: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "ackComments", serialize = "ackComments"))]
     pub ack_comments: Option<String>,
+    #[serde(rename(deserialize = "dateCreated", serialize = "dateCreated"))]
     pub date_created: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "dateModified", serialize = "dateModified"))]
     pub date_modified: chrono::NaiveDateTime,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Deserialize)]
 #[table_name = "user_event_excuses"]
 pub struct NewUserEventExcuse {
+    #[serde(rename(deserialize = "userId"))]
     pub user_id: i32,
+    #[serde(rename(deserialize = "eventTypeId"))]
     pub event_type_id: i32,
+    #[serde(rename(deserialize = "eventDate"))]
     pub event_date: chrono::NaiveDateTime,
     pub comments: String,
+    #[serde(rename(deserialize = "ackUserId"))]
     pub ack_user_id: Option<i32>,
+    #[serde(rename(deserialize = "ackDate"))]
     pub ack_date: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "ackComments"))]
     pub ack_comments: Option<String>,
+    #[serde(rename(deserialize = "dateCreated"))]
     pub date_created: chrono::NaiveDateTime,
-    pub date_modified: chrono::NaiveDateTime,
-}
-
-#[derive(Serialize)]
-pub struct UserEventExcuseWithType {
-    pub id: i32,
-    pub user_id: i32,
-    pub event_type: EventType,
-    pub event_date: chrono::NaiveDateTime,
-    pub comments: String,
-    pub ack_user_id: Option<i32>,
-    pub ack_date: Option<chrono::NaiveDateTime>,
-    pub ack_comments: Option<String>,
-    pub date_created: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "dateModified"))]
     pub date_modified: chrono::NaiveDateTime,
 }
 
@@ -492,13 +494,20 @@ pub struct UserEventExcuseWithType {
 pub struct UserEventExcuseWithAssoc {
     pub id: i32,
     pub user: UserProfile,
+    #[serde(rename(deserialize = "eventType"))]
     pub event_type: EventType,
+    #[serde(rename(deserialize = "eventDate"))]
     pub event_date: chrono::NaiveDateTime,
     pub comments: String,
+    #[serde(rename(deserialize = "ackUser"))]
     pub ack_user: Option<UserProfile>,
+    #[serde(rename(deserialize = "ackDate"))]
     pub ack_date: Option<chrono::NaiveDateTime>,
+    #[serde(rename(deserialize = "ackComments"))]
     pub ack_comments: Option<String>,
+    #[serde(rename(deserialize = "dateCreated"))]
     pub date_created: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "dateModified"))]
     pub date_modified: chrono::NaiveDateTime,
 }
 

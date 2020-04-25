@@ -12,8 +12,9 @@ export function FileEntryExpansionPanelList(props: FileEntryExpansionPanelListPr
     const convertDateToString = (fileEntry: UserFileEntryWithAssoc): string =>
         formatDate(new Date(fileEntry.startDate), 'MMMM yyyy');
     const componentFactory = (fileEntries: UserFileEntryWithAssoc[]) => {
+        const key = fileEntries.reduce((key, fileEntry) => `${key}-${fileEntry.id}`, '');
         return (
-            <FileEntryExpansionPanelGroup fileEntries={fileEntries} />
+            <FileEntryExpansionPanelGroup key={key} fileEntries={fileEntries} />
         );
     };
 
@@ -23,5 +24,5 @@ export function FileEntryExpansionPanelList(props: FileEntryExpansionPanelListPr
             groupLabelStrategy={convertDateToString}
             models={props.fileEntries}
         />
-    )
+    );
 }

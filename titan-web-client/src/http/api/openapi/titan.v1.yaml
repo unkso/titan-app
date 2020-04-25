@@ -185,9 +185,8 @@ paths:
         schema:
           type: integer
     get:
-      summary: list_user_event_excuses
       tags: []
-      operationId: get-users-user_id-excuses
+      operationId: get-user-excuses
       security:
         - api_key: []
       responses:

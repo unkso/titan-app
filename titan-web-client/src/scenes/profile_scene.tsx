@@ -23,14 +23,14 @@ import {
 } from "@titan/store/profile";
 import {AppState} from "@titan/store/root_reducer";
 import {TabPanel} from "@titan/components/tabs/tab_panel";
-import {FileEntryList} from "@titan/components/file_entry/file_entry_list";
 import {FileEntryExpansionPanelList} from "@titan/components/list/file_entry_expansion_panel_list";
+import {ExcuseExpansionPanelList} from "@titan/components/list/excuse_expansion_panel_list";
 
 export function ProfileScene() {
     const params = useParams();
     const dispatch = useDispatch();
     const user = useSelector<AppState, UserProfile>(userProfileUserSelector);
-    const excuses = useSelector<AppState, UserEventExcuseWithAssoc>(userProfileEventExcusesSelector);
+    const excuses = useSelector<AppState, UserEventExcuseWithAssoc[]>(userProfileEventExcusesSelector);
     const fileEntries = useSelector<AppState, UserFileEntryWithAssoc[]>(userProfileFileEntriesSelector);
     const [tabIndex, setTabIndex] = useState(0);
     const handleTabChange = (event, index) => setTabIndex(index);
@@ -39,9 +39,11 @@ export function ProfileScene() {
         combineLatest([
             TitanApiClient.getUser({userId: params.id}),
             TitanApiClient.getUserFileEntries({userId: params.id}),
-        ]).subscribe(([user, fileEntries]) => {
+            TitanApiClient.getUserExcuses({userId: params.id}),
+        ]).subscribe(([user, fileEntries, excuses]) => {
             dispatch(UserProfileActions.setUser(user));
             dispatch(UserProfileActions.setFileEntries(fileEntries));
+            dispatch(UserProfileActions.setEventExcuses(excuses));
         });
     }, [params]);
 
@@ -59,11 +61,10 @@ export function ProfileScene() {
                         <Tab label="Event excuses" />
                     </Tabs>
                     <TabPanel index={0} value={tabIndex}>
-                        {/*<FileEntryList fileEntries={fileEntries} />*/}
                         <FileEntryExpansionPanelList fileEntries={fileEntries} />
                     </TabPanel>
                     <TabPanel index={1} value={tabIndex}>
-                        <p>Goodbye world</p>
+                        <ExcuseExpansionPanelList excuses={excuses} />
                     </TabPanel>
                 </Grid>
                 <Grid item lg={3} md={4} xs={12}>

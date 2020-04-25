@@ -102,6 +102,10 @@ export interface GetUserAclRequest {
     userId: number;
 }
 
+export interface GetUserExcusesRequest {
+    userId: number;
+}
+
 export interface GetUserFileEntriesRequest {
     userId: number;
 }
@@ -115,10 +119,6 @@ export interface GetUserOrganizationsRequest {
 export interface GetUsersRequest {
     username?: string;
     limit?: number;
-}
-
-export interface GetUsersUserIdExcusesRequest {
-    userId: number;
 }
 
 export interface PostAuthWoltlabRequest {
@@ -504,6 +504,22 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
+     */
+    getUserExcuses = ({ userId }: GetUserExcusesRequest): Observable<Array<UserEventExcuseWithAssoc>> => {
+        throwIfNullOrUndefined(userId, 'getUserExcuses');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<Array<UserEventExcuseWithAssoc>>({
+            path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(userId)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
      * list_user_file_entries
      */
     getUserFileEntries = ({ userId }: GetUserFileEntriesRequest): Observable<Array<UserFileEntryWithAssoc>> => {
@@ -590,23 +606,6 @@ export class DefaultApi extends BaseAPI {
 
         return this.request<Array<UserFileEntryType>>({
             path: '/api/users/file-entry-types',
-            method: 'GET',
-            headers,
-        });
-    };
-
-    /**
-     * list_user_event_excuses
-     */
-    getUsersUserIdExcuses = ({ userId }: GetUsersUserIdExcusesRequest): Observable<Array<UserEventExcuseWithAssoc>> => {
-        throwIfNullOrUndefined(userId, 'getUsersUserIdExcuses');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        return this.request<Array<UserEventExcuseWithAssoc>>({
-            path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(userId)),
             method: 'GET',
             headers,
         });

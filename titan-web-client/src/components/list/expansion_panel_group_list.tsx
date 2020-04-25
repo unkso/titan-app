@@ -53,7 +53,7 @@ export function ExpansionPanelGroupList<Model>(props: ExpansionPanelGroupListPro
                 list.push(props.componentFactory(pendingModels));
                 pendingModels = [];
             }
-            list.push(<h3>{label}</h3>);
+            list.push(<h3 key={label}>{label}</h3>);
             prevGroupLabel = label;
         }
         pendingModels.push(model);

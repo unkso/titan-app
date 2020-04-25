@@ -61,6 +61,7 @@ export function FileEntryExpansionPanelGroup(props: FileEntryExpansionPanelGroup
                 const fileEntryTheme = getFileEntryTheme(fileEntry.fileEntryType.name, theme);
                 return (
                     <ExpansionPanel
+                        key={fileEntry.id}
                         expanded={expandedPanel === fileEntry.id}
                         onChange={() => expandPanel(fileEntry.id)}>
                         <ExpansionPanelSummary expandIcon={<i className="far fa-angle-down" />}>
