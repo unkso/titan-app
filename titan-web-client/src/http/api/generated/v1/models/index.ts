@@ -6,7 +6,6 @@ export * from './CreateOrganizationFields';
 export * from './DeleteOrganizationUserFields';
 export * from './EventType';
 export * from './GenericError';
-export * from './InlineResponse200';
 export * from './Organization';
 export * from './OrganizationRole';
 export * from './OrganizationRoleWithAssoc';

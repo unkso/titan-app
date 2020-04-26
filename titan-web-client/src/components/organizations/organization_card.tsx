@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Card, CardContent} from '@material-ui/core';
 import styled from 'styled-components';
 import {Organization} from "@titan/http/api";
+import {RouteLink} from "@titan/components/routes";
 
 interface OrganizationCardProps {
     organization: Organization;
@@ -34,13 +35,15 @@ export function OrganizationCard(props: OrganizationCardProps) {
     }
 
     return (
-        <StyledOrganizationCard
-            image={props.organization.previewImageUrl}
-            height={dimensions.height}
-            width={dimensions.width}>
-            <CardContent>
-                <h3>{props.organization.name}</h3>
-            </CardContent>
-        </StyledOrganizationCard>
+        <RouteLink to={`/dashboard/community/organizations/${props.organization.id}`}>
+            <StyledOrganizationCard
+                image={props.organization.previewImageUrl}
+                height={dimensions.height}
+                width={dimensions.width}>
+                <CardContent>
+                    <h3>{props.organization.name}</h3>
+                </CardContent>
+            </StyledOrganizationCard>
+        </RouteLink>
     );
 }

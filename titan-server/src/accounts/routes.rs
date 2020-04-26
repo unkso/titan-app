@@ -270,7 +270,9 @@ pub fn list_user_event_excuses(
 
 #[derive(Deserialize)]
 pub struct CreateUserEventExcuseRequest {
+    #[serde(rename(deserialize = "eventDate"))]
     pub event_date: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "eventTypeId"))]
     pub event_type_id: i32,
     pub comments: String,
 }

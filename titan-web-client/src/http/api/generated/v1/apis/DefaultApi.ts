@@ -21,7 +21,6 @@ import {
     CreateOrganizationFields,
     DeleteOrganizationUserFields,
     EventType,
-    InlineResponse200,
     Organization,
     OrganizationRoleWithAssoc,
     ReorderOrganizationRolesFields,
@@ -156,7 +155,7 @@ export interface PostOrganizationsOrgIdUsersRequest {
     addOrganizationUserFields: AddOrganizationUserFields;
 }
 
-export interface PostUsersUserIdExcusesRequest {
+export interface SaveUserExcuseRequest {
     userId: number;
     addUserExcuseFields: AddUserExcuseFields;
 }
@@ -204,7 +203,7 @@ export class DefaultApi extends BaseAPI {
     /**
      * list_event_types
      */
-    getEventsEventTypes = (): Observable<Array<EventType>> => {
+    getEventTypes = (): Observable<Array<EventType>> => {
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
@@ -749,16 +748,16 @@ export class DefaultApi extends BaseAPI {
     /**
      * save_user_event_excuse
      */
-    postUsersUserIdExcuses = ({ userId, addUserExcuseFields }: PostUsersUserIdExcusesRequest): Observable<InlineResponse200> => {
-        throwIfNullOrUndefined(userId, 'postUsersUserIdExcuses');
-        throwIfNullOrUndefined(addUserExcuseFields, 'postUsersUserIdExcuses');
+    saveUserExcuse = ({ userId, addUserExcuseFields }: SaveUserExcuseRequest): Observable<UserEventExcuseWithAssoc> => {
+        throwIfNullOrUndefined(userId, 'saveUserExcuse');
+        throwIfNullOrUndefined(addUserExcuseFields, 'saveUserExcuse');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
             ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
-        return this.request<InlineResponse200>({
+        return this.request<UserEventExcuseWithAssoc>({
             path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(userId)),
             method: 'POST',
             headers,

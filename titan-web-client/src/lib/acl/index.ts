@@ -30,5 +30,7 @@ export const createAclInstanceFromSession = (authUserState: AuthUserState) => {
     return createAclInstance(
         assert(authUserState.user).id,
         assert(authUserState.aclOptions),
-        authOrganizationRolesSelector(authUserState));
+        assert(authUserState.organizations)
+            .map(org => org.role)
+            .filter(role => !!role) as OrganizationRole[]);
 };

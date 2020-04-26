@@ -10,7 +10,7 @@ interface ExcuseExpansionPanelListProps {
 
 export function ExcuseExpansionPanelList(props: ExcuseExpansionPanelListProps) {
     const convertDateToString = (excuse: UserEventExcuseWithAssoc): string =>
-        formatDate(new Date(excuse.dateCreated), 'MMMM yyyy');
+        formatDate(new Date(excuse.eventDate), 'MMMM yyyy');
     const componentFactory = (excuses: UserEventExcuseWithAssoc[]) => {
         const key = excuses.reduce((key, excuse) => `${key}-${excuse.id}`, '');
         return (

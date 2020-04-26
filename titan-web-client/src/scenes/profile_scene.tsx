@@ -14,6 +14,8 @@ import {
 import {combineLatest} from "rxjs";
 import {
     UserProfileActions,
+    userProfileEventExcusesSelector,
+    userProfileFileEntriesSelector,
     userProfileOrganizationMembershipsSelector,
     userProfileUserSelector
 } from "@titan/store/profile";
@@ -26,6 +28,7 @@ import {FileEntryExpansionPanelGroup} from "@titan/components/list/file_entry_ex
 import {RouteButton} from "@titan/components/routes";
 import {ExcuseExpansionPanelGroup} from "@titan/components/list/excuse_expansion_panel_group";
 import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section_header";
+import {CreateEventExcuseContainer} from "@titan/modules/roster/profile/containers/create_event_excuse_container";
 
 const StyledAvatar = styled(Avatar)`
     height: 56px;
@@ -46,8 +49,10 @@ export function ProfileScene() {
     const params = useParams();
     const dispatch = useDispatch();
     const user = useSelector<AppState, UserProfile>(userProfileUserSelector);
-    const [recentEventExcuses, setRecentEventExcuses] = useState<UserEventExcuseWithAssoc[]>([]);
-    const [recentFileEntries, setRecentFileEntries] = useState<UserFileEntryWithAssoc[]>([]);
+    const allEventExcuses = useSelector<AppState, UserEventExcuseWithAssoc[]>(userProfileEventExcusesSelector);
+    const allFileEntries = useSelector<AppState, UserFileEntryWithAssoc[]>(userProfileFileEntriesSelector);
+    const [latestEventExcuses, setLatestEventExcuses] = useState<UserEventExcuseWithAssoc[]>([]);
+    const [latestFileEntries, setLatestFileEntries] = useState<UserFileEntryWithAssoc[]>([]);
     const memberships = useSelector<AppState, UserOrganizationMembership[]>(userProfileOrganizationMembershipsSelector);
 
     useEffect(() => {
@@ -61,10 +66,16 @@ export function ProfileScene() {
             dispatch(UserProfileActions.setEventExcuses(excuses));
             dispatch(UserProfileActions.setFileEntries(fileEntries));
             dispatch(UserProfileActions.setOrganizationMemberships(memberships));
-            setRecentEventExcuses(excuses.slice(0, 5));
-            setRecentFileEntries(fileEntries.slice(0, 5));
         });
     }, [params]);
+
+    useEffect(() => {
+        setLatestEventExcuses(allEventExcuses.slice(0, 5));
+    }, [allEventExcuses]);
+
+    useEffect(() => {
+        setLatestFileEntries(allFileEntries.slice(0, 5));
+    }, [allFileEntries]);
 
     if (!user) {
         return null;
@@ -85,41 +96,47 @@ export function ProfileScene() {
                 </StyledHeadline>
             </DashboardSection>
 
-            <HorizontalScrollViewport>
-                {memberships.map(membership => (
-                    <OrganizationCard
-                        key={membership.organization.id}
-                        organization={membership.organization}
-                        size="sm"
-                    />
-                ))}
-            </HorizontalScrollViewport>
+            {memberships.length > 0 && (
+                <HorizontalScrollViewport>
+                    {memberships.map(membership => (
+                        <OrganizationCard
+                            key={membership.organization.id}
+                            organization={membership.organization}
+                            size="sm"
+                        />
+                    ))}
+                </HorizontalScrollViewport>
+            )}
 
-            <DashboardSection>
-                <DashboardSectionHeader
-                    actions={[
-                        <Button key="add-entry" color="primary" size="small">Add entry</Button>,
-                    ]}
-                    links={[
-                        <RouteButton
-                            key="view-entries"
-                            to={`/dashboard/members/${user.id}/file-entries`}>View all</RouteButton>
-                    ]}>Recent activity</DashboardSectionHeader>
-                <FileEntryExpansionPanelGroup fileEntries={recentFileEntries} />
-            </DashboardSection>
+            {latestFileEntries.length > 0 && (
+                <DashboardSection>
+                    <DashboardSectionHeader
+                        actions={[
+                            <Button key="add-entry" color="primary" size="small">Add entry</Button>,
+                        ]}
+                        links={[
+                            <RouteButton
+                                key="view-entries"
+                                to={`/dashboard/members/${user.id}/file-entries`}>View all</RouteButton>
+                        ]}>Latest activity</DashboardSectionHeader>
+                    <FileEntryExpansionPanelGroup fileEntries={latestFileEntries} />
+                </DashboardSection>
+            )}
 
-            <DashboardSection>
-                <DashboardSectionHeader
-                    actions={[
-                        <Button key="add-excuse" color="primary" size="small">Add excuse</Button>,
-                    ]}
-                    links={[
-                        <RouteButton
-                            key="view-excuses"
-                            to={`/dashboard/members/${user.id}/event-excuses`}>View all</RouteButton>
-                    ]}>Recent event excuses</DashboardSectionHeader>
-                <ExcuseExpansionPanelGroup excuses={recentEventExcuses} />
-            </DashboardSection>
+            {latestEventExcuses.length > 0 && (
+                <DashboardSection>
+                    <DashboardSectionHeader
+                        actions={[
+                            <CreateEventExcuseContainer key="add-excuse" />,
+                        ]}
+                        links={[
+                            <RouteButton
+                                key="view-excuses"
+                                to={`/dashboard/members/${user.id}/event-excuses`}>View all</RouteButton>
+                        ]}>Latest event excuses</DashboardSectionHeader>
+                    <ExcuseExpansionPanelGroup excuses={latestEventExcuses} />
+                </DashboardSection>
+            )}
         </div>
     );
 }

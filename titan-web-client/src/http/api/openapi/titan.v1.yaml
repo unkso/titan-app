@@ -207,11 +207,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  user_id:
-                    $ref: ./models/user_event_excuse_with_assoc.v1.yaml
-      operationId: post-users-user_id-excuses
+                $ref: ./models/user_event_excuse_with_assoc.v1.yaml
+      operationId: save_user_excuse
       security:
         - api_key: []
       requestBody:
@@ -768,7 +765,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/event_type.v1.yaml
-      operationId: get-events-event-types
+      operationId: get-event-types
       security:
         - api_key: []
 components:
