@@ -12,6 +12,7 @@ import {
 } from "@titan/components/file_entry/constants";
 import {Palette} from "@titan/themes/default";
 import {format as formatDate} from "date-fns";
+import {RouteLink} from "@titan/components/routes";
 
 interface FileEntryExpansionPanelGroupProps {
     fileEntries: UserFileEntryWithAssoc[];
@@ -44,19 +45,9 @@ export function FileEntryExpansionPanelGroup(props: FileEntryExpansionPanelGroup
         }
     };
 
-    // FIXME DO NOT SUBMIT Remove this test code.
-    const fileEntry = props.fileEntries[0];
-    const fileEntries = [
-        fileEntry,
-        {...fileEntry, id: 2, fileEntryType: {name: FILE_ENTRY_A15}},
-        {...fileEntry, id: 3, fileEntryType: {name: FILE_ENTRY_BCT_E0_COMPLETE}},
-        {...fileEntry, id: 4},
-        {...fileEntry, id: 5},
-    ];
-
     return (
         <div>
-            {fileEntries.map(fileEntry => {
+            {props.fileEntries.map(fileEntry => {
                 const dateModified = formatDate(new Date(fileEntry.dateModified), 'MMMM dd, yyyy');
                 const fileEntryTheme = getFileEntryTheme(fileEntry.fileEntryType.name, theme);
                 return (
@@ -74,7 +65,7 @@ export function FileEntryExpansionPanelGroup(props: FileEntryExpansionPanelGroup
                             <div>
                                 <p>{fileEntry.comments}</p>
                                 <Typography color="textSecondary" variant="caption">
-                                    Created on {dateModified} by <Link href={`/dashboard/members/${fileEntry.modifiedBy.id}`}>{fileEntry.modifiedBy.username}</Link>.
+                                    Created on {dateModified} by <RouteLink to={`/dashboard/members/${fileEntry.modifiedBy.id}`}>{fileEntry.modifiedBy.username}</RouteLink>.
                                 </Typography>
                             </div>
                         </StyledExpansionPanelDetails>

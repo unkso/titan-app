@@ -21,6 +21,7 @@ import {
     DashboardLayoutPageMenuState,
     dashboardLayoutPageMenuStateSelector
 } from "@titan/store/dashboard_layout";
+import {DashboardSection} from "@titan/layouts/dashboard/dashboard_section";
 
 const StyledDrawer = styled(Drawer)`
   .context-sidebar-paper {
@@ -108,7 +109,9 @@ export function DashboardLayout(props) {
             <StyledContentSection
                 offset={contentOffset}
                 padding={theme.spacing(4)}>
-                <PageToolbar userProfile={userProfile} />
+                <DashboardSection>
+                    <PageToolbar userProfile={userProfile} />
+                </DashboardSection>
                 <section>{props.children}</section>
             </StyledContentSection>
         </div>

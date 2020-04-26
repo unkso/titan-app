@@ -18,7 +18,11 @@ export function CommunityScene(props: PropsWithChildren<any>) {
                     path: '/dashboard/community/members',
                 }
             ]
-        }))
+        }));
+
+        return () => {
+            dispatch(DashboardLayoutActions.setPageMenu(undefined));
+        }
     }, [dispatch]);
 
     return props.children;

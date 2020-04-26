@@ -10,6 +10,7 @@ import {
 import {TitanApiClient, UserProfile} from "@titan/http/api";
 import {MemberList} from "@titan/components/members/member_list";
 import {IconEmptyState} from "@titan/components/empty_state/icon_empty_state";
+import {DashboardSection} from "@titan/layouts/dashboard/dashboard_section";
 
 const DEFAULT_SEARCH_DESCRIPTION = 'Showing newest members';
 const MAX_RESULTS_PER_PAGE = 15;
@@ -37,7 +38,7 @@ export function MembersScene() {
     }, [username]);
 
     return (
-        <div>
+        <DashboardSection>
             <h1>Members</h1>
             <TextField
                 InputProps={{
@@ -67,6 +68,6 @@ export function MembersScene() {
                     verticalMargin={64}
                 />
             )}
-        </div>
+        </DashboardSection>
     );
 }

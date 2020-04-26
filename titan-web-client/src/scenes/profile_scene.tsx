@@ -4,12 +4,7 @@ import { useParams } from 'react-router-dom';
 import {
     Avatar,
     Button,
-    Grid,
-    List, ListItem, ListItemIcon, ListItemText,
-    ListSubheader,
-    Paper,
-    Tab,
-    Tabs, Typography
+    Typography
 } from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -26,14 +21,13 @@ import {
     userProfileUserSelector
 } from "@titan/store/profile";
 import {AppState} from "@titan/store/root_reducer";
-import {TabPanel} from "@titan/components/tabs/tab_panel";
-import {FileEntryExpansionPanelList} from "@titan/components/list/file_entry_expansion_panel_list";
-import {ExcuseExpansionPanelList} from "@titan/components/list/excuse_expansion_panel_list";
 import {ActivityIndicator} from "@titan/components/activity/activity_indicator";
 import {HorizontalScrollViewport} from "@titan/components/scroll/horizontal_scroll_viewport";
 import {OrganizationCard} from "@titan/components/organizations/organization_card";
-import {Palette} from "@titan/themes/default";
 import {DashboardSection} from "@titan/layouts/dashboard/dashboard_section";
+import {FileEntryExpansionPanelGroup} from "@titan/components/list/file_entry_expansion_panel_group";
+import {RouteLink} from "@titan/components/routes";
+import {ExcuseExpansionPanelGroup} from "@titan/components/list/excuse_expansion_panel_group";
 
 const StyledAvatar = styled(Avatar)`
     height: 56px;
@@ -44,17 +38,19 @@ const StyledAvatar = styled(Avatar)`
 const StyledHeadline = styled.div`
   align-items: center;
   display: flex;
+  
+  .user-activity {
+    margin-top: -8px;
+  }
 `;
 
 export function ProfileScene() {
     const params = useParams();
     const dispatch = useDispatch();
     const user = useSelector<AppState, UserProfile>(userProfileUserSelector);
-    const excuses = useSelector<AppState, UserEventExcuseWithAssoc[]>(userProfileEventExcusesSelector);
-    const fileEntries = useSelector<AppState, UserFileEntryWithAssoc[]>(userProfileFileEntriesSelector);
+    const [recentEventExcuses, setRecentEventExcuses] = useState<UserEventExcuseWithAssoc[]>([]);
+    const [recentFileEntries, setRecentFileEntries] = useState<UserFileEntryWithAssoc[]>([]);
     const memberships = useSelector<AppState, UserOrganizationMembership[]>(userProfileOrganizationMembershipsSelector);
-    const [tabIndex, setTabIndex] = useState(0);
-    const handleTabChange = (event, index) => setTabIndex(index);
 
     useEffect(() => {
         combineLatest([
@@ -67,6 +63,8 @@ export function ProfileScene() {
             dispatch(UserProfileActions.setEventExcuses(excuses));
             dispatch(UserProfileActions.setFileEntries(fileEntries));
             dispatch(UserProfileActions.setOrganizationMemberships(memberships));
+            setRecentEventExcuses(excuses.slice(0, 5));
+            setRecentFileEntries(fileEntries.slice(0, 5));
         });
     }, [params]);
 
@@ -82,7 +80,9 @@ export function ProfileScene() {
                         src={"https://clanunknownsoldiers.com/wcf/images/avatars/94/1238-949157b51dc4b03f8c95767eab5dcfc4cabd35ee.png"} />
                     <div>
                         <Typography variant="h1">{user.username}</Typography>
-                        <ActivityIndicator timestamp={user.wcf.lastActivityTime} />
+                        <div className="user-activity">
+                            <ActivityIndicator timestamp={user.wcf.lastActivityTime} />
+                        </div>
                     </div>
                 </StyledHeadline>
             </DashboardSection>
@@ -94,21 +94,22 @@ export function ProfileScene() {
             </HorizontalScrollViewport>
 
             <DashboardSection>
-                <Grid container spacing={3}>
-                    <Grid item lg={9} md={8} xs={12}>
-                        <Tabs value={tabIndex} onChange={handleTabChange}>
-                            <Tab label="Activity" />
-                            <Tab label="Event excuses" />
-                        </Tabs>
-                        <TabPanel index={0} value={tabIndex}>
-                            <FileEntryExpansionPanelList fileEntries={fileEntries} />
-                        </TabPanel>
-                        <TabPanel index={1} value={tabIndex}>
-                            <ExcuseExpansionPanelList excuses={excuses} />
-                        </TabPanel>
-                    </Grid>
-                    <Grid item lg={3} md={4} xs={12}>
-                        <Paper>
+                <h3>Recent activity</h3>
+                <RouteLink to={`/dashboard/members/${user.id}/file-entries`}>View all</RouteLink>
+                <FileEntryExpansionPanelGroup fileEntries={recentFileEntries} />
+            </DashboardSection>
+
+            <DashboardSection>
+                <h3>Recent event excuses</h3>
+                <RouteLink to={`/dashboard/members/${user.id}/event-excuses`}>View all</RouteLink>
+                <ExcuseExpansionPanelGroup excuses={recentEventExcuses} />
+            </DashboardSection>
+        </div>
+    );
+}
+
+/*
+<Paper>
                             <List subheader={
                                 <ListSubheader component="div">Identities</ListSubheader>
                             }>
@@ -132,12 +133,4 @@ export function ProfileScene() {
                                 </ListItem>
                             </List>
                         </Paper>
-
-                        <Button color="secondary">Submit event excuse</Button>
-                        <Button color="secondary">Add file entry</Button>
-                    </Grid>
-                </Grid>
-            </DashboardSection>
-        </div>
-    );
-}
+ */

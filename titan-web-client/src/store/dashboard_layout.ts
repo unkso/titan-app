@@ -30,7 +30,7 @@ const DashboardLayoutSlice = createSlice({
     name: 'dashboardLayout',
     initialState: DEFAULT_STATE,
     reducers: {
-        setPageMenu(state, action: PayloadAction<DashboardLayoutPageMenu>) {
+        setPageMenu(state, action: PayloadAction<DashboardLayoutPageMenu|undefined>) {
             state.pageMenu = action.payload;
         },
         setPageMenuState(state, action: PayloadAction<DashboardLayoutPageMenuState>) {

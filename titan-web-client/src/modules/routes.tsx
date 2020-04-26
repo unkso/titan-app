@@ -8,6 +8,8 @@ import {OrganizationScene} from "@titan/scenes/organization_scene";
 import {CommunityScene} from "@titan/scenes/community";
 import {MembersScene} from "@titan/scenes/community/members_scene";
 import {ProfileScene} from "@titan/scenes/profile_scene";
+import {ProfileFileEntriesScene} from "@titan/scenes/profile_file_entries_scene";
+import {ProfileExcusesScene} from "@titan/scenes/profile_excuses_scene";
 
 export const routes =(
     <Switch>
@@ -43,19 +45,13 @@ export const routes =(
                 <Route exact path="/dashboard/members/:id">
                     <ProfileScene />
                 </Route>
+                <Route exact path="/dashboard/members/:id/file-entries">
+                    <ProfileFileEntriesScene />
+                </Route>
+                <Route exact path="/dashboard/members/:id/event-excuses">
+                    <ProfileExcusesScene />
+                </Route>
             </DashboardLayout>
-            {/*<DashboardLayoutOld>
-                <Route path="/organizations">
-                    <Route exact path={ORGANIZATIONS_LIST_ROUTE} component={OrganizationsListScene} />
-                    <Route exact path={ORGANIZATIONS_DETAIL_ROUTE} component={OrganizationDetailScene} />
-                    <Route exact path="/organizations/reports/unacknowledged" component={ManageUnacknowledgedReportsScene} />
-                </Route>
-                <Route path="/roster">
-                    <Route exact path={USER_EXCUSES_ROUTE} component={ExcusesScene} />
-                    <Route exact path={USER_PROFILE_ROUTE} component={ProfileScene} />
-                    <Route exact path="/roster" component={ListAllUsersScene} />
-                </Route>
-            </DashboardLayoutOld>*/}
         </Route>
     </Switch>
 );

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { Route_link } from '@titan/components/routes/route_link';
+import { RouteLink } from '@titan/components/routes/route_link';
 import {
   MemberNameTag,
   StyledMemberNameTag
@@ -160,7 +160,7 @@ class ChainOfCommandComponent extends React.Component {
           avatarUrl={coc.user_profile.wcf.avatar_url}
           avatarPosition={avatarPosition}
           label={(isLocal
-            ? <Route_link to={orgRoute}>{coc.role}</Route_link>
+            ? <RouteLink to={orgRoute}>{coc.role}</RouteLink>
             : coc.role
           )}
           labelPosition="below"

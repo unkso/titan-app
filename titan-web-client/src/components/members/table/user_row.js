@@ -1,5 +1,5 @@
 import TableCell from '@material-ui/core/TableCell';
-import { Route_link } from '@titan/components/routes/route_link';
+import { RouteLink } from '@titan/components/routes/route_link';
 import { USER_PROFILE_ROUTE } from '@titan/modules/roster/routes';
 import { format as formatDate } from 'date-fns';
 import TableRow from '@material-ui/core/TableRow';
@@ -29,7 +29,7 @@ export function UserRow (props) {
       <TableCell>
         <MemberNameTag
           avatarUrl={props.user.wcf.avatar_url}
-          username={<Route_link to={orgRoute}>{props.user.username}</Route_link>}
+          username={<RouteLink to={orgRoute}>{props.user.username}</RouteLink>}
           size="small"
         />
       </TableCell>

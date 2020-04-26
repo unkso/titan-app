@@ -1,6 +1,7 @@
 import React, {ReactNode, useEffect, useState} from 'react';
 import {Avatar, Tooltip, useTheme} from "@material-ui/core";
 import styled from 'styled-components';
+import {RouteLink} from "@titan/components/routes";
 
 export interface ContextSidebarItemProps {
     hasNotification?: boolean;
@@ -23,7 +24,7 @@ const StyledAvatar = styled(Avatar)`
   width: ${props => props.dimensions}px;
 `;
 
-const StyledAvatarLink = styled.a`
+const StyledAvatarLink = styled(RouteLink)`
   display: block;
   margin: 0 ${props => props.margin};
   text-decoration: none;
@@ -90,7 +91,7 @@ export function ContextSidebarItem(props: ContextSidebarItemProps) {
                     visible={props.hasNotification}
                     transition={transition}
                 />
-                <StyledAvatarLink href={props.path}>
+                <StyledAvatarLink to={props.path}>
                     <StyledAvatar
                         color={theme.palette.text.secondary}
                         background={theme.palette.background.default}

@@ -7,6 +7,7 @@ import {
     ListSubheader
 } from "@material-ui/core";
 import {DashboardLayoutPageMenu} from "@titan/store/dashboard_layout";
+import {RouteLink} from "@titan/components/routes";
 
 const StyledPageSidebar = styled.div`
   width: 240px;
@@ -23,7 +24,7 @@ export function PageSidebar(props: PageSidebarProps) {
                 <ListSubheader component="div">{props.menu.subheaderLabel}</ListSubheader>
             }>
                 {props.menu.items.map((item, index) => (
-                    <ListItem button component="a" href={item.path} key={index}>
+                    <ListItem button component={RouteLink} to={item.path} key={index}>
                         <ListItemText>{item.label}</ListItemText>
                     </ListItem>
                 ))}
