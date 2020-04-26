@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import {
-    Avatar,
-    Button,
+    Avatar, Button,
     Typography
 } from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,8 +14,6 @@ import {
 import {combineLatest} from "rxjs";
 import {
     UserProfileActions,
-    userProfileEventExcusesSelector,
-    userProfileFileEntriesSelector,
     userProfileOrganizationMembershipsSelector,
     userProfileUserSelector
 } from "@titan/store/profile";
@@ -26,8 +23,9 @@ import {HorizontalScrollViewport} from "@titan/components/scroll/horizontal_scro
 import {OrganizationCard} from "@titan/components/organizations/organization_card";
 import {DashboardSection} from "@titan/layouts/dashboard/dashboard_section";
 import {FileEntryExpansionPanelGroup} from "@titan/components/list/file_entry_expansion_panel_group";
-import {RouteLink} from "@titan/components/routes";
+import {RouteButton} from "@titan/components/routes";
 import {ExcuseExpansionPanelGroup} from "@titan/components/list/excuse_expansion_panel_group";
+import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section_header";
 
 const StyledAvatar = styled(Avatar)`
     height: 56px;
@@ -88,49 +86,40 @@ export function ProfileScene() {
             </DashboardSection>
 
             <HorizontalScrollViewport>
-                {memberships.map(membership => membership.organization).map(org => (
-                    <OrganizationCard organization={org} size="sm" />
+                {memberships.map(membership => (
+                    <OrganizationCard
+                        key={membership.organization.id}
+                        organization={membership.organization}
+                        size="sm"
+                    />
                 ))}
             </HorizontalScrollViewport>
 
             <DashboardSection>
-                <h3>Recent activity</h3>
-                <RouteLink to={`/dashboard/members/${user.id}/file-entries`}>View all</RouteLink>
+                <DashboardSectionHeader
+                    actions={[
+                        <Button key="add-entry" color="primary" size="small">Add entry</Button>,
+                    ]}
+                    links={[
+                        <RouteButton
+                            key="view-entries"
+                            to={`/dashboard/members/${user.id}/file-entries`}>View all</RouteButton>
+                    ]}>Recent activity</DashboardSectionHeader>
                 <FileEntryExpansionPanelGroup fileEntries={recentFileEntries} />
             </DashboardSection>
 
             <DashboardSection>
-                <h3>Recent event excuses</h3>
-                <RouteLink to={`/dashboard/members/${user.id}/event-excuses`}>View all</RouteLink>
+                <DashboardSectionHeader
+                    actions={[
+                        <Button key="add-excuse" color="primary" size="small">Add excuse</Button>,
+                    ]}
+                    links={[
+                        <RouteButton
+                            key="view-excuses"
+                            to={`/dashboard/members/${user.id}/event-excuses`}>View all</RouteButton>
+                    ]}>Recent event excuses</DashboardSectionHeader>
                 <ExcuseExpansionPanelGroup excuses={recentEventExcuses} />
             </DashboardSection>
         </div>
     );
 }
-
-/*
-<Paper>
-                            <List subheader={
-                                <ListSubheader component="div">Identities</ListSubheader>
-                            }>
-                                <ListItem>
-                                    <ListItemIcon>
-                                        <i className="fab fa-discord" />
-                                    </ListItemIcon>
-                                    <ListItemText>-- username --</ListItemText>
-                                </ListItem>
-                                <ListItem>
-                                    <ListItemIcon>
-                                        <i className="fab fa-steam-square" />
-                                    </ListItemIcon>
-                                    <ListItemText>-- username --</ListItemText>
-                                </ListItem>
-                                <ListItem>
-                                    <ListItemIcon>
-                                        <i className="fab fa-battle-net" />
-                                    </ListItemIcon>
-                                    <ListItemText>-- username --</ListItemText>
-                                </ListItem>
-                            </List>
-                        </Paper>
- */

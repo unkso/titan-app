@@ -1,5 +1,5 @@
 import React from 'react';
-import RouterDomLink from 'react-router-dom/Link';
+import {Link as RouterDomLink} from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
 const AdapterLink = React.forwardRef((props, ref) => (

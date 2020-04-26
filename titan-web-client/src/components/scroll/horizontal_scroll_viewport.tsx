@@ -73,8 +73,8 @@ export function HorizontalScrollViewport<T>(props: PropsWithChildren<HorizontalS
     return (
         <StyledHorizontalScrollViewport background={Palette.background[600]}>
             <StyledHorizontalScrollContainer spacing={props.spacing || 8}>
-                {children.map(child => (
-                    <StyledHorizontalScrollViewportItem>{child}</StyledHorizontalScrollViewportItem>
+                {children.map((child, index) => (
+                    <StyledHorizontalScrollViewportItem key={index}>{child}</StyledHorizontalScrollViewportItem>
                 ))}
             </StyledHorizontalScrollContainer>
         </StyledHorizontalScrollViewport>
