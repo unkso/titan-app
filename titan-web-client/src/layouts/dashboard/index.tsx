@@ -31,7 +31,7 @@ const StyledDrawer = styled(Drawer)`
 
 const StyledContentSection = styled.div`
   margin-left: ${props => props.offset};
-  padding: 0 ${props => props.padding}px ${props => props.padding}px;
+  padding-bottom: ${props => props.padding}px;
 `;
 
 const StyledCircularProgress = styled(CircularProgress)`

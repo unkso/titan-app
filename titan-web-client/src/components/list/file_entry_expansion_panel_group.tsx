@@ -74,7 +74,7 @@ export function FileEntryExpansionPanelGroup(props: FileEntryExpansionPanelGroup
                             <div>
                                 <p>{fileEntry.comments}</p>
                                 <Typography color="textSecondary" variant="caption">
-                                    Created on {dateModified} by <Link href={`/dashboard/members/${fileEntry.modifiedBy.id}`}>{fileEntry.modifiedBy.username}</Link>
+                                    Created on {dateModified} by <Link href={`/dashboard/members/${fileEntry.modifiedBy.id}`}>{fileEntry.modifiedBy.username}</Link>.
                                 </Typography>
                             </div>
                         </StyledExpansionPanelDetails>
