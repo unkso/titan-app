@@ -28,7 +28,8 @@ import {FileEntryExpansionPanelGroup} from "@titan/components/list/file_entry_ex
 import {RouteButton} from "@titan/components/routes";
 import {ExcuseExpansionPanelGroup} from "@titan/components/list/excuse_expansion_panel_group";
 import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section_header";
-import {CreateEventExcuseContainer} from "@titan/modules/roster/profile/containers/create_event_excuse_container";
+import {CreateEventExcuseContainer} from "@titan/scenes/containers/create_event_excuse_container";
+import {CreateFileEntryContainer} from "@titan/scenes/containers/create_file_entry_container";
 
 const StyledAvatar = styled(Avatar)`
     height: 56px;
@@ -112,7 +113,7 @@ export function ProfileScene() {
                 <DashboardSection>
                     <DashboardSectionHeader
                         actions={[
-                            <Button key="add-entry" color="primary" size="small">Add entry</Button>,
+                            <CreateFileEntryContainer key="add-entry" />
                         ]}
                         links={[
                             <RouteButton

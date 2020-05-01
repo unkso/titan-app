@@ -1,23 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import { bindActionCreators } from 'redux';
-import * as profileActions from '@titan/actions/profile_actions';
-import connect from 'react-redux/es/connect/connect';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import UsersService from '@titan/http/UsersService';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { format as formatDate } from 'date-fns';
 import { CreateEventExcuseForm }
   from '@titan/modules/roster/components/excuse/create_event_excuse_form';
-import EventsService from '@titan/http/EventsService';
-import {useSnackbar, withSnackbar} from 'notistack';
-import {createAclInstanceFromSession, useAcl} from '@titan/lib/acl';
+import {useSnackbar} from 'notistack';
+import {useAcl} from '@titan/lib/acl';
 import {Permission} from '@titan/lib/acl/permissions';
 import {
-  AddUserExcuseFields,
-  EventType,
+  EventType, SaveUserExcuseFields,
   TitanApiClient, UserEventExcuseWithAssoc,
   UserProfile
 } from '@titan/http/api';
@@ -27,14 +21,9 @@ import {
   userProfileUserSelector
 } from "@titan/store/profile";
 import {AppState} from "@titan/store/root_reducer";
-import {save} from "@titan/lib/storage/local_storage";
 import {assert} from "@titan/lib/assert";
 
-interface CreateEventExcuseContainerProps {
-
-}
-
-export function CreateEventExcuseContainer(props: CreateEventExcuseContainerProps) {
+export function CreateEventExcuseContainer() {
   const user = useSelector<AppState, UserProfile>(userProfileUserSelector);
   const excuses = useSelector<AppState, UserEventExcuseWithAssoc[]>(userProfileEventExcusesSelector);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -42,9 +31,20 @@ export function CreateEventExcuseContainer(props: CreateEventExcuseContainerProp
   const closeDialog = () => setDialogOpen(false);
   const [formFields, setFormFields] = useState({
     eventDate: new Date(),
-    eventTypeId: undefined,
+    eventTypeId: '',
     comments: '',
   });
+  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
+  const snackbar = useSnackbar();
+  const dispatch = useDispatch();
+  const canCreateEventExcuse = useAcl(acl =>
+    acl.newBuilder()
+        .hasAclPermissions([
+            Permission.CAN_ACK_EVENT_EXCUSE,
+            Permission.CAN_CREATE_EVENT_EXCUSE
+        ])
+        .or(acl.isAuthenticatedUser(user.id))
+        .build());
   const handleFormFieldChange = (field, value) => {
     const values = {...formFields};
     switch (field) {
@@ -63,17 +63,6 @@ export function CreateEventExcuseContainer(props: CreateEventExcuseContainerProp
 
     setFormFields(values);
   };
-  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
-  const snackbar = useSnackbar();
-  const dispatch = useDispatch();
-  const canCreateEventExcuse = useAcl(acl =>
-    acl.newBuilder()
-        .hasAclPermissions([
-            Permission.CAN_ACK_EVENT_EXCUSE,
-            Permission.CAN_CREATE_EVENT_EXCUSE
-        ])
-        .or(acl.isAuthenticatedUser(user.id))
-        .build());
 
   useEffect(() => {
     TitanApiClient.getEventTypes().subscribe(eventTypes => {
@@ -82,13 +71,13 @@ export function CreateEventExcuseContainer(props: CreateEventExcuseContainerProp
   }, []);
 
   function saveExcuse() {
-    const payload: AddUserExcuseFields = {
+    const payload: SaveUserExcuseFields = {
       comments: formFields.comments,
       eventTypeId: assert(formFields.eventTypeId) as unknown as number,
-      eventDate: formatDate(formFields.eventDate as Date, "yyyy-MM-dd'T'00:00:00") as unknown as number,
+      eventDate: formatDate(formFields.eventDate as Date, "yyyy-MM-dd'T'00:00:00"),
     };
 
-    TitanApiClient.saveUserExcuse({userId: user.id, addUserExcuseFields: payload})
+    TitanApiClient.saveUserExcuse({userId: user.id, saveUserExcuseFields: payload})
         .subscribe(savedExcuse => {
           setDialogOpen(false);
           snackbar.enqueueSnackbar('excuse added', {variant: 'success'});

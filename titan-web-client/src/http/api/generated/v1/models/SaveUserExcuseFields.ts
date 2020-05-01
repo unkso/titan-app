@@ -13,17 +13,22 @@
 
 /**
  * @export
- * @interface UserFileEntryType
+ * @interface SaveUserExcuseFields
  */
-export interface UserFileEntryType {
-    /**
-     * @type {number}
-     * @memberof UserFileEntryType
-     */
-    id: number;
+export interface SaveUserExcuseFields {
     /**
      * @type {string}
-     * @memberof UserFileEntryType
+     * @memberof SaveUserExcuseFields
      */
-    name: string;
+    eventDate: string;
+    /**
+     * @type {number}
+     * @memberof SaveUserExcuseFields
+     */
+    eventTypeId: number;
+    /**
+     * @type {string}
+     * @memberof SaveUserExcuseFields
+     */
+    comments: string;
 }

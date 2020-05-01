@@ -177,6 +177,38 @@ paths:
       operationId: get_user_file_entries
       security:
         - api_key: []
+    post:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/user_file_entry_with_assoc.v1.yaml
+      operationId: save_user_file_entry
+      security:
+        - api_key: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: save_file_entry_fields
+              type: object
+              properties:
+                comments:
+                  type: string
+                end_date:
+                  type: string
+                file_entry_type_id:
+                  type: integer
+                start_date:
+                  type: string
+              required:
+                - comments
+                - end_date
+                - file_entry_type_id
+                - end_date
   '/api/users/{user_id}/excuses':
     parameters:
       - name: user_id
@@ -216,11 +248,11 @@ paths:
         content:
           application/json:
             schema:
-              title: add_user_excuse_fields
+              title: save_user_excuse_fields
               type: object
               properties:
                 event_date:
-                  type: integer
+                  type: string
                 event_type_id:
                   type: integer
                 comments:

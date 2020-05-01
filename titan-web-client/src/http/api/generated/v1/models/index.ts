@@ -1,5 +1,4 @@
 export * from './AddOrganizationUserFields';
-export * from './AddUserExcuseFields';
 export * from './AuthWoltlabFields';
 export * from './ChainOfCommand';
 export * from './CreateOrganizationFields';
@@ -11,6 +10,8 @@ export * from './OrganizationRole';
 export * from './OrganizationRoleWithAssoc';
 export * from './ReorderOrganizationRolesFields';
 export * from './ReportWithAssoc';
+export * from './SaveFileEntryFields';
+export * from './SaveUserExcuseFields';
 export * from './UpdateOrganizationRole';
 export * from './UserEventExcuseWithAssoc';
 export * from './UserFileEntryType';

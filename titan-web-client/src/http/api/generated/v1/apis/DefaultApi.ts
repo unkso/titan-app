@@ -15,7 +15,6 @@ import { Observable } from 'rxjs';
 import { BaseAPI, HttpHeaders, HttpQuery, throwIfNullOrUndefined, encodeURI } from '../runtime';
 import {
     AddOrganizationUserFields,
-    AddUserExcuseFields,
     AuthWoltlabFields,
     ChainOfCommand,
     CreateOrganizationFields,
@@ -25,6 +24,8 @@ import {
     OrganizationRoleWithAssoc,
     ReorderOrganizationRolesFields,
     ReportWithAssoc,
+    SaveFileEntryFields,
+    SaveUserExcuseFields,
     UpdateOrganizationRole,
     UserEventExcuseWithAssoc,
     UserFileEntryType,
@@ -157,7 +158,12 @@ export interface PostOrganizationsOrgIdUsersRequest {
 
 export interface SaveUserExcuseRequest {
     userId: number;
-    addUserExcuseFields: AddUserExcuseFields;
+    saveUserExcuseFields: SaveUserExcuseFields;
+}
+
+export interface SaveUserFileEntryRequest {
+    userId: number;
+    saveFileEntryFields: SaveFileEntryFields;
 }
 
 /**
@@ -748,9 +754,9 @@ export class DefaultApi extends BaseAPI {
     /**
      * save_user_event_excuse
      */
-    saveUserExcuse = ({ userId, addUserExcuseFields }: SaveUserExcuseRequest): Observable<UserEventExcuseWithAssoc> => {
+    saveUserExcuse = ({ userId, saveUserExcuseFields }: SaveUserExcuseRequest): Observable<UserEventExcuseWithAssoc> => {
         throwIfNullOrUndefined(userId, 'saveUserExcuse');
-        throwIfNullOrUndefined(addUserExcuseFields, 'saveUserExcuse');
+        throwIfNullOrUndefined(saveUserExcuseFields, 'saveUserExcuse');
 
         const headers: HttpHeaders = {
             'Content-Type': 'application/json',
@@ -761,7 +767,26 @@ export class DefaultApi extends BaseAPI {
             path: '/api/users/{user_id}/excuses'.replace('{user_id}', encodeURI(userId)),
             method: 'POST',
             headers,
-            body: addUserExcuseFields,
+            body: saveUserExcuseFields,
+        });
+    };
+
+    /**
+     */
+    saveUserFileEntry = ({ userId, saveFileEntryFields }: SaveUserFileEntryRequest): Observable<UserFileEntryWithAssoc> => {
+        throwIfNullOrUndefined(userId, 'saveUserFileEntry');
+        throwIfNullOrUndefined(saveFileEntryFields, 'saveUserFileEntry');
+
+        const headers: HttpHeaders = {
+            'Content-Type': 'application/json',
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<UserFileEntryWithAssoc>({
+            path: '/api/users/{user_id}/file-entries'.replace('{user_id}', encodeURI(userId)),
+            method: 'POST',
+            headers,
+            body: saveFileEntryFields,
         });
     };
 

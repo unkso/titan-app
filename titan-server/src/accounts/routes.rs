@@ -203,15 +203,14 @@ pub fn list_user_file_entries(
 
 #[derive(Deserialize)]
 pub struct CreateUserFileEntry {
-    file_entry_type_id: i32,
-    start_date: chrono::NaiveDateTime,
-    end_date: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "comments"))]
     comments: String,
-}
-
-#[derive(Serialize)]
-pub struct CreateUserFileEntryResponse {
-    file_entry: models::UserFileEntryWithAssoc
+    #[serde(rename(deserialize = "endDate"))]
+    end_date: chrono::NaiveDateTime,
+    #[serde(rename(deserialize = "fileEntryTypeId"))]
+    file_entry_type_id: i32,
+    #[serde(rename(deserialize = "startDate"))]
+    start_date: chrono::NaiveDateTime,
 }
 
 #[post("/<user_id>/file-entries", format = "application/json", data = "<file_entry_form>")]
@@ -222,7 +221,7 @@ pub fn save_user_file_entry(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     auth_user: auth_guard::AuthenticatedUser,
-) -> ApiResponse<CreateUserFileEntryResponse> {
+) -> ApiResponse<models::UserFileEntryWithAssoc> {
     let new_file_entry = models::NewUserFileEntry {
         user_id,
         user_file_entry_type_id: file_entry_form.file_entry_type_id,
@@ -236,9 +235,7 @@ pub fn save_user_file_entry(
         &new_file_entry, &*titan_db, &*wcf_db, &app_config);
 
     match created_file_entry_res {
-        Ok(file_entry) => ApiResponse::from(CreateUserFileEntryResponse {
-            file_entry
-        }),
+        Ok(file_entry) => ApiResponse::from(file_entry),
         Err(err) => ApiResponse::from(Err(err))
     }
 }

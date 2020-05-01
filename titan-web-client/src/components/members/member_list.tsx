@@ -14,9 +14,9 @@ const StyledMemberListRow = styled.div`
 export function MemberList(props: MemberListProps) {
     return (
         <div>
-            {props.users.map((user, index) =>
-                <StyledMemberListRow>
-                    <MemberListRow key={index} user={user} />
+            {props.users.map(user =>
+                <StyledMemberListRow key={user.id}>
+                    <MemberListRow user={user} />
                 </StyledMemberListRow>
             )}
         </div>

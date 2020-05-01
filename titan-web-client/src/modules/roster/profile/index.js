@@ -15,7 +15,7 @@ import FileEntryListContainer
 import { CreateFileEntryContainer }
   from '@titan/modules/roster/profile/containers/create_file_entry_container';
 import Typography from '@material-ui/core/Typography/Typography';
-import CreateEventExcuseContainer
+import {CreateEventExcuseContainer}
   from '@titan/modules/roster/profile/containers/create_event_excuse_container';
 import EventExcuseListContainer
   from '@titan/modules/roster/profile/containers/event_excuse_list_container';

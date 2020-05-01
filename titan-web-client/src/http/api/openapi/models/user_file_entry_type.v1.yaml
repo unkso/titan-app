@@ -5,3 +5,6 @@ properties:
     type: integer
   name:
     type: string
+required:
+  - id
+  - name

@@ -13,17 +13,27 @@
 
 /**
  * @export
- * @interface UserFileEntryType
+ * @interface SaveFileEntryFields
  */
-export interface UserFileEntryType {
-    /**
-     * @type {number}
-     * @memberof UserFileEntryType
-     */
-    id: number;
+export interface SaveFileEntryFields {
     /**
      * @type {string}
-     * @memberof UserFileEntryType
+     * @memberof SaveFileEntryFields
      */
-    name: string;
+    comments: string;
+    /**
+     * @type {string}
+     * @memberof SaveFileEntryFields
+     */
+    endDate: string;
+    /**
+     * @type {number}
+     * @memberof SaveFileEntryFields
+     */
+    fileEntryTypeId: number;
+    /**
+     * @type {string}
+     * @memberof SaveFileEntryFields
+     */
+    startDate?: string;
 }
