@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import {Acl, createAclInstanceFromSession} from '@titan/lib/acl';
 import {AppState} from "@titan/store/root_reducer";
 import {AuthUserState} from "@titan/store/auth_user";
+import {assert} from "@titan/lib/assert";
 
 /**
  * A factory function that returns a boolean value indicating
@@ -19,14 +20,14 @@ type AclResultFactory = (acl: Acl) => boolean;
  * const canCreateFileEntries = useAcl(acl =>
  *      acl.hasAclPermission(PERMISSION_CAN_CREATE_FILE_ENTRIES));
  */
-export function useAcl (factory: AclResultFactory) {
+export function useAcl (factory: AclResultFactory, deps: any[] = []) {
     const session = useSelector<AppState, AuthUserState>(state => state.authUser);
     const [canAccess, setCanAccess] = useState(false);
 
     useEffect(() => {
         const acl = createAclInstanceFromSession(session);
         setCanAccess(factory(acl))
-    }, [session, factory]);
+    }, [session, factory, ...deps]);
 
     return canAccess;
 }

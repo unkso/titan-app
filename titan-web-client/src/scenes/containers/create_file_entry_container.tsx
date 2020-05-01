@@ -9,9 +9,6 @@ import { format as formatDate } from 'date-fns';
 import { MULTI_DATE_FILE_ENTRY_TYPES } from '@titan/components/file_entry/constants';
 import CreateForm from '@titan/components/file_entry/create_form';
 import { useDispatch, useSelector } from 'react-redux';
-import { ListFileEntryTypes, makeTitanApiRequest } from '@titan/http/api_client';
-import * as fileEntryActions from '@titan/actions/file_entry_actions';
-import { Permission, useAcl} from '@titan/lib/acl';
 import {
   SaveFileEntryFields,
   TitanApiClient,
@@ -30,8 +27,6 @@ export function CreateFileEntryContainer () {
   const user = useSelector(userProfileUserSelector);
   const fileEntries = useSelector<AppState, UserFileEntryWithAssoc[]>(userProfileFileEntriesSelector);
   const [fileEntryTypes, setFileEntryTypes] = useState<UserFileEntryType[]>([]);
-  const canCreateFileEntries = useAcl(acl =>
-    acl.hasAclPermission(Permission.CAN_CREATE_FILE_ENTRIES));
   const [open, setOpen] = useState(false);
   const snackbar = useSnackbar();
   const [formFields, setFormFields] = useState({

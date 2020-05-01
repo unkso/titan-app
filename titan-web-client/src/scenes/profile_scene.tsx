@@ -30,6 +30,7 @@ import {ExcuseExpansionPanelGroup} from "@titan/components/list/excuse_expansion
 import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section_header";
 import {CreateEventExcuseContainer} from "@titan/scenes/containers/create_event_excuse_container";
 import {CreateFileEntryContainer} from "@titan/scenes/containers/create_file_entry_container";
+import {Permission, useAcl} from "@titan/lib/acl";
 
 const StyledAvatar = styled(Avatar)`
     height: 56px;
@@ -55,6 +56,20 @@ export function ProfileScene() {
     const [latestEventExcuses, setLatestEventExcuses] = useState<UserEventExcuseWithAssoc[]>([]);
     const [latestFileEntries, setLatestFileEntries] = useState<UserFileEntryWithAssoc[]>([]);
     const memberships = useSelector<AppState, UserOrganizationMembership[]>(userProfileOrganizationMembershipsSelector);
+    const canCreateFileEntries = useAcl(acl =>
+        acl.hasAclPermission(Permission.CAN_CREATE_FILE_ENTRIES));
+    const canViewAndCreateExcuses = useAcl(acl => {
+        if (!user) {
+            return false;
+        }
+        return acl.newBuilder()
+            .hasAnyAclPermission([
+                Permission.CAN_ACK_EVENT_EXCUSE,
+                Permission.CAN_CREATE_EVENT_EXCUSE
+            ])
+            .or(acl.isAuthenticatedUser(user.id))
+            .build();
+    }, [user]);
 
     useEffect(() => {
         combineLatest([
@@ -81,6 +96,13 @@ export function ProfileScene() {
     if (!user) {
         return null;
     }
+
+    const fileEntryActions = canCreateFileEntries
+        ? [<CreateFileEntryContainer key="add-entry" />]
+        : [];
+    const eventExcuseActions = canViewAndCreateExcuses
+        ? [<CreateEventExcuseContainer key="add-excuse" />]
+        : [];
 
     return (
         <div>
@@ -112,9 +134,7 @@ export function ProfileScene() {
             {latestFileEntries.length > 0 && (
                 <DashboardSection>
                     <DashboardSectionHeader
-                        actions={[
-                            <CreateFileEntryContainer key="add-entry" />
-                        ]}
+                        actions={fileEntryActions}
                         links={[
                             <RouteButton
                                 key="view-entries"
@@ -127,9 +147,7 @@ export function ProfileScene() {
             {latestEventExcuses.length > 0 && (
                 <DashboardSection>
                     <DashboardSectionHeader
-                        actions={[
-                            <CreateEventExcuseContainer key="add-excuse" />,
-                        ]}
+                        actions={eventExcuseActions}
                         links={[
                             <RouteButton
                                 key="view-excuses"

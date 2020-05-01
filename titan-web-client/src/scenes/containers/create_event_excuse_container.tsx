@@ -8,8 +8,6 @@ import { format as formatDate } from 'date-fns';
 import { CreateEventExcuseForm }
   from '@titan/modules/roster/components/excuse/create_event_excuse_form';
 import {useSnackbar} from 'notistack';
-import {useAcl} from '@titan/lib/acl';
-import {Permission} from '@titan/lib/acl/permissions';
 import {
   EventType, SaveUserExcuseFields,
   TitanApiClient, UserEventExcuseWithAssoc,
@@ -37,14 +35,6 @@ export function CreateEventExcuseContainer() {
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
   const snackbar = useSnackbar();
   const dispatch = useDispatch();
-  const canCreateEventExcuse = useAcl(acl =>
-    acl.newBuilder()
-        .hasAclPermissions([
-            Permission.CAN_ACK_EVENT_EXCUSE,
-            Permission.CAN_CREATE_EVENT_EXCUSE
-        ])
-        .or(acl.isAuthenticatedUser(user.id))
-        .build());
   const handleFormFieldChange = (field, value) => {
     const values = {...formFields};
     switch (field) {
@@ -103,12 +93,10 @@ export function CreateEventExcuseContainer() {
 
   return (
       <React.Fragment>
-        {canCreateEventExcuse &&
-          <Button
-            color="primary"
-            size="small"
-            onClick={openDialog}>Add excuse</Button>
-        }
+        <Button
+          color="primary"
+          size="small"
+          onClick={openDialog}>Add excuse</Button>
         <Dialog open={dialogOpen} fullWidth>
           <DialogTitle>Add Event Excuse</DialogTitle>
           <DialogContent>
