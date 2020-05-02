@@ -3,6 +3,7 @@ import {Card, CardContent} from '@material-ui/core';
 import styled from 'styled-components';
 import {Organization} from "@titan/http/api";
 import {RouteLink} from "@titan/components/routes";
+import {Palette} from "@titan/themes/default";
 
 interface OrganizationCardProps {
     organization: Organization;
@@ -16,7 +17,7 @@ const OrganizationCardSizeMap = new Map([
 
 export const StyledOrganizationCard = styled(Card)`
   align-items: flex-end;
-  background-image: url(${props => props.image});
+  background: linear-gradient(to bottom, transparent 15%, ${props => props.blendcolor} 100%), url(${props => props.image}) no-repeat center;
   background-size: cover;
   display: flex;
   height: ${props => props.height}px;
@@ -37,6 +38,7 @@ export function OrganizationCard(props: OrganizationCardProps) {
     return (
         <RouteLink to={`/dashboard/organizations/${props.organization.id}`}>
             <StyledOrganizationCard
+                blendcolor={Palette.background['900']}
                 image={props.organization.previewImageUrl}
                 height={dimensions.height}
                 width={dimensions.width}>

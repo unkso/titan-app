@@ -31,7 +31,7 @@ const styles = theme => ({
     }
 });
 
-const defaultMuiTheme = createMuiTheme(createMuiTheme({
+const defaultMuiTheme = createMuiTheme({
     palette: {
         primary: Palette.primary,
         background: {
@@ -40,8 +40,17 @@ const defaultMuiTheme = createMuiTheme(createMuiTheme({
         },
         type: 'dark',
     },
-    typography: MuiVariantTypography
-}));
+    typography: MuiVariantTypography,
+    overrides: {
+        'MuiLink': {
+            underlineHover: {
+                textDecoration: 'underline',
+                textDecorationColor: 'transparent',
+                transition: 'all 175ms ease-in-out',
+            }
+        }
+    }
+});
 
 const AppWithStyles = withStyles(styles)(() => (
     <StylesProvider injectFirst>

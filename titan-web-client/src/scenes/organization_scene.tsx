@@ -25,10 +25,10 @@ import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section
 
 const StyledOrganizationHeader = styled.div`
   align-items: flex-end;
-  background: linear-gradient(to bottom, ${props => props.blendColor} 0%, transparent 15%, transparent 50%, ${props => props.blendColor} 100%), url(${props => props.image}) no-repeat center;
+  background: linear-gradient(to bottom, ${props => props.blendcolor} 0%, transparent 15%, transparent 50%, ${props => props.blendcolor} 100%), url(${props => props.image}) no-repeat center;
   background-size: cover;
   display: flex;
-  height: 80vh;
+  height: 95vh;
   margin-top: -85px;
   
   h1 {
@@ -40,6 +40,10 @@ const StyledOrganizationHeader = styled.div`
 
 const StyledViewportWrapper = styled.div`
   margin-top: -72px;
+`;
+
+const StyledOrganizationDetailsWrapper = styled.div`
+  margin-top: 24px;
 `;
 
 export function OrganizationScene() {
@@ -79,7 +83,7 @@ export function OrganizationScene() {
         <React.Fragment>
             <StyledOrganizationHeader
                 image={organization.bannerImageUrl}
-                blendColor={theme.palette.background.default}>
+                blendcolor={theme.palette.background.default}>
                 <DashboardSection>
                     <h1>{organization.name}</h1>
                 </DashboardSection>
@@ -97,12 +101,14 @@ export function OrganizationScene() {
                     </HorizontalScrollViewport>
                 </StyledViewportWrapper>
             )}
-            <DashboardSection>
-                <DashboardSectionHeader actions={[
-                    <AddRoleButton orgId={organization.id} />
-                ]}>Leadership</DashboardSectionHeader>
-                <Roles orgId={organization.id} />
-            </DashboardSection>
+            <StyledOrganizationDetailsWrapper>
+                <DashboardSection>
+                    <DashboardSectionHeader actions={[
+                        <AddRoleButton key="add-role-action" orgId={organization.id} />
+                    ]}>Leadership</DashboardSectionHeader>
+                    <Roles orgId={organization.id} />
+                </DashboardSection>
+            </StyledOrganizationDetailsWrapper>
         </React.Fragment>
     );
 }
