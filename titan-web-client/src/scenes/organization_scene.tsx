@@ -19,6 +19,9 @@ import {HorizontalScrollViewport} from "@titan/components/scroll/horizontal_scro
 import {AppState} from "@titan/store/root_reducer";
 import {OrganizationCard} from "@titan/components/organizations/organization_card";
 import {useTheme} from "@material-ui/core";
+import {Roles} from "@titan/modules/organizations/detail/roles";
+import {AddRoleButton} from "@titan/components/roles/add_role_button";
+import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section_header";
 
 const StyledOrganizationHeader = styled.div`
   align-items: flex-end;
@@ -94,6 +97,12 @@ export function OrganizationScene() {
                     </HorizontalScrollViewport>
                 </StyledViewportWrapper>
             )}
+            <DashboardSection>
+                <DashboardSectionHeader actions={[
+                    <AddRoleButton orgId={organization.id} />
+                ]}>Leadership</DashboardSectionHeader>
+                <Roles orgId={organization.id} />
+            </DashboardSection>
         </React.Fragment>
     );
 }

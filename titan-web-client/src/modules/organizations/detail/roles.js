@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@material-ui/core/Card';
 import { CardContent } from '@material-ui/core';
 import CardHeader from '@material-ui/core/CardHeader';
 import { Container, Draggable } from 'react-smooth-dnd';
 import styled, { createGlobalStyle } from 'styled-components';
-import {
-  ListOrganizationRolesRequest,
-  makeTitanApiRequest,
-  ReorderOrganizationRolesRequest,
-  ROLE_SCOPES
-} from '@titan/http/api_client';
+import { ROLE_SCOPES } from '@titan/http/api_client';
 import { ContentBlock } from '@titan/components/block/content_block';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import { MemberNameTag } from '@titan/components/members/member_name_tag';
@@ -20,10 +15,11 @@ import { useSnackbar } from 'notistack';
 import useTheme from '@material-ui/core/styles/useTheme';
 import { AddRoleButton } from '@titan/components/roles/add_role_button';
 import { getUserMessageFromError } from '@titan/lib/response';
+import { TitanApiClient } from '@titan/http/api';
 
 export const StyledListItem = styled(ListItem)`
   &:hover {
-    background: ${props => props.hoverbg};
+    //background: ${props => props.hoverbg};
   }
   
   .assignee-placeholder {
@@ -65,7 +61,7 @@ export const StyledRole = styled.div`
 
 const GlobalStyle = createGlobalStyle`
   .dragging-role {
-    background: #fff;
+    background: ${props => props.dragElBackground};
     box-shadow: ${props => props.dragElShadow};
   }
 
@@ -82,15 +78,14 @@ const GlobalStyle = createGlobalStyle`
 
 export function Roles (props) {
   const dispatch = useDispatch();
-  const roles = useSelector(state => state.organization.roles || []);
+  const [roles, setRoles] = useState([]);
   const snackbar = useSnackbar();
   const theme = useTheme();
 
   useEffect(() => {
-    makeTitanApiRequest(ListOrganizationRolesRequest,
-      { orgId: props.orgId, scope: ROLE_SCOPES.RANKED })
-      .then(res => {
-        dispatch(orgActions.setRoles(res.data));
+    TitanApiClient.getOrganizationsOrgIdRoles({orgId: props.orgId, scope: ROLE_SCOPES.RANKED})
+      .subscribe(roles => {
+        setRoles(roles);
       });
   }, [props.orgId, dispatch]);
 
@@ -103,31 +98,28 @@ export function Roles (props) {
     for (let x = 0; x < reorderedRoles.length; x++) {
       reorderedRoles[x] = { ...reorderedRoles[x], rank: x };
     }
-    dispatch(orgActions.setRoles([...reorderedRoles]));
-    makeTitanApiRequest(ReorderOrganizationRolesRequest,
-      { orgId: props.orgId, roleIds: reorderedRoles.map(role => role.id) })
-      .then(() => {
-        snackbar.enqueueSnackbar('Saved', { variant: 'success' });
-      })
-      .catch(err => {
-        // If the reorder fails, restore the previous order.
-        dispatch(orgActions.setRoles(previousRoles));
-        snackbar.enqueueSnackbar(getUserMessageFromError(err, 'Failed to reorder roles'), { variant: 'error' });
-      });
+    setRoles([...reorderedRoles]);
+
+    TitanApiClient.postOrganizationsOrgIdRolesReorder({
+      orgId: props.orgId,
+      reorderOrganizationRolesFields: {
+        roleIds: reorderedRoles.map(role => role.id),
+      },
+    }).subscribe(() => {
+      snackbar.enqueueSnackbar('Saved', { variant: 'success' });
+    }, (err) => {
+      // If the reorder fails, restore the previous order.
+      setRoles(previousRoles);
+      snackbar.enqueueSnackbar(getUserMessageFromError(err, 'Failed to reorder roles'), { variant: 'error' });
+    });
   }
 
   return (
     <React.Fragment>
-      <GlobalStyle dragElShadow={theme.shadows[4]} />
-      <ContentBlock>
-        <Card>
-          <CardHeader
-            action={
-              <AddRoleButton orgId={props.orgId} />
-            }
-            title="Chain of Command"
-          />
-          <CardContent>
+      <GlobalStyle
+        dragElBackground={theme.palette.background.paper}
+        dragElShadow={theme.shadows[4]}
+      />
             {roles &&
             <Container
               lockAxis="y"
@@ -177,9 +169,6 @@ export function Roles (props) {
               })}
             </Container>
             }
-          </CardContent>
-        </Card>
-      </ContentBlock>
     </React.Fragment>
   );
 }

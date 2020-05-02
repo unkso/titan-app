@@ -32,7 +32,7 @@ export function DashboardSectionHeader(props: PropsWithChildren<DashboardSection
     return (
         <StyledDashboardSectionHeader>
             <StyledHeaderContentGroup>
-                <Typography component="div" variant="h3">{props.children}</Typography>
+                <Typography component="div" variant="h2">{props.children}</Typography>
                 {props.actions}
             </StyledHeaderContentGroup>
             <StyledHeaderContentGroup>{props.links}</StyledHeaderContentGroup>

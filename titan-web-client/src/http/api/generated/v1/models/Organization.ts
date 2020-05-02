@@ -17,10 +17,10 @@
  */
 export interface Organization {
     /**
-     * @type {string}
+     * @type {number}
      * @memberof Organization
      */
-    id: string;
+    id: number;
     /**
      * @type {string}
      * @memberof Organization

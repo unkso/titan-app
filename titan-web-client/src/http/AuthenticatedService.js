@@ -34,7 +34,7 @@ class AuthenticatedService {
     }
 
     config.headers = {
-      'x-api-key': state.auth.session.token
+      'x-api-key': AppStore.getState().authUser.credentials.token,
     };
 
     return config;
