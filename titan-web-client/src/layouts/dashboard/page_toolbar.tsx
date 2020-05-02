@@ -10,7 +10,13 @@ interface PageToolbarProps {
 const StyledToolbar = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: ${props => props.padding}px 0;
+  margin: ${props => props.spacing}px 0;
+  /*
+    Position and z-index enable pages to place backgrounds behind the
+    toolbar.
+  */
+  position: relative;
+  z-index: 1;
 `;
 
 const StyledNotificationIconButton = styled(IconButton)`
@@ -35,7 +41,7 @@ export function PageToolbar(props: PageToolbarProps) {
     const theme = useTheme();
 
     return (
-        <StyledToolbar padding={theme.spacing(4)}>
+        <StyledToolbar spacing={theme.spacing(2)}>
             <StyledNotificationIconButton padding={theme.spacing(1)}>
                 <i className="fal fa-bell" />
             </StyledNotificationIconButton>

@@ -36,6 +36,11 @@ import {
     WoltlabLoginResponse,
 } from '../models';
 
+export interface AddOrganizationUserRequest {
+    orgId: number;
+    addOrganizationUserFields: AddOrganizationUserFields;
+}
+
 export interface DeleteOrganizationUserRequest {
     orgId: number;
     deleteOrganizationUserFields: DeleteOrganizationUserFields;
@@ -49,6 +54,14 @@ export interface GetOrganizationRequest {
     id: number;
 }
 
+export interface GetOrganizationChainOfCommandRequest {
+    orgId: number;
+}
+
+export interface GetOrganizationChildrenRequest {
+    orgId: number;
+}
+
 export interface GetOrganizationsFileEntriesRequest {
     organizations: string;
     fromStartDate: number;
@@ -56,16 +69,8 @@ export interface GetOrganizationsFileEntriesRequest {
 }
 
 export interface GetOrganizationsIdUsersRequest {
-    id: number;
+    orgId: number;
     children?: boolean;
-}
-
-export interface GetOrganizationsOrgIdChildrenRequest {
-    orgId: number;
-}
-
-export interface GetOrganizationsOrgIdCocRequest {
-    orgId: number;
 }
 
 export interface GetOrganizationsOrgIdReportsRequest {
@@ -151,11 +156,6 @@ export interface PostOrganizationsOrgIdRolesRoleIdRequest {
     updateOrganizationRole?: UpdateOrganizationRole;
 }
 
-export interface PostOrganizationsOrgIdUsersRequest {
-    orgId: number;
-    addOrganizationUserFields: AddOrganizationUserFields;
-}
-
 export interface SaveUserExcuseRequest {
     userId: number;
     saveUserExcuseFields: SaveUserExcuseFields;
@@ -170,6 +170,26 @@ export interface SaveUserFileEntryRequest {
  * no description
  */
 export class DefaultApi extends BaseAPI {
+
+    /**
+     * add_user
+     */
+    addOrganizationUser = ({ orgId, addOrganizationUserFields }: AddOrganizationUserRequest): Observable<boolean> => {
+        throwIfNullOrUndefined(orgId, 'addOrganizationUser');
+        throwIfNullOrUndefined(addOrganizationUserFields, 'addOrganizationUser');
+
+        const headers: HttpHeaders = {
+            'Content-Type': 'application/json',
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<boolean>({
+            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(orgId)),
+            method: 'POST',
+            headers,
+            body: addOrganizationUserFields,
+        });
+    };
 
     /**
      * remove_user
@@ -255,6 +275,40 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
+     * get_organization_coc
+     */
+    getOrganizationChainOfCommand = ({ orgId }: GetOrganizationChainOfCommandRequest): Observable<ChainOfCommand> => {
+        throwIfNullOrUndefined(orgId, 'getOrganizationChainOfCommand');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<ChainOfCommand>({
+            path: '/api/organizations/{org_id}/coc'.replace('{org_id}', encodeURI(orgId)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
+     * get_child_organizations
+     */
+    getOrganizationChildren = ({ orgId }: GetOrganizationChildrenRequest): Observable<Array<Organization>> => {
+        throwIfNullOrUndefined(orgId, 'getOrganizationChildren');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<Array<Organization>>({
+            path: '/api/organizations/{org_id}/children'.replace('{org_id}', encodeURI(orgId)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
      * list_organizations
      */
     getOrganizations = (): Observable<Array<Organization>> => {
@@ -298,8 +352,8 @@ export class DefaultApi extends BaseAPI {
     /**
      * get_organization_users
      */
-    getOrganizationsIdUsers = ({ id, children }: GetOrganizationsIdUsersRequest): Observable<Array<UserProfile>> => {
-        throwIfNullOrUndefined(id, 'getOrganizationsIdUsers');
+    getOrganizationsIdUsers = ({ orgId, children }: GetOrganizationsIdUsersRequest): Observable<Array<UserProfile>> => {
+        throwIfNullOrUndefined(orgId, 'getOrganizationsIdUsers');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
@@ -310,44 +364,10 @@ export class DefaultApi extends BaseAPI {
         if (children != null) { query['children'] = children; }
 
         return this.request<Array<UserProfile>>({
-            path: '/api/organizations/{id}/users'.replace('{id}', encodeURI(id)),
+            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(orgId)),
             method: 'GET',
             headers,
             query,
-        });
-    };
-
-    /**
-     * get_child_organizations
-     */
-    getOrganizationsOrgIdChildren = ({ orgId }: GetOrganizationsOrgIdChildrenRequest): Observable<Array<Organization>> => {
-        throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdChildren');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        return this.request<Array<Organization>>({
-            path: '/api/organizations/{org_id}/children'.replace('{org_id}', encodeURI(orgId)),
-            method: 'GET',
-            headers,
-        });
-    };
-
-    /**
-     * get_organization_coc
-     */
-    getOrganizationsOrgIdCoc = ({ orgId }: GetOrganizationsOrgIdCocRequest): Observable<ChainOfCommand> => {
-        throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdCoc');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        return this.request<ChainOfCommand>({
-            path: '/api/organizations/{org_id}/coc'.replace('{org_id}', encodeURI(orgId)),
-            method: 'GET',
-            headers,
         });
     };
 
@@ -728,26 +748,6 @@ export class DefaultApi extends BaseAPI {
             method: 'POST',
             headers,
             body: updateOrganizationRole,
-        });
-    };
-
-    /**
-     * add_user
-     */
-    postOrganizationsOrgIdUsers = ({ orgId, addOrganizationUserFields }: PostOrganizationsOrgIdUsersRequest): Observable<boolean> => {
-        throwIfNullOrUndefined(orgId, 'postOrganizationsOrgIdUsers');
-        throwIfNullOrUndefined(addOrganizationUserFields, 'postOrganizationsOrgIdUsers');
-
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        return this.request<boolean>({
-            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(orgId)),
-            method: 'POST',
-            headers,
-            body: addOrganizationUserFields,
         });
     };
 

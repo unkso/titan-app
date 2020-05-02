@@ -299,6 +299,26 @@ paths:
         required: true
         schema:
           type: integer
+    get:
+      summary: get_organization_users
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./models/user_profile.v1.yaml
+      operationId: get-organizations-id-users
+      security:
+        - api_key: []
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: children
     post:
       summary: add_user
       tags: []
@@ -309,7 +329,7 @@ paths:
             application/json:
               schema:
                 type: boolean
-      operationId: post-organizations-org_id-users
+      operationId: add_organization_user
       requestBody:
         required: true
         content:
@@ -538,33 +558,6 @@ paths:
       operationId: get-organizations-slug
       security:
         - api_key: []
-  '/api/organizations/{id}/users':
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-    get:
-      summary: get_organization_users
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: ./models/user_profile.v1.yaml
-      operationId: get-organizations-id-users
-      security:
-        - api_key: []
-      parameters:
-        - schema:
-            type: boolean
-          in: query
-          name: children
   '/api/organizations/roles/{role_id}/parent':
     parameters:
       - name: role_id
@@ -627,7 +620,7 @@ paths:
             application/json:
               schema:
                 $ref: ./models/chain_of_command.v1.yaml
-      operationId: get-organizations-org_id-coc
+      operationId: get_organization_chain_of_command
       security:
         - api_key: []
   '/api/organizations/{org_id}/roles/unranked':
@@ -671,7 +664,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/organization.v1.yaml
-      operationId: get-organizations-org_id-children
+      operationId: get_organization_children
       security:
         - api_key: []
   /api/organizations/file-entries:

@@ -6,7 +6,7 @@ import {RouteLink} from "@titan/components/routes";
 
 interface OrganizationCardProps {
     organization: Organization;
-    size?: 'sm'|'md'|'lg';
+    size?: 'sm'|'md';
 }
 
 const OrganizationCardSizeMap = new Map([
