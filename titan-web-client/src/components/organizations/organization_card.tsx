@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, CardContent} from '@material-ui/core';
+import {Avatar, Card, CardContent} from '@material-ui/core';
 import styled from 'styled-components';
 import {Organization} from "@titan/http/api";
 import {RouteLink} from "@titan/components/routes";
@@ -24,6 +24,14 @@ export const StyledOrganizationCard = styled(Card)`
   width: ${props => props.width}px;
 `;
 
+const StyledOrgName = styled.h3`
+  display: flex;
+  
+  .org-name {
+    margin-left: 8px;
+  }
+`;
+
 export function OrganizationCard(props: OrganizationCardProps) {
     const [dimensions, setDimensions] = useState();
 
@@ -43,7 +51,10 @@ export function OrganizationCard(props: OrganizationCardProps) {
                 height={dimensions.height}
                 width={dimensions.width}>
                 <CardContent>
-                    <h3>{props.organization.name}</h3>
+                    <StyledOrgName>
+                        <Avatar src={props.organization.avatarUrl} />
+                        <span className="org-name">{props.organization.name}</span>
+                    </StyledOrgName>
                 </CardContent>
             </StyledOrganizationCard>
         </RouteLink>

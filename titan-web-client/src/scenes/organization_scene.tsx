@@ -18,7 +18,7 @@ import {combineLatest} from "rxjs";
 import {HorizontalScrollViewport} from "@titan/components/scroll/horizontal_scroll_viewport";
 import {AppState} from "@titan/store/root_reducer";
 import {OrganizationCard} from "@titan/components/organizations/organization_card";
-import {useTheme} from "@material-ui/core";
+import {Avatar, useTheme} from "@material-ui/core";
 import {Roles} from "@titan/modules/organizations/detail/roles";
 import {AddRoleButton} from "@titan/components/roles/add_role_button";
 import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section_header";
@@ -44,6 +44,16 @@ const StyledViewportWrapper = styled.div`
 
 const StyledOrganizationDetailsWrapper = styled.div`
   margin-top: 24px;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  height: 3.5rem;
+  margin-right: 8px;
+  width: 3.5rem;
+`;
+
+const StyledHeadline = styled.h1`
+  display: flex;
 `;
 
 export function OrganizationScene() {
@@ -85,7 +95,10 @@ export function OrganizationScene() {
                 image={organization.bannerImageUrl}
                 blendcolor={theme.palette.background.default}>
                 <DashboardSection>
-                    <h1>{organization.name}</h1>
+                    <StyledHeadline>
+                        <StyledAvatar src={organization.avatarUrl} />
+                        <span>{organization.name}</span>
+                    </StyledHeadline>
                 </DashboardSection>
             </StyledOrganizationHeader>
             {children.length > 0 && (
