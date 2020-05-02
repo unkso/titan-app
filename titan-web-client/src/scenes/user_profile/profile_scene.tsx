@@ -1,19 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
 import {
-    Avatar, Button,
+    Avatar,
     Typography
 } from "@material-ui/core";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
-    TitanApiClient, UserEventExcuseWithAssoc,
+    UserEventExcuseWithAssoc,
     UserFileEntryWithAssoc, UserOrganizationMembership,
     UserProfile
 } from "@titan/http/api";
-import {combineLatest} from "rxjs";
 import {
-    UserProfileActions,
     userProfileEventExcusesSelector,
     userProfileFileEntriesSelector,
     userProfileOrganizationMembershipsSelector,
@@ -48,8 +45,6 @@ const StyledHeadline = styled.div`
 `;
 
 export function ProfileScene() {
-    const params = useParams();
-    const dispatch = useDispatch();
     const user = useSelector<AppState, UserProfile>(userProfileUserSelector);
     const allEventExcuses = useSelector<AppState, UserEventExcuseWithAssoc[]>(userProfileEventExcusesSelector);
     const allFileEntries = useSelector<AppState, UserFileEntryWithAssoc[]>(userProfileFileEntriesSelector);
@@ -70,20 +65,6 @@ export function ProfileScene() {
             .or(acl.isAuthenticatedUser(user.id))
             .build();
     }, [user]);
-
-    useEffect(() => {
-        combineLatest([
-            TitanApiClient.getUser({userId: params.id}),
-            TitanApiClient.getUserFileEntries({userId: params.id}),
-            TitanApiClient.getUserExcuses({userId: params.id}),
-            TitanApiClient.getUserOrganizations({userId: params.id, member: true, role: true})
-        ]).subscribe(([user, fileEntries, excuses, memberships]) => {
-            dispatch(UserProfileActions.setUser(user));
-            dispatch(UserProfileActions.setEventExcuses(excuses));
-            dispatch(UserProfileActions.setFileEntries(fileEntries));
-            dispatch(UserProfileActions.setOrganizationMemberships(memberships));
-        });
-    }, [params]);
 
     useEffect(() => {
         setLatestEventExcuses(allEventExcuses.slice(0, 5));

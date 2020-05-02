@@ -35,7 +35,7 @@ export function OrganizationCard(props: OrganizationCardProps) {
     }
 
     return (
-        <RouteLink to={`/dashboard/community/organizations/${props.organization.id}`}>
+        <RouteLink to={`/dashboard/organizations/${props.organization.id}`}>
             <StyledOrganizationCard
                 image={props.organization.previewImageUrl}
                 height={dimensions.height}
