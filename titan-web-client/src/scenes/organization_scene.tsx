@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import {
     ChainOfCommand,
     Organization,
@@ -30,12 +30,6 @@ const StyledOrganizationHeader = styled.div`
   display: flex;
   height: 95vh;
   margin-top: -85px;
-  
-  h1 {
-    font-size: 3.5rem;
-    position: relative;
-    top: -48px;
-  }
 `;
 
 const StyledViewportWrapper = styled.div`
@@ -52,8 +46,38 @@ const StyledAvatar = styled(Avatar)`
   width: 3.5rem;
 `;
 
-const StyledHeadline = styled.h1`
+const floatAnimation = keyframes`
+  0% {
+    transform: translateY(-24);
+  }
+
+  50% {
+    transform: translateY(16px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+`;
+
+const StyledHeadline = styled.div`
+  align-content: space-between;
   display: flex;
+  justify-content: space-between;
+  position: relative;
+  top: -48px;
+
+  h1 {
+    font-size: 3.5rem;
+    display: flex;
+    position: relative;
+  }
+  
+  .scroll-indicator {
+    animation: ${floatAnimation} 1600ms ease-in-out infinite;
+    color: ${props => props.indicatorColor};
+    font-size: 3.5rem;
+  }
 `;
 
 export function OrganizationScene() {
@@ -95,9 +119,14 @@ export function OrganizationScene() {
                 image={organization.bannerImageUrl}
                 blendcolor={theme.palette.background.default}>
                 <DashboardSection>
-                    <StyledHeadline>
-                        <StyledAvatar src={organization.avatarUrl} />
-                        <span>{organization.name}</span>
+                    <StyledHeadline indicatorColor={theme.palette.primary.main}>
+                        <h1>
+                            <StyledAvatar src={organization.avatarUrl} />
+                            <span>{organization.name}</span>
+                        </h1>
+                        <div className="scroll-indicator">
+                            <i className="far fa-angle-double-down" />
+                        </div>
                     </StyledHeadline>
                 </DashboardSection>
             </StyledOrganizationHeader>
