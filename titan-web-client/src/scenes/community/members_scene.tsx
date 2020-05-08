@@ -59,7 +59,7 @@ export function MembersScene() {
             {users.length ? (
                 <Box marginTop={theme.spacing(.25)}
                      marginBottom={theme.spacing(.25)}>
-                    <MemberList users={users} />
+                    <MemberList items={users.map(user => ({user}))} />
                 </Box>
             ) : (
                 <IconEmptyState

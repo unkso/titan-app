@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {Theme, useTheme} from "@material-ui/core";
+import {Theme, Tooltip, useTheme} from "@material-ui/core";
 
 interface ActivityIndicatorProps {
     timestamp: number;
@@ -14,9 +14,15 @@ enum ActivityStatus {
 }
 
 const ActivityStatusLabelMap = new Map([
+    [ActivityStatus.ACTIVE_WITHIN_TWO_DAYS, 'Active'],
+    [ActivityStatus.ACTIVE_WITHIN_ONE_WEEK, 'Less active'],
+    [ActivityStatus.INACTIVE, 'Inactive'],
+]);
+
+const ActivityTooltipMap = new Map([
     [ActivityStatus.ACTIVE_WITHIN_TWO_DAYS, 'Active within 48 hours'],
     [ActivityStatus.ACTIVE_WITHIN_ONE_WEEK, 'Active 1 week'],
-    [ActivityStatus.INACTIVE, 'Inactive'],
+    [ActivityStatus.INACTIVE, 'Inactive for over 1 week'],
 ]);
 
 // Two days in seconds.
@@ -25,17 +31,17 @@ const TWO_DAYS_SEC = 86400;
 // One week in seconds.
 const ONE_WEEK_SEC = 604800;
 
-const StyledActivityIndicatorDot = styled.div`
+export const StyledActivityIndicatorDot = styled.div`
   border-radius: 50%;
   height: .8em;
   margin-right: 8px;
   width: .8em;
 `;
 
-const StyledActivityIndicator = styled.div`
+export const StyledActivityIndicator = styled.div`
   align-items: center;
   color: ${props => props.color};
-  display: flex;
+  display: inline-flex;
 
   ${StyledActivityIndicatorDot} {
     background-color: ${props => props.color};
@@ -69,10 +75,12 @@ function getStatusColor(status: ActivityStatus, theme: Theme): string {
 export function ActivityIndicator(props: ActivityIndicatorProps) {
     const theme = useTheme();
     const [label, setLabel] = useState();
+    const [tooltip, setTooltip] = useState('');
     const [color, setColor] = useState();
 
     useEffect(() => {
         const status = getStatusFromTimestamp(props.timestamp);
+        setTooltip(ActivityTooltipMap.get(status)!);
         switch (props.variant) {
             case 'label':
                 setColor('');
@@ -89,9 +97,11 @@ export function ActivityIndicator(props: ActivityIndicatorProps) {
     }, [props.timestamp, props.variant, theme]);
 
     return (
-        <StyledActivityIndicator color={color}>
-            <StyledActivityIndicatorDot />
-            <span>{label}</span>
-        </StyledActivityIndicator>
+        <Tooltip title={tooltip} arrow>
+            <StyledActivityIndicator color={color}>
+                <StyledActivityIndicatorDot />
+                <span>{label}</span>
+            </StyledActivityIndicator>
+        </Tooltip>
     );
 }

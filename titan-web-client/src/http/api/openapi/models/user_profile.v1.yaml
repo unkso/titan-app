@@ -21,6 +21,8 @@ properties:
     type: integer
   bct_e3:
     type: integer
+  loa:
+    type: integer
   a15:
     type: integer
   date_joined:

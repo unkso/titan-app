@@ -74,6 +74,11 @@ export interface UserProfile {
      * @type {number}
      * @memberof UserProfile
      */
+    loa?: number;
+    /**
+     * @type {number}
+     * @memberof UserProfile
+     */
     a15?: number;
     /**
      * @type {number}
