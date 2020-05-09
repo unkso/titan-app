@@ -84,7 +84,7 @@ export function ContextSidebarItem(props: ContextSidebarItemProps) {
     }, [props.imageUrl, props.icon, props.name]);
 
     return (
-        <Tooltip title={props.name} placement="right" arrow>
+        <Tooltip title={props.name} placement="right" arrow={true}>
             <StyledContextSidebarItem>
                 <StyledNotificationIndicator
                     height={theme.spacing(1)}
@@ -98,7 +98,8 @@ export function ContextSidebarItem(props: ContextSidebarItemProps) {
                         image={props.imageUrl}
                         dimensions={theme.spacing(7)}
                         margin={theme.spacing(1)}
-                        transition={transition}>
+                        transition={transition}
+                    >
                         {innerContent}
                     </StyledAvatar>
                 </StyledAvatarLink>

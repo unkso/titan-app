@@ -6,8 +6,8 @@ const AdapterLink = React.forwardRef((props, ref) => (
   <RouterDomLink innerRef={ref} {...props} />
 ));
 
-export const RouteButton = React.forwardRef<any, any>(
+export const RouteButton = React.forwardRef(
   (props, ref) => <Link underline="none" innerRef={ref} component={AdapterLink} {...props} />);
 
-export const RouteLink = React.forwardRef<any, any>(
+export const RouteLink = React.forwardRef(
   (props, ref) => <Link innerRef={ref} component={AdapterLink} {...props} />);

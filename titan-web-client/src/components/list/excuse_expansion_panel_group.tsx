@@ -61,7 +61,7 @@ export function ExcuseExpansionPanelGroup(props: ExcuseExpansionPanelGroupProps)
                         onChange={() => expandPanel(excuse.id)}>
                         <ExpansionPanelSummary expandIcon={<i className="far fa-angle-down" />}>
                             <StyledSummary color={theme.palette.info.light}>
-                                <i className={`fas fa-clipboard-user panel-icon`} />
+                                <i className="fas fa-clipboard-user panel-icon" />
                                 <span className="panel-title">
                                     <span>{excuse.eventType.name}</span>
                                     <i className="fas fa-circle spacer" />

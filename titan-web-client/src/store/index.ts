@@ -1,7 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {rootReducer} from "@titan/store/root_reducer";
 
-/** Data AppStore used to dispatch actions and update app state.*/
+/** Data AppStore used to dispatch actions and update app state. */
 export const AppStore = configureStore({
     reducer: rootReducer,
 });

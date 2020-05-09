@@ -44,14 +44,14 @@ export function ContextSidebar(props: ContextSidebarProps) {
                 name="Community"
                 path="/dashboard/community/organizations"
             />
-            {props.items.map((item, index) =>
+            {props.items.map((item, index) => (
                 <ContextSidebarItem
                     imageUrl={item.imageUrl}
                     key={index}
                     name={item.name}
                     path={item.path}
                 />
-            )}
+            ))}
         </StyledContextSidebar>
     );
 }
