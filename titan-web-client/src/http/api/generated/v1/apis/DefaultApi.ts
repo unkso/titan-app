@@ -62,24 +62,23 @@ export interface GetOrganizationChildrenRequest {
     orgId: number;
 }
 
+export interface GetOrganizationRolesRequest {
+    orgId: number;
+}
+
+export interface GetOrganizationUsersRequest {
+    orgId: number;
+    children?: boolean;
+}
+
 export interface GetOrganizationsFileEntriesRequest {
     organizations: string;
     fromStartDate: number;
     toStartDate: number;
 }
 
-export interface GetOrganizationsIdUsersRequest {
-    orgId: number;
-    children?: boolean;
-}
-
 export interface GetOrganizationsOrgIdReportsRequest {
     orgId: number;
-}
-
-export interface GetOrganizationsOrgIdRolesRequest {
-    orgId: number;
-    scope: number;
 }
 
 export interface GetOrganizationsOrgIdRolesUnrankedRequest {
@@ -93,10 +92,6 @@ export interface GetOrganizationsOrgIdUsersUserIdCocRequest {
 
 export interface GetOrganizationsRolesRoleIdParentRequest {
     roleId: number;
-}
-
-export interface GetOrganizationsSlugRequest {
-    slug: number;
 }
 
 export interface GetUserRequest {
@@ -309,6 +304,45 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
+     * list_organization_roles
+     */
+    getOrganizationRoles = ({ orgId }: GetOrganizationRolesRequest): Observable<Array<OrganizationRoleWithAssoc>> => {
+        throwIfNullOrUndefined(orgId, 'getOrganizationRoles');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        return this.request<Array<OrganizationRoleWithAssoc>>({
+            path: '/api/organizations/{org_id}/roles'.replace('{org_id}', encodeURI(orgId)),
+            method: 'GET',
+            headers,
+        });
+    };
+
+    /**
+     * get_organization_users
+     */
+    getOrganizationUsers = ({ orgId, children }: GetOrganizationUsersRequest): Observable<Array<UserProfile>> => {
+        throwIfNullOrUndefined(orgId, 'getOrganizationUsers');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
+        };
+
+        const query: HttpQuery = {};
+
+        if (children != null) { query['children'] = children; }
+
+        return this.request<Array<UserProfile>>({
+            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(orgId)),
+            method: 'GET',
+            headers,
+            query,
+        });
+    };
+
+    /**
      * list_organizations
      */
     getOrganizations = (): Observable<Array<Organization>> => {
@@ -350,28 +384,6 @@ export class DefaultApi extends BaseAPI {
     };
 
     /**
-     * get_organization_users
-     */
-    getOrganizationsIdUsers = ({ orgId, children }: GetOrganizationsIdUsersRequest): Observable<Array<UserProfile>> => {
-        throwIfNullOrUndefined(orgId, 'getOrganizationsIdUsers');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        const query: HttpQuery = {};
-
-        if (children != null) { query['children'] = children; }
-
-        return this.request<Array<UserProfile>>({
-            path: '/api/organizations/{org_id}/users'.replace('{org_id}', encodeURI(orgId)),
-            method: 'GET',
-            headers,
-            query,
-        });
-    };
-
-    /**
      * list_organization_reports
      */
     getOrganizationsOrgIdReports = ({ orgId }: GetOrganizationsOrgIdReportsRequest): Observable<Array<ReportWithAssoc>> => {
@@ -385,29 +397,6 @@ export class DefaultApi extends BaseAPI {
             path: '/api/organizations/{org_id}/reports'.replace('{org_id}', encodeURI(orgId)),
             method: 'GET',
             headers,
-        });
-    };
-
-    /**
-     * list_organization_roles
-     */
-    getOrganizationsOrgIdRoles = ({ orgId, scope }: GetOrganizationsOrgIdRolesRequest): Observable<Array<OrganizationRoleWithAssoc>> => {
-        throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdRoles');
-        throwIfNullOrUndefined(scope, 'getOrganizationsOrgIdRoles');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        const query: HttpQuery = { // required parameters are used directly since they are already checked by throwIfNullOrUndefined
-            'scope': scope,
-        };
-
-        return this.request<Array<OrganizationRoleWithAssoc>>({
-            path: '/api/organizations/{org_id}/roles'.replace('{org_id}', encodeURI(orgId)),
-            method: 'GET',
-            headers,
-            query,
         });
     };
 
@@ -473,23 +462,6 @@ export class DefaultApi extends BaseAPI {
 
         return this.request<OrganizationRoleWithAssoc>({
             path: '/api/organizations/roles/{role_id}/parent'.replace('{role_id}', encodeURI(roleId)),
-            method: 'GET',
-            headers,
-        });
-    };
-
-    /**
-     * get_organization_by_slug
-     */
-    getOrganizationsSlug = ({ slug }: GetOrganizationsSlugRequest): Observable<Organization> => {
-        throwIfNullOrUndefined(slug, 'getOrganizationsSlug');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
-        };
-
-        return this.request<Organization>({
-            path: '/api/organizations/{slug}'.replace('{slug}', encodeURI(slug)),
             method: 'GET',
             headers,
         });

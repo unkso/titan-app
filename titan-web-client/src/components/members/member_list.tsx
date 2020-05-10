@@ -7,7 +7,7 @@ import {
 } from "@titan/components/members/member_list_row";
 
 interface MemberListProps {
-    items: MemberListRowProps[];
+    members: MemberListRowProps[];
 }
 
 const StyledMemberListRow = styled.div`
@@ -17,9 +17,9 @@ const StyledMemberListRow = styled.div`
 export function MemberList(props: MemberListProps) {
     return (
         <div>
-            {props.items.map(item =>
-                <StyledMemberListRow key={item.user.id}>
-                    <MemberListRow {...item} />
+            {props.members.map(member =>
+                <StyledMemberListRow key={member.user.id}>
+                    <MemberListRow {...member} />
                 </StyledMemberListRow>
             )}
         </div>

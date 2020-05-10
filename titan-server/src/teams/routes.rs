@@ -1,5 +1,4 @@
-use rocket::{get, State, http::RawStr};
-use rocket::http::Status;
+use rocket::{get, State};
 use rocket::request::{Form};
 use rocket_contrib::json::Json;
 use serde::Deserialize;
@@ -29,17 +28,8 @@ pub fn get_organization_by_id(
     ApiResponse::from(teams::organizations::find_by_id(id, &*titan_db))
 }
 
-#[get("/<slug>", rank = 2)]
-pub fn get_organization_by_slug(
-    slug: &RawStr,
-    unkso_titan: TitanPrimary,
-    _auth_user: auth_guard::AuthenticatedUser
-) -> ApiResponse<models::Organization> {
-    ApiResponse::from(teams::organizations::find_by_slug(slug.as_str(), &unkso_titan))
-}
-
 #[get("/<org_id>/children")]
-pub fn get_child_organizations(
+pub fn get_organization_children(
     org_id: i32,
     titan_db: TitanPrimary,
     _auth_user: auth_guard::AuthenticatedUser
@@ -47,12 +37,10 @@ pub fn get_child_organizations(
     ApiResponse::from(teams::organizations::find_children(org_id, &*titan_db))
 }
 
-/** ******************************************************************
- *  Roles/members
- ** *****************************************************************/
-#[get("/<id>/users?<children>")]
+
+#[get("/<org_id>/users?<children>")]
 pub fn get_organization_users(
-    id: i32,
+    org_id: i32,
     children: Option<bool>,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
@@ -60,7 +48,7 @@ pub fn get_organization_users(
     _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<Vec<models::UserProfile>> {
     let include_children = children.unwrap_or(false);
-    let users = teams::organizations::find_users(id, include_children, &*titan_db)
+    let users = teams::organizations::find_users(org_id, include_children, &*titan_db)
         .and_then(|users| accounts::users::map_users_to_profile(&users, &*wcf_db, &app_config));
     ApiResponse::from(users)
 }
@@ -160,31 +148,17 @@ pub fn get_organization_coc(
         org_id, std::i32::MAX, &*titan_db, &*wcf_db, &app_config))
 }
 
-#[get("/<org_id>/roles?<scope>")]
+#[get("/<org_id>/roles")]
 pub fn list_organization_roles(
     org_id: i32,
-    scope: RoleRankScope,
     titan_db: TitanPrimary,
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
 ) -> ApiResponse<Vec<models::OrganizationRoleWithAssoc>> {
-    let roles = teams::roles::find_org_roles(org_id, scope, &*titan_db)
+    let roles = teams::roles::find_org_roles(org_id, RoleRankScope::All, &*titan_db)
         .and_then(|roles| teams::roles::map_roles_assoc(roles, &*titan_db, &*wcf_db, &app_config));
     ApiResponse::from(roles)
-}
-
-/// [deprecated(note = "Use get_organization_roles instead.")]
-#[get("/<org_id>/roles/unranked")]
-pub fn get_organization_unranked_roles(
-    org_id: i32,
-    titan_db: TitanPrimary,
-    wcf_db: UnksoMainForums,
-    app_config: State<config::AppConfig>,
-    _auth_user: auth_guard::AuthenticatedUser
-) -> ApiResponse<Vec<models::OrganizationRoleWithAssoc>> {
-    ApiResponse::from(teams::roles::find_unranked_roles(
-        org_id, &*titan_db, &*wcf_db, &app_config))
 }
 
 #[get("/roles/<role_id>/parent")]

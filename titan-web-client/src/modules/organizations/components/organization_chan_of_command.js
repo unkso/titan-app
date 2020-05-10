@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Chain_of_command } from '@titan/modules/organizations/components/chain_of_command';
+import { ChainOfCommand } from '@titan/modules/organizations/components/chain_of_command';
 import { IconEmptyState } from '@titan/components/empty_state/icon_empty_state';
 
 export function Organization_chan_of_command (props) {
@@ -14,7 +14,7 @@ export function Organization_chan_of_command (props) {
   return (
     <React.Fragment>
       {extendedCoc.length || localCoc.length ? (
-        <Chain_of_command
+        <ChainOfCommand
           extendedCoc={extendedCoc}
           localCoc={localCoc}
         />

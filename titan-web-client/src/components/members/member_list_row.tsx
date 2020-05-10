@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-    Organization,
+    Organization, OrganizationRoleWithAssoc,
     UserProfile
 } from "@titan/http/api";
 import {
@@ -12,7 +12,7 @@ import {
     Avatar,
     Card,
     ListItem, ListItemAvatar,
-    ListItemText, useTheme
+    ListItemText, Typography, useTheme
 } from "@material-ui/core";
 import {RouteLink} from "@titan/components/routes";
 import {
@@ -22,14 +22,18 @@ import {
 
 export interface MemberListRowProps {
     organizations?: Organization[];
+    role?: OrganizationRoleWithAssoc;
     user: UserProfile;
 }
 
 const StyledMemberListRow = styled.div`
+  &:hover .member-title-line .username {
+    text-decoration-color: ${props => props.underlineColor};
+  }
+
   ${StyledInlineBadge} + ${StyledInlineBadge} {
     margin-left: 4px;
   }
-  
   
   .avatar-wrapper {
     position: relative;
@@ -44,13 +48,35 @@ const StyledMemberListRow = styled.div`
         }
       }
   }
+
+  .member-title-line {
+    align-items: center;
+    display: flex;
+    
+    .username {
+      text-decoration: underline transparent;
+      transition: all 175ms ease-in-out;
+    }
+
+    .role {
+      align-items: center;
+      display: inline-flex;
+
+      .spacer {
+        font-size: 4px;
+        margin: 0 8px;
+      }
+    }
+  }
 `;
 
 export function MemberListRow(props: MemberListRowProps) {
     const theme = useTheme();
     return (
-        <StyledMemberListRow indicatorBorderColor={theme.palette.background.paper}>
-            <RouteLink to={`/dashboard/members/${props.user.id}`}>
+        <StyledMemberListRow
+            indicatorBorderColor={theme.palette.background.paper}
+            underlineColor={theme.palette.primary.main}>
+            <RouteLink to={`/dashboard/members/${props.user.id}`} underline="none" color="textSecondary">
                 <Card elevation={0}>
                     <ListItem component="div">
                         <ListItemAvatar>
@@ -63,8 +89,17 @@ export function MemberListRow(props: MemberListRowProps) {
                             </div>
                         </ListItemAvatar>
                         <ListItemText>
-                            <div>
-                                <span>{props.user.username}</span>
+                            <div className="member-title-line">
+                                <span className="username">{props.user.username}</span>
+                                {props.role && (
+                                  <span className="role">
+                                      <i className="fas fa-circle spacer" />
+                                      <Typography
+                                          className="role-name"
+                                          color="textSecondary"
+                                          variant="caption">{props.role.role}</Typography>
+                                  </span>
+                                )}
                                 {props.user.loa && <InlineBadge type="info">LOA</InlineBadge>}
                                 {props.user.a15 && <InlineBadge type="error">A-15</InlineBadge>}
                             </div>

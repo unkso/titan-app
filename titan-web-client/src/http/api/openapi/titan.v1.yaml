@@ -311,7 +311,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/user_profile.v1.yaml
-      operationId: get-organizations-id-users
+      operationId: get_organization_users
       security:
         - api_key: []
       parameters:
@@ -477,13 +477,7 @@ paths:
                 type: array
                 items:
                   $ref: ./models/organization_role_with_assoc.v1.yaml
-      operationId: get-organizations-org_id-roles
-      parameters:
-        - schema:
-            type: integer
-          in: query
-          name: scope
-          required: true
+      operationId: get_organization_roles
       security:
         - api_key: []
   /api/organizations:
@@ -536,26 +530,6 @@ paths:
               schema:
                 $ref: ./models/organization.v1.yaml
       operationId: get_organization
-      security:
-        - api_key: []
-  '/api/organizations/{slug}':
-    parameters:
-      - name: slug
-        in: path
-        required: true
-        schema:
-          type: integer
-    get:
-      summary: get_organization_by_slug
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ./models/organization.v1.yaml
-      operationId: get-organizations-slug
       security:
         - api_key: []
   '/api/organizations/roles/{role_id}/parent':

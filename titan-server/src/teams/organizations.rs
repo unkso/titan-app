@@ -1,9 +1,9 @@
 use std::collections::VecDeque;
 use diesel::prelude::*;
 
-use crate::db::{UnksoMainForums, TitanPrimary};
+use crate::db::{TitanPrimary};
 use crate::models;
-use crate::schema::{self, wcf1_user, wcf1_user_avatar, wcf1_user_to_group};
+use crate::schema::{self, wcf1_user_avatar, wcf1_user_to_group};
 use crate::models::OrganizationUser;
 use crate::db;
 

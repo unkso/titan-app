@@ -83,7 +83,7 @@ export function Roles (props) {
   const theme = useTheme();
 
   useEffect(() => {
-    TitanApiClient.getOrganizationsOrgIdRoles({orgId: props.orgId, scope: ROLE_SCOPES.RANKED})
+    TitanApiClient.getOrganizationRoles({orgId: props.orgId})
       .subscribe(roles => {
         setRoles(roles);
       });
