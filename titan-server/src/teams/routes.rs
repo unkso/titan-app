@@ -131,7 +131,7 @@ pub fn get_organization_user_coc(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
-) -> ApiResponse<models::ChainOfCommand> {
+) -> ApiResponse<Vec<models::OrganizationRoleWithAssoc>> {
     ApiResponse::from(teams::roles::find_user_coc(
         org_id, user_id, &*titan_db, &*wcf_db, app_config))
 }
@@ -143,7 +143,7 @@ pub fn get_organization_coc(
     wcf_db: UnksoMainForums,
     app_config: State<config::AppConfig>,
     _auth_user: auth_guard::AuthenticatedUser
-) -> ApiResponse<models::ChainOfCommand> {
+) -> ApiResponse<Vec<models::OrganizationRoleWithAssoc>> {
     ApiResponse::from(teams::roles::find_org_coc(
         org_id, std::i32::MAX, &*titan_db, &*wcf_db, &app_config))
 }

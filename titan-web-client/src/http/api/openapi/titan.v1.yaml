@@ -573,7 +573,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/chain_of_command.v1.yaml
+                type: array
+                items:
+                  $ref: ./models/organization_role_with_assoc.v1.yaml
       operationId: get-organizations-org_id-users-user_id-coc
       security:
         - api_key: []
@@ -593,7 +595,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/chain_of_command.v1.yaml
+                type: array
+                items:
+                  $ref: ./models/organization_role_with_assoc.v1.yaml
       operationId: get_organization_chain_of_command
       security:
         - api_key: []

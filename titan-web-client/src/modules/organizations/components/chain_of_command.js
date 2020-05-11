@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import {
   MemberNameTag,
   StyledMemberNameTag
@@ -12,18 +9,26 @@ import { ORGANIZATIONS_DETAIL_ROUTE } from '@titan/modules/organizations/routes'
 import { RouteLink } from '@titan/components/routes';
 import { useTheme } from '@material-ui/core';
 import { Palette } from '@titan/themes/default';
+import Button from '@material-ui/core/Button';
 
-
+const StyledExpandButton = styled(Button)`
+  display: block;
+  margin: auto;
+`;
 
 const StyledLeaf = styled.div`
   display: flex;
   position: relative;
-  margin-bottom: 8px;
-  
+
   .leaf-content {
-    background: ${props => props.background};
     border-radius: 4px;
+    min-width: 250px;
     padding: 8px;
+    transition: background-color 175ms ease-in-out;
+
+    &:hover {
+      background-color: ${props => props.background};
+    }
   }
 
   ${StyledMemberNameTag} {
@@ -32,6 +37,7 @@ const StyledLeaf = styled.div`
   
   :before {
     background: ${props => props.branchColor};
+    border-radius: 4px;
     content: '';
     height: 3px;
     position: absolute;
@@ -61,8 +67,8 @@ const StyledLeaf = styled.div`
     z-index: 1;
 
     :after {
-      left: calc(50% - 8px);
-      top: 98%;
+      left: calc(50% - 5px);
+      top: -10%;
     }
     
     :before {
@@ -85,6 +91,11 @@ const StyledLeaf = styled.div`
     :before {
       right: -12px;
     }
+    
+    .leaf-content {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 
   &.right {
@@ -100,21 +111,6 @@ const StyledLeaf = styled.div`
   }
 `;
 
-
-/*ChainOfCommandComponent.propTypes = {
-  /!**
-   * Chain of command for the current organization. The entry at index
-   * 0 is highest ranking member of the local CoC.
-   *!/
-  localCoc: PropTypes.arrayOf(PropTypes.object).isRequired,
-
-  /!**
-   * Chain of command for above the current organization. The entry at
-   * index 0 is highest ranking member of the extended CoC.
-   *!/
-  extendedCoc: PropTypes.arrayOf(PropTypes.object).isRequired
-};*/
-
 const StyledTree = styled.div`
   padding-bottom: 16px;
   position: relative;
@@ -123,7 +119,7 @@ const StyledTree = styled.div`
     border-radius: 4px;
     background-color: ${props => props.trunkColor};
     content: '';
-    height: 100%;
+    height: 78%;
     left: calc(50% - 2px);
     position: absolute;
     top: 0;
@@ -131,31 +127,35 @@ const StyledTree = styled.div`
   }
 `;
 
-const ExtendedCocToggle = styled.section`
-  margin: 10px;
-  position: relative;
-  text-align: center;
-  z-index: 2;
-`;
-
 export function ChainOfCommand(props) {
   const theme = useTheme();
-  const [extendedCocVisible, setExtendedCocVisible] = useState(false);
+  const [visibleChainOfCommand, setVisibleChainOfCommand] = useState([]);
+  const [remainingCount, setRemainingCount] = useState(0);
+
+  useEffect(() => {
+    // The {@link props.chainOfCommand} property orders roles from
+    // lowest rank to highest, but they need to be rendered in highest
+    // to lowest order instead.
+    const slice = [...props.chainOfCommand].reverse().slice(0, 3);
+    setVisibleChainOfCommand(slice);
+    setRemainingCount(Math.max(0, props.chainOfCommand.length - 3));
+  }, [props.chainOfCommand]);
+
   const renderLeaf = (coc, color, index, isLocal = false) => {
     let leafPosition;
     let avatarPosition;
-    if (index === 0) {
+    if (index === 10000) {
       avatarPosition = 'top';
       leafPosition = 'top';
     } else if (index % 2 === 0) {
-      avatarPosition = 'right';
-      leafPosition = 'left';
-    } else {
       avatarPosition = 'left';
       leafPosition = 'right';
+    } else {
+      avatarPosition = 'right';
+      leafPosition = 'left';
     }
     const orgRoute = routeBuilder(
-      ORGANIZATIONS_DETAIL_ROUTE, [coc.organization.slug]);
+      ORGANIZATIONS_DETAIL_ROUTE, [coc.organization.id]);
     return (
       <StyledLeaf
         key={index}
@@ -179,47 +179,16 @@ export function ChainOfCommand(props) {
     );
   }
 
-  let index = -1;
-  const extendedCoc = props.extendedCoc.map(coc => {
-    index++;
-    return renderLeaf(
-      coc, theme.palette.primary.light, index, true);
-  });
-  const localCoc = props.localCoc.map(coc => {
-    index++;
-    return renderLeaf(
-      coc, theme.palette.primary.main, index);
-  });
-  const extendedCoCButtonLabel = extendedCocVisible
-    ? 'hide extended CoC'
-    : 'show extended CoC';
+  const leaves = visibleChainOfCommand.map((role, index) =>
+    renderLeaf(role, theme.palette.primary.light, index, true));
 
   return (
     <React.Fragment>
+      {remainingCount > 0 &&  (
+        <StyledExpandButton size="small">+{remainingCount} more</StyledExpandButton>
+      )}
       <StyledTree trunkColor={theme.palette.background.paper}>
-        {extendedCoc.length > 0 &&
-        <React.Fragment>
-          {(extendedCocVisible || localCoc.length === 0) && (
-            <React.Fragment>
-              { extendedCoc }
-            </React.Fragment>
-          )}
-
-          {localCoc.length > 0 &&
-          <ExtendedCocToggle>
-            <Button
-              color="secondary"
-              size="small"
-              variant="outlined"
-              onClick={() => setExtendedCocVisible(!extendedCocVisible)}>
-              {extendedCoCButtonLabel}
-            </Button>
-          </ExtendedCocToggle>
-          }
-        </React.Fragment>
-        }
-
-        {localCoc}
+        {leaves}
       </StyledTree>
     </React.Fragment>
   );

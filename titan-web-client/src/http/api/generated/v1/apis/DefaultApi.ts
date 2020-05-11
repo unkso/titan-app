@@ -16,7 +16,6 @@ import { BaseAPI, HttpHeaders, HttpQuery, throwIfNullOrUndefined, encodeURI } fr
 import {
     AddOrganizationUserFields,
     AuthWoltlabFields,
-    ChainOfCommand,
     CreateOrganizationFields,
     DeleteOrganizationUserFields,
     EventType,
@@ -272,14 +271,14 @@ export class DefaultApi extends BaseAPI {
     /**
      * get_organization_coc
      */
-    getOrganizationChainOfCommand = ({ orgId }: GetOrganizationChainOfCommandRequest): Observable<ChainOfCommand> => {
+    getOrganizationChainOfCommand = ({ orgId }: GetOrganizationChainOfCommandRequest): Observable<Array<OrganizationRoleWithAssoc>> => {
         throwIfNullOrUndefined(orgId, 'getOrganizationChainOfCommand');
 
         const headers: HttpHeaders = {
             ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
-        return this.request<ChainOfCommand>({
+        return this.request<Array<OrganizationRoleWithAssoc>>({
             path: '/api/organizations/{org_id}/coc'.replace('{org_id}', encodeURI(orgId)),
             method: 'GET',
             headers,
@@ -420,7 +419,7 @@ export class DefaultApi extends BaseAPI {
     /**
      * get_organization_user_coc
      */
-    getOrganizationsOrgIdUsersUserIdCoc = ({ orgId, userId }: GetOrganizationsOrgIdUsersUserIdCocRequest): Observable<ChainOfCommand> => {
+    getOrganizationsOrgIdUsersUserIdCoc = ({ orgId, userId }: GetOrganizationsOrgIdUsersUserIdCocRequest): Observable<Array<OrganizationRoleWithAssoc>> => {
         throwIfNullOrUndefined(orgId, 'getOrganizationsOrgIdUsersUserIdCoc');
         throwIfNullOrUndefined(userId, 'getOrganizationsOrgIdUsersUserIdCoc');
 
@@ -428,7 +427,7 @@ export class DefaultApi extends BaseAPI {
             ...(this.configuration.apiKey && { 'x-api-key': this.configuration.apiKey('x-api-key') }), // api_key authentication
         };
 
-        return this.request<ChainOfCommand>({
+        return this.request<Array<OrganizationRoleWithAssoc>>({
             path: '/api/organizations/{org_id}/users/{user_id}/coc'.replace('{org_id}', encodeURI(orgId)).replace('{user_id}', encodeURI(userId)),
             method: 'GET',
             headers,

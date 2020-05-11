@@ -1,29 +1,24 @@
-import React, {useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import {
-    ChainOfCommand,
-    Organization,
-    TitanApiClient, UserProfile,
+    Organization, OrganizationRoleWithAssoc,
 } from "@titan/http/api";
 import {DashboardSection} from "@titan/layouts/dashboard/dashboard_section";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
-    OrganizationActions, organizationChainOfCommandSelector,
+    organizationChainOfCommandSelector,
     organizationChildrenSelector, organizationMembersSelector,
     organizationModelSelector, organizationRankedRolesSelector
 } from "@titan/store/organization";
-import {combineLatest} from "rxjs";
 import {HorizontalScrollViewport} from "@titan/components/scroll/horizontal_scroll_viewport";
 import {AppState} from "@titan/store/root_reducer";
 import {OrganizationCard} from "@titan/components/organizations/organization_card";
 import {Avatar, useTheme} from "@material-ui/core";
-import {Roles} from "@titan/modules/organizations/detail/roles";
-import {AddRoleButton} from "@titan/components/roles/add_role_button";
 import {DashboardSectionHeader} from "@titan/layouts/dashboard/dashboard_section_header";
 import {MemberList} from "@titan/components/members/member_list";
 import {MemberListRowProps} from "@titan/components/members/member_list_row";
 import {ChainOfCommand as ChainOfCommandComponent} from "@titan/modules/organizations/components/chain_of_command";
+import {RouteLink} from "@titan/components/routes";
 
 const StyledOrganizationHeader = styled.div`
   align-items: flex-end;
@@ -83,8 +78,6 @@ const StyledHeadline = styled.div`
 `;
 
 export function OrganizationScene() {
-    const params = useParams();
-    const dispatch = useDispatch();
     const theme = useTheme();
     const leadership = useSelector<AppState, MemberListRowProps[]>(
         state =>
@@ -93,35 +86,9 @@ export function OrganizationScene() {
     const users = useSelector<AppState, MemberListRowProps[]>(
         state => organizationMembersSelector(state)
             .map(member => ({user: member})));
-    const chainOfCommand = useSelector<AppState, ChainOfCommand>(organizationChainOfCommandSelector);
+    const chainOfCommand = useSelector<AppState, OrganizationRoleWithAssoc[]>(organizationChainOfCommandSelector);
     const children = useSelector<AppState, Organization[]>(organizationChildrenSelector);
     const organization = useSelector<AppState, Organization>(organizationModelSelector);
-
-    useEffect(() => {
-        combineLatest([
-            TitanApiClient.getOrganization({id: params.id}),
-            TitanApiClient.getOrganizationRoles({orgId: params.id}),
-            TitanApiClient.getOrganizationChildren({orgId: params.id}),
-            TitanApiClient.getOrganizationUsers({orgId: params.id}),
-            TitanApiClient.getOrganizationChainOfCommand({orgId: params.id}),
-        ]).subscribe(([org, roles, children, users, coc]) => {
-            dispatch(OrganizationActions.setOrganization(org));
-            dispatch(OrganizationActions.setChildren(children));
-            dispatch(OrganizationActions.setRoles(roles));
-            dispatch(OrganizationActions.setMembers(users));
-            dispatch(OrganizationActions.setChainOfCommand(coc));
-        });
-        return () => {
-            dispatch(OrganizationActions.setOrganization(undefined));
-            dispatch(OrganizationActions.setRoles([]));
-            dispatch(OrganizationActions.setChildren([]));
-            dispatch(OrganizationActions.setMembers([]));
-        }
-    }, [params]);
-
-    if (!organization) {
-        return null;
-    }
 
     return (
         <React.Fragment>
@@ -155,14 +122,15 @@ export function OrganizationScene() {
             )}
             <StyledOrganizationDetailsWrapper>
                 <DashboardSection>
-                    {!!chainOfCommand && (
+                    {chainOfCommand.length > 0 && (
                         <React.Fragment>
-                            <DashboardSectionHeader actions={[
-                                <AddRoleButton key="add-role-action" orgId={organization.id} />
+                            <DashboardSectionHeader links={[
+                                <RouteLink
+                                    key="manage-leadership"
+                                    to={`/dashboard/organizations/${organization.id}/leadership`}>Manage</RouteLink>
                             ]}>Leadership</DashboardSectionHeader>
                             <ChainOfCommandComponent
-                                localCoc={chainOfCommand.localCoc || []}
-                                extendedCoc={chainOfCommand.extendedCoc || []}
+                                chainOfCommand={chainOfCommand}
                             />
                         </React.Fragment>
                     )}

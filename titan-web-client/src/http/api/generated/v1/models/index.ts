@@ -1,6 +1,5 @@
 export * from './AddOrganizationUserFields';
 export * from './AuthWoltlabFields';
-export * from './ChainOfCommand';
 export * from './CreateOrganizationFields';
 export * from './DeleteOrganizationUserFields';
 export * from './EventType';

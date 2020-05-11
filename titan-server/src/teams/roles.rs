@@ -225,7 +225,7 @@ pub fn find_user_coc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: State<config::AppConfig>
-) -> db::TitanQueryResult<models::ChainOfCommand> {
+) -> db::TitanQueryResult<Vec<models::OrganizationRoleWithAssoc>> {
     let role_res = find_org_role_by_user_id(org_id, user_id, titan_db);
     let rank: i32;
 
@@ -259,9 +259,8 @@ pub fn find_org_coc(
     titan_db: &MysqlConnection,
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
-) -> db::TitanQueryResult<models::ChainOfCommand> {
-    let mut extended_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
-    let mut local_coc: Vec<models::OrganizationRoleWithAssoc> = vec!();
+) -> db::TitanQueryResult<Vec<models::OrganizationRoleWithAssoc>> {
+    let mut chain_of_command: Vec<models::OrganizationRoleWithAssoc> = vec!();
     let mut curr_org_id = org_id;
     let mut curr_rank = starting_rank;
     loop {
@@ -269,14 +268,8 @@ pub fn find_org_coc(
             curr_org_id, curr_rank, false, titan_db)?;
         match parent_role {
             Some(role) => {
-                let role_assoc = map_role_assoc(
-                    &role, titan_db, wcf_db, app_config)?;
-                if role.organization_id == org_id {
-                    local_coc.push(role_assoc);
-                } else {
-                    extended_coc.push(role_assoc);
-                }
-
+                chain_of_command.push(map_role_assoc(
+                    &role, titan_db, wcf_db, app_config)?);
                 curr_org_id = role.organization_id;
                 // find_parent_role guarantees the role will have a rank.
                 curr_rank = role.rank.unwrap();
@@ -287,10 +280,7 @@ pub fn find_org_coc(
         }
     }
 
-    Ok(models::ChainOfCommand {
-        extended_coc,
-        local_coc
-    })
+    Ok(chain_of_command)
 }
 
 /// Finds the next user with ranking authority over the given rank.
@@ -458,12 +448,13 @@ pub fn is_user_in_parent_coc(
     wcf_db: &MysqlConnection,
     app_config: &State<config::AppConfig>
 ) -> bool {
-    let org_coc_res = find_org_coc(org_id, std::i32::MAX, titan_db, wcf_db, app_config);
-    match org_coc_res {
+    let chain_of_command_res = find_org_coc(
+        org_id, std::i32::MAX, titan_db, wcf_db, app_config);
+    match chain_of_command_res {
         Ok(coc) => {
-            coc.extended_coc.into_iter().any(|role| {
+            coc.into_iter().any(|role| {
                 match role.user_profile {
-                    Some(profile) => profile.id == user_id,
+                    Some(profile) => profile.id == user_id && org_id != role.organization.id,
                     _ => false
                 }
             })
@@ -495,9 +486,7 @@ pub fn find_role_in_coc(
     let coc_res = find_org_coc(org_id, std::i32::MAX, titan_db, wcf_db, app_config);
     match coc_res {
         Ok(mut coc) => {
-            let mut roles = coc.extended_coc;
-            roles.append(&mut coc.local_coc);
-            roles.into_iter().find_map(|role| {
+            coc.into_iter().find_map(|role| {
                 match role.user_profile.as_ref() {
                     Some(profile) => if profile.id == user_id {
                         Some(role)

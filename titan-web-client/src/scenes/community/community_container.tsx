@@ -2,7 +2,7 @@ import {PropsWithChildren, useEffect} from 'react';
 import {useDispatch} from "react-redux";
 import {DashboardLayoutActions} from "@titan/store/dashboard_layout";
 
-export function CommunityScene(props: PropsWithChildren<any>) {
+export function CommunityContainer(props: PropsWithChildren<any>) {
     const dispatch = useDispatch();
 
     useEffect(() => {

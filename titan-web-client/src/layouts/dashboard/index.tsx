@@ -108,7 +108,7 @@ export function DashboardLayout(props) {
             </StyledDrawer>
             <StyledContentSection
                 offset={contentOffset}
-                padding={theme.spacing(4)}>
+                padding={theme.spacing(8)}>
                 <DashboardSection>
                     <PageToolbar userProfile={userProfile} />
                 </DashboardSection>

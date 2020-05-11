@@ -3,19 +3,19 @@ import {
     Organization,
     UserProfile,
     OrganizationRoleWithAssoc,
-    OrganizationRole, ChainOfCommand
 } from "@titan/http/api";
 
 /** State for the user profile scene. */
 export interface OrganizationState {
     children: Organization[];
-    chainOfCommand?: ChainOfCommand;
+    chainOfCommand: OrganizationRoleWithAssoc[];
     members: UserProfile[];
     organization?: Organization;
     roles: OrganizationRoleWithAssoc[];
 }
 
 const DEFAULT_STATE: OrganizationState = {
+    chainOfCommand: [],
     children: [],
     members: [],
     roles: [],
@@ -26,7 +26,7 @@ const OrganizationSlice = createSlice({
     name: 'organization',
     initialState: DEFAULT_STATE,
     reducers: {
-        setChainOfCommand(state, action: PayloadAction<ChainOfCommand>) {
+        setChainOfCommand(state, action: PayloadAction<OrganizationRoleWithAssoc[]>) {
             state.chainOfCommand = action.payload;
         },
         setChildren(state, action: PayloadAction<Organization[]>) {

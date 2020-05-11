@@ -240,14 +240,6 @@ pub struct OrganizationRoleWithAssoc {
     pub rank: Option<i32>
 }
 
-#[derive(Serialize)]
-pub struct ChainOfCommand {
-    #[serde(rename(serialize = "localCoc"))]
-    pub local_coc: Vec<OrganizationRoleWithAssoc>,
-    #[serde(rename(serialize = "extendedCoc"))]
-    pub extended_coc: Vec<OrganizationRoleWithAssoc>
-}
-
 #[derive(Serialize, Queryable, Insertable)]
 #[table_name = "organizations_users"]
 pub struct OrganizationUser {
