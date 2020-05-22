@@ -58,7 +58,7 @@ const StyledLeaf = styled.div`
 
     :after {
       left: calc(50% - 5px);
-      top: 90%;
+      top: 100%;
     }
     
     :before {
@@ -171,14 +171,14 @@ export function ChainOfCommand(props) {
     const slice = reversed.slice(0, 3);
     setFullChainOfCommandLeaves(reversed.map(
       (role, index) =>
-        renderLeaf(role, theme.palette.primary.light, index, true, false)));
+        renderLeaf(role, theme.palette.primary.light, index, true, true)));
     setPreviewChainOfCommandLeaves(slice.map(
       (role, index) =>
-        renderLeaf(role, theme.palette.primary.light, index, false, true)));
+        renderLeaf(role, theme.palette.primary.light, index, false, false)));
     setRemainingCount(Math.max(0, props.chainOfCommand.length - 3));
   }, [props.chainOfCommand]);
 
-  const renderLeaf = (coc, color, index, capTop, enableHover) => {
+  const renderLeaf = (coc, color, index, capTop, inDialog) => {
     let leafPosition;
     let avatarPosition;
     if (capTop && index === 0) {
@@ -195,11 +195,11 @@ export function ChainOfCommand(props) {
       leafPosition = 'left';
     }
 
-    let background = 'transparent';
-    let hoverBackground = 'transparent';
-    if (enableHover) {
-      background = theme.palette.background.default;
-      hoverBackground = theme.palette.background.paper;
+    let background = theme.palette.background.default;
+    let hoverBackground = theme.palette.background.paper;
+    if (inDialog) {
+      background = 'transparent';
+      hoverBackground = 'transparent';
     }
 
     const orgRoute = routeBuilder(
