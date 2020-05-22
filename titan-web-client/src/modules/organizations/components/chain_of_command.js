@@ -10,6 +10,10 @@ import { RouteLink } from '@titan/components/routes';
 import { useTheme } from '@material-ui/core';
 import { Palette } from '@titan/themes/default';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 
 const StyledExpandButton = styled(Button)`
   display: block;
@@ -19,22 +23,8 @@ const StyledExpandButton = styled(Button)`
 const StyledLeaf = styled.div`
   display: flex;
   position: relative;
+  z-index: 1;
 
-  .leaf-content {
-    border-radius: 4px;
-    min-width: 250px;
-    padding: 8px;
-    transition: background-color 175ms ease-in-out;
-
-    &:hover {
-      background-color: ${props => props.background};
-    }
-  }
-
-  ${StyledMemberNameTag} {
-    z-index: 1;
-  }
-  
   :before {
     background: ${props => props.branchColor};
     border-radius: 4px;
@@ -57,8 +47,31 @@ const StyledLeaf = styled.div`
   }
 
   &.top {
-    align-items: center;
-    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 28px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 8px;
+    width: 100%;
+    top: -8px;
+    z-index: 1;
+
+    :after {
+      left: calc(50% - 5px);
+      top: 90%;
+    }
+    
+    :before {
+      display: none;
+    }
+    
+    ${StyledMemberNameTag} {
+      margin: auto;
+    }
+  }
+
+  &.bottom {
+    justify-content: center;
     margin-bottom: 28px;
     margin-left: auto;
     margin-right: auto;
@@ -109,6 +122,22 @@ const StyledLeaf = styled.div`
       left: -12px;
     }
   }
+  
+  .leaf-content {
+    background: ${props => props.background};
+    border-radius: 4px;
+    min-width: 250px;
+    padding: 8px;
+    transition: background-color 175ms ease-in-out;
+
+    &:hover {
+      background-color: ${props => props.hoverBackground};
+    }
+  }
+
+  ${StyledMemberNameTag} {
+    z-index: 1;
+  }
 `;
 
 const StyledTree = styled.div`
@@ -129,24 +158,35 @@ const StyledTree = styled.div`
 
 export function ChainOfCommand(props) {
   const theme = useTheme();
-  const [visibleChainOfCommand, setVisibleChainOfCommand] = useState([]);
+  const [fullChainOfCommandLeaves, setFullChainOfCommandLeaves] = useState([]);
+  const [previewChainOfCommandLeaves, setPreviewChainOfCommandLeaves] = useState([]);
   const [remainingCount, setRemainingCount] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     // The {@link props.chainOfCommand} property orders roles from
     // lowest rank to highest, but they need to be rendered in highest
     // to lowest order instead.
-    const slice = [...props.chainOfCommand].reverse().slice(0, 3);
-    setVisibleChainOfCommand(slice);
+    const reversed = [...props.chainOfCommand].reverse();
+    const slice = reversed.slice(0, 3);
+    setFullChainOfCommandLeaves(reversed.map(
+      (role, index) =>
+        renderLeaf(role, theme.palette.primary.light, index, true, false)));
+    setPreviewChainOfCommandLeaves(slice.map(
+      (role, index) =>
+        renderLeaf(role, theme.palette.primary.light, index, false, true)));
     setRemainingCount(Math.max(0, props.chainOfCommand.length - 3));
   }, [props.chainOfCommand]);
 
-  const renderLeaf = (coc, color, index, isLocal = false) => {
+  const renderLeaf = (coc, color, index, capTop, enableHover) => {
     let leafPosition;
     let avatarPosition;
-    if (index === 10000) {
+    if (capTop && index === 0) {
       avatarPosition = 'top';
       leafPosition = 'top';
+    } else if (index === props.chainOfCommand.length - 1) {
+      avatarPosition = 'top';
+      leafPosition = 'bottom';
     } else if (index % 2 === 0) {
       avatarPosition = 'left';
       leafPosition = 'right';
@@ -154,22 +194,28 @@ export function ChainOfCommand(props) {
       avatarPosition = 'right';
       leafPosition = 'left';
     }
+
+    let background = 'transparent';
+    let hoverBackground = 'transparent';
+    if (enableHover) {
+      background = theme.palette.background.default;
+      hoverBackground = theme.palette.background.paper;
+    }
+
     const orgRoute = routeBuilder(
       ORGANIZATIONS_DETAIL_ROUTE, [coc.organization.id]);
     return (
       <StyledLeaf
         key={index}
         branchColor={Palette.background['200']}
-        background={theme.palette.background.paper}
+        background={background}
+        hoverBackground={hoverBackground}
         className={`leaf ${leafPosition}`}>
         <div className="leaf-content">
           <MemberNameTag
             avatarUrl={coc.userProfile.wcf.avatarUrl}
             avatarPosition={avatarPosition}
-            label={(isLocal
-                ? <RouteLink to={orgRoute}>{coc.role}</RouteLink>
-                : coc.role
-            )}
+            label={<RouteLink to={orgRoute}>{coc.role}</RouteLink>}
             labelPosition="below"
             username={coc.userProfile.wcf.username}
             size="large"
@@ -179,17 +225,27 @@ export function ChainOfCommand(props) {
     );
   }
 
-  const leaves = visibleChainOfCommand.map((role, index) =>
-    renderLeaf(role, theme.palette.primary.light, index, true));
-
   return (
     <React.Fragment>
       {remainingCount > 0 &&  (
-        <StyledExpandButton size="small">+{remainingCount} more</StyledExpandButton>
+        <StyledExpandButton
+          onClick={() => setDialogOpen(true)}
+          size="small">+{remainingCount} more</StyledExpandButton>
       )}
       <StyledTree trunkColor={theme.palette.background.paper}>
-        {leaves}
+        {previewChainOfCommandLeaves}
       </StyledTree>
+      <Dialog fullWidth maxWidth="sm" open={dialogOpen}>
+        <DialogTitle>Chain of Command</DialogTitle>
+        <DialogContent>
+          <StyledTree trunkColor={Palette.background[300]}>
+            {fullChainOfCommandLeaves}
+          </StyledTree>
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={() => setDialogOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 }
