@@ -61,7 +61,7 @@
     "jest-environment-jsdom-fourteen": "0.1.0",
     "jest-resolve": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
-    "lodash": "~4.17.5",
+    "lodash": "~4.17.19",
     "mini-css-extract-plugin": "0.8.0",
     "notistack": "~0.8.6",
     "object-assign": "4.1.1",
