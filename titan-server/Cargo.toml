@@ -31,7 +31,7 @@ version = "0.4"
 features = ["json", "databases", "diesel_mysql_pool"]
 
 [dependencies.diesel]
-version = "1.3"
+version = "1.4"
 features = ["mysql", "r2d2", "serde_json", "chrono"]
 
 [dependencies.chrono]
